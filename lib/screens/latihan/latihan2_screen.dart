@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:salesappnew/bloc/color_bloc.dart';
+import 'package:salesappnew/bloc/color_bloc2.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LatihanScreen extends StatefulWidget {
-  const LatihanScreen({super.key});
+class Latihan2Screen extends StatefulWidget {
+  const Latihan2Screen({super.key});
 
   @override
-  State<LatihanScreen> createState() => _LatihanScreenState();
+  State<Latihan2Screen> createState() => _LatihanScreenState();
 }
 
-class _LatihanScreenState extends State<LatihanScreen> {
-  ColorBloc bloc = ColorBloc();
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
+class _LatihanScreenState extends State<Latihan2Screen> {
   @override
   Widget build(BuildContext context) {
+    // ColorBloc bloc = BlocProvider.of<ColorBloc>(context);
     return Scaffold(
       body: Scaffold(
         floatingActionButton: Row(
@@ -26,14 +20,14 @@ class _LatihanScreenState extends State<LatihanScreen> {
           children: [
             FloatingActionButton(
               onPressed: () {
-                bloc.eventSink.add(ColorEvent.toAmber);
+                context.read<ColorBloc>().add(ColorEvent.ColorToAmberEvent);
               },
               backgroundColor: Colors.amber,
             ),
             const SizedBox(width: 10),
             FloatingActionButton(
               onPressed: () {
-                bloc.eventSink.add(ColorEvent.toLightBlue);
+                context.read<ColorBloc>().add(ColorEvent.ColorToBlueEvent);
               },
               backgroundColor: Colors.lightBlue,
             ),
@@ -43,15 +37,12 @@ class _LatihanScreenState extends State<LatihanScreen> {
           centerTitle: true,
           title: const Text("Flutter Bloc"),
         ),
-        body: Center(
-            child: StreamBuilder<Color>(
-          stream: bloc.stateStream,
-          initialData: Colors.amber,
-          builder: (context, snapshot) {
+        body: Center(child: BlocBuilder<ColorBloc, Color>(
+          builder: (context, state) {
             return AnimatedContainer(
               width: 100,
               height: 100,
-              color: snapshot.data,
+              color: state,
               duration: const Duration(milliseconds: 500),
             );
           },

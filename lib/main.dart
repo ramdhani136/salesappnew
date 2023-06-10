@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/color_bloc2.dart';
+import 'package:salesappnew/screens/latihan/latihan2_screen.dart';
 import 'package:salesappnew/screens/latihan/latihan_screen.dart';
 
 void main() {
@@ -15,9 +18,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LatihanScreen(),
+      home: BlocProvider<ColorBloc>(
+        create: (context) => ColorBloc(),
+        child: const Latihan2Screen(),
+      ),
     );
   }
 }
