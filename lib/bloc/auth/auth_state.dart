@@ -5,8 +5,14 @@ abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class LoginLoading extends AuthState {}
+class AuthLoading extends AuthState {}
 
-class LoginSuccess extends AuthState {}
+class AuthSuccess extends AuthState {
+  final User user;
+  AuthSuccess(this.user);
+}
 
-class LoginFailur extends AuthState {}
+class AuthFailure extends AuthState {
+  final String error;
+  AuthFailure(this.error);
+}
