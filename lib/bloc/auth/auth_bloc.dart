@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthLoading());
           try {
             final isLogin =
-                await repository.loginUser("administrator", "!Etms000!");
+                await repository.loginUser(event.username, event.password);
             emit(AuthSuccess(isLogin));
           } catch (error) {
             emit(AuthFailure(error.toString()));
