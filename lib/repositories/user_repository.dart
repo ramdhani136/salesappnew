@@ -3,16 +3,24 @@ import 'dart:convert';
 import './../models/User';
 
 class UserRepositiory {
-  final String apiUrl = 'http://localhost:5000/user';
+  final String apiUrl = 'http://localhost:5000/users/login';
 
   Future<User> loginUser(String username, String password) async {
-    final response = await http.post(Uri.parse(apiUrl),
-        body: jsonEncode({'username': username, 'password': password}),
-        headers: {'Content-Type': 'application/json'});
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      return User.fromJson(jsonData);
-    } else {
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        // body: jsonEncode({'username': username, 'password': password}),
+        headers: {'Content-Type': 'application/json'},
+      );
+      print('response');
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        return User.fromJson(jsonData);
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      print(e);
       throw Exception('Failed to login');
     }
   }
