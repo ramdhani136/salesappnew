@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/repositories/user_repository.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -21,10 +20,10 @@ class LoginScreen extends StatelessWidget {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state is AuthFailure) {
-              return Center(
-                child: Text(state.error),
-              );
+              // } else if (state is AuthFailure) {
+              //   return Center(
+              //     child: Text(state.error),
+              //   );
             } else if (state is AuthSuccess) {
               return const Center(
                 child: Text('Login Successful'),
@@ -83,19 +82,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Fluttertoast.showToast(
-                        msg: "Terjadi kesalahan: ",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
-                      // final username = _usernameController.text;
-                      // final password = _passwordController.text;
-                      // authBloc
-                      //     .add(OnLogin(username: username, password: password));
+                      final username = _usernameController.text;
+                      final password = _passwordController.text;
+                      authBloc
+                          .add(OnLogin(username: username, password: password));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 15),
