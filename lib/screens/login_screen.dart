@@ -16,15 +16,7 @@ class LoginScreen extends StatelessWidget {
       body: BlocBuilder<AuthBloc, AuthState>(
           bloc: authBloc,
           builder: (context, state) {
-            if (state is AuthLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-              // } else if (state is AuthFailure) {
-              //   return Center(
-              //     child: Text(state.error),
-              //   );
-            } else if (state is AuthSuccess) {
+            if (state is AuthSuccess) {
               return const Center(
                 child: Text('Login Successful'),
               );
@@ -80,24 +72,31 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      final username = _usernameController.text;
-                      final password = _passwordController.text;
-                      authBloc
-                          .add(OnLogin(username: username, password: password));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      backgroundColor: Colors.grey[300],
-                    ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Color(0xFF747D8C),
-                      ),
-                    ),
-                  ),
+                  state is AuthLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.grey),
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {
+                            final username = _usernameController.text;
+                            final password = _passwordController.text;
+                            authBloc.add(OnLogin(
+                                username: username, password: password));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            backgroundColor: Colors.grey[300],
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Color(0xFF747D8C),
+                            ),
+                          ),
+                        )
                 ],
               ),
             );

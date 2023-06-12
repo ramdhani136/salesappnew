@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.blueGrey[900],
               textColor: Colors.white,
-              fontSize: 16.0,
+              fontSize: 15.0,
             );
             emit(AuthFailure(error.toString()));
           }
