@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salesappnew/bloc/color_bloc2.dart';
-import 'package:salesappnew/screens/latihan/latihan2_screen.dart';
-import 'package:salesappnew/screens/latihan/latihan_screen.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/screens/home/home_screen.dart';
+import 'package:salesappnew/screens/login_screen.dart';
+// import 'package:salesappnew/bloc/color_bloc2.dart';
+// import 'package:salesappnew/screens/latihan/latihan2_screen.dart';
+// import 'package:salesappnew/screens/latihan/latihan_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,10 +22,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider<ColorBloc>(
-        create: (context) => ColorBloc(),
-        child: const Latihan2Screen(),
-      ),
+      home: LoginScreen(),
     );
   }
 }
