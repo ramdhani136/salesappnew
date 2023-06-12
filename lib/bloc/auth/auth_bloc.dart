@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:salesappnew/models/User';
 import 'package:salesappnew/repositories/user_repository.dart';
 
 part 'auth_event.dart';
@@ -17,9 +16,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           try {
             final isLogin =
                 await repository.loginUser("administrator", "!Etms000!");
-
-            print(isLogin);
-
             emit(AuthSuccess(isLogin));
           } catch (error) {
             emit(AuthFailure(error.toString()));

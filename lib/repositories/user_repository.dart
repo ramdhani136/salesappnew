@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import './../models/User';
+import 'package:salesappnew/models/User';
 
 class UserRepositiory {
   final String apiUrl = 'http://192.168.100.28:5000/users/login';
@@ -18,11 +18,11 @@ class UserRepositiory {
 
         return jsonData['token'];
       } else {
-        throw Exception('Failed to login');
+        final jsonData = jsonDecode(response.body);
+        throw jsonData['msg'];
       }
     } catch (e) {
-      print(e);
-      throw Exception('Failed to login');
+      throw e;
     }
   }
 
