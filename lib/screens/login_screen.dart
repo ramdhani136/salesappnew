@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 children: [
                   TextField(
+                    controller: _usernameController,
                     enableSuggestions: false,
                     autocorrect: false,
                     decoration: const InputDecoration(
@@ -32,6 +36,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: _passwordController,
                     obscureText: true,
                     enableSuggestions: false,
                     autocorrect: false,
