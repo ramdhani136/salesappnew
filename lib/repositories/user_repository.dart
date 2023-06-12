@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:salesappnew/models/User';
 
 class UserRepositiory {
   final String apiUrl = 'http://192.168.100.28:5000/users/login';
