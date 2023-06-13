@@ -10,8 +10,12 @@ class LocalData {
   }
 
   Future setToken(String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future setData<T>(typeOf type, String name, T data) async {

@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/User';
+import 'package:salesappnew/utils/local_data.dart';
 
 Config config = Config();
+LocalData localData = LocalData();
 
 class UserRepositiory {
   Future<String> loginUser(String username, String password) async {
@@ -31,17 +33,22 @@ class UserRepositiory {
 
   Future<dynamic> getUsers() async {
     try {
+      String? token = await localData.getToken();
+
       final response = await http.get(
         Uri.parse("${config.baseUri}users"),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDgwMGU2MWNjMTlhZmYzOWY2MmQ0ZWEiLCJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW5pc3RyYXRvciIsInN0YXR1cyI6IjEiLCJpYXQiOjE2ODY2MTc1ODUsImV4cCI6MTY4NjcwMzk4NX0.JMAV0syDLYtRIl1qvKuxXSruBWlLbxmEcD7hI6WUuDd',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
+
+        List<dynamic> data = jsonData['data'];
+
+        data.map((e) => {print(e['_id'])});
 
         return jsonData['data'].map((user) => User.fromJson(user)).toList();
       } else {
@@ -49,6 +56,7 @@ class UserRepositiory {
         throw jsonData['msg'];
       }
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
