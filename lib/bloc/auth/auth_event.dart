@@ -10,4 +10,6 @@ class OnLogin extends AuthEvent {
   OnLogin({required this.username, required this.password});
 }
 
+class OnLogout extends AuthEvent {}
+
 class TogglePasswordVisibility extends AuthEvent {}

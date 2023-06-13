@@ -37,6 +37,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else if (event is TogglePasswordVisibility) {
           isPasswordVisible = !isPasswordVisible;
           emit(AuthInitial());
+        } else if (event is OnLogout) {
+          await repository.logout();
+          emit(AuthUnauthenticated());
+          try {} catch (e) {
+            emit(AuthFailure(e.toString()));
+          }
         }
       },
     );

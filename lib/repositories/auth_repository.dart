@@ -32,5 +32,7 @@ class AuthRepository {
     return token != null;
   }
 
-  Future<void> logout() async {}
+  Future<void> logout() async {
+    await localData.removeData("token");
+  }
 }

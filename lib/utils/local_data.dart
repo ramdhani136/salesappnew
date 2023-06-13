@@ -67,4 +67,13 @@ class LocalData {
       rethrow;
     }
   }
+
+  Future<void> removeData(String name) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove(name);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
