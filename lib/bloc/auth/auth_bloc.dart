@@ -21,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthLoading());
           try {
             await repository.loginUser(event.username, event.password);
-            emit(AuthSuccess());
+            emit(AuthAuthenticated());
           } catch (error) {
             Fluttertoast.showToast(
               msg: "$error",

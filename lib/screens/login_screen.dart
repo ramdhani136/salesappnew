@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
       body: BlocBuilder<AuthBloc, AuthState>(
           bloc: authBloc,
           builder: (context, state) {
-            if (state is AuthSuccess) {
+            if (state is AuthAuthenticated) {
               return const Center(
                 child: Text('Login Successful'),
               );
