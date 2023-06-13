@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.apps_outlined),
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFE6212A),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
