@@ -1,27 +1,27 @@
+// ignore_for_file: depend_on_referenced_packages, unnecessary_import
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:salesappnew/repositories/user_repository.dart';
+import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-import 'package:salesappnew/utils/local_data.dart';
+
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool isPasswordVisible = false;
 
-  final UserRepositiory repository;
-  LocalData localData = LocalData();
+  final AuthRepository repository;
+
   AuthBloc(this.repository) : super(AuthInitial()) {
     on<AuthEvent>(
       (event, emit) async {
         if (event is OnLogin) {
           emit(AuthLoading());
           try {
-            final isLogin =
-                await repository.loginUser(event.username, event.password);
-            await localData.setToken(isLogin);
-            emit(AuthSuccess(isLogin));
+            await repository.loginUser(event.username, event.password);
+            emit(AuthSuccess());
           } catch (error) {
             Fluttertoast.showToast(
               msg: "$error",

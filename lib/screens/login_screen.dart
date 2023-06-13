@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
-import 'package:salesappnew/repositories/user_repository.dart';
+import 'package:salesappnew/repositories/auth_repository.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = AuthBloc(UserRepositiory());
+    final authBloc = AuthBloc(AuthRepository());
 
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(

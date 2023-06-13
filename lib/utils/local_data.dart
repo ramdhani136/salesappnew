@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, camel_case_types
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum typeOf { Int, String, Bool, Double, StringList }
