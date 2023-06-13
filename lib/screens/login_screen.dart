@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is AuthAuthenticated) {
               return Center(
-                child: HomeScreen(authBloc),
+                child: HomeScreen(),
               );
             }
             return Padding(

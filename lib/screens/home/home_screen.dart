@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-  final AuthBloc authBloc;
-
-  HomeScreen(this.authBloc);
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +16,7 @@ class HomeScreen extends StatelessWidget {
             const Text("Home Page"),
             OutlinedButton(
                 onPressed: () {
-                  authBloc.add(
-                    OnLogout(),
-                  );
+                  context.read<AuthBloc>().add(OnLogout());
                 },
                 child: const Text("Logout"))
           ],

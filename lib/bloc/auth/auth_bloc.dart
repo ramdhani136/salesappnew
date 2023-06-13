@@ -51,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthInitial());
         } else if (event is OnLogout) {
           try {
+            emit(AuthLoading());
             await repository.logout();
             emit(AuthUnauthenticated());
           } catch (e) {
