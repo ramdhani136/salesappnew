@@ -6,7 +6,6 @@ class UserRepositiory {
   Config config = Config();
 
   Future<String> loginUser(String username, String password) async {
-    print(config.baseUri);
     try {
       final response = await http.post(
         Uri.parse("${config.baseUri}users/login"),
@@ -23,7 +22,7 @@ class UserRepositiory {
         throw jsonData['msg'];
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
