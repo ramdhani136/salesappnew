@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
@@ -9,19 +7,33 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Home Page"),
-            OutlinedButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(OnLogout());
-                },
-                child: const Text("Logout"))
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: Text(
+                    "Semangat Pagi",
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Text(
+                  "Ryan Hadi Dermawan",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+            Text("foto"),
           ],
         ),
+        centerTitle: true,
       ),
+      body: Text("Home"),
     );
   }
 }
