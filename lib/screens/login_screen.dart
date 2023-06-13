@@ -85,9 +85,9 @@ class LoginScreen extends StatelessWidget {
                             final username = _usernameController.text;
                             final password = _passwordController.text;
 
-                            authBloc.add(OnLogin(
-                                username: "administrator",
-                                password: "!Etms000!"));
+                            authBloc.add(
+                              OnLogin(username: username, password: password),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 15),
