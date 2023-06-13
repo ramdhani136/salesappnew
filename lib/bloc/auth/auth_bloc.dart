@@ -6,6 +6,7 @@ import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
+import 'package:salesappnew/utils/location_gps.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -18,8 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEvent>(
       (event, emit) async {
         if (event is AppStarted) {
-          // Cek status autentikasi saat aplikasi dimulai
-
           final isAuthenticated = await repository.isAuthenticated();
           if (isAuthenticated) {
             emit(

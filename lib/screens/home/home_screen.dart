@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
+import 'package:salesappnew/utils/location_gps.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  LocationGps location = LocationGps();
+  HomeScreen() : super() {
+    getLocation();
+  }
+
+  Future<void> getLocation() async {
+    await location.CheckLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +58,7 @@ class HomeScreen extends StatelessWidget {
                   width: 10,
                 ),
                 CircleAvatar(
+                  backgroundColor: Colors.grey,
                   radius: 20,
                   backgroundImage: NetworkImage(
                       'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),

@@ -6,6 +6,8 @@ import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
 
+import 'package:salesappnew/utils/location_gps.dart';
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -15,14 +17,16 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
