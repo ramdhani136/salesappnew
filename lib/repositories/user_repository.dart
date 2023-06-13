@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/models/User';
+
+Config config = Config();
 
 class UserRepositiory {
-  Config config = Config();
-
   Future<String> loginUser(String username, String password) async {
     try {
       final response = await http.post(
@@ -27,20 +30,26 @@ class UserRepositiory {
   }
 
   Future<dynamic> getUsers() async {
-    // ignore: avoid_print
-    print('dddddddddddddddddddddddd');
     try {
-      final response = await http.get(Uri.parse("http://localhost:5000/users"));
-      print(response);
-      // if (response.statusCode == 200) {
-      //   final jsonData = jsonDecode(response.body) as List<dynamic>;
-      //   // print(jsonData);
-      //   return jsonData;
-      //   // return jsonData.map((user) => User.fromJson(user)).toList();
-      // }
-      return response;
+      final response = await http.get(
+        Uri.parse("${config.baseUri}users"),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDgwMGU2MWNjMTlhZmYzOWY2MmQ0ZWEiLCJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW5pc3RyYXRvciIsInN0YXR1cyI6IjEiLCJpYXQiOjE2ODY2MTc1ODUsImV4cCI6MTY4NjcwMzk4NX0.JMAV0syDLYtRIl1qvKuxXSruBWlLbxmEcD7hI6WUuDd',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        return jsonData['data'].map((user) => User.fromJson(user)).toList();
+      } else {
+        final jsonData = jsonDecode(response.body);
+        throw jsonData['msg'];
+      }
     } catch (e) {
-      return e;
+      throw e;
     }
   }
 

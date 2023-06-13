@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/repositories/user_repository.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -12,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = AuthBloc(UserRepositiory());
+    final userBloc = UserBloc(UserRepositiory());
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(
           bloc: authBloc,
@@ -83,8 +85,9 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () {
                             final username = _usernameController.text;
                             final password = _passwordController.text;
-                            authBloc.add(OnLogin(
-                                username: username, password: password));
+                            userBloc.add(LoadUsers());
+                            // authBloc.add(OnLogin(
+                            //     username: username, password: password));
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 15),

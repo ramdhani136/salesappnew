@@ -14,7 +14,7 @@ class User {
     String workflowState;
     String? email;
     String? img;
-    Int? phone;
+    int? phone;
     DateTime createdAt;
     DateTime updatedAt;
     String? erpSite;

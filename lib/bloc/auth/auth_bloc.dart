@@ -20,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             emit(AuthSuccess(isLogin));
           } catch (error) {
             Fluttertoast.showToast(
-              msg: "Terjadi kesalahan: $error ",
+              msg: "$error",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,

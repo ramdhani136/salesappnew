@@ -4,6 +4,6 @@ part of 'user_bloc.dart';
 abstract class UserEvent {}
 
 class LoadUsers extends UserEvent {
-  final List<Map> users;
-  LoadUsers(this.users);
+  // final List<Map> users;
+  LoadUsers();
 }
