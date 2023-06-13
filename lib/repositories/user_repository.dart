@@ -1,13 +1,15 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:salesappnew/config/Config.dart';
 
 class UserRepositiory {
-  final String apiUrl = 'http://192.168.100.28:5000/users/login';
+  Config config = Config();
 
   Future<String> loginUser(String username, String password) async {
+    print(config.baseUri);
     try {
       final response = await http.post(
-        Uri.parse(apiUrl),
+        Uri.parse("${config.baseUri}users/login"),
         body: jsonEncode({'username': username, 'password': password}),
         headers: {'Content-Type': 'application/json'},
       );
