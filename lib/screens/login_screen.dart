@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is AuthAuthenticated) {
               return Center(
-                child: HomeScreen(),
+                child: HomeScreen(authBloc),
               );
             }
             return Padding(
@@ -87,9 +87,7 @@ class LoginScreen extends StatelessWidget {
                             final password = _passwordController.text;
 
                             authBloc.add(
-                              OnLogin(
-                                  username: "administrator",
-                                  password: "!Etms000!"),
+                              OnLogin(username: username, password: password),
                             );
                           },
                           style: ElevatedButton.styleFrom(

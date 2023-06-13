@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             if (state is AuthUnauthenticated) {
               return LoginScreen();
             } else if (state is AuthAuthenticated) {
-              return HomeScreen();
+              return HomeScreen(authBloc);
             } else {
               return const Scaffold(
                 body: Center(
