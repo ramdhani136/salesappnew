@@ -49,7 +49,7 @@ class UserRepositiory {
         throw jsonData['msg'];
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
