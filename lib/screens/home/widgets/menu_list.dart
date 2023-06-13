@@ -42,6 +42,7 @@ class HomeMenuList extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[600],
+                fontSize: 14,
               ),
             ),
           ],
