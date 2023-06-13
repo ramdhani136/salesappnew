@@ -13,3 +13,5 @@ class OnLogin extends AuthEvent {
 class OnLogout extends AuthEvent {}
 
 class TogglePasswordVisibility extends AuthEvent {}
+
+class AppStarted extends AuthEvent {}

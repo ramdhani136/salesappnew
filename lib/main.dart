@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/repositories/auth_repository.dart';
+import 'package:salesappnew/screens/home/home_screen.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 // import 'package:salesappnew/bloc/color_bloc2.dart';
@@ -17,22 +21,34 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  final authBloc = AuthBloc(AuthRepository());
+  authBloc.add(AppStarted());
+  runApp(MyApp(authBloc));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  final AuthBloc authBloc;
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+  MyApp(this.authBloc);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: BlocBuilder<AuthBloc, AuthState>(
+          bloc: authBloc,
+          builder: (context, state) {
+            if (state is AuthUnauthenticated) {
+              return LoginScreen();
+            } else if (state is AuthAuthenticated) {
+              return HomeScreen();
+            } else {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          }),
     );
   }
 }

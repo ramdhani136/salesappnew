@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
+import 'package:salesappnew/screens/home/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -18,8 +19,8 @@ class LoginScreen extends StatelessWidget {
           bloc: authBloc,
           builder: (context, state) {
             if (state is AuthAuthenticated) {
-              return const Center(
-                child: Text('Login Successful'),
+              return Center(
+                child: HomeScreen(),
               );
             }
             return Padding(
@@ -86,7 +87,9 @@ class LoginScreen extends StatelessWidget {
                             final password = _passwordController.text;
 
                             authBloc.add(
-                              OnLogin(username: username, password: password),
+                              OnLogin(
+                                  username: "administrator",
+                                  password: "!Etms000!"),
                             );
                           },
                           style: ElevatedButton.styleFrom(
