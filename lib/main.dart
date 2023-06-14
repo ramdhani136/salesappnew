@@ -30,8 +30,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (context) => AuthBloc(AuthRepository()),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+              AuthRepository(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => LocationBloc(),
+          ),
+        ],
         child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           if (state is AuthInitial) {
             context.read<AuthBloc>().add(AppStarted());

@@ -7,8 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-  final locationBloc = LocationBloc();
-
   HomeScreen({super.key});
 
   @override
@@ -84,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                   size: 16,
                   color: Colors.green[800],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 BlocBuilder<LocationBloc, LocationState>(
@@ -101,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                           );
                       return Text(
                         state.address ?? "Gps Error!",
-                        style: TextStyle(fontSize: 13),
+                        style: const TextStyle(fontSize: 13),
                       );
                     }
                     if (state is LocationLoading) {
