@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +23,7 @@ class LocationGps {
         print(position);
       }
     } catch (e) {
-      // Tangani kesalahan jika ada
-      print('Terjadi kesalahan: $e');
+      rethrow;
     }
   }
 }

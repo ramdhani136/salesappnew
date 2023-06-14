@@ -90,11 +90,27 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  HomeMenuList(title: "visit", primary: true),
-                  HomeMenuList(title: "Callsheet"),
-                  HomeMenuList(title: "Invoice"),
-                  HomeMenuList(title: "Order"),
-                  HomeMenuList(title: "Item"),
+                  HomeMenuList(
+                    title: "visit",
+                    primary: true,
+                    icon: Icons.run_circle_sharp,
+                  ),
+                  HomeMenuList(
+                    title: "Callsheet",
+                    icon: Icons.phone,
+                  ),
+                  HomeMenuList(
+                    title: "Invoice",
+                    icon: Icons.price_change_sharp,
+                  ),
+                  HomeMenuList(
+                    title: "Order",
+                    icon: Icons.bus_alert_sharp,
+                  ),
+                  HomeMenuList(
+                    title: "Item",
+                    icon: Icons.gif_box_sharp,
+                  ),
                 ],
               ),
             ),

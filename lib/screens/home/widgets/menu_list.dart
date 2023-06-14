@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class HomeMenuList extends StatelessWidget {
   final String title;
   bool primary = false;
+  final IconData icon;
 
-  HomeMenuList({required this.title, bool? primary}) : super() {
+  HomeMenuList({
+    required this.title,
+    bool? primary,
+    required this.icon,
+  }) : super() {
     if (primary != null) {
       this.primary = primary;
     }
@@ -29,8 +34,12 @@ class HomeMenuList extends StatelessWidget {
             Container(
               width: 60,
               height: 60,
+              child: Icon(
+                icon,
+                color: primary ? Colors.white : Colors.red,
+              ),
               decoration: BoxDecoration(
-                color: primary ? Colors.red[400] : Colors.grey[300],
+                color: primary ? Colors.red[400] : Colors.grey[200],
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
