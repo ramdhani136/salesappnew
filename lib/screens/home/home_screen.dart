@@ -116,8 +116,8 @@ class HomeScreen extends StatelessWidget {
                           height: 9,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.grey),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Color.fromARGB(255, 215, 165, 15)),
                           ),
                         );
                       }
@@ -248,8 +248,48 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
+            Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://www.eisai.co.id/id/image/GtkB01.jpg"),
+                  ),
+                  title: Text('PT. Karya Abadi Baru'),
+                  subtitle: Text('Jabodetabek'),
+                  trailing: Text("1.5 km"),
+                  onTap: () {
+                    // Aksi yang dilakukan saat ListTile ditekan
+                  },
+                ),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://sgp1.digitaloceanspaces.com/radarbogor/2019/07/PT-Mayora.jpg"),
+                  ),
+                  title: Text('CV. Ekatunggal Timur'),
+                  subtitle: Text('Area 1'),
+                  trailing: Text("2 km"),
+                  onTap: () {
+                    // Aksi yang dilakukan saat ListTile ditekan
+                  },
+                ),
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://assets.ayobandung.com/crop/0x72:960x615/750x500/webp/photo/2022/12/29/1689892557.jpg"),
+                  ),
+                  title: Text('PT. Jati Agung'),
+                  subtitle: Text('Depok'),
+                  trailing: Text("4 km"),
+                  onTap: () {
+                    // Aksi yang dilakukan saat ListTile ditekan
+                  },
+                ),
+              ],
+            ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
           ],
         ),
