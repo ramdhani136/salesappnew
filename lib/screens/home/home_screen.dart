@@ -74,8 +74,8 @@ class HomeScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.all(7),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(7),
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 248, 205, 76),
                 borderRadius: BorderRadius.all(
                   Radius.circular(7),
@@ -179,18 +179,18 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text(
+                Text(
                   "Info Promo",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                const Text(
+                Text(
                   "See More",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
