@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-  // LocationGps location = LocationGps();
+  final locationBloc = LocationBloc();
+
   HomeScreen() : super() {
-    // getLocation();
+    setAdress();
   }
 
-  // Future<void> getLocation() async {
-  //   await location.CheckLocation();
-  // }
+  Future<void> setAdress() async {
+    locationBloc.add(getAddress());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +79,60 @@ class HomeScreen extends StatelessWidget {
         ),
         child: ListView(
           children: [
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.gps_fixed_sharp,
+                  size: 16,
+                  color: Colors.green[800],
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                BlocBuilder<LocationBloc, LocationState>(
+                  builder: (context, state) {
+                    if (state is LocationInitial) {
+                      context.read<LocationBloc>().add(getAddress());
+                    }
+
+                    if (state is LocationAddress) {
+                      return Text(
+                        state.address ?? "Gps Error!",
+                        style: TextStyle(fontSize: 13),
+                      );
+                    }
+                    if (state is LocationLoading) {
+                      print('Loading');
+                      return SizedBox(
+                        width: 9,
+                        height: 9,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.grey),
+                        ),
+                      );
+                    }
+
+                    if (state is LocationFailure) {
+                      context.read<LocationBloc>().add(getAddress());
+                      return Text(
+                        state.error,
+                        style: const TextStyle(fontSize: 13),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
             const Text(
               "Menu",
               style: TextStyle(
@@ -172,23 +229,6 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(
               height: 10,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.gps_fixed_sharp,
-                  size: 16,
-                  color: Colors.green[800],
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Gps tidak aktif',
-                  style: TextStyle(fontSize: 13),
-                ),
-              ],
             ),
           ],
         ),

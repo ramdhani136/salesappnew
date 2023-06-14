@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
@@ -37,7 +38,10 @@ class MyApp extends StatelessWidget {
           }
 
           if (state is AuthAuthenticated) {
-            return HomeScreen();
+            return BlocProvider(
+              create: (context) => LocationBloc(),
+              child: HomeScreen(),
+            );
           }
           if (state is AuthLoading) {
             return const Scaffold(

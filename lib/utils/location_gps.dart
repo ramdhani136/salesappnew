@@ -6,14 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 
 class LocationGps {
-  Future<void> CheckLocation() async {
+  Future<Position?> CheckLocation() async {
     try {
       // Memeriksa status izin lokasi
       PermissionStatus status = await Permission.location.request();
       if (status.isDenied) {
         // Jika izin ditolak, keluar dari aplikasi
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        return;
+        return null;
       } else if (status.isPermanentlyDenied) {
         openAppSettings();
       } else if (status.isGranted) {
@@ -21,13 +21,14 @@ class LocationGps {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
+        return position;
       }
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<String> getAddress() async {
+  Future<String> chekcAdress() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -41,10 +42,10 @@ class LocationGps {
       Placemark place = placemarks[0];
       String address = '${place.name}, ${place.locality}, ${place.country}';
 
-      print('Address: $address');
+      // print('Address: $address');
       return address;
     } catch (e) {
-      print('Error: $e');
+      // print('Error: $e');
       rethrow;
     }
   }
