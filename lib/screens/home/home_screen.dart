@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                     if (state is LocationAddress) {
                       context.read<LocationBloc>().add(
                             GetRealtimeGps(
-                              duration: const Duration(seconds: 30),
+                              duration: const Duration(minutes: 1),
                             ),
                           );
                       return Text(
@@ -217,12 +217,28 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Lokasi Sekitar anda",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Lokasi Sekitar anda",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.refresh,
+                    size: 20,
+                    color: Color.fromARGB(255, 114, 114, 114),
+                  ),
+                  onPressed: () {
+                    context.read<LocationBloc>().add(GetLocationGps());
+                  },
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,
