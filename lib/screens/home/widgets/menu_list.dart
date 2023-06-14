@@ -6,10 +6,11 @@ class HomeMenuList extends StatelessWidget {
   final IconData icon;
 
   HomeMenuList({
+    super.key,
     required this.title,
     bool? primary,
     required this.icon,
-  }) : super() {
+  }) {
     if (primary != null) {
       this.primary = primary;
     }
@@ -34,13 +35,13 @@ class HomeMenuList extends StatelessWidget {
             Container(
               width: 60,
               height: 60,
-              child: Icon(
-                icon,
-                color: primary ? Colors.white : Colors.red,
-              ),
               decoration: BoxDecoration(
                 color: primary ? Colors.red[400] : Colors.grey[200],
                 borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: primary ? Colors.white : Colors.red[400],
               ),
             ),
             const SizedBox(
