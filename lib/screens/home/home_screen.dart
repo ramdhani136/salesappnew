@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                       );
                     }
                     if (state is LocationLoading) {
-                      print('Loading');
+                      // print('Loading');
                       return const SizedBox(
                         width: 9,
                         height: 9,
