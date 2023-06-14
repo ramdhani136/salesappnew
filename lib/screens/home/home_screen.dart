@@ -106,7 +106,9 @@ class HomeScreen extends StatelessWidget {
                             );
                         return Text(
                           state.address ?? "Gps Error!",
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(255, 75, 57, 3)),
                         );
                       }
                       if (state is LocationLoading) {
@@ -117,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Color.fromARGB(255, 215, 165, 15)),
+                                Color.fromARGB(255, 245, 202, 72)),
                           ),
                         );
                       }
