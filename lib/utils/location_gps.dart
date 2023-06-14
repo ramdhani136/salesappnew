@@ -3,6 +3,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 
 class LocationGps {
   Future<void> CheckLocation() async {
@@ -20,9 +21,30 @@ class LocationGps {
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
-        print(position);
       }
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> getAddress() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      Placemark place = placemarks[0];
+      String address = '${place.name}, ${place.locality}, ${place.country}';
+
+      print('Address: $address');
+      return address;
+    } catch (e) {
+      print('Error: $e');
       rethrow;
     }
   }

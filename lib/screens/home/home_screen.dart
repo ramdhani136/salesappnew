@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
-import 'package:salesappnew/utils/location_gps.dart';
+// import 'package:salesappnew/utils/location_gps.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
-  LocationGps location = LocationGps();
+  // LocationGps location = LocationGps();
   HomeScreen() : super() {
-    getLocation();
+    // getLocation();
   }
 
-  Future<void> getLocation() async {
-    await location.CheckLocation();
-  }
+  // Future<void> getLocation() async {
+  //   await location.CheckLocation();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,11 @@ class HomeScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.red[300],
                   radius: 20,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.add_alert_outlined,
-                      color: Colors.white,
-                    ),
+                  child: SvgPicture.asset(
+                    'assets/icons/notif.svg',
+                    width: 18,
+                    height: 18,
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(
@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
               "Menu",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 17,
+                fontSize: 16,
               ),
             ),
             SizedBox(
@@ -91,24 +91,24 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   HomeMenuList(
-                    title: "visit",
+                    title: "Kunjungan",
                     primary: true,
                     icon: Icons.run_circle_sharp,
                   ),
                   HomeMenuList(
-                    title: "Callsheet",
+                    title: "Panggilan",
                     icon: Icons.phone,
                   ),
                   HomeMenuList(
-                    title: "Invoice",
+                    title: "Tagihan",
                     icon: Icons.price_change_sharp,
                   ),
                   HomeMenuList(
-                    title: "Order",
+                    title: "Pesanan",
                     icon: Icons.bus_alert_sharp,
                   ),
                   HomeMenuList(
-                    title: "Item",
+                    title: "Barang",
                     icon: Icons.gif_box_sharp,
                   ),
                 ],
@@ -125,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                   "Info Promo",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
+                    fontSize: 16,
                   ),
                 ),
                 const Text(
@@ -147,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width - 35,
-                    height: MediaQuery.of(context).size.width / 1.7,
+                    height: MediaQuery.of(context).size.width / 1.8,
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10),
@@ -160,18 +160,57 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             const Text(
               "Lokasi Sekitar anda",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 17,
+                fontSize: 16,
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.gps_fixed_sharp,
+                  size: 16,
+                  color: Colors.green[800],
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Gps tidak aktif',
+                  style: TextStyle(fontSize: 13),
+                ),
+              ],
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        // onTap: (){},
+        selectedItemColor: Color(0xFFE6212A),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }

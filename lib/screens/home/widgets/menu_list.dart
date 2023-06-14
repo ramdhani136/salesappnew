@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeMenuList extends StatelessWidget {
   final String title;
@@ -36,12 +37,12 @@ class HomeMenuList extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: primary ? Colors.red[400] : Colors.grey[200],
+                color: primary ? Colors.red : Colors.grey[200],
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 icon,
-                color: primary ? Colors.white : Colors.red[400],
+                color: primary ? Colors.white : Colors.red[500],
               ),
             ),
             const SizedBox(
@@ -50,9 +51,9 @@ class HomeMenuList extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[600],
-                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey[700],
+                fontSize: 13,
               ),
             ),
           ],
