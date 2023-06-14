@@ -28,12 +28,8 @@ class LocationGps {
     }
   }
 
-  Future<String> chekcAdress() async {
+  Future<String> chekcAdress(Position position) async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,

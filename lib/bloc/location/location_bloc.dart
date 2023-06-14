@@ -10,20 +10,27 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final LocationGps location = LocationGps();
   LocationBloc() : super(LocationInitial()) {
     on<LocationEvent>((event, emit) async {
-      if (event is getCordinateGps) {
-        // try {
-        //   emit(LocationLoading());
-        //   cordinates = await location.CheckLocation();
-
-        //   emit(LocationInitial());
-        // } catch (e) {
-        //   emit(LocationFailure(e.toString()));
-        // }
-      } else if (event is getAddress) {
+      if (event is GetLocationGps) {
         try {
           emit(LocationLoading());
-          String address = await location.chekcAdress();
-          emit(LocationAddress(address));
+          Position? loc = await location.CheckLocation();
+          if (loc != null) {
+            String address = await location.chekcAdress(loc);
+            emit(LocationAddress(address, loc));
+          }
+        } catch (e) {
+          emit(LocationFailure(e.toString()));
+        }
+      }
+      if (event is GetRealtimeGps) {
+        try {
+          await Future.delayed(event.duration);
+          emit(LocationLoading());
+          Position? loc = await location.CheckLocation();
+          if (loc != null) {
+            String address = await location.chekcAdress(loc);
+            emit(LocationAddress(address, loc));
+          }
         } catch (e) {
           emit(LocationFailure(e.toString()));
         }

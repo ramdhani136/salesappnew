@@ -9,13 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatelessWidget {
   final locationBloc = LocationBloc();
 
-  HomeScreen() : super() {
-    setAdress();
-  }
-
-  Future<void> setAdress() async {
-    locationBloc.add(getAddress());
-  }
+  HomeScreen() : super() {}
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +90,15 @@ class HomeScreen extends StatelessWidget {
                 BlocBuilder<LocationBloc, LocationState>(
                   builder: (context, state) {
                     if (state is LocationInitial) {
-                      context.read<LocationBloc>().add(getAddress());
+                      context.read<LocationBloc>().add(GetLocationGps());
                     }
 
                     if (state is LocationAddress) {
+                      context.read<LocationBloc>().add(
+                            GetRealtimeGps(
+                              duration: Duration(minutes: 1),
+                            ),
+                          );
                       return Text(
                         state.address ?? "Gps Error!",
                         style: TextStyle(fontSize: 13),
@@ -119,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                     }
 
                     if (state is LocationFailure) {
-                      context.read<LocationBloc>().add(getAddress());
+                      context.read<LocationBloc>().add(GetLocationGps());
                       return Text(
                         state.error,
                         style: const TextStyle(fontSize: 13),

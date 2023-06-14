@@ -10,10 +10,9 @@ class LocationLoading extends LocationState {}
 
 class LocationAddress extends LocationState {
   String? address;
+  Position? cordinate;
 
-  LocationAddress(
-    this.address,
-  );
+  LocationAddress(this.address, this.cordinate);
 }
 
 class LocationFailure extends LocationState {

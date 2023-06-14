@@ -3,6 +3,9 @@ part of 'location_bloc.dart';
 @immutable
 abstract class LocationEvent {}
 
-class getCordinateGps extends LocationEvent {}
+class GetLocationGps extends LocationEvent {}
 
-class getAddress extends LocationEvent {}
+class GetRealtimeGps extends LocationEvent {
+  Duration duration;
+  GetRealtimeGps({required this.duration});
+}
