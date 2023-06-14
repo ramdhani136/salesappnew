@@ -74,58 +74,67 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.gps_fixed_sharp,
-                  size: 16,
-                  color: Colors.green[800],
+            Container(
+              padding: EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 248, 205, 76),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(7),
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                BlocBuilder<LocationBloc, LocationState>(
-                  builder: (context, state) {
-                    if (state is LocationInitial) {
-                      context.read<LocationBloc>().add(GetLocationGps());
-                    }
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.gps_fixed_sharp,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  BlocBuilder<LocationBloc, LocationState>(
+                    builder: (context, state) {
+                      if (state is LocationInitial) {
+                        context.read<LocationBloc>().add(GetLocationGps());
+                      }
 
-                    if (state is LocationAddress) {
-                      context.read<LocationBloc>().add(
-                            GetRealtimeGps(
-                              duration: const Duration(minutes: 1),
-                            ),
-                          );
-                      return Text(
-                        state.address ?? "Gps Error!",
-                        style: const TextStyle(fontSize: 13),
-                      );
-                    }
-                    if (state is LocationLoading) {
-                      // print('Loading');
-                      return const SizedBox(
-                        width: 9,
-                        height: 9,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.grey),
-                        ),
-                      );
-                    }
+                      if (state is LocationAddress) {
+                        context.read<LocationBloc>().add(
+                              GetRealtimeGps(
+                                duration: const Duration(minutes: 1),
+                              ),
+                            );
+                        return Text(
+                          state.address ?? "Gps Error!",
+                          style: const TextStyle(fontSize: 14),
+                        );
+                      }
+                      if (state is LocationLoading) {
+                        // print('Loading');
+                        return const SizedBox(
+                          width: 9,
+                          height: 9,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.grey),
+                          ),
+                        );
+                      }
 
-                    if (state is LocationFailure) {
-                      context.read<LocationBloc>().add(GetLocationGps());
-                      return Text(
-                        state.error,
-                        style: const TextStyle(fontSize: 13),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ],
+                      if (state is LocationFailure) {
+                        context.read<LocationBloc>().add(GetLocationGps());
+                        return Text(
+                          state.error,
+                          style: const TextStyle(fontSize: 13),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,
