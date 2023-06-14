@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+// ignore: must_be_immutable
 class HomeMenuList extends StatelessWidget {
   final String title;
   bool primary = false;
@@ -20,9 +20,7 @@ class HomeMenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print("ke menu");
-      },
+      onTap: () {},
       child: Padding(
         padding: const EdgeInsets.only(
           bottom: 5,

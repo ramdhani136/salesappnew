@@ -5,8 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-
-import 'package:salesappnew/utils/location_gps.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 

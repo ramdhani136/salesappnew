@@ -9,19 +9,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatelessWidget {
   final locationBloc = LocationBloc();
 
-  HomeScreen() : super() {}
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.apps_outlined),
-        backgroundColor: Color(0xFFE6212A),
+        backgroundColor: const Color(0xFFE6212A),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Opacity(
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                     if (state is LocationAddress) {
                       context.read<LocationBloc>().add(
                             GetRealtimeGps(
-                              duration: Duration(minutes: 1),
+                              duration: const Duration(seconds: 30),
                             ),
                           );
                       return Text(
@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                     }
                     if (state is LocationLoading) {
                       print('Loading');
-                      return SizedBox(
+                      return const SizedBox(
                         width: 9,
                         height: 9,
                         child: CircularProgressIndicator(
@@ -129,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             const Text(
@@ -139,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             SingleChildScrollView(
@@ -170,7 +170,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -194,7 +194,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             SingleChildScrollView(
@@ -235,8 +235,8 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         // onTap: (){},
-        selectedItemColor: Color(0xFFE6212A),
-        items: [
+        selectedItemColor: const Color(0xFFE6212A),
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

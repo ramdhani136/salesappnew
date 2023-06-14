@@ -26,6 +26,7 @@ class LocationGps {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<String> chekcAdress(Position position) async {
