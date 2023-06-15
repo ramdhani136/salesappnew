@@ -7,6 +7,8 @@ import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
 
+import 'package:salesappnew/screens/visit/checkin_screen.dart';
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -49,7 +51,7 @@ class MyApp extends StatelessWidget {
           if (state is AuthAuthenticated) {
             return BlocProvider(
               create: (context) => LocationBloc(),
-              child: HomeScreen(),
+              child: CheckInScreen(),
             );
           }
           if (state is AuthLoading) {

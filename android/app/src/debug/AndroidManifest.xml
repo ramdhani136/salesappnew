@@ -9,6 +9,10 @@
         android:label="salesappnew"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       
+         
+        <meta-data android:name="com.google.android.geo.API_KEY"
+              android:value="AIzaSyAyb_f9n69hTaYuKT5e7xwwbtoFlfET5YI"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
