@@ -6,6 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+final _panelC = PanelController();
+
 class CheckInScreen extends StatelessWidget {
   const CheckInScreen({super.key});
 
@@ -13,8 +15,6 @@ class CheckInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
-
-    PanelController _panelC = PanelController();
 
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
@@ -111,6 +111,7 @@ class CheckInScreen extends StatelessWidget {
                   ],
                 )),
                 SlidingUpPanel(
+                  defaultPanelState: PanelState.OPEN,
                   controller: _panelC,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(18),
@@ -125,7 +126,6 @@ class CheckInScreen extends StatelessWidget {
                         Center(
                           child: GestureDetector(
                             onTap: () {
-                              print("ddddddddddddddddddddddddd");
                               _panelC.isPanelOpen
                                   ? _panelC.close()
                                   : _panelC.open();
@@ -195,14 +195,7 @@ class CheckInScreen extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                "Check in for meeting",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.grey[700],
-                                                ),
-                                              ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 8,
                                               ),
                                               Text(
