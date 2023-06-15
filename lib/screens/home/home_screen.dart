@@ -112,14 +112,13 @@ class HomeScreen extends StatelessWidget {
                         );
                       }
                       if (state is LocationLoading) {
-                        // print('Loading');
                         return const SizedBox(
                           width: 9,
                           height: 9,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Color.fromARGB(255, 245, 202, 72)),
+                                Color.fromARGB(255, 236, 181, 16)),
                           ),
                         );
                       }
