@@ -27,7 +27,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if (event is GetRealtimeGps) {
         try {
           await Future.delayed(event.duration);
-          emit(LocationLoading());
+          // emit(LocationLoading());
           Position? loc = await location.CheckLocation();
           if (loc != null) {
             String address = await location.chekcAdress(loc);

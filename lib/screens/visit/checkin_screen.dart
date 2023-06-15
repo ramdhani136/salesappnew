@@ -33,6 +33,9 @@ class CheckInScreen extends StatelessWidget {
           }
 
           if (state is LocationAddress) {
+            context
+                .read<LocationBloc>()
+                .add(GetRealtimeGps(duration: Duration(seconds: 1)));
             return GoogleMap(
               mapType: MapType.normal,
               // myLocationEnabled: true,
