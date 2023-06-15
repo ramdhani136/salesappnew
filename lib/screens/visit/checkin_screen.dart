@@ -22,6 +22,7 @@ class CheckInScreen extends StatelessWidget {
             context.read<LocationBloc>().add(GetLocationGps());
           }
           if (state is LocationLoading) {
+            print("loading");
             return const Center(
               child: CircularProgressIndicator(
                   // strokeWidth: 2,
@@ -34,6 +35,10 @@ class CheckInScreen extends StatelessWidget {
           if (state is LocationAddress) {
             return GoogleMap(
               mapType: MapType.normal,
+              // myLocationEnabled: true,
+              // trafficEnabled: true,
+              compassEnabled: true,
+              // myLocationButtonEnabled: true,
               markers: {
                 Marker(
                   onTap: () {},
@@ -53,6 +58,7 @@ class CheckInScreen extends StatelessWidget {
                   infoWindow: const InfoWindow(
                     title: 'PT. Abadi Baru',
                   ),
+                  visible: true,
                   icon: BitmapDescriptor.defaultMarker,
                   position: LatLng(-6.5107604, 106.8638661),
                 )
