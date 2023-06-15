@@ -81,59 +81,62 @@ class HomeScreen extends StatelessWidget {
                   Radius.circular(7),
                 ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.gps_fixed_sharp,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  BlocBuilder<LocationBloc, LocationState>(
-                    builder: (context, state) {
-                      if (state is LocationInitial) {
-                        context.read<LocationBloc>().add(GetLocationGps());
-                      }
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.gps_fixed_sharp,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    BlocBuilder<LocationBloc, LocationState>(
+                      builder: (context, state) {
+                        if (state is LocationInitial) {
+                          context.read<LocationBloc>().add(GetLocationGps());
+                        }
 
-                      if (state is LocationAddress) {
-                        context.read<LocationBloc>().add(
-                              GetRealtimeGps(
-                                duration: const Duration(minutes: 1),
-                              ),
-                            );
-                        return Text(
-                          state.address ?? "Gps Error!",
-                          style: const TextStyle(
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 75, 57, 3)),
-                        );
-                      }
-                      if (state is LocationLoading) {
-                        return const SizedBox(
-                          width: 9,
-                          height: 9,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Color.fromARGB(255, 236, 181, 16)),
-                          ),
-                        );
-                      }
+                        if (state is LocationAddress) {
+                          context.read<LocationBloc>().add(
+                                GetRealtimeGps(
+                                  duration: const Duration(minutes: 1),
+                                ),
+                              );
+                          return Text(
+                            state.address ?? "Gps Error!",
+                            style: const TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(255, 75, 57, 3)),
+                          );
+                        }
+                        if (state is LocationLoading) {
+                          return const SizedBox(
+                            width: 9,
+                            height: 9,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color.fromARGB(255, 236, 181, 16)),
+                            ),
+                          );
+                        }
 
-                      if (state is LocationFailure) {
-                        context.read<LocationBloc>().add(GetLocationGps());
-                        return Text(
-                          state.error,
-                          style: const TextStyle(fontSize: 13),
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
-                ],
+                        if (state is LocationFailure) {
+                          context.read<LocationBloc>().add(GetLocationGps());
+                          return Text(
+                            state.error,
+                            style: const TextStyle(fontSize: 13),
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -209,13 +212,28 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width - 35,
-                    height: MediaQuery.of(context).size.width / 1.8,
+                    width: 320,
+                    height: 320 / 1.7,
+                    margin: EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
                       image: const DecorationImage(
                         image: AssetImage('assets/images/promo.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 320,
+                    height: 320 / 1.7,
+                    margin: EdgeInsets.only(right: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                      image: const DecorationImage(
+                        image: NetworkImage(
+                            "https://sevima.com/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-18-at-11.57.07-AM.jpeg"),
                         fit: BoxFit.cover,
                       ),
                     ),
