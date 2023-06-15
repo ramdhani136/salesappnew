@@ -42,6 +42,7 @@ dependencies:
   jwt_decode: ^0.3.1
   permission_handler: ^10.3.0
   shared_preferences: ^2.1.2
+  sliding_up_panel: ^2.0.0+1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

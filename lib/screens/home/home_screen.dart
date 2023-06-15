@@ -132,6 +132,9 @@ class HomeScreen extends StatelessWidget {
                             style: const TextStyle(fontSize: 13),
                           );
                         }
+                        if (state is LocationFailure) {
+                          context.read<LocationBloc>().add(GetLocationGps());
+                        }
                         return Container();
                       },
                     ),
