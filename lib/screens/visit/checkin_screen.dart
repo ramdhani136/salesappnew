@@ -332,6 +332,7 @@ class CheckInScreen extends StatelessWidget {
       ),
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
+        // controller.setMapStyle();
       },
       polygons: {
         Polygon(
