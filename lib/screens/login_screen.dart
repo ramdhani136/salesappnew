@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/home/home_screen.dart';
-import 'package:salesappnew/screens/visit/checkin_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -21,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is AuthAuthenticated) {
               return Center(
-                child: CheckInScreen(),
+                child: HomeScreen(),
               );
             }
             return Padding(
