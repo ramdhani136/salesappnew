@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatelessWidget {
-  const VisitBody({super.key});
+  VisitState state;
+  VisitBody({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +39,20 @@ class VisitBody extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
           Expanded(
-            child: ListView(
-              children: [],
+            child: RefreshIndicator(
+              onRefresh: () async {
+                print("dd");
+              },
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return VisitBodyList();
+                },
+              ),
             ),
           )
         ],

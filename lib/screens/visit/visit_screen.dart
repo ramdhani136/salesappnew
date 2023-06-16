@@ -103,7 +103,7 @@ class VisitScreen extends StatelessWidget {
               ),
               body: TabBarView(
                 children: [
-                  VisitBody(),
+                  VisitBody(state: state),
                   Text('wf'),
                   Text('wg'),
                 ],
