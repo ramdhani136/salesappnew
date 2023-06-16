@@ -92,7 +92,7 @@ class VisitBodyList extends StatelessWidget {
                   children: [
                     const SizedBox(height: 48),
                     Text(
-                      "ddddd",
+                      "PT.Karya Abadi",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
@@ -100,34 +100,34 @@ class VisitBodyList extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "Group :  ddd",
+                      "Jl.Meranti 1 depok lama Kec.Sukajaya, Depok",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "081210372832",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey[700],
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "eessssssssssssssssssssssssssssssssssss ssssssssssssssssssssssss ssssssssssssssssse",
+                      "Group :  Jabodetabek",
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.grey[600],
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "ddd",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                    Rating(1.0),
                     const SizedBox(height: 48),
                   ],
                 ),
@@ -136,7 +136,7 @@ class VisitBodyList extends StatelessWidget {
             Positioned(
               top: -0,
               child: Container(
-                width: Get.width - 40,
+                width: Get.width - 30,
                 height: 40,
                 margin: const EdgeInsets.only(
                   bottom: 15,
@@ -146,7 +146,7 @@ class VisitBodyList extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  color: Colors.amber,
+                  color: Color(0xFF20826B),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -154,16 +154,16 @@ class VisitBodyList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "tes",
+                        "VST2023060001",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 190, 255, 240),
                           fontSize: 16.5,
                         ),
                       ),
                       Text(
                         "Draft",
                         style: const TextStyle(
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 190, 255, 240),
                             fontWeight: FontWeight.bold,
                             fontSize: 13),
                       ),
@@ -175,7 +175,7 @@ class VisitBodyList extends StatelessWidget {
             Positioned(
               bottom: 0,
               child: Container(
-                width: Get.width - 40,
+                width: Get.width - 30,
                 height: 40,
                 margin: const EdgeInsets.only(
                   bottom: 15,
@@ -215,22 +215,15 @@ class VisitBodyList extends StatelessWidget {
                               color: Colors.grey[500],
                             ),
                           ),
-                          // Text(
-                          //   DateFormat.yMMMMd('en_US')
-                          //       .format(
-                          //     DateTime.parse(
-                          //             "${soC.finalData[index]['creation']}")
-                          //         .toLocal(),
-                          //   ),
-                          //   style: TextStyle(
-                          //     color: Colors.grey[500],
-                          //     fontWeight:
-                          //         FontWeight.bold,
-                          //     fontSize: 12.5,
-                          //     fontStyle:
-                          //         FontStyle.italic,
-                          //   ),
-                          // ),
+                          Text(
+                            "6/16/2023 1:37 PM",
+                            style: TextStyle(
+                              color: Colors.grey[500],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.5,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ],
                       ),
                     ],

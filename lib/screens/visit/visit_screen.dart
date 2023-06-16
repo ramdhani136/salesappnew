@@ -95,6 +95,7 @@ class VisitScreen extends StatelessWidget {
                       // controller: VisitC.controllerTab,
                       tabs: myTabs,
                       onTap: (index) {
+                        print(index);
                         context.read<VisitBloc>().add(TabChanged(index));
                       },
                     ),
