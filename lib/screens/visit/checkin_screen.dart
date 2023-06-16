@@ -268,8 +268,8 @@ class CheckInScreen extends StatelessWidget {
                                                       margin: const EdgeInsets
                                                               .symmetric(
                                                           vertical: 15),
-                                                      width: Get.width * 0.9,
-                                                      height: Get.width / 1.8,
+                                                      width: Get.width * 0.8,
+                                                      height: Get.width / 1.85,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -294,7 +294,7 @@ class CheckInScreen extends StatelessWidget {
                                                       margin: const EdgeInsets
                                                               .symmetric(
                                                           vertical: 15),
-                                                      width: Get.width * 0.9,
+                                                      width: Get.width * 0.8,
                                                       height: 35,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
