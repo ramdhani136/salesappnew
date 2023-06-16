@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
 
@@ -43,58 +45,72 @@ class VisitScreen extends StatelessWidget {
       tabs: myTabs,
     );
 
-    return DefaultTabController(
-      length: myTabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFFE6212A),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const DrawerAppButton(),
-              Row(
-                children: const [
-                  Icon(Icons.directions_run, size: 17),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3),
-                    child: Text(
-                      "Visit List",
-                      style: TextStyle(fontSize: 18),
+    return BlocProvider(
+      create: (context) => VisitBloc(),
+      child: BlocBuilder<VisitBloc, VisitState>(
+        builder: (context, state) {
+          return DefaultTabController(
+            length: myTabs.length,
+            child: Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                backgroundColor: const Color(0xFFE6212A),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const DrawerAppButton(),
+                    Row(
+                      children: const [
+                        Icon(Icons.directions_run, size: 17),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3),
+                          child: Text(
+                            "Visit List",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(children: [
+                      // IconSearch(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.add,
+                          color: Color.fromARGB(255, 121, 8, 14),
+                        ),
+                      ),
+                    ])
+                  ],
+                ),
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(MyTabBar.preferredSize.height),
+                  child: Container(
+                    height: 55,
+                    color: Colors.white,
+                    child: TabBar(
+                      indicatorColor: const Color(0xFFF9D934),
+                      // controller: VisitC.controllerTab,
+                      tabs: myTabs,
+                      onTap: (index) {
+                        context.read<VisitBloc>().add(TabChanged(index));
+                      },
                     ),
                   ),
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  Text('w'),
+                  Text('wf'),
+                  Text('wg'),
                 ],
               ),
-              Row(children: [
-                // IconSearch(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.add,
-                    color: Color.fromARGB(255, 121, 8, 14),
-                  ),
-                ),
-              ])
-            ],
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(MyTabBar.preferredSize.height),
-            child: Container(
-              height: 55,
-              color: Colors.white,
-              child: MyTabBar,
+              bottomNavigationBar: BottomNavigator(2),
             ),
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Text('w'),
-            Text('wf'),
-            Text('wg'),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigator(2),
+          );
+        },
       ),
     );
   }
