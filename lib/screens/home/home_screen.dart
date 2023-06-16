@@ -5,6 +5,7 @@ import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
+import 'package:salesappnew/screens/visit/visit_screen.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
@@ -164,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                     RunFUnction: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) {
-                          return const CheckInScreen();
+                          return VisitScreen();
                         }),
                       );
                     },
@@ -293,6 +294,13 @@ class HomeScreen extends StatelessWidget {
                   subtitle: Text('Jabodetabek'),
                   trailing: Text("1.5 km"),
                   onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const CheckInScreen();
+                        },
+                      ),
+                    );
                     // Aksi yang dilakukan saat ListTile ditekan
                   },
                 ),
