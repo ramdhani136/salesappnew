@@ -4,6 +4,7 @@ import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:salesappnew/screens/visit/checkin_screen.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
@@ -160,24 +161,35 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   HomeMenuList(
-                    title: "Kunjungan",
+                    RunFUnction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return const CheckInScreen();
+                        }),
+                      );
+                    },
+                    title: "Visit",
                     primary: true,
                     icon: Icons.run_circle_sharp,
                   ),
                   HomeMenuList(
-                    title: "Panggilan",
+                    RunFUnction: () {},
+                    title: "Callsheet",
                     icon: Icons.phone,
                   ),
                   HomeMenuList(
-                    title: "Tagihan",
+                    RunFUnction: () {},
+                    title: "Invoice",
                     icon: Icons.price_change_sharp,
                   ),
                   HomeMenuList(
-                    title: "Pesanan",
+                    RunFUnction: () {},
+                    title: "Order",
                     icon: Icons.bus_alert_sharp,
                   ),
                   HomeMenuList(
-                    title: "Barang",
+                    RunFUnction: () {},
+                    title: "Item",
                     icon: Icons.gif_box_sharp,
                   ),
                 ],
@@ -191,7 +203,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "Info Promo",
+                  "Information",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -252,7 +264,7 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  "Lokasi Sekitar anda",
+                  "Location Around you",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

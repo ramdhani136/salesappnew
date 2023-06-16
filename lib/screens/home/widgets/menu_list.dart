@@ -5,13 +5,14 @@ class HomeMenuList extends StatelessWidget {
   final String title;
   bool primary = false;
   final IconData icon;
+  final Function RunFUnction;
 
-  HomeMenuList({
-    super.key,
-    required this.title,
-    bool? primary,
-    required this.icon,
-  }) {
+  HomeMenuList(
+      {super.key,
+      required this.title,
+      bool? primary,
+      required this.icon,
+      required this.RunFUnction}) {
     if (primary != null) {
       this.primary = primary;
     }
@@ -20,7 +21,9 @@ class HomeMenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        RunFUnction();
+      },
       child: Padding(
         padding: const EdgeInsets.only(
           bottom: 5,

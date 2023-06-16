@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,7 +38,7 @@ class CheckInScreen extends StatelessWidget {
           if (state is LocationAddress) {
             context.read<LocationBloc>().add(
                   GetRealtimeGps(
-                    duration: const Duration(seconds: 5),
+                    duration: const Duration(seconds: 0),
                   ),
                 );
             return Column(
@@ -56,7 +56,9 @@ class CheckInScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                             child: Container(
                               width: 50,
                               height: 50,
@@ -83,11 +85,11 @@ class CheckInScreen extends StatelessWidget {
                               controller.animateCamera(
                                 CameraUpdate.newCameraPosition(
                                   CameraPosition(
-                                      bearing: 192.8334901395799,
                                       target: LatLng(
                                         state.cordinate!.latitude,
                                         state.cordinate!.longitude,
                                       ),
+                                      bearing: 192.8334901395799,
                                       tilt: 59.440717697143555,
                                       zoom: 18.151926040649414),
                                 ),
@@ -231,23 +233,93 @@ class CheckInScreen extends StatelessWidget {
                                                   vertical: 2,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: const Color.fromARGB(
-                                                      255, 255, 198, 27),
+                                                  // color: const Color.fromARGB(
+                                                  //     255, 255, 198, 27),
+                                                  color: Colors.red[400],
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   border: Border.all(
+                                                    // color: const Color.fromARGB(
+                                                    //     255, 225, 170, 5),
                                                     color: const Color.fromARGB(
-                                                        255, 225, 170, 5),
+                                                        255, 218, 50, 38),
                                                     width: 1,
                                                   ),
                                                 ),
                                                 child: Text(
-                                                  "Insite",
+                                                  // "Insite",
+                                                  "Outsite",
                                                   style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 156, 118, 3),
+                                                    color: Colors.white,
+                                                    // color: Color.fromARGB(
+                                                    //     255, 156, 118, 3),
+                                                    fontSize: 13,
                                                     fontWeight: FontWeight.w500,
                                                   ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Stack(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  children: [
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 15),
+                                                      width: Get.width * 0.9,
+                                                      height: Get.width / 1.8,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: Colors.white,
+                                                        border: Border.all(
+                                                          color: const Color
+                                                                  .fromARGB(255,
+                                                              232, 231, 231),
+                                                        ),
+                                                      ),
+                                                      child: const Center(
+                                                          child: Icon(
+                                                        Icons
+                                                            .hide_image_outlined,
+                                                        color:
+                                                            Color(0xFFE0E0E0),
+                                                        size: 100,
+                                                      )),
+                                                    ),
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 15),
+                                                      width: Get.width * 0.9,
+                                                      height: 35,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  5),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  5),
+                                                        ),
+                                                        color: Colors.black
+                                                            .withOpacity(0.4),
+                                                      ),
+                                                      child: IconButton(
+                                                        onPressed: () async {},
+                                                        icon: const Icon(
+                                                          Icons.camera_alt,
+                                                          color: Colors.white,
+                                                          size: 22,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
                                               ),
                                             ],
@@ -301,24 +373,23 @@ class CheckInScreen extends StatelessWidget {
       LocationAddress state, Completer<GoogleMapController> _controller) {
     return GoogleMap(
       mapType: MapType.normal,
-      // myLocationEnabled: true,
-
+      myLocationEnabled: true,
       trafficEnabled: true,
       compassEnabled: true,
-      // myLocationButtonEnabled: true,
+      myLocationButtonEnabled: true,
       markers: {
-        Marker(
-          onTap: () {},
-          markerId: const MarkerId('me'),
-          infoWindow: const InfoWindow(
-            title: 'Your Location!',
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-          position: LatLng(
-            state.cordinate!.latitude,
-            state.cordinate!.longitude,
-          ),
-        ),
+        // Marker(
+        //   onTap: () {},
+        //   markerId: const MarkerId('me'),
+        //   infoWindow: const InfoWindow(
+        //     title: 'Your Location!',
+        //   ),
+        //   icon: BitmapDescriptor.defaultMarker,
+        //   position: LatLng(
+        //     state.cordinate!.latitude,
+        //     state.cordinate!.longitude,
+        //   ),
+        // ),
         Marker(
           onTap: () {},
           markerId: const MarkerId('PT. Abadi Baru'),
@@ -331,12 +402,13 @@ class CheckInScreen extends StatelessWidget {
         )
       },
       initialCameraPosition: CameraPosition(
-        target: LatLng(
-          state.cordinate!.latitude,
-          state.cordinate!.longitude,
-        ),
-        zoom: 18.7,
-      ),
+          target: LatLng(
+            state.cordinate!.latitude,
+            state.cordinate!.longitude,
+          ),
+          bearing: 192.8334901395799,
+          tilt: 59.440717697143555,
+          zoom: 18.151926040649414),
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
         // controller.setMapStyle();

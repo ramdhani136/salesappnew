@@ -30,20 +30,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AuthBloc(
-              AuthRepository(),
-            ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(
+            AuthRepository(),
           ),
-          BlocProvider(
-            create: (context) => LocationBloc(),
-          ),
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+        ),
+        BlocProvider(
+          create: (context) => LocationBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           if (state is AuthInitial) {
             context.read<AuthBloc>().add(AppStarted());
           }
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           if (state is AuthAuthenticated) {
             return BlocProvider(
               create: (context) => LocationBloc(),
-              child: CheckInScreen(),
+              child: HomeScreen(),
             );
           }
           if (state is AuthLoading) {
