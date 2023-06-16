@@ -93,6 +93,9 @@ class VisitScreen extends StatelessWidget {
                     child: TabBar(
                       indicatorColor: const Color(0xFFF9D934),
                       // controller: VisitC.controllerTab,
+                      onTap: (index) {
+                        context.read<VisitBloc>().add(TabChanged(index));
+                      },
                       tabs: myTabs,
                     ),
                   ),
@@ -101,8 +104,8 @@ class VisitScreen extends StatelessWidget {
               body: TabBarView(
                 children: [
                   VisitBody(),
-                  Text('wf'),
-                  Text('wg'),
+                  VisitBody(),
+                  VisitBody(),
                 ],
               ),
               bottomNavigationBar: BottomNavigator(2),

@@ -6,6 +6,10 @@ part 'visit_state.dart';
 
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   VisitBloc() : super(VisitInitial()) {
-    on<VisitEvent>((event, emit) {});
+    on<VisitEvent>((event, emit) {
+      if (event is TabChanged) {
+        print(event.tabIndex);
+      }
+    });
   }
 }
