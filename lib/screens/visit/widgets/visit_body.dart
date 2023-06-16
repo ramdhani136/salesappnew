@@ -3,8 +3,9 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatelessWidget {
-  VisitState state;
-  VisitBody({super.key, required this.state});
+  VisitBody({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
