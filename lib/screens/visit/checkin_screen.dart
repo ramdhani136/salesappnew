@@ -303,7 +303,7 @@ class CheckInScreen extends StatelessWidget {
       mapType: MapType.normal,
       // myLocationEnabled: true,
 
-      // trafficEnabled: true,
+      trafficEnabled: true,
       compassEnabled: true,
       // myLocationButtonEnabled: true,
       markers: {
