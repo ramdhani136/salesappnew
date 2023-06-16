@@ -57,8 +57,8 @@ class HomeScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.grey,
                   radius: 20,
-                  backgroundImage: NetworkImage(
-                      'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
+                  // backgroundImage: NetworkImage(
+                  //     'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
                 ),
               ],
             )
@@ -247,11 +247,11 @@ class HomeScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://sevima.com/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-18-at-11.57.07-AM.jpeg"),
-                        fit: BoxFit.cover,
-                      ),
+                      // image: const DecorationImage(
+                      //   image: NetworkImage(
+                      //       "https://sevima.com/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-18-at-11.57.07-AM.jpeg"),
+                      //   fit: BoxFit.cover,
+                      // ),
                     ),
                   ),
                 ],
@@ -287,8 +287,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://www.eisai.co.id/id/image/GtkB01.jpg"),
+                    backgroundColor: Colors.grey[300],
+                    // backgroundImage: NetworkImage(
+                    //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
                   ),
                   title: Text('PT. Karya Abadi Baru'),
                   subtitle: Text('Jabodetabek'),
@@ -306,8 +307,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://sgp1.digitaloceanspaces.com/radarbogor/2019/07/PT-Mayora.jpg"),
+                    backgroundColor: Colors.grey[300],
+                    // backgroundImage: NetworkImage(
+                    //     "https://sgp1.digitaloceanspaces.com/radarbogor/2019/07/PT-Mayora.jpg"),
                   ),
                   title: Text('CV. Ekatunggal Timur'),
                   subtitle: Text('Area 1'),
@@ -318,8 +320,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://assets.ayobandung.com/crop/0x72:960x615/750x500/webp/photo/2022/12/29/1689892557.jpg"),
+                    backgroundColor: Colors.grey[300],
+                    // backgroundImage: NetworkImage(
+                    //     "https://assets.ayobandung.com/crop/0x72:960x615/750x500/webp/photo/2022/12/29/1689892557.jpg"),
                   ),
                   title: Text('PT. Jati Agung'),
                   subtitle: Text('Depok'),
