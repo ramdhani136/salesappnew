@@ -38,7 +38,7 @@ class CheckInScreen extends StatelessWidget {
           if (state is LocationAddress) {
             context.read<LocationBloc>().add(
                   GetRealtimeGps(
-                    duration: const Duration(seconds: 0),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
             return Column(
@@ -373,23 +373,24 @@ class CheckInScreen extends StatelessWidget {
       LocationAddress state, Completer<GoogleMapController> _controller) {
     return GoogleMap(
       mapType: MapType.normal,
-      myLocationEnabled: true,
+      // myLocationEnabled: true,
       trafficEnabled: true,
       compassEnabled: true,
-      myLocationButtonEnabled: true,
+      // myLocationButtonEnabled: true,
+
       markers: {
-        // Marker(
-        //   onTap: () {},
-        //   markerId: const MarkerId('me'),
-        //   infoWindow: const InfoWindow(
-        //     title: 'Your Location!',
-        //   ),
-        //   icon: BitmapDescriptor.defaultMarker,
-        //   position: LatLng(
-        //     state.cordinate!.latitude,
-        //     state.cordinate!.longitude,
-        //   ),
-        // ),
+        Marker(
+          onTap: () {},
+          markerId: const MarkerId('me'),
+          infoWindow: const InfoWindow(
+            title: 'Your Location!',
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+          position: LatLng(
+            state.cordinate!.latitude,
+            state.cordinate!.longitude,
+          ),
+        ),
         Marker(
           onTap: () {},
           markerId: const MarkerId('PT. Abadi Baru'),
@@ -434,6 +435,19 @@ class CheckInScreen extends StatelessWidget {
           strokeColor: Colors.blue, // Warna garis tepi area jangkauan
         ),
       },
+      circles: Set<Circle>.of([
+        Circle(
+          circleId: CircleId('myLocation'),
+          center: LatLng(
+            state.cordinate!.latitude,
+            state.cordinate!.longitude,
+          ), // Koordinat lokasi saat ini
+          radius: 50, // Jari-jari dalam meter
+          strokeWidth: 2,
+          strokeColor: Colors.amber,
+          fillColor: Colors.amber.withOpacity(0.2),
+        ),
+      ]),
     );
   }
 }
