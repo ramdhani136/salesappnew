@@ -300,7 +300,7 @@ class CheckInScreen extends StatelessWidget {
   GoogleMap Maps(
       LocationAddress state, Completer<GoogleMapController> _controller) {
     return GoogleMap(
-      mapType: MapType.terrain,
+      mapType: MapType.normal,
       // myLocationEnabled: true,
 
       // trafficEnabled: true,
