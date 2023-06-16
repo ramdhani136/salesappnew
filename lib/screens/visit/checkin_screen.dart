@@ -28,6 +28,13 @@ class CheckInScreen extends StatelessWidget {
             );
           }
 
+          if (state is LocationFailure) {
+            context.read<LocationBloc>().add(GetLocationGps());
+            return Center(
+              child: Text(state.error),
+            );
+          }
+
           if (state is LocationAddress) {
             context.read<LocationBloc>().add(
                   GetRealtimeGps(
