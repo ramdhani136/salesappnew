@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-Memo memoFromJson(String str) => Memo.fromJson(json.decode(str));
+MemoModel memoFromJson(String str) => MemoModel.fromJson(json.decode(str));
 
-String memoToJson(Memo data) => json.encode(data.toJson());
+String memoToJson(MemoModel data) => json.encode(data.toJson());
 
-class Memo {
+class MemoModel {
   String id;
   String name;
   List<String> display;
@@ -21,7 +21,7 @@ class Memo {
   DateTime createdAt;
   DateTime updatedAt;
 
-  Memo({
+  MemoModel({
     required this.id,
     required this.name,
     required this.display,
@@ -39,7 +39,7 @@ class Memo {
     required this.updatedAt,
   });
 
-  factory Memo.fromJson(Map<String, dynamic> json) => Memo(
+  factory MemoModel.fromJson(Map<String, dynamic> json) => MemoModel(
         id: json["_id"],
         name: json["name"],
         display: List<String>.from(json["display"].map((x) => x)),

@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEvent>(
       (event, emit) async {
         if (event is AppStarted) {
+          emit(AuthLoading());
           final isAuthenticated = await repository.isAuthenticated();
 
           if (isAuthenticated) {

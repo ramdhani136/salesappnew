@@ -380,7 +380,7 @@ class CheckInScreen extends StatelessWidget {
                                       ),
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color.fromARGB(255, 38, 138, 41),
+                                      primary: Color.fromARGB(255, 33, 143, 36),
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 10),
                                       shape: RoundedRectangleBorder(

@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
               child: HomeScreen(),
             );
           }
+
           if (state is AuthLoading) {
             return const Scaffold(
               body: Center(

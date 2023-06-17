@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/widgets/rating.dart';
 
 class VisitBodyList extends StatelessWidget {
-  const VisitBodyList({super.key});
+  Visitmodel data;
+  VisitBodyList(this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class VisitBodyList extends StatelessWidget {
                   children: [
                     const SizedBox(height: 48),
                     Text(
-                      "PT.Karya Abadi",
+                      "${data.customer?.name}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
@@ -100,7 +102,7 @@ class VisitBodyList extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "Jl.Meranti 1 depok lama Kec.Sukajaya, Depok",
+                      "${data.customer?.id}",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[600],
@@ -110,7 +112,7 @@ class VisitBodyList extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      "081210372832",
+                      "${data.contact?.phone}",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[700],
@@ -119,7 +121,7 @@ class VisitBodyList extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "Group :  Jabodetabek",
+                      "Group :  ${data.customerGroup?.name}",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[800],
@@ -154,14 +156,14 @@ class VisitBodyList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "VST2023060001",
+                        "${data.name}",
                         style: TextStyle(
                           color: Color.fromARGB(255, 190, 255, 240),
                           fontSize: 16.5,
                         ),
                       ),
                       Text(
-                        "Draft",
+                        "${data.workflowState}",
                         style: const TextStyle(
                             color: Color.fromARGB(255, 190, 255, 240),
                             fontWeight: FontWeight.bold,

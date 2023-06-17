@@ -11,3 +11,5 @@ class TabChanged extends VisitEvent {
   // @override
   // List<Object?> get props => [tabIndex];
 }
+
+class GetData extends VisitEvent {}
