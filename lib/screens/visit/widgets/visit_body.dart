@@ -9,6 +9,7 @@ class VisitBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasMore = true;
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
       child: Column(
@@ -48,11 +49,22 @@ class VisitBody extends StatelessWidget {
               onRefresh: () async {
                 print("dd");
               },
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return VisitBodyList();
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent &&
+                      hasMore) {
+                    print("loadmore");
+                  }
+
+                  return false;
                 },
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return VisitBodyList();
+                  },
+                ),
               ),
             ),
           )

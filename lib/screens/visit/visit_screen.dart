@@ -157,11 +157,32 @@ class VisitScreen extends StatelessWidget {
                 ),
                 body: Padding(
                   padding: const EdgeInsets.only(bottom: 200),
-                  child: TabBarView(
+                  child: Stack(
                     children: [
-                      VisitBody(),
-                      VisitBody(),
-                      VisitBody(),
+                      TabBarView(
+                        children: [
+                          VisitBody(),
+                          VisitBody(),
+                          VisitBody(),
+                        ],
+                      ),
+                      Visibility(
+                        visible: false,
+                        child: Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
