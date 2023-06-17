@@ -6,14 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-final _panelC = PanelController();
-
 class CheckInScreen extends StatelessWidget {
   const CheckInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Completer<GoogleMapController> _controller =
+    final _panelC = PanelController();
+
+    Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
 
     return Scaffold(
@@ -29,9 +29,46 @@ class CheckInScreen extends StatelessWidget {
           }
 
           if (state is LocationFailure) {
-            context.read<LocationBloc>().add(GetLocationGps());
+            _controller = Completer<GoogleMapController>();
+            context.read<LocationBloc>().add(
+                  GetRealtimeGps(
+                    duration: const Duration(seconds: 5),
+                  ),
+                );
+            print(state.error);
             return Center(
-              child: Text(state.error),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 300,
+                      height: 180,
+                      child: Image(
+                        image: state.error !=
+                                "The location service on the device is disabled."
+                            ? AssetImage("assets/icons/networkerror.png")
+                            : AssetImage("assets/icons/maps.png"),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      state.error ==
+                              "The location service on the device is disabled."
+                          ? "Gps location is disabled"
+                          : "Network Error!",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }
 
