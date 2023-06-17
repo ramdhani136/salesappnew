@@ -57,8 +57,8 @@ class HomeScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.grey,
                   radius: 20,
-                  // backgroundImage: NetworkImage(
-                  //     'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
+                  backgroundImage: NetworkImage(
+                      'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
                 ),
               ],
             )
@@ -180,6 +180,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                   HomeMenuList(
                     RunFUnction: () {},
+                    title: "Information",
+                    icon: Icons.info,
+                  ),
+                  HomeMenuList(
+                    RunFUnction: () {},
                     title: "Invoice",
                     icon: Icons.price_change_sharp,
                   ),
@@ -288,6 +293,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.grey[100],
+                    ),
                     // backgroundImage: NetworkImage(
                     //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
                   ),
@@ -308,6 +317,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.grey[100],
+                    ),
                     // backgroundImage: NetworkImage(
                     //     "https://sgp1.digitaloceanspaces.com/radarbogor/2019/07/PT-Mayora.jpg"),
                   ),
@@ -321,6 +334,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[300],
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.grey[100],
+                    ),
                     // backgroundImage: NetworkImage(
                     //     "https://assets.ayobandung.com/crop/0x72:960x615/750x500/webp/photo/2022/12/29/1689892557.jpg"),
                   ),
