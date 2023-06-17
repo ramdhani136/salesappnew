@@ -1,9 +1,13 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatelessWidget {
   VisitScreen({super.key});
@@ -46,6 +50,8 @@ class VisitScreen extends StatelessWidget {
       tabs: myTabs,
     );
 
+    final PanelController _panelController = PanelController();
+
     return BlocProvider(
       create: (context) => VisitBloc(),
       child: BlocBuilder<VisitBloc, VisitState>(
@@ -61,8 +67,8 @@ class VisitScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const DrawerAppButton(),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         Icon(Icons.directions_run, size: 17),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
@@ -101,12 +107,61 @@ class VisitScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              body: TabBarView(
-                children: [
-                  VisitBody(),
-                  VisitBody(),
-                  VisitBody(),
-                ],
+              body: SlidingUpPanel(
+                controller: _panelController,
+                defaultPanelState: PanelState.OPEN,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(18),
+                ),
+                parallaxEnabled: true,
+                maxHeight: Get.height / 2,
+                minHeight: 30,
+                panel: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            _panelController.isPanelOpen
+                                ? _panelController.close()
+                                : _panelController.open();
+                          },
+                          child: Container(
+                            width: 30,
+                            height: 5,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
+                            left: 20,
+                            right: 20,
+                          ),
+                          child: ListView(
+                            children: [
+                              TextField(),
+                              TextField(),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                body: TabBarView(
+                  children: [
+                    VisitBody(),
+                    VisitBody(),
+                    VisitBody(),
+                  ],
+                ),
               ),
               bottomNavigationBar: BottomNavigator(2),
             ),

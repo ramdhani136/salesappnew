@@ -35,7 +35,7 @@ class CheckInScreen extends StatelessWidget {
                     duration: const Duration(seconds: 5),
                   ),
                 );
-            print(state.error);
+
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -48,8 +48,8 @@ class CheckInScreen extends StatelessWidget {
                       child: Image(
                         image: state.error !=
                                 "The location service on the device is disabled."
-                            ? AssetImage("assets/icons/networkerror.png")
-                            : AssetImage("assets/icons/maps.png"),
+                            ? const AssetImage("assets/icons/networkerror.png")
+                            : const AssetImage("assets/icons/maps.png"),
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -61,7 +61,7 @@ class CheckInScreen extends StatelessWidget {
                               "The location service on the device is disabled."
                           ? "Gps location is disabled"
                           : "Network Error!",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
                       ),
