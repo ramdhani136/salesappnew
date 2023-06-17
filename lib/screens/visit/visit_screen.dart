@@ -109,7 +109,7 @@ class VisitScreen extends StatelessWidget {
               ),
               body: SlidingUpPanel(
                 controller: _panelController,
-                defaultPanelState: PanelState.OPEN,
+                defaultPanelState: PanelState.CLOSED,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(18),
                 ),
@@ -155,12 +155,15 @@ class VisitScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                body: TabBarView(
-                  children: [
-                    VisitBody(),
-                    VisitBody(),
-                    VisitBody(),
-                  ],
+                body: Padding(
+                  padding: const EdgeInsets.only(bottom: 200),
+                  child: TabBarView(
+                    children: [
+                      VisitBody(),
+                      VisitBody(),
+                      VisitBody(),
+                    ],
+                  ),
                 ),
               ),
               bottomNavigationBar: BottomNavigator(2),
