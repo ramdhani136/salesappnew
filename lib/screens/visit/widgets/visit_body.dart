@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
-class VisitBody extends StatefulWidget {
+class VisitBody extends StatelessWidget {
   VisitBody();
-
-  @override
-  State<VisitBody> createState() => _VisitBodyState();
-}
-
-class _VisitBodyState extends State<VisitBody> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<VisitBloc>().add(GetData());
-  }
 
   @override
   Widget build(BuildContext context) {
     VisitBloc visitBloc = context.read<VisitBloc>();
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
+      if (state is VisitInitial) {
+        visitBloc.add(GetData());
+      }
+
       if (state is IsLoading) {
         return Center(
           child: Container(
@@ -31,7 +23,9 @@ class _VisitBodyState extends State<VisitBody> {
         );
       }
 
-      if (state is IsFailure) {}
+      if (state is IsFailure) {
+        print(state.error);
+      }
 
       if (state is IsLoaded) {
         return Padding(
@@ -78,8 +72,9 @@ class _VisitBodyState extends State<VisitBody> {
                       if (scrollInfo.metrics.pixels ==
                               scrollInfo.metrics.maxScrollExtent &&
                           state.hasMore) {
-                        print("push");
+                        state.pageLoading = true;
                         visitBloc.add(GetData());
+                        state.hasMore = false;
                       }
 
                       return false;
@@ -93,9 +88,9 @@ class _VisitBodyState extends State<VisitBody> {
                           },
                         ),
                         Visibility(
-                          visible: visitBloc.pageLoading,
+                          visible: state.pageLoading,
                           child: Positioned(
-                            bottom: 20,
+                            bottom: 50,
                             left: 0,
                             right: 0,
                             child: Center(

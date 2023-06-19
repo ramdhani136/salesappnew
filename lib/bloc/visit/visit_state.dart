@@ -20,12 +20,13 @@ class IsLoaded extends VisitState {
   List<Visitmodel> data = [];
   int total = 0;
   bool hasMore = false;
+  bool pageLoading = false;
 
-  IsLoaded({
-    required newData,
-    required this.hasMore,
-    required this.total,
-  }) {
+  IsLoaded(
+      {required newData,
+      required this.hasMore,
+      required this.total,
+      required this.pageLoading}) {
     data = newData;
   }
 }
