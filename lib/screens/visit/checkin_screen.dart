@@ -33,7 +33,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
       body: BlocBuilder<LocationBloc, LocationState>(
         bloc: loc,
         builder: (context, state) {
-          print("LOKASI");
           if (state is LocationInitial) {
             loc.add(GetLocationGps());
           }

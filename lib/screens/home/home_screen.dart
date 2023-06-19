@@ -112,8 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     BlocBuilder<LocationBloc, LocationState>(
                       bloc: locationbloc,
                       builder: (context, state) {
-                        print(state);
-                        print("HOOOOOOOOMMEEEEEE");
                         if (state is LocationInitial) {
                           locationbloc.add(GetLocationGps());
                         }
