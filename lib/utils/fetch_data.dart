@@ -15,15 +15,18 @@ class FetchData {
   String? orderBy;
   String? search;
   String? params;
+  int page = 1;
 
-  FetchData({
-    required this.data,
-    this.fields,
-    this.filters,
-    this.orderBy,
-    this.params,
-    this.search,
-  });
+  FetchData(
+      {required this.data,
+      this.fields,
+      this.filters,
+      this.orderBy,
+      this.params,
+      this.search,
+      setPage}) {
+    this.page = setPage;
+  }
 
   Config config = Config();
   LocalData localData = LocalData();
@@ -52,8 +55,9 @@ class FetchData {
         default:
       }
 
+      print(page);
       final response = await http.get(
-        Uri.parse("${config.baseUri}$doc"),
+        Uri.parse("${config.baseUri}$doc?page=${page}"),
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:

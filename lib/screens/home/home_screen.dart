@@ -67,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  radius: 20,
-                  backgroundImage: NetworkImage(
-                      'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
-                ),
+                // CircleAvatar(
+                //   backgroundColor: Colors.grey,
+                //   radius: 20,
+                //   backgroundImage: NetworkImage(
+                //       'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
+                // ),
               ],
             )
           ],

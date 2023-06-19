@@ -54,170 +54,126 @@ class VisitScreen extends StatelessWidget {
       tabs: myTabs,
     );
 
-    AuthBloc authBloc = AuthBloc(AuthRepository());
     final PanelController _panelController = PanelController();
 
     return BlocProvider(
-      create: (context) => VisitBloc(),
-      child: BlocBuilder<VisitBloc, VisitState>(
-        builder: (context, state) {
-          if (state is VisitInitial) {
-            context.read<VisitBloc>().add(GetData());
-          }
-          if (state is IsLoading) {
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-
-          if (state is IsFailure) {
-            // print(state.error);
-          }
-
-          // print(state);
-
-          if (state is IsLoaded) {
-            return DefaultTabController(
-              length: myTabs.length,
-              child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: const Color(0xFFE6212A),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        create: (context) => VisitBloc(),
+        child: DefaultTabController(
+          length: myTabs.length,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              backgroundColor: const Color(0xFFE6212A),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const DrawerAppButton(),
+                  const Row(
                     children: [
-                      const DrawerAppButton(),
-                      const Row(
-                        children: [
-                          Icon(Icons.directions_run, size: 17),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3),
-                            child: Text(
-                              "Visit List",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(children: [
-                        // IconSearch(),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add,
-                            color: Color.fromARGB(255, 121, 8, 14),
-                          ),
+                      Icon(Icons.directions_run, size: 17),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3),
+                        child: Text(
+                          "Visit List",
+                          style: TextStyle(fontSize: 18),
                         ),
-                      ])
+                      ),
                     ],
                   ),
-                  bottom: PreferredSize(
-                    preferredSize:
-                        Size.fromHeight(MyTabBar.preferredSize.height),
-                    child: Container(
-                      height: 55,
-                      color: Colors.white,
-                      child: TabBar(
-                        indicatorColor: const Color(0xFFF9D934),
-                        // controller: VisitC.controllerTab,
-                        onTap: (index) {
-                          context.read<VisitBloc>().add(TabChanged(index));
-                        },
-                        tabs: myTabs,
+                  Row(children: [
+                    // IconSearch(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        color: Color.fromARGB(255, 121, 8, 14),
                       ),
                     ),
+                  ])
+                ],
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(MyTabBar.preferredSize.height),
+                child: Container(
+                  height: 55,
+                  color: Colors.white,
+                  child: TabBar(
+                    indicatorColor: const Color(0xFFF9D934),
+                    // controller: VisitC.controllerTab,
+                    onTap: (index) {
+                      context.read<VisitBloc>().add(TabChanged(index));
+                    },
+                    tabs: myTabs,
                   ),
                 ),
-                body: SlidingUpPanel(
-                  controller: _panelController,
-                  defaultPanelState: PanelState.CLOSED,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(18),
-                  ),
-                  parallaxEnabled: true,
-                  maxHeight: Get.height / 2,
-                  minHeight: 30,
-                  panel: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              _panelController.isPanelOpen
-                                  ? _panelController.close()
-                                  : _panelController.open();
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+              ),
+            ),
+            body: SlidingUpPanel(
+              controller: _panelController,
+              defaultPanelState: PanelState.CLOSED,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(18),
+              ),
+              parallaxEnabled: true,
+              maxHeight: Get.height / 2,
+              minHeight: 30,
+              panel: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          _panelController.isPanelOpen
+                              ? _panelController.close()
+                              : _panelController.open();
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 20,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: ListView(
-                              children: [
-                                TextField(),
-                                TextField(),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                  body: Padding(
-                    padding: const EdgeInsets.only(bottom: 200),
-                    child: Stack(
-                      children: [
-                        TabBarView(
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: ListView(
                           children: [
-                            VisitBody(state),
-                            VisitBody(state),
-                            VisitBody(state),
+                            TextField(),
+                            TextField(),
                           ],
                         ),
-                        Visibility(
-                          visible: false,
-                          child: Positioned(
-                            bottom: 20,
-                            left: 0,
-                            right: 0,
-                            child: Center(
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.only(bottom: 200),
+                child: Stack(
+                  children: [
+                    TabBarView(
+                      children: [
+                        VisitBody(),
+                        VisitBody(),
+                        VisitBody(),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-                bottomNavigationBar: BottomNavigator(2),
               ),
-            );
-          }
-          return Container();
-        },
-      ),
-    );
+            ),
+            bottomNavigationBar: BottomNavigator(2),
+          ),
+        ));
   }
 }
