@@ -27,7 +27,7 @@ class FetchData {
 
   Config config = Config();
   LocalData localData = LocalData();
-  Future<T> FIND<T>() async {
+  Future<Map<String, dynamic>> FIND<T>() async {
     try {
       late String doc;
       switch (data) {
@@ -63,7 +63,7 @@ class FetchData {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = await jsonDecode(response.body);
-        return jsonData['data'];
+        return jsonData;
       } else {
         final Map<String, dynamic> jsonData = jsonDecode(response.body);
         throw jsonData;

@@ -102,7 +102,7 @@ class VisitBodyList extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "${data.customer?.id}",
+                      "${data.contact?.name}",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[600],

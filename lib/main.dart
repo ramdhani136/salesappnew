@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
-import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
-
-import 'package:salesappnew/screens/visit/checkin_screen.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
