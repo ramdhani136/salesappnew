@@ -37,9 +37,6 @@ class MyApp extends StatelessWidget {
             AuthRepository(),
           ),
         ),
-        BlocProvider(
-          create: (context) => LocationBloc(),
-        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -49,10 +46,7 @@ class MyApp extends StatelessWidget {
           }
 
           if (state is AuthAuthenticated) {
-            return BlocProvider(
-              create: (context) => LocationBloc(),
-              child: HomeScreen(),
-            );
+            return HomeScreen();
           }
 
           if (state is AuthLoading) {

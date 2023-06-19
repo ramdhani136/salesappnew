@@ -64,8 +64,6 @@ class Visitmodel {
 
       return data.map((e) => Visitmodel.fromJson(e)).toList();
     } catch (e) {
-      print(e);
-      // print(e);
       rethrow;
     }
   }
@@ -82,7 +80,7 @@ class Visitmodel {
         "status": status,
         "workflowState": workflowState,
         "updatedAt": updatedAt!.toIso8601String(),
-        "checkOut": checkOut!.toJson(),
+        "checkOut": checkOut != null ? checkOut!.toJson() : null,
         "customerGroup": customerGroup!.toJson(),
         "branch": branch!.toJson(),
         "schedulelist": List<dynamic>.from(schedulelist!.map((x) => x)),

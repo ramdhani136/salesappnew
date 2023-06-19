@@ -8,8 +8,21 @@ import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
 
 // ignore: must_be_immutable
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final LocationBloc locationbloc = LocationBloc();
+
+  @override
+  void dispose() {
+    locationbloc.close(); // Menutup Bloc saat halaman ditutup
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,19 +110,22 @@ class HomeScreen extends StatelessWidget {
                       width: 5,
                     ),
                     BlocBuilder<LocationBloc, LocationState>(
+                      bloc: locationbloc,
                       builder: (context, state) {
+                        print(state);
+                        print("HOOOOOOOOMMEEEEEE");
                         if (state is LocationInitial) {
-                          context.read<LocationBloc>().add(GetLocationGps());
+                          locationbloc.add(GetLocationGps());
                         }
 
-                        if (state is LocationAddress) {
-                          context.read<LocationBloc>().add(
-                                GetRealtimeGps(
-                                  duration: const Duration(minutes: 1),
-                                ),
-                              );
+                        if (state is LocationLoaded) {
+                          locationbloc.add(
+                            GetRealtimeGps(
+                              duration: const Duration(minutes: 1),
+                            ),
+                          );
                           return Text(
-                            state.address ?? "Gps Error!",
+                            locationbloc.address ?? "Gps Error!",
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(255, 75, 57, 3)),
@@ -128,15 +144,13 @@ class HomeScreen extends StatelessWidget {
                         }
 
                         if (state is LocationFailure) {
-                          context.read<LocationBloc>().add(GetLocationGps());
+                          locationbloc.add(GetLocationGps(notLoading: true));
                           return Text(
                             state.error,
                             style: const TextStyle(fontSize: 13),
                           );
                         }
-                        if (state is LocationFailure) {
-                          context.read<LocationBloc>().add(GetLocationGps());
-                        }
+
                         return Container();
                       },
                     ),
@@ -283,7 +297,7 @@ class HomeScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 114, 114, 114),
                   ),
                   onPressed: () {
-                    context.read<LocationBloc>().add(GetLocationGps());
+                    locationbloc.add(GetLocationGps());
                   },
                 ),
               ],

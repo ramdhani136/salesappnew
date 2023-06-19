@@ -6,8 +6,21 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CheckInScreen extends StatelessWidget {
+class CheckInScreen extends StatefulWidget {
   const CheckInScreen({super.key});
+
+  @override
+  State<CheckInScreen> createState() => _CheckInScreenState();
+}
+
+class _CheckInScreenState extends State<CheckInScreen> {
+  final LocationBloc locationbloc = LocationBloc();
+
+  @override
+  void dispose() {
+    locationbloc.close(); // Menutup Bloc saat halaman ditutup
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +28,14 @@ class CheckInScreen extends StatelessWidget {
 
     Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
-
+    final LocationBloc loc = LocationBloc();
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
+        bloc: loc,
         builder: (context, state) {
+          print("LOKASI");
           if (state is LocationInitial) {
-            context.read<LocationBloc>().add(GetLocationGps());
+            loc.add(GetLocationGps());
           }
           if (state is LocationLoading) {
             return const Center(
@@ -29,61 +44,57 @@ class CheckInScreen extends StatelessWidget {
           }
 
           if (state is LocationFailure) {
-            _controller = Completer<GoogleMapController>();
-            context.read<LocationBloc>().add(
-                  GetRealtimeGps(
-                    duration: const Duration(seconds: 5),
-                  ),
-                );
+            // _controller = Completer<GoogleMapController>();
+            loc.add(GetLocationGps(notLoading: true));
 
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 180,
-                      child: Image(
-                        image: state.error !=
-                                "The location service on the device is disabled."
-                            ? const AssetImage("assets/icons/networkerror.png")
-                            : const AssetImage("assets/icons/maps.png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      state.error ==
-                              "The location service on the device is disabled."
-                          ? "Gps location is disabled"
-                          : "Network Error!",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            // return Center(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(20),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Container(
+            //           width: 300,
+            //           height: 180,
+            //           child: Image(
+            //             image: state.error !=
+            //                     "The location service on the device is disabled."
+            //                 ? const AssetImage("assets/icons/networkerror.png")
+            //                 : const AssetImage("assets/icons/maps.png"),
+            //             fit: BoxFit.contain,
+            //           ),
+            //         ),
+            //         const SizedBox(
+            //           height: 10,
+            //         ),
+            //         Text(
+            //           state.error ==
+            //                   "The location service on the device is disabled."
+            //               ? "Gps location is disabled"
+            //               : "Network Error!",
+            //           style: const TextStyle(
+            //             fontSize: 16,
+            //             color: Colors.grey,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // );
           }
 
-          if (state is LocationAddress) {
-            context.read<LocationBloc>().add(
-                  GetRealtimeGps(
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
+          if (loc.cordinate != null) {
+            loc.add(
+              GetRealtimeGps(
+                duration: const Duration(seconds: 2),
+              ),
+            );
             return Column(
               children: [
                 Expanded(
                     child: Stack(
                   children: [
-                    Maps(state, _controller),
+                    Maps(loc, _controller),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 30,
@@ -123,8 +134,8 @@ class CheckInScreen extends StatelessWidget {
                                 CameraUpdate.newCameraPosition(
                                   CameraPosition(
                                       target: LatLng(
-                                        state.cordinate!.latitude,
-                                        state.cordinate!.longitude,
+                                        loc.cordinate!.latitude,
+                                        loc.cordinate!.longitude,
                                       ),
                                       bearing: 192.8334901395799,
                                       tilt: 59.440717697143555,
@@ -223,7 +234,7 @@ class CheckInScreen extends StatelessWidget {
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   child: Text(
-                                                    "${state.address}",
+                                                    "${loc.address}",
                                                     style: TextStyle(
                                                       color: Colors.grey[800],
                                                       fontWeight:
@@ -400,14 +411,14 @@ class CheckInScreen extends StatelessWidget {
               ],
             );
           }
+
           return Container();
         },
       ),
     );
   }
 
-  GoogleMap Maps(
-      LocationAddress state, Completer<GoogleMapController> _controller) {
+  GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
     return GoogleMap(
       mapType: MapType.normal,
       // myLocationEnabled: true,
@@ -424,8 +435,8 @@ class CheckInScreen extends StatelessWidget {
           ),
           icon: BitmapDescriptor.defaultMarker,
           position: LatLng(
-            state.cordinate!.latitude,
-            state.cordinate!.longitude,
+            loc.cordinate!.latitude,
+            loc.cordinate!.longitude,
           ),
         ),
         Marker(
@@ -441,8 +452,8 @@ class CheckInScreen extends StatelessWidget {
       },
       initialCameraPosition: CameraPosition(
           target: LatLng(
-            state.cordinate!.latitude,
-            state.cordinate!.longitude,
+            loc.cordinate!.latitude,
+            loc.cordinate!.longitude,
           ),
           bearing: 192.8334901395799,
           tilt: 59.440717697143555,
@@ -456,16 +467,16 @@ class CheckInScreen extends StatelessWidget {
           polygonId: PolygonId('area_1'),
           points: [
             LatLng(
-              state.cordinate!.latitude,
-              state.cordinate!.longitude,
+              loc.cordinate!.latitude,
+              loc.cordinate!.longitude,
             ),
             LatLng(
-              state.cordinate!.latitude,
-              state.cordinate!.longitude,
+              loc.cordinate!.latitude,
+              loc.cordinate!.longitude,
             ),
             LatLng(
-              state.cordinate!.latitude,
-              state.cordinate!.longitude,
+              loc.cordinate!.latitude,
+              loc.cordinate!.longitude,
             ),
           ],
           fillColor: Colors.blue.withOpacity(0.5), // Warna area jangkauan
@@ -476,8 +487,8 @@ class CheckInScreen extends StatelessWidget {
         Circle(
           circleId: CircleId('myLocation'),
           center: LatLng(
-            state.cordinate!.latitude,
-            state.cordinate!.longitude,
+            loc.cordinate!.latitude,
+            loc.cordinate!.longitude,
           ), // Koordinat lokasi saat ini
           radius: 50, // Jari-jari dalam meter
           strokeWidth: 2,

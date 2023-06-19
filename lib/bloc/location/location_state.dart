@@ -8,11 +8,11 @@ class LocationInitial extends LocationState {}
 
 class LocationLoading extends LocationState {}
 
-class LocationAddress extends LocationState {
-  String? address;
-  Position? cordinate;
+class LocationLoaded extends LocationState {
+  // String? address;
+  // Position? cordinate;
 
-  LocationAddress(this.address, this.cordinate);
+  // LocationAddress(this.address, this.cordinate);
 }
 
 class LocationFailure extends LocationState {
