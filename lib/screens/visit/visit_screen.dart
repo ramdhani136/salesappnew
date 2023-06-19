@@ -65,8 +65,10 @@ class VisitScreen extends StatelessWidget {
             context.read<VisitBloc>().add(GetData());
           }
           if (state is IsLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
 
