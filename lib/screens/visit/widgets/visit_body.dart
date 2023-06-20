@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class VisitBody extends StatelessWidget {
   int status;
@@ -17,10 +16,6 @@ class VisitBody extends StatelessWidget {
     });
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
-      // if (state is VisitInitial) {
-      //   visitBloc.add(GetData());
-      // }
-
       if (state is IsLoading) {
         return Center(
           child: Container(
