@@ -17,9 +17,9 @@ class VisitBody extends StatelessWidget {
     });
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
-      if (state is VisitInitial) {
-        visitBloc.add(GetData());
-      }
+      // if (state is VisitInitial) {
+      //   visitBloc.add(GetData());
+      // }
 
       if (state is IsLoading) {
         return Center(
@@ -31,6 +31,19 @@ class VisitBody extends StatelessWidget {
 
       if (state is IsFailure) {
         print(state.error);
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: Container(
+              child: Text(
+                "Not found data",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        );
       }
 
       if (state is IsLoaded) {
@@ -85,64 +98,37 @@ class VisitBody extends StatelessWidget {
 
                       return false;
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Stack(
                       children: [
-                        Visibility(
-                          visible: state.data.isEmpty,
-                          child: Expanded(
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.only(bottom: 50),
-                              child: Container(
-                                child: Text(
-                                  "Not found data",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: ListView.builder(
+                            itemCount: state.data.length,
+                            itemBuilder: (context, index) {
+                              return VisitBodyList(state.data[index]);
+                            },
                           ),
                         ),
                         Visibility(
-                          visible: state.data.isNotEmpty,
-                          child: Expanded(
-                            child: Stack(
+                          visible: state.pageLoading,
+                          child: const Padding(
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 20),
-                                  child: ListView.builder(
-                                    itemCount: state.data.length,
-                                    itemBuilder: (context, index) {
-                                      return VisitBodyList(state.data[index]);
-                                    },
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: state.pageLoading,
-                                  child: const Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Center(
-                                          child: SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.amber,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                Center(
+                                  child: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.amber,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
