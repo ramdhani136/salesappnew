@@ -26,8 +26,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             );
           }
 
-          // await Future.delayed(const Duration(seconds: 1));
-
           Map<String, dynamic> getData = await FetchData(
             data: Data.visit,
             setPage: _page,
