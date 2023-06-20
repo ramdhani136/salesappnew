@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:get/get.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/widgets/rating.dart';
@@ -9,6 +9,7 @@ class VisitBodyList extends StatelessWidget {
   Color colorHeader;
   Color colorFontHeader;
   VisitBodyList({
+    super.key,
     required this.data,
     required this.colorFontHeader,
     required this.colorHeader,

@@ -35,7 +35,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           // emit(LocationLoading());
           cordinate = await location.CheckLocation();
           if (cordinate != null) {
-            String address = await location.chekcAdress(cordinate!);
+            address = await location.chekcAdress(cordinate!);
             emit(LocationLoaded());
           }
         } catch (e) {
