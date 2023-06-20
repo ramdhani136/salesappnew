@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class VisitBody extends StatelessWidget {
   int status;
@@ -10,6 +11,10 @@ class VisitBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VisitBloc visitBloc = context.read<VisitBloc>();
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      visitBloc.add(GetData(status: status));
+    });
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
       if (state is VisitInitial) {

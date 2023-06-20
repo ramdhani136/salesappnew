@@ -97,20 +97,13 @@ class VisitScreen extends StatelessWidget {
             ),
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(MyTabBar.preferredSize.height),
-              child: BlocBuilder<VisitBloc, VisitState>(
-                builder: (context, state) {
-                  return Container(
-                    height: 55,
-                    color: Colors.white,
-                    child: TabBar(
-                      indicatorColor: const Color(0xFFF9D934),
-                      onTap: (index) {
-                        context.read<VisitBloc>().add(GetData(status: index));
-                      },
-                      tabs: myTabs,
-                    ),
-                  );
-                },
+              child: Container(
+                height: 55,
+                color: Colors.white,
+                child: TabBar(
+                  indicatorColor: const Color(0xFFF9D934),
+                  tabs: myTabs,
+                ),
               ),
             ),
           ),

@@ -56,9 +56,7 @@ class FetchData {
       }
 
       final setFilter = jsonEncode(filters);
-      print(filters!.isNotEmpty);
-      print(
-          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}");
+
       final response = await http.get(
         Uri.parse(
             "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}"),
