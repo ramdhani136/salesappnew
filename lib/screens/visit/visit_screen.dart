@@ -159,16 +159,19 @@ class VisitScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 200),
               child: TabBarView(
                 children: [
-                  // Text("Ff"),
-                  // Text("Ff"),
-                  // Text("Ff"),
                   VisitBody(
                     status: 0,
+                    colorFontHeader: const Color.fromARGB(255, 250, 236, 214),
+                    colorHeader: const Color(0xFFE8A53A),
                   ),
                   VisitBody(
+                    colorFontHeader: const Color.fromARGB(255, 190, 255, 240),
+                    colorHeader: const Color(0xFF20826B),
                     status: 1,
                   ),
                   VisitBody(
+                    colorFontHeader: const Color.fromARGB(255, 230, 230, 230),
+                    colorHeader: const Color(0xFF657187),
                     status: 2,
                   ),
                 ],

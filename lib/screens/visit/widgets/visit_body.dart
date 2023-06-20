@@ -5,7 +5,13 @@ import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatelessWidget {
   int status;
-  VisitBody({super.key, required this.status});
+  Color colorHeader;
+  Color colorFontHeader;
+  VisitBody(
+      {super.key,
+      required this.status,
+      required this.colorFontHeader,
+      required this.colorHeader});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +105,11 @@ class VisitBody extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.data.length,
                             itemBuilder: (context, index) {
-                              return VisitBodyList(state.data[index]);
+                              return VisitBodyList(
+                                data: state.data[index],
+                                colorFontHeader: colorFontHeader,
+                                colorHeader: colorHeader,
+                              );
                             },
                           ),
                         ),

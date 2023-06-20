@@ -5,7 +5,13 @@ import 'package:salesappnew/widgets/rating.dart';
 
 class VisitBodyList extends StatelessWidget {
   Visitmodel data;
-  VisitBodyList(this.data);
+  Color colorHeader;
+  Color colorFontHeader;
+  VisitBodyList({
+    required this.data,
+    required this.colorFontHeader,
+    required this.colorHeader,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +154,7 @@ class VisitBodyList extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  color: Color(0xFF20826B),
+                  color: colorHeader,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -158,14 +164,14 @@ class VisitBodyList extends StatelessWidget {
                       Text(
                         "${data.name}",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 190, 255, 240),
+                          color: colorFontHeader,
                           fontSize: 16.5,
                         ),
                       ),
                       Text(
                         "${data.workflowState}",
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 190, 255, 240),
+                        style: TextStyle(
+                            color: colorFontHeader,
                             fontWeight: FontWeight.bold,
                             fontSize: 13),
                       ),
