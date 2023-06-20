@@ -5,9 +5,7 @@ abstract class VisitEvent {}
 
 class GetData extends VisitEvent {
   int status = 0;
-  GetData({int? status}) {
-    if (status != null) {
-      this.status = status;
-    }
-  }
+  bool getRefresh = false;
+
+  GetData({this.status = 0, this.getRefresh = false});
 }

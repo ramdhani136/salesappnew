@@ -25,7 +25,7 @@ class FetchData {
       this.params,
       this.search,
       setPage}) {
-    this.page = setPage;
+    page = setPage;
   }
 
   Config config = Config();

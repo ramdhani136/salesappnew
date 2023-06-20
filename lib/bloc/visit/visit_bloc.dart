@@ -12,7 +12,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<VisitEvent>((event, emit) async {
       if (event is GetData) {
         try {
-          if (state is! IsLoaded) {
+          if (state is! IsLoaded || event.getRefresh) {
             emit(IsLoading());
           } else {
             IsLoaded current = state as IsLoaded;
@@ -28,7 +28,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
           Map<String, dynamic> getData = await FetchData(
             data: Data.visit,
-            setPage: _page,
+            setPage: event.getRefresh ? 1 : _page,
             filters: [
               [
                 "status",
@@ -42,7 +42,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           List<Visitmodel> visitList = Visitmodel.fromJsonList(getData['data']);
 
           List<Visitmodel> currentData = [];
-          if (state is IsLoaded) {
+          if (state is IsLoaded && !event.getRefresh) {
             currentData = (state as IsLoaded).data;
             currentData.addAll(visitList);
           } else {

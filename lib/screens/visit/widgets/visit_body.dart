@@ -12,7 +12,7 @@ class VisitBody extends StatelessWidget {
     VisitBloc visitBloc = context.read<VisitBloc>();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      visitBloc.add(GetData(status: status));
+      visitBloc.add(GetData(status: status, getRefresh: true));
     });
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
@@ -25,7 +25,6 @@ class VisitBody extends StatelessWidget {
       }
 
       if (state is IsFailure) {
-        print(state.error);
         return Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 50),
@@ -79,7 +78,7 @@ class VisitBody extends StatelessWidget {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    visitBloc.add(GetData());
+                    visitBloc.add(GetData(status: status, getRefresh: true));
                   },
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
