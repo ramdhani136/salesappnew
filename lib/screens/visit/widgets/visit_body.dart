@@ -4,7 +4,8 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatelessWidget {
-  VisitBody();
+  int status;
+  VisitBody({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -73,37 +74,70 @@ class VisitBody extends StatelessWidget {
                               scrollInfo.metrics.maxScrollExtent &&
                           state.hasMore) {
                         state.pageLoading = true;
-                        visitBloc.add(GetData());
                         state.hasMore = false;
+                        visitBloc.add(GetData());
                       }
 
                       return false;
                     },
-                    child: Stack(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ListView.builder(
-                          itemCount: state.data.length,
-                          itemBuilder: (context, index) {
-                            return VisitBodyList(state.data[index]);
-                          },
-                        ),
                         Visibility(
-                          visible: state.pageLoading,
-                          child: Positioned(
-                            bottom: 50,
-                            left: 0,
-                            right: 0,
+                          visible: state.data.isEmpty,
+                          child: Expanded(
                             child: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.only(bottom: 50),
                               child: Container(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.amber,
+                                child: Text(
+                                  "Not found data",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
+                            )),
+                          ),
+                        ),
+                        Visibility(
+                          visible: state.data.isNotEmpty,
+                          child: Expanded(
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: ListView.builder(
+                                    itemCount: state.data.length,
+                                    itemBuilder: (context, index) {
+                                      return VisitBodyList(state.data[index]);
+                                    },
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: state.pageLoading,
+                                  child: const Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Center(
+                                          child: SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.amber,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

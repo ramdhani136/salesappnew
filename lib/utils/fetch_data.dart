@@ -11,7 +11,7 @@ enum Data { visit, callsheet, customer, customergroup, contact, memo }
 class FetchData {
   final Data data;
   List<String>? fields = [];
-  List<dynamic>? filters = [];
+  List<List<String>>? filters = [];
   String? orderBy;
   String? search;
   String? params;
@@ -55,9 +55,13 @@ class FetchData {
         default:
       }
 
-      print(page);
+      final setFilter = jsonEncode(filters);
+      print(filters!.isNotEmpty);
+      print(
+          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}");
       final response = await http.get(
-        Uri.parse("${config.baseUri}$doc?page=${page}"),
+        Uri.parse(
+            "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}"),
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:

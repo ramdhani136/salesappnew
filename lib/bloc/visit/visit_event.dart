@@ -3,13 +3,11 @@ part of 'visit_bloc.dart';
 @immutable
 abstract class VisitEvent {}
 
-class TabChanged extends VisitEvent {
-  final int tabIndex;
-
-  TabChanged(this.tabIndex);
-
-  // @override
-  // List<Object?> get props => [tabIndex];
+class GetData extends VisitEvent {
+  int status = 0;
+  GetData({int? status}) {
+    if (status != null) {
+      this.status = status;
+    }
+  }
 }
-
-class GetData extends VisitEvent {}

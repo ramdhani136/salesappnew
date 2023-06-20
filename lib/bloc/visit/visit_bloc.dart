@@ -10,10 +10,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   VisitBloc() : super(VisitInitial()) {
     on<VisitEvent>((event, emit) async {
-      if (event is TabChanged) {
-        print(event.tabIndex);
-      } else if (event is GetData) {
-        print("panggil");
+      if (event is GetData) {
         try {
           if (state is! IsLoaded) {
             emit(IsLoading());
@@ -29,22 +26,34 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             );
           }
 
-          await Future.delayed(const Duration(seconds: 1));
+          // await Future.delayed(const Duration(seconds: 1));
 
-          Map<String, dynamic> getData =
-              await FetchData(data: Data.visit, setPage: _page).FIND();
+          Map<String, dynamic> getData = await FetchData(
+            data: Data.visit,
+            setPage: _page,
+            filters: [
+              [
+                "status",
+                "=",
+                "${event.status}",
+              ]
+            ],
+          ).FIND();
           _page = getData['nextPage'];
 
           List<Visitmodel> visitList = Visitmodel.fromJsonList(getData['data']);
 
+          List<Visitmodel> currentData = [];
           if (state is IsLoaded) {
-            List<Visitmodel> currentData = (state as IsLoaded).data;
-            visitList.addAll(currentData);
+            currentData = (state as IsLoaded).data;
+            currentData.addAll(visitList);
+          } else {
+            currentData = visitList;
           }
 
           emit(
             IsLoaded(
-              newData: visitList,
+              newData: currentData,
               hasMore: getData['hasMore'],
               total: getData['total'],
               pageLoading: false,
