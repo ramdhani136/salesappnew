@@ -36,9 +36,16 @@ class _VisitBodyState extends State<VisitBody> {
   Widget build(BuildContext context) {
     VisitBloc visitBloc = context.read<VisitBloc>();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      visitBloc.add(GetData(status: widget.status, getRefresh: true));
-    });
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) {
+        visitBloc.add(
+          GetData(
+              status: widget.status,
+              getRefresh: true,
+              search: _textEditingController.text),
+        );
+      },
+    );
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
       if (state is IsLoading) {
@@ -124,8 +131,12 @@ class _VisitBodyState extends State<VisitBody> {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    visitBloc
-                        .add(GetData(status: widget.status, getRefresh: true));
+                    visitBloc.add(
+                      GetData(
+                          status: widget.status,
+                          getRefresh: true,
+                          search: _textEditingController.text),
+                    );
                   },
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
