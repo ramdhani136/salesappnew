@@ -41,10 +41,7 @@ class VisitBodyList extends StatelessWidget {
             },
           );
         },
-        onTap: () {
-          // Get.toNamed(Routes.VISITFORMUTAMA,
-          //     arguments: visitC.finalData[index]);
-        },
+        onTap: () {},
         child: Stack(
           children: [
             Container(

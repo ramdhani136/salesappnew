@@ -55,7 +55,6 @@ class _VisitBodyState extends State<VisitBody> {
       }
 
       if (state is IsFailure) {
-        print(state.error);
         return Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 50),
