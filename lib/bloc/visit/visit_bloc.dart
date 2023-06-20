@@ -60,6 +60,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
                 pageLoading: false,
               ),
             );
+          } else if (getData['status'] == 403) {
+            throw getData['msg'];
           } else {
             _page = 1;
             List<Visitmodel> visitList = Visitmodel.fromJsonList([]);

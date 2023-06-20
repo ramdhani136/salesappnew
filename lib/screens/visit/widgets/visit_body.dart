@@ -55,12 +55,13 @@ class _VisitBodyState extends State<VisitBody> {
       }
 
       if (state is IsFailure) {
-        return const Center(
+        print(state.error);
+        return Center(
           child: Padding(
-            padding: EdgeInsets.only(bottom: 50),
+            padding: const EdgeInsets.only(bottom: 50),
             child: Text(
-              "Data not found",
-              style: TextStyle(
+              state.error,
+              style: const TextStyle(
                 color: Colors.grey,
               ),
             ),

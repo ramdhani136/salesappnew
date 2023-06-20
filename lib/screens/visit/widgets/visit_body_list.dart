@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/widgets/rating.dart';
@@ -26,44 +27,12 @@ class VisitBodyList extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Get.back();
+                      Navigator.pop(context);
                     },
                     child: const Text("No"),
                   ),
                   TextButton(
-                    onPressed: () async {
-                      // Get.back();
-                      // LocalProvider localP =
-                      //     LocalProvider();
-                      // EasyLoading.show(
-                      //     status: 'loading...');
-                      // try {
-                      //   var response =
-                      //       await http.delete(
-                      //     Uri.parse(
-                      //         "${config.defultUri}visit/${visitC.finalData[index].id}"),
-                      //     headers: {
-                      //       HttpHeaders
-                      //               .authorizationHeader:
-                      //           'Bearer ${await localP.getLocalToken()}',
-                      //     },
-                      //   );
-                      //   EasyLoading.dismiss();
-                      //   if (response.statusCode ==
-                      //       200) {
-                      //     await visitC.getByStatus();
-                      //   } else {
-                      //     var data = await json
-                      //         .decode(response.body);
-                      //     EasyLoading.showError(
-                      //         '${data['message']}');
-                      //   }
-                      // } catch (e) {
-                      //   // EasyLoading.showError(
-                      //   //     'Failed with Error');
-                      //   // EasyLoading.dismiss();
-                      // }
-                    },
+                    onPressed: () async {},
                     child: const Text("Yes"),
                   ),
                 ],
