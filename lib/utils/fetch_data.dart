@@ -57,11 +57,10 @@ class FetchData {
 
       final setFilter = jsonEncode(filters);
 
-      print(
-          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}");
+      String uri =
+          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}";
       final response = await http.get(
-        Uri.parse(
-            "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}"),
+        Uri.parse(uri),
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
