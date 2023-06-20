@@ -36,27 +36,43 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
                 "${event.status}",
               ]
             ],
+            search: event.search,
           ).FIND();
-          _page = getData['nextPage'];
 
-          List<Visitmodel> visitList = Visitmodel.fromJsonList(getData['data']);
+          if (getData['status'] == 200) {
+            _page = getData['nextPage'];
+            List<Visitmodel> visitList =
+                Visitmodel.fromJsonList(getData['data']);
 
-          List<Visitmodel> currentData = [];
-          if (state is IsLoaded && !event.getRefresh) {
-            currentData = (state as IsLoaded).data;
-            currentData.addAll(visitList);
+            List<Visitmodel> currentData = [];
+            if (state is IsLoaded && !event.getRefresh) {
+              currentData = (state as IsLoaded).data;
+              currentData.addAll(visitList);
+            } else {
+              currentData = visitList;
+            }
+
+            emit(
+              IsLoaded(
+                newData: currentData,
+                hasMore: getData['hasMore'],
+                total: getData['total'],
+                pageLoading: false,
+              ),
+            );
           } else {
-            currentData = visitList;
-          }
+            _page = 1;
+            List<Visitmodel> visitList = Visitmodel.fromJsonList([]);
 
-          emit(
-            IsLoaded(
-              newData: currentData,
-              hasMore: getData['hasMore'],
-              total: getData['total'],
-              pageLoading: false,
-            ),
-          );
+            emit(
+              IsLoaded(
+                newData: visitList,
+                hasMore: false,
+                total: 0,
+                pageLoading: false,
+              ),
+            );
+          }
         } catch (e) {
           emit(IsFailure(e.toString()));
         }

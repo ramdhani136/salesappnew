@@ -1,9 +1,13 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
-class VisitBody extends StatelessWidget {
+class VisitBody extends StatefulWidget {
   int status;
   Color colorHeader;
   Color colorFontHeader;
@@ -14,32 +18,43 @@ class VisitBody extends StatelessWidget {
       required this.colorHeader});
 
   @override
+  State<VisitBody> createState() => _VisitBodyState();
+}
+
+class _VisitBodyState extends State<VisitBody> {
+  TextEditingController _textEditingController = TextEditingController();
+  Timer? _debounceTimer;
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     VisitBloc visitBloc = context.read<VisitBloc>();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      visitBloc.add(GetData(status: status, getRefresh: true));
+      visitBloc.add(GetData(status: widget.status, getRefresh: true));
     });
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
       if (state is IsLoading) {
-        return Center(
-          child: Container(
-            child: CircularProgressIndicator(),
-          ),
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       }
 
       if (state is IsFailure) {
-        return Center(
+        return const Center(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 50),
-            child: Container(
-              child: Text(
-                "Not found data",
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+            padding: EdgeInsets.only(bottom: 50),
+            child: Text(
+              "Data not found",
+              style: TextStyle(
+                color: Colors.grey,
               ),
             ),
           ),
@@ -52,6 +67,23 @@ class VisitBody extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                controller: _textEditingController,
+                onChanged: (e) {
+                  // Batalkan timer sebelumnya jika ada
+                  _debounceTimer?.cancel();
+
+                  // Jalankan fungsi setelah pengguna berhenti mengetik selama 1 detik
+                  _debounceTimer = Timer(const Duration(seconds: 1), () {
+                    // Jalankan fungsi Anda di sini
+                    visitBloc.add(
+                      GetData(
+                        status: widget.status,
+                        getRefresh: true,
+                        search: e,
+                      ),
+                    );
+                  });
+                },
                 decoration: InputDecoration(
                   hintText: "Search",
                   border: OutlineInputBorder(
@@ -62,7 +94,15 @@ class VisitBody extends StatelessWidget {
                     vertical: 16,
                   ),
                   suffixIcon: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _textEditingController.text = "";
+                      visitBloc.add(
+                        GetData(
+                          status: widget.status,
+                          getRefresh: true,
+                        ),
+                      );
+                    },
                     icon: Icon(
                       Icons.close,
                       color: Colors.grey[300],
@@ -84,7 +124,8 @@ class VisitBody extends StatelessWidget {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    visitBloc.add(GetData(status: status, getRefresh: true));
+                    visitBloc
+                        .add(GetData(status: widget.status, getRefresh: true));
                   },
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
@@ -93,7 +134,9 @@ class VisitBody extends StatelessWidget {
                           state.hasMore) {
                         state.pageLoading = true;
                         state.hasMore = false;
-                        visitBloc.add(GetData());
+                        visitBloc.add(
+                          GetData(search: _textEditingController.text),
+                        );
                       }
 
                       return false;
@@ -102,15 +145,40 @@ class VisitBody extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20),
-                          child: ListView.builder(
-                            itemCount: state.data.length,
-                            itemBuilder: (context, index) {
-                              return VisitBodyList(
-                                data: state.data[index],
-                                colorFontHeader: colorFontHeader,
-                                colorHeader: colorHeader,
-                              );
-                            },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: state.data.isEmpty,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 50),
+                                  child: Center(
+                                    child: Text(
+                                      "Data not found",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: state.data.isNotEmpty,
+                                child: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: state.data.length,
+                                    itemBuilder: (context, index) {
+                                      return VisitBodyList(
+                                        data: state.data[index],
+                                        colorFontHeader: widget.colorFontHeader,
+                                        colorHeader: widget.colorHeader,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Visibility(

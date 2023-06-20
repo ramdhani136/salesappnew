@@ -16,6 +16,7 @@ class FetchData {
   String? search;
   String? params;
   int page = 1;
+  int limit = 10;
 
   FetchData(
       {required this.data,
@@ -24,6 +25,7 @@ class FetchData {
       this.orderBy,
       this.params,
       this.search,
+      this.limit = 10,
       setPage}) {
     page = setPage;
   }
@@ -58,7 +60,7 @@ class FetchData {
       final setFilter = jsonEncode(filters);
 
       String uri =
-          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}";
+          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}${search != null ? "&search=${search}" : ""}&limit=$limit";
       final response = await http.get(
         Uri.parse(uri),
         headers: {
@@ -68,13 +70,8 @@ class FetchData {
         },
       );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = await jsonDecode(response.body);
-        return jsonData;
-      } else {
-        final Map<String, dynamic> jsonData = jsonDecode(response.body);
-        throw jsonData;
-      }
+      final Map<String, dynamic> jsonData = await jsonDecode(response.body);
+      return jsonData;
     } catch (e) {
       rethrow;
     }

@@ -23,7 +23,6 @@ class AuthRepository {
         throw jsonData['msg'];
       }
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
