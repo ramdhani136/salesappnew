@@ -34,7 +34,8 @@ class _VisitBodyState extends State<VisitBody> {
 
   @override
   Widget build(BuildContext context) {
-    VisitBloc visitBloc = context.read<VisitBloc>();
+    VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
+    // VisitBloc visitBloc = context.read<VisitBloc>();
 
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) {

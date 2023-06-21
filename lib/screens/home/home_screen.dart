@@ -19,11 +19,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocationBloc locationbloc = LocationBloc();
 
-  // @override
-  // void dispose() {
-  //   locationbloc.close(); // Menutup Bloc saat halaman ditutup
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    locationbloc.close(); // Menutup Bloc saat halaman ditutup
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
           return IconButton(
               icon: Icon(Icons.apps_outlined),
               onPressed: () {
-                context.read<AuthBloc>().add(OnLogout());
+                BlocProvider.of<AuthBloc>(context).add(OnLogout());
+                // context.read<AuthBloc>().add(OnLogout());
               });
         }),
         backgroundColor: const Color(0xFFE6212A),
@@ -183,9 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) {
-                          return VisitScreen();
-                        }),
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const VisitScreen();
+                          },
+                        ),
                       );
                     },
                     title: "Visit",

@@ -3,16 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatefulWidget {
-  VisitScreen({super.key});
+  const VisitScreen({super.key});
 
   @override
   State<VisitScreen> createState() => _VisitScreenState();
