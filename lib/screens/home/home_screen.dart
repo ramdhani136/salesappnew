@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
@@ -18,17 +19,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocationBloc locationbloc = LocationBloc();
 
-  @override
-  void dispose() {
-    locationbloc.close(); // Menutup Bloc saat halaman ditutup
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   locationbloc.close(); // Menutup Bloc saat halaman ditutup
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.apps_outlined),
+        leading: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+          return IconButton(
+              icon: Icon(Icons.apps_outlined),
+              onPressed: () {
+                context.read<AuthBloc>().add(OnLogout());
+              });
+        }),
         backgroundColor: const Color(0xFFE6212A),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

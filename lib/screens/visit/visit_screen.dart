@@ -11,9 +11,14 @@ import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class VisitScreen extends StatelessWidget {
+class VisitScreen extends StatefulWidget {
   VisitScreen({super.key});
 
+  @override
+  State<VisitScreen> createState() => _VisitScreenState();
+}
+
+class _VisitScreenState extends State<VisitScreen> {
   List<Tab> myTabs = <Tab>[
     const Tab(
       child: Text(

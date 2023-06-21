@@ -22,9 +22,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -32,16 +37,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthBloc(
             AuthRepository(),
-          ),
+          )..add(AppStarted()),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if (state is AuthInitial) {
-            context.read<AuthBloc>().add(AppStarted());
-          }
-
+          print(state);
           if (state is AuthAuthenticated) {
             return HomeScreen();
           }
