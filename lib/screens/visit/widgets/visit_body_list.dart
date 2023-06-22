@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/widgets/rating.dart';
+import 'package:intl/intl.dart';
 
 class VisitBodyList extends StatelessWidget {
   Visitmodel data;
@@ -190,7 +191,9 @@ class VisitBodyList extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "6/16/2023 1:37 PM",
+                            "${DateFormat.yMd().add_jm().format(
+                                  DateTime.parse("${data.updatedAt}").toLocal(),
+                                )}",
                             style: TextStyle(
                               color: Colors.grey[500],
                               fontWeight: FontWeight.bold,

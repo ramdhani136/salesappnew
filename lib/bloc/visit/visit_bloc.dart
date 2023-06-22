@@ -8,7 +8,7 @@ part 'visit_state.dart';
 
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
-  String search = "vst";
+  String search = "";
 
   VisitBloc() : super(VisitInitial()) {
     on<VisitEvent>((event, emit) async {
