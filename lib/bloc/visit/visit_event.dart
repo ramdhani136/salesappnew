@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'visit_bloc.dart';
 
 @immutable
@@ -15,4 +17,16 @@ class ChangeSearch extends VisitEvent {
   String search = "";
 
   ChangeSearch(this.search);
+}
+
+class ShowData extends VisitEvent {
+  String id;
+
+  ShowData(this.id);
+}
+
+class DeleteOne extends VisitEvent {
+  String id;
+
+  DeleteOne(this.id);
 }

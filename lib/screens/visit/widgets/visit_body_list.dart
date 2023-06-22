@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/widgets/rating.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +20,7 @@ class VisitBodyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
     return InkWell(
         onLongPress: () async {
           await showDialog(
@@ -34,7 +37,10 @@ class VisitBodyList extends StatelessWidget {
                     child: const Text("No"),
                   ),
                   TextButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      visitBloc.add(DeleteOne("${data.id}"));
+                      Navigator.pop(context);
+                    },
                     child: const Text("Yes"),
                   ),
                 ],
