@@ -75,6 +75,21 @@ class _VisitBodyState extends State<VisitBody> {
           padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "${state.data.length} of ${state.total}",
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               TextFormField(
                 controller: _textEditingController,
                 onChanged: (e) {
