@@ -5,7 +5,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/screens/login_screen.dart';
+
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatefulWidget {
@@ -28,6 +33,7 @@ class _VisitBodyState extends State<VisitBody> {
   @override
   Widget build(BuildContext context) {
     VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
+
     // ignore: no_leading_underscores_for_local_identifiers
     TextEditingController _textEditingController = TextEditingController(
       text: visitBloc.search,
@@ -60,6 +66,10 @@ class _VisitBodyState extends State<VisitBody> {
         );
       }
 
+      if (state is TokenExpired) {
+        BlocProvider.of<AuthBloc>(context).add(OnLogout());
+      }
+
       if (state is DeleteFailure) {
         Fluttertoast.showToast(
           msg: state.error,
@@ -74,17 +84,6 @@ class _VisitBodyState extends State<VisitBody> {
               getRefresh: true,
               search: _textEditingController.text),
         );
-        // return Center(
-        //   child: Padding(
-        //     padding: const EdgeInsets.only(bottom: 50),
-        //     child: Text(
-        //       state.error,
-        //       style: const TextStyle(
-        //         color: Colors.grey,
-        //       ),
-        //     ),
-        //   ),
-        // );
       }
 
       if (state is IsLoaded) {
@@ -260,7 +259,16 @@ class _VisitBodyState extends State<VisitBody> {
           ),
         );
       }
-      return Container();
+      return Center(
+        child: Container(
+          child: Text(
+            "Data Notfound!",
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ),
+      );
     });
   }
 }

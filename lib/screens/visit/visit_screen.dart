@@ -150,7 +150,7 @@ class _VisitScreenState extends State<VisitScreen> {
                       ),
                       child: ListView(
                         children: [
-                          Input(type: Type.select),
+                          InfiniteScrollSelectList(),
                           const SizedBox(height: 20),
                           Text(
                             "Type :",

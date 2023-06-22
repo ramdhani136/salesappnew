@@ -1,9 +1,13 @@
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
+import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 
 import 'package:salesappnew/models/visit_model.dart';
+import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 part 'visit_event.dart';
 part 'visit_state.dart';
@@ -11,6 +15,7 @@ part 'visit_state.dart';
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
   String search = "";
+  AuthBloc authBloc = AuthBloc(AuthRepository());
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
@@ -80,7 +85,15 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           ),
         );
       } else if (getData['status'] == 403) {
-        throw getData['msg'];
+        Fluttertoast.showToast(
+          msg: getData['msg'],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
+
+        emit(TokenExpired(getData['msg']));
       } else {
         _page = 1;
         List<Visitmodel> visitList = Visitmodel.fromJsonList([]);

@@ -39,3 +39,9 @@ class DeleteFailure extends VisitState {
 }
 
 class DeleteSuccess extends VisitState {}
+
+class TokenExpired extends VisitState {
+  String error;
+
+  TokenExpired(this.error);
+}
