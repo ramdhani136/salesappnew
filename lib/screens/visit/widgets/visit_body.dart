@@ -22,20 +22,14 @@ class VisitBody extends StatefulWidget {
 }
 
 class _VisitBodyState extends State<VisitBody> {
-  TextEditingController _textEditingController = TextEditingController();
   Timer? _debounceTimer;
-
-  @override
-  void dispose() {
-    _debounceTimer?.cancel();
-    _textEditingController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
-    // VisitBloc visitBloc = context.read<VisitBloc>();
+    TextEditingController _textEditingController = TextEditingController(
+      text: visitBloc.search,
+    );
 
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) {
@@ -47,6 +41,13 @@ class _VisitBodyState extends State<VisitBody> {
         );
       },
     );
+
+    @override
+    void dispose() {
+      _debounceTimer?.cancel();
+      _textEditingController.dispose();
+      super.dispose();
+    }
 
     return BlocBuilder<VisitBloc, VisitState>(builder: (context, state) {
       if (state is IsLoading) {
@@ -77,6 +78,7 @@ class _VisitBodyState extends State<VisitBody> {
               TextFormField(
                 controller: _textEditingController,
                 onChanged: (e) {
+                  visitBloc.add(ChangeSearch(e));
                   // Batalkan timer sebelumnya jika ada
                   _debounceTimer?.cancel();
 
@@ -103,6 +105,7 @@ class _VisitBodyState extends State<VisitBody> {
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
+                      visitBloc.add(ChangeSearch(""));
                       _textEditingController.text = "";
                       visitBloc.add(
                         GetData(

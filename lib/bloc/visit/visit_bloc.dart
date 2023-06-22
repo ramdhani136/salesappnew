@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 part 'visit_event.dart';
@@ -7,6 +8,7 @@ part 'visit_state.dart';
 
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
+  String search = "vst";
 
   VisitBloc() : super(VisitInitial()) {
     on<VisitEvent>((event, emit) async {
@@ -78,6 +80,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         } catch (e) {
           emit(IsFailure(e.toString()));
         }
+      } else if (event is ChangeSearch) {
+        search = event.search;
+        // emit(VisitInitial());
       }
     });
   }

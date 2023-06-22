@@ -10,3 +10,9 @@ class GetData extends VisitEvent {
 
   GetData({this.status = 0, this.getRefresh = false, this.search});
 }
+
+class ChangeSearch extends VisitEvent {
+  String search = "";
+
+  ChangeSearch(this.search);
+}
