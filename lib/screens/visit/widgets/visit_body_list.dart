@@ -170,8 +170,7 @@ class VisitBodyList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Ilham Ramdhani",
-                        // "${value.finalData[index].user?.name}",
+                        "${data.createdBy!.name}",
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 15,
