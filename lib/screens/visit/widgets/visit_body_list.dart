@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -88,7 +90,7 @@ class VisitBodyList extends StatelessWidget {
                         color: Colors.grey[600],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Text(
@@ -177,7 +179,7 @@ class VisitBodyList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "${data.createdBy!.name}",
+                        data.createdBy!.name,
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 15,
@@ -197,6 +199,7 @@ class VisitBodyList extends StatelessWidget {
                             ),
                           ),
                           Text(
+                            // ignore: unnecessary_string_interpolations
                             "${DateFormat.yMd().add_jm().format(
                                   DateTime.parse("${data.updatedAt}").toLocal(),
                                 )}",

@@ -33,7 +33,7 @@ class _VisitBodyState extends State<VisitBody> {
       text: visitBloc.search,
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         visitBloc.add(
           GetData(
@@ -200,8 +200,8 @@ class _VisitBodyState extends State<VisitBody> {
                             children: [
                               Visibility(
                                 visible: state.data.isEmpty,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 50),
+                                child: const Padding(
+                                  padding: EdgeInsets.only(bottom: 50),
                                   child: Center(
                                     child: Text(
                                       "Data not found",
@@ -234,7 +234,7 @@ class _VisitBodyState extends State<VisitBody> {
                         Visibility(
                           visible: state.pageLoading,
                           child: const Padding(
-                            padding: const EdgeInsets.only(bottom: 30),
+                            padding: EdgeInsets.only(bottom: 30),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [

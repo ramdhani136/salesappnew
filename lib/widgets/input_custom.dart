@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 enum Type { select, normal }
@@ -8,7 +10,6 @@ class Input extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(type);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -417,6 +419,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
     return GoogleMap(
       mapType: MapType.normal,
@@ -463,7 +466,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       },
       polygons: {
         Polygon(
-          polygonId: PolygonId('area_1'),
+          polygonId: const PolygonId('area_1'),
           points: [
             LatLng(
               loc.cordinate!.latitude,
@@ -482,9 +485,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
           strokeColor: Colors.blue, // Warna garis tepi area jangkauan
         ),
       },
-      circles: Set<Circle>.of([
+      circles: <Circle>{
         Circle(
-          circleId: CircleId('myLocation'),
+          circleId: const CircleId('myLocation'),
           center: LatLng(
             loc.cordinate!.latitude,
             loc.cordinate!.longitude,
@@ -494,7 +497,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
           strokeColor: Colors.amber,
           fillColor: Colors.amber.withOpacity(0.2),
         ),
-      ]),
+      },
     );
   }
 }

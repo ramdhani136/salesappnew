@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
@@ -10,7 +12,7 @@ import 'package:salesappnew/screens/visit/visit_screen.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -31,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         leading: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           return IconButton(
-              icon: Icon(Icons.apps_outlined),
+              icon: const Icon(Icons.apps_outlined),
               onPressed: () {
                 BlocProvider.of<AuthBloc>(context).add(OnLogout());
                 // context.read<AuthBloc>().add(OnLogout());
@@ -72,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 // CircleAvatar(
@@ -109,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.gps_fixed_sharp,
                       size: 16,
                       color: Colors.white,

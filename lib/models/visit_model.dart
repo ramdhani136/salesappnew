@@ -60,7 +60,7 @@ class Visitmodel {
 
   static List<Visitmodel> fromJsonList(List<dynamic> data) {
     try {
-      if (data == null || data.isEmpty) return [];
+      if (data.isEmpty) return [];
 
       return data.map((e) => Visitmodel.fromJson(e)).toList();
     } catch (e) {

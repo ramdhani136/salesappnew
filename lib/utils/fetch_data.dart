@@ -1,7 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'dart:convert';
 
 import 'package:salesappnew/config/Config.dart';
@@ -61,7 +62,7 @@ class FetchData {
       final setFilter = jsonEncode(filters);
 
       String uri =
-          "${config.baseUri}$doc?page=${page}${filters!.isNotEmpty ? "&filters=$setFilter" : ""}${search != null ? "&search=${search}" : ""}&limit=$limit";
+          "${config.baseUri}$doc?page=$page${filters!.isNotEmpty ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit";
       final response = await http.get(
         Uri.parse(uri),
         headers: {
@@ -92,7 +93,7 @@ class FetchData {
       final Map<String, dynamic> jsonData = await jsonDecode(response.body);
       return jsonData;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -110,7 +111,7 @@ class FetchData {
       final Map<String, dynamic> jsonData = await jsonDecode(response.body);
       return jsonData;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           if (state is AuthAuthenticated) {
-            return HomeScreen();
+            return const HomeScreen();
           }
 
           if (state is AuthLoading) {
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               ),
             );
           }
-          return LoginScreen();
+          return const LoginScreen();
         }),
       ),
     );
