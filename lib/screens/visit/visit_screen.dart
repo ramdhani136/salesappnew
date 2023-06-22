@@ -7,6 +7,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
+import 'package:salesappnew/widgets/input_custom.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatefulWidget {
@@ -64,6 +65,7 @@ class _VisitScreenState extends State<VisitScreen> {
         ),
       ],
       child: DefaultTabController(
+        initialIndex: 1,
         length: myTabs.length,
         child: Scaffold(
           appBar: AppBar(
@@ -144,13 +146,156 @@ class _VisitScreenState extends State<VisitScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 20,
-                        left: 20,
-                        right: 20,
+                        left: 25,
+                        right: 25,
                       ),
                       child: ListView(
                         children: [
-                          TextField(),
-                          TextField(),
+                          Input(type: Type.select),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Type :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select Type",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Group :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select Group",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Branch :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select Branch",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Created By :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select User",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "StarDate :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select Date",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "EndDate :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select Date",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Status :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select status",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "WorkflowState :",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            enabled: true,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.grey[300]),
+                              hintText: "Select State",
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
                         ],
                       ),
                     ),
