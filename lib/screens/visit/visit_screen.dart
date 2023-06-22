@@ -57,7 +57,6 @@ class _VisitScreenState extends State<VisitScreen> {
     );
 
     final PanelController _panelController = PanelController();
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(

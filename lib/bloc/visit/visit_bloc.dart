@@ -26,9 +26,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if ((data['status']) != 200) {
         throw data['msg'];
       }
-      add(GetData(getRefresh: true, search: search));
+      emit(DeleteSuccess());
     } catch (e) {
-      emit(IsFailure(e.toString()));
+      emit(DeleteFailure(e.toString()));
     }
   }
 

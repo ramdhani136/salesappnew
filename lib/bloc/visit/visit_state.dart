@@ -31,3 +31,11 @@ class IsFailure extends VisitState {
 
   IsFailure(this.error);
 }
+
+class DeleteFailure extends VisitState {
+  String error;
+
+  DeleteFailure(this.error);
+}
+
+class DeleteSuccess extends VisitState {}
