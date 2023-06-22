@@ -129,9 +129,12 @@ class _VisitBodyState extends State<VisitBody> {
                         ),
                       );
                     },
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.grey[300],
+                    icon: Visibility(
+                      visible: visitBloc.search != "",
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.grey[300],
+                      ),
                     ),
                   ),
                   enabledBorder: const OutlineInputBorder(
