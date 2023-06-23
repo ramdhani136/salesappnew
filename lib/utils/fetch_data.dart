@@ -97,6 +97,25 @@ class FetchData {
     }
   }
 
+  Future<dynamic> Update<T>(String id, Map<String, dynamic> body) async {
+    try {
+      String uri = "${config.baseUri}$doc/$id";
+      final response = await http.put(
+        Uri.parse(uri),
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader:
+              'Bearer ${await localData.getToken()}',
+        },
+        body: jsonEncode(body),
+      );
+      final Map<String, dynamic> jsonData = await jsonDecode(response.body);
+      return jsonData;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> Delete<T>(String id) async {
     try {
       String uri = "${config.baseUri}$doc/$id";

@@ -24,6 +24,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     });
     on<DeleteOne>(_DeleteOne);
     on<ShowData>(_ShowData);
+    on<ChangeWorkflow>(_ChangeWorkflow);
   }
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {
@@ -35,6 +36,26 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       emit(DeleteSuccess());
     } catch (e) {
       emit(DeleteFailure(e.toString()));
+    }
+  }
+
+  Future<void> _ChangeWorkflow(
+      ChangeWorkflow event, Emitter<VisitState> emit) async {
+    try {
+      emit(IsLoading());
+      dynamic data = await FetchData(data: Data.visit).Update(
+        event.id,
+        {"nextState": event.nextStateId},
+      );
+
+      if (data['status'] != 200) {
+        throw data['msg'];
+      }
+
+      add(ShowData(event.id));
+    } catch (e) {
+      emit(IsFailure(e.toString()));
+      add(ShowData(event.id));
     }
   }
 

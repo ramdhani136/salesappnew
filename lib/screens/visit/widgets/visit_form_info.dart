@@ -27,6 +27,8 @@ class VisitFormInfo extends StatelessWidget {
             child: ListView(
               children: [
                 Text("${state.data.name}"),
+                Text("${state.data.checkIn!.lat}"),
+                Text("${state.data.checkIn!.lng}"),
                 Text(
                   "Dua",
                 )

@@ -30,3 +30,9 @@ class DeleteOne extends VisitEvent {
 
   DeleteOne(this.id);
 }
+
+class ChangeWorkflow extends VisitEvent {
+  String id;
+  String nextStateId;
+  ChangeWorkflow({required this.id, required this.nextStateId});
+}

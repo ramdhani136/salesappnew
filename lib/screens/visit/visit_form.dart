@@ -98,63 +98,93 @@ class VisitForm extends StatelessWidget {
             elevation: 0,
             automaticallyImplyLeading: false,
             backgroundColor: const Color(0xFFE6212A),
-            title: BlocBuilder<VisitBloc, VisitState>(
-              builder: (context, state) {
-                if (state is IsLoading) {
-                  return Text("Loading...");
-                }
-
-                if (state is IsShowLoaded) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const DrawerAppButton(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.article_outlined, size: 16),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: Text(
-                              " Visit (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
-                              style: const TextStyle(fontSize: 18),
-                            ),
+            title: BlocListener<VisitBloc, VisitState>(
+              listener: (context, state) {
+                if (state is IsFailure) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error Update'),
+                        content: Text(state.error),
+                        actions: [
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              // Tindakan yang ingin Anda lakukan saat tombol OK ditekan
+                              Navigator.of(context).pop(); // Menutup dialog
+                            },
                           ),
                         ],
-                      ),
-                      Row(children: [
-                        Visibility(
-                            visible: state.workflow.isNotEmpty,
-                            child: PopupMenuButton(
-                              padding: const EdgeInsets.all(0),
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: Color.fromARGB(255, 121, 8, 14),
-                              ),
-                              itemBuilder: (context) {
-                                return state.workflow.map((item) {
-                                  return PopupMenuItem(
-                                    child: InkWell(
-                                      onTap: () async {
-                                        Get.back();
-                                        print(item.nextState.id);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 10),
-                                        child: Text(item.action),
-                                      ),
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                            )),
-                      ])
-                    ],
+                      );
+                    },
                   );
                 }
-                return Container();
               },
+              child: BlocBuilder<VisitBloc, VisitState>(
+                builder: (context, state) {
+                  if (state is IsLoading) {
+                    return Text("Loading...");
+                  }
+
+                  if (state is IsShowLoaded) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const DrawerAppButton(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.article_outlined, size: 16),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 3),
+                              child: Text(
+                                " Visit (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(children: [
+                          Visibility(
+                              visible: state.workflow.isNotEmpty,
+                              child: PopupMenuButton(
+                                padding: const EdgeInsets.all(0),
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Color.fromARGB(255, 121, 8, 14),
+                                ),
+                                itemBuilder: (context) {
+                                  return state.workflow.map((item) {
+                                    return PopupMenuItem(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Get.back();
+                                          BlocProvider.of<VisitBloc>(context)
+                                              .add(
+                                            ChangeWorkflow(
+                                                id: id,
+                                                nextStateId: item.nextState.id),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Text(item.action),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList();
+                                },
+                              )),
+                        ])
+                      ],
+                    );
+                  }
+                  return Container();
+                },
+              ),
             ),
             centerTitle: true,
             bottom: PreferredSize(
