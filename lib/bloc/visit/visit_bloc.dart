@@ -8,6 +8,7 @@ import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
+import 'package:salesappnew/models/action_model.dart';
 part 'visit_event.dart';
 part 'visit_state.dart';
 
@@ -46,14 +47,16 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
-      // print(data['history']);
-      // print(data['workflow']);
+      List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
 
       if ((data['status']) != 200) {
         throw data['msg'];
       }
 
-      emit(IsShowLoaded(data: result));
+      emit(IsShowLoaded(
+        data: result,
+        workflow: action,
+      ));
     } catch (e) {
       emit(IsFailure(e.toString()));
     }

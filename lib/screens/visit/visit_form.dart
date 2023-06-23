@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
@@ -97,64 +98,63 @@ class VisitForm extends StatelessWidget {
             elevation: 0,
             automaticallyImplyLeading: false,
             backgroundColor: const Color(0xFFE6212A),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const DrawerAppButton(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.article_outlined, size: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      child: Text(
-                        " Visit (Completed)",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(children: [
-                  Visibility(
-                    visible: true,
-                    child: PopupMenuButton(
-                      padding: const EdgeInsets.all(0),
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: Color.fromARGB(255, 121, 8, 14),
-                      ),
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          child: InkWell(
-                            onTap: () async {
-                              Get.back();
-                              // await VisitC.onChangeStatus(docId, context, "2");
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Text('Cancel'),
+            title: BlocBuilder<VisitBloc, VisitState>(
+              builder: (context, state) {
+                if (state is IsLoading) {
+                  return Text("Loading...");
+                }
+
+                if (state is IsShowLoaded) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const DrawerAppButton(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.article_outlined, size: 16),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: Text(
+                              " Visit (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ),
-                        ),
-                        PopupMenuItem(
-                          child: InkWell(
-                            onTap: () async {
-                              Get.back();
-                              // await VisitC.deleteById(docId, context);
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Text('Delete'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ])
-              ],
+                        ],
+                      ),
+                      Row(children: [
+                        Visibility(
+                            visible: state.workflow.isNotEmpty,
+                            child: PopupMenuButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: Color.fromARGB(255, 121, 8, 14),
+                              ),
+                              itemBuilder: (context) {
+                                return state.workflow.map((item) {
+                                  return PopupMenuItem(
+                                    child: InkWell(
+                                      onTap: () async {
+                                        Get.back();
+                                        print(item.nextState.id);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        child: Text(item.action),
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                            )),
+                      ])
+                    ],
+                  );
+                }
+                return Container();
+              },
             ),
             centerTitle: true,
             bottom: PreferredSize(

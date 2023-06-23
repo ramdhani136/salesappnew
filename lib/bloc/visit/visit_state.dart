@@ -27,11 +27,11 @@ class IsLoaded extends VisitState {
 class IsShowLoaded extends VisitState {
   Visitmodel data;
   // List history;
-  // List workflow;
+  List<ActionModel> workflow;
   IsShowLoaded({
     required this.data,
     // required this.history,
-    // required this.workflow,
+    required this.workflow,
   });
 }
 
