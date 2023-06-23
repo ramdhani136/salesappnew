@@ -17,10 +17,7 @@ class VisitFormInfo extends StatelessWidget {
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
         if (state is IsLoading) {
-          return const Padding(
-            padding: EdgeInsets.only(top: 150),
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is IsShowLoaded) {
