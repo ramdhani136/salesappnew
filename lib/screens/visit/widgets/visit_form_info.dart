@@ -62,11 +62,11 @@ class VisitFormInfo extends StatelessWidget {
                                 horizontal: 15, vertical: 8),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Color.fromARGB(255, 52, 52, 52),
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: Color.fromARGB(
-                                      255, 239, 237, 237), // Warna border
+                                      255, 32, 32, 32), // Warna border
                                   width: 1.0, // Ketebalan border
                                 ),
                               ),
@@ -81,6 +81,8 @@ class VisitFormInfo extends StatelessWidget {
                                         state.history[index].user.name,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.italic,
                                         ),
                                       ),
                                       Text(
@@ -90,9 +92,9 @@ class VisitFormInfo extends StatelessWidget {
                                                   .toLocal(),
                                             ),
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                        ),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            color: Colors.white),
                                       )
                                     ],
                                   ),
@@ -101,7 +103,12 @@ class VisitFormInfo extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 8,
                                   ),
-                                  child: Text(state.history[index].message),
+                                  child: Text(
+                                    state.history[index].message,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
