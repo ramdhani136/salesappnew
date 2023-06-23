@@ -12,7 +12,7 @@ class VisitFormInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PanelController _panelController = PanelController();
+    final PanelController panelController = PanelController();
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
@@ -22,7 +22,7 @@ class VisitFormInfo extends StatelessWidget {
 
         if (state is IsShowLoaded) {
           return SlidingUpPanel(
-            controller: _panelController,
+            controller: panelController,
             defaultPanelState: PanelState.CLOSED,
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(18),
@@ -37,9 +37,9 @@ class VisitFormInfo extends StatelessWidget {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        _panelController.isPanelOpen
-                            ? _panelController.close()
-                            : _panelController.open();
+                        panelController.isPanelOpen
+                            ? panelController.close()
+                            : panelController.open();
                       },
                       child: Container(
                         width: 30,
