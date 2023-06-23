@@ -66,7 +66,7 @@ class VisitFormInfo extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: Color.fromARGB(
-                                      255, 229, 227, 227), // Warna border
+                                      255, 239, 237, 237), // Warna border
                                   width: 1.0, // Ketebalan border
                                 ),
                               ),
