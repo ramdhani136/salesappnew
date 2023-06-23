@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitFormInfo extends StatelessWidget {
   const VisitFormInfo({
@@ -9,6 +12,7 @@ class VisitFormInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PanelController _panelController = PanelController();
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
@@ -20,19 +24,102 @@ class VisitFormInfo extends StatelessWidget {
         }
 
         if (state is IsShowLoaded) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              visitBloc.add(ShowData("${state.data.id}"));
-            },
-            child: ListView(
-              children: [
-                Text("${state.data.name}"),
-                Text("${state.data.checkIn!.lat}"),
-                Text("${state.data.checkIn!.lng}"),
-                Text(
-                  "Dua",
-                )
-              ],
+          return SlidingUpPanel(
+            controller: _panelController,
+            defaultPanelState: PanelState.CLOSED,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(18),
+            ),
+            parallaxEnabled: true,
+            maxHeight: Get.height / 2,
+            minHeight: 30,
+            panel: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _panelController.isPanelOpen
+                            ? _panelController.close()
+                            : _panelController.open();
+                      },
+                      child: Container(
+                        width: 30,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.history.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    state.history[index].user.name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${DateFormat.yMd().add_jm().format(
+                                          DateTime.parse(
+                                                  "${state.history[index].createdAt}")
+                                              .toLocal(),
+                                        )}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              subtitle: Text(state.history[index].message),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                visitBloc.add(ShowData("${state.data.id}"));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 20,
+                ),
+                child: ListView(
+                  children: [
+                    Text("${state.data.name}"),
+                    Text("${state.data.checkIn!.lat}"),
+                    Text("${state.data.checkIn!.lng}"),
+                    Text(
+                      "Dua",
+                    )
+                  ],
+                ),
+              ),
             ),
           );
         }

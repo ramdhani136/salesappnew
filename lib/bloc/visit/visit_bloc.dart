@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
@@ -69,6 +70,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
+      List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);
 
       if ((data['status']) != 200) {
         throw data['msg'];
@@ -77,6 +79,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       emit(IsShowLoaded(
         data: result,
         workflow: action,
+        history: history,
       ));
     } catch (e) {
       emit(IsFailure(e.toString()));

@@ -199,15 +199,12 @@ class VisitForm extends StatelessWidget {
               ),
             ),
           ),
-          body: Padding(
-            padding: EdgeInsets.only(bottom: 200),
-            child: TabBarView(
-              children: [
-                VisitFormInfo(),
-                Text("home"),
-                Text("home"),
-              ],
-            ),
+          body: TabBarView(
+            children: [
+              VisitFormInfo(),
+              Text("home"),
+              Text("home"),
+            ],
           ),
           bottomNavigationBar: BlocProvider.value(
             value: BlocProvider.of<AuthBloc>(context),
