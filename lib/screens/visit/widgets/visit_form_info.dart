@@ -69,30 +69,38 @@ class VisitFormInfo extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: ListTile(
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      state.history[index].user.name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                title: Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        state.history[index].user.name,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "${DateFormat.yMd().add_jm().format(
-                                            DateTime.parse(
-                                                    "${state.history[index].createdAt}")
-                                                .toLocal(),
-                                          )}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                      ),
-                                    )
-                                  ],
+                                      Text(
+                                        DateFormat.yMd().add_jm().format(
+                                              DateTime.parse(
+                                                      "${state.history[index].createdAt}")
+                                                  .toLocal(),
+                                            ),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                subtitle: Text(state.history[index].message),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                  ),
+                                  child: Text(state.history[index].message),
+                                ),
                               ),
                             ),
                           );
