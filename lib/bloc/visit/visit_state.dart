@@ -24,6 +24,17 @@ class IsLoaded extends VisitState {
   }
 }
 
+class IsShowLoaded extends VisitState {
+  Visitmodel data;
+  // List history;
+  // List workflow;
+  IsShowLoaded({
+    required this.data,
+    // required this.history,
+    // required this.workflow,
+  });
+}
+
 class IsLoadingPage extends VisitState {}
 
 class IsFailure extends VisitState {

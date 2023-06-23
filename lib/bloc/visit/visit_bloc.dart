@@ -22,6 +22,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       search = event.search;
     });
     on<DeleteOne>(_DeleteOne);
+    on<ShowData>(_ShowData);
   }
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {
@@ -33,6 +34,28 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       emit(DeleteSuccess());
     } catch (e) {
       emit(DeleteFailure(e.toString()));
+    }
+  }
+
+  Future<void> _ShowData(ShowData event, Emitter<VisitState> emit) async {
+    try {
+      emit(IsLoading());
+      Map<String, dynamic> data = await FetchData(data: Data.visit).Show(
+        event.id,
+      );
+
+      Visitmodel result = Visitmodel.fromJson(data['data']);
+
+      // print(data['history']);
+      // print(data['workflow']);
+
+      if ((data['status']) != 200) {
+        throw data['msg'];
+      }
+
+      emit(IsShowLoaded(data: result));
+    } catch (e) {
+      emit(IsFailure(e.toString()));
     }
   }
 

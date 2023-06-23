@@ -93,18 +93,18 @@ class _VisitScreenState extends State<VisitScreen> {
                   // IconSearch(),
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<VisitForm>(
-                          builder: (_) => MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(
-                                value: BlocProvider.of<AuthBloc>(context),
-                              ),
-                            ],
-                            child: const VisitForm(),
-                          ),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute<VisitForm>(
+                      //     builder: (_) => MultiBlocProvider(
+                      //       providers: [
+                      //         BlocProvider.value(
+                      //           value: BlocProvider.of<AuthBloc>(context),
+                      //         ),
+                      //       ],
+                      //       child: VisitForm(),
+                      //     ),
+                      //   ),
+                      // );
                     },
                     icon: const Icon(
                       Icons.add,
