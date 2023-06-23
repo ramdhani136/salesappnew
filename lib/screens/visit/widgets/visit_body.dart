@@ -226,7 +226,7 @@ class _VisitBodyState extends State<VisitBody> {
                           Visibility(
                             visible: state.pageLoading,
                             child: const Padding(
-                              padding: EdgeInsets.only(bottom: 30),
+                              padding: EdgeInsets.only(bottom: 50),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
