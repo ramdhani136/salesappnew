@@ -64,6 +64,11 @@ class VisitFormInfo extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors.grey[100],
                                 borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Color.fromARGB(
+                                      255, 229, 227, 227), // Warna border
+                                  width: 1.0, // Ketebalan border
+                                ),
                               ),
                               child: ListTile(
                                 title: Padding(
