@@ -1,11 +1,10 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
-
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';

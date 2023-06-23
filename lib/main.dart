@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
-            print(state);
             if (state is AuthUnauthenticated) {
               Navigator.of(context).push(
                 MaterialPageRoute<LoginScreen>(

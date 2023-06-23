@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
@@ -76,19 +75,14 @@ class _VisitScreenState extends State<VisitScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const DrawerAppButton(),
-                Row(
+                const Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
-                      child: InkWell(
-                        onTap: () {
-                          BlocProvider.of<AuthBloc>(context).add(OnLogout());
-                        },
-                        child: Text(
-                          "Visit List",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                      child: Text(
+                        "Visit List",
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
                   ],
@@ -308,23 +302,23 @@ class _VisitScreenState extends State<VisitScreen> {
                 ],
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(bottom: 200),
+            body: const Padding(
+              padding: EdgeInsets.only(bottom: 200),
               child: TabBarView(
                 children: [
                   VisitBody(
                     status: 0,
-                    colorFontHeader: const Color.fromARGB(255, 250, 236, 214),
-                    colorHeader: const Color(0xFFE8A53A),
+                    colorFontHeader: Color.fromARGB(255, 250, 236, 214),
+                    colorHeader: Color(0xFFE8A53A),
                   ),
                   VisitBody(
-                    colorFontHeader: const Color.fromARGB(255, 190, 255, 240),
-                    colorHeader: const Color(0xFF20826B),
+                    colorFontHeader: Color.fromARGB(255, 190, 255, 240),
+                    colorHeader: Color(0xFF20826B),
                     status: 1,
                   ),
                   VisitBody(
-                    colorFontHeader: const Color.fromARGB(255, 230, 230, 230),
-                    colorHeader: const Color(0xFF657187),
+                    colorFontHeader: Color.fromARGB(255, 230, 230, 230),
+                    colorHeader: Color(0xFF657187),
                     status: 2,
                   ),
                 ],

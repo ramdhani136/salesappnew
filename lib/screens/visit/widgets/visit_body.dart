@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/screens/login_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
 
 class VisitBody extends StatefulWidget {
@@ -35,7 +33,7 @@ class _VisitBodyState extends State<VisitBody> {
     super.initState();
     visitBloc = BlocProvider.of<VisitBloc>(context);
     _textEditingController = TextEditingController(text: visitBloc.search);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       visitBloc.add(GetData(
         status: widget.status,
         getRefresh: true,
@@ -255,13 +253,11 @@ class _VisitBodyState extends State<VisitBody> {
           );
         }
 
-        return Center(
-          child: Container(
-            child: Text(
-              "Data Not Found!",
-              style: TextStyle(
-                color: Colors.grey,
-              ),
+        return const Center(
+          child: Text(
+            "Data Not Found!",
+            style: TextStyle(
+              color: Colors.grey,
             ),
           ),
         );
