@@ -23,19 +23,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
+        BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(
             AuthRepository(),
           )..add(AppStarted()),
@@ -43,20 +38,45 @@ class _MyAppState extends State<MyApp> {
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if (state is AuthAuthenticated) {
-            return const HomeScreen();
-          }
+        home: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            print(state);
+            if (state is AuthUnauthenticated) {
+              Navigator.of(context).push(
+                MaterialPageRoute<LoginScreen>(
+                  builder: (_) => BlocProvider.value(
+                    value: BlocProvider.of<AuthBloc>(context),
+                    child: const LoginScreen(),
+                  ),
+                ),
+              );
+            }
+            if (state is AuthAuthenticated) {
+              Navigator.of(context).push(
+                MaterialPageRoute<LoginScreen>(
+                  builder: (_) => BlocProvider.value(
+                    value: BlocProvider.of<AuthBloc>(context),
+                    child: const HomeScreen(),
+                  ),
+                ),
+              );
+            }
+          },
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthLoading) {
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
 
-          if (state is AuthLoading) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          return const LoginScreen();
-        }),
+              // Tampilkan halaman kosong jika tidak ada kondisi yang cocok
+              return Container();
+            },
+          ),
+        ),
       ),
     );
   }

@@ -186,10 +186,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const VisitScreen();
-                          },
+                        MaterialPageRoute<VisitScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const VisitScreen(),
+                          ),
                         ),
                       );
                     },

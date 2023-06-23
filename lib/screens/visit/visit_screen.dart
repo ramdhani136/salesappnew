@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
@@ -75,14 +76,19 @@ class _VisitScreenState extends State<VisitScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const DrawerAppButton(),
-                const Row(
+                Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
-                      child: Text(
-                        "Visit List",
-                        style: TextStyle(fontSize: 18),
+                      child: InkWell(
+                        onTap: () {
+                          BlocProvider.of<AuthBloc>(context).add(OnLogout());
+                        },
+                        child: Text(
+                          "Visit List",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ),
                   ],
