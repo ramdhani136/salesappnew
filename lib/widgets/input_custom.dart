@@ -41,9 +41,9 @@ class _InfiniteScrollSelectListState extends State<InfiniteScrollSelectList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.height / 2,
+      height: 300,
       child: Column(
-        mainAxisSize: MainAxisSize.max, // Set mainAxisSize to MainAxisSize.max
+        // mainAxisSize: MainAxisSize.max, // Set mainAxisSize to MainAxisSize.max
         children: [
           Padding(
             padding: const EdgeInsets.all(0),
