@@ -30,7 +30,7 @@ class VisitForm extends StatelessWidget {
             Text(
               "Info",
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 color: Color.fromARGB(255, 75, 75, 75),
               ),
             ),
@@ -51,7 +51,7 @@ class VisitForm extends StatelessWidget {
             Text(
               "Task",
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 color: Color.fromARGB(255, 75, 75, 75),
               ),
             ),
@@ -72,7 +72,7 @@ class VisitForm extends StatelessWidget {
             Text(
               "Result",
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 color: Color.fromARGB(255, 75, 75, 75),
               ),
             ),
@@ -215,6 +215,18 @@ class VisitForm extends StatelessWidget {
           bottomNavigationBar: BlocProvider.value(
             value: BlocProvider.of<AuthBloc>(context),
             child: BottomNavigator(2),
+          ),
+          floatingActionButton: Visibility(
+            visible: true,
+            child: SizedBox(
+              height: 150.0,
+              width: 70.0,
+              child: FloatingActionButton(
+                onPressed: () {},
+                backgroundColor: Colors.grey[850],
+                child: const Icon(Icons.save),
+              ),
+            ),
           ),
         ),
       ),
