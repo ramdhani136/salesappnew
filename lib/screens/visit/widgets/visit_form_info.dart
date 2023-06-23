@@ -87,7 +87,7 @@ class VisitFormInfo extends StatelessWidget {
                                                       "${state.history[index].createdAt}")
                                                   .toLocal(),
                                             ),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
                                         ),
