@@ -60,6 +60,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {

@@ -67,7 +67,6 @@ class DialogSignature extends StatelessWidget {
                           Get.back();
                         } else {
                           Get.back();
-                          visitBloc.add(ClearSignature(id: id));
                         }
                       },
                       style: ElevatedButton.styleFrom(
