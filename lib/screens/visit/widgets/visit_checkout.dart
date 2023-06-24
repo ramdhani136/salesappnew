@@ -72,7 +72,10 @@ class VisitCheckOut extends StatelessWidget {
                             )
                           },
                           initialCameraPosition: CameraPosition(
-                              target: checkInCordinate,
+                              target: LatLng(
+                                loc.cordinate!.latitude,
+                                loc.cordinate!.longitude,
+                              ),
                               bearing: 192.8334901395799,
                               tilt: 59.440717697143555,
                               zoom: 18.151926040649414),
