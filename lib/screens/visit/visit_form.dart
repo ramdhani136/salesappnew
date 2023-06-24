@@ -283,39 +283,43 @@ class VisitForm extends StatelessWidget {
                                 visitBloc: visitBloc,
                               ),
                             ),
-                            Container(
-                              width: Get.width,
-                              height: Get.width / 1.5,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    225,
-                                    225,
-                                    225,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: visitBloc.signature == null
-                                  ? Center(
-                                      child: Text(
-                                        "Please sign",
-                                        style:
-                                            TextStyle(color: Colors.grey[300]),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: Image.memory(visitBloc.signature!),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                width: Get.width,
+                                height: Get.width / 1.5,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      225,
+                                      225,
+                                      225,
                                     ),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child: visitBloc.signature == null
+                                    ? Center(
+                                        child: Text(
+                                          "Please sign",
+                                          style: TextStyle(
+                                              color: Colors.grey[300]),
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(30.0),
+                                        child:
+                                            Image.memory(visitBloc.signature!),
+                                      ),
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: ElevatedButton(
                           onPressed: () {
                             print(visitBloc.checkOutAddress);

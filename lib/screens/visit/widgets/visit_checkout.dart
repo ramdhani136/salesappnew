@@ -51,42 +51,47 @@ class VisitCheckOut extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: GoogleMap(
-                      mapType: MapType.normal,
-                      myLocationEnabled: true,
-                      trafficEnabled: true,
-                      compassEnabled: true,
-                      myLocationButtonEnabled: true,
-                      markers: {
-                        Marker(
-                          onTap: () {},
-                          markerId: const MarkerId('PT. Abadi Baru'),
-                          infoWindow: const InfoWindow(
-                            title: 'PT. Abadi Baru',
-                          ),
-                          visible: true,
-                          icon: BitmapDescriptor.defaultMarker,
-                          position: checkInCordinate,
-                        )
-                      },
-                      initialCameraPosition: CameraPosition(
-                          target: checkInCordinate,
-                          bearing: 192.8334901395799,
-                          tilt: 59.440717697143555,
-                          zoom: 18.151926040649414),
-                      onMapCreated: (GoogleMapController controller) {
-                        _controller.complete(controller);
-                      },
-                      circles: <Circle>{
-                        Circle(
-                          circleId: const CircleId('myLocation'),
-                          center: checkInCordinate, // Koordinat lokasi saat ini
-                          radius: 50, // Jari-jari dalam meter
-                          strokeWidth: 2,
-                          strokeColor: Colors.amber,
-                          fillColor: Colors.amber.withOpacity(0.2),
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          mapType: MapType.normal,
+                          myLocationEnabled: true,
+                          trafficEnabled: true,
+                          compassEnabled: true,
+                          myLocationButtonEnabled: true,
+                          markers: {
+                            Marker(
+                              onTap: () {},
+                              markerId: const MarkerId('PT. Abadi Baru'),
+                              infoWindow: const InfoWindow(
+                                title: 'PT. Abadi Baru',
+                              ),
+                              visible: true,
+                              icon: BitmapDescriptor.defaultMarker,
+                              position: checkInCordinate,
+                            )
+                          },
+                          initialCameraPosition: CameraPosition(
+                              target: checkInCordinate,
+                              bearing: 192.8334901395799,
+                              tilt: 59.440717697143555,
+                              zoom: 18.151926040649414),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                          circles: <Circle>{
+                            Circle(
+                              circleId: const CircleId('myLocation'),
+                              center:
+                                  checkInCordinate, // Koordinat lokasi saat ini
+                              radius: 50, // Jari-jari dalam meter
+                              strokeWidth: 2,
+                              strokeColor: Colors.amber,
+                              fillColor: Colors.amber.withOpacity(0.2),
+                            ),
+                          },
                         ),
-                      },
+                      ],
                     ),
                   ),
                   Padding(
