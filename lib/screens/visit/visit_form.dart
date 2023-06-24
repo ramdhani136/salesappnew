@@ -8,6 +8,7 @@ import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
+import 'package:salesappnew/widgets/dialog_signature.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_checkout.dart';
 import 'package:signature/signature.dart';
@@ -284,7 +285,13 @@ class VisitForm extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      const DialogSignature(),
+                                );
+                              },
                               child: Container(
                                 width: Get.width,
                                 height: Get.width / 1.5,
