@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -33,6 +34,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<DeleteOne>(_DeleteOne);
     on<ShowData>(_ShowData);
     on<ChangeWorkflow>(_ChangeWorkflow);
+    on<SetCheckOut>(_SetCheckOut);
     on<UpdateSignature>(_exportSignature);
     on<ClearSignature>(
       (event, emit) {
@@ -95,6 +97,29 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     }
   }
 
+  Future<void> _SetCheckOut(SetCheckOut event, Emitter<VisitState> emit) async {
+    try {
+      emit(IsLoading());
+      dynamic data = await FetchData(data: Data.visit).Update(
+        event.id,
+        {
+          "signature": base64.encode(signature!),
+          "checkOutLat": checkOutCordinates!.latitude,
+          "checkOutLng": checkOutCordinates!.longitude
+        },
+      );
+
+      if (data['status'] != 200) {
+        throw data['msg'];
+      }
+
+      add(ShowData(event.id));
+    } catch (e) {
+      emit(IsFailure(e.toString()));
+      add(ShowData(event.id));
+    }
+  }
+
   Future<void> _ShowData(ShowData event, Emitter<VisitState> emit) async {
     try {
       emit(IsLoading());
@@ -117,6 +142,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         history: history,
       ));
     } catch (e) {
+      print(e);
       emit(IsFailure(e.toString()));
     }
   }

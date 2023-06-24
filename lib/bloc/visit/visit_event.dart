@@ -54,3 +54,10 @@ class ClearSignature extends VisitEvent {
     required this.id,
   });
 }
+
+class SetCheckOut extends VisitEvent {
+  String id;
+  SetCheckOut({
+    required this.id,
+  });
+}

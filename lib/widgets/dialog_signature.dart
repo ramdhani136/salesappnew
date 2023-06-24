@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_single_cascade_in_expression_statements
+// ignore_for_file: non_constant_identifier_names, avoid_single_cascade_in_expression_statements, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

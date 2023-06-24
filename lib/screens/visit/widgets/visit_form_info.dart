@@ -135,6 +135,7 @@ class VisitFormInfo extends StatelessWidget {
                     Text("${state.data.name}"),
                     Text("${state.data.checkIn!.lat}"),
                     Text("${state.data.checkIn!.lng}"),
+                    Text("${state.data.checkOut?.lng}"),
                     Text(
                       "Dua",
                     )

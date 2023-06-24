@@ -224,7 +224,7 @@ class VisitForm extends StatelessWidget {
             builder: (context, state) {
               if (state is IsShowLoaded) {
                 return Visibility(
-                  visible: state.data.status == "0",
+                  visible: state.data.checkOut == null,
                   child: SizedBox(
                     height: 150.0,
                     width: 70.0,
@@ -252,7 +252,6 @@ class VisitForm extends StatelessWidget {
       context: context,
       isScrollControlled: true, // Membuat modal menggunakan tinggi penuh
       builder: (BuildContext context) {
-        final SignatureController controllerSignature = SignatureController();
         return Center(
           child: Container(
             width: Get.width, // Lebar penuh
@@ -330,25 +329,30 @@ class VisitForm extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(20),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            print(visitBloc.checkOutAddress);
-                            print(visitBloc.checkOutCordinates);
-                            // Aksi saat tombol ditekan
-                          },
-                          child: Text(
-                            'Check Out',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                        child: Visibility(
+                          visible: visitBloc.signature != null &&
+                              visitBloc.checkOutCordinates != null,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              visitBloc.add(
+                                SetCheckOut(id: id),
+                              );
+                              // Aksi saat tombol ditekan
+                            },
+                            child: Text(
+                              'Check Out',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color.fromARGB(255, 33, 143, 36),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 13),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color.fromARGB(255, 33, 143, 36),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 13),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                         ),

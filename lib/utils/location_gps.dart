@@ -46,4 +46,18 @@ class LocationGps {
       rethrow;
     }
   }
+
+  Future<double> calculateDistance(Position start, Position end) async {
+    double distanceInMeters = Geolocator.distanceBetween(
+      start.latitude,
+      start.longitude,
+      end.latitude,
+      end.longitude,
+    );
+
+    // Konversi jarak dalam meter menjadi kilometer
+    double distanceInKm = distanceInMeters / 1000;
+
+    return distanceInKm;
+  }
 }

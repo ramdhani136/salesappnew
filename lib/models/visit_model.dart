@@ -52,7 +52,8 @@ class Visitmodel {
         status: json["status"],
         workflowState: json["workflowState"],
         updatedAt: DateTime.parse(json["updatedAt"]),
-        // checkOut: Check.fromJson(json["checkOut"]),
+        checkOut:
+            json["checkOut"] != null ? Check.fromJson(json["checkOut"]) : null,
         customerGroup: Branch.fromJson(json["customerGroup"]),
         branch: Branch.fromJson(json["branch"]),
         schedulelist: List<dynamic>.from(json["schedulelist"].map((x) => x)),
@@ -64,6 +65,7 @@ class Visitmodel {
 
       return data.map((e) => Visitmodel.fromJson(e)).toList();
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
