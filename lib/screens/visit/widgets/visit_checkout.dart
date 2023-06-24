@@ -62,9 +62,9 @@ class VisitCheckOut extends StatelessWidget {
                           markers: {
                             Marker(
                               onTap: () {},
-                              markerId: const MarkerId('PT. Abadi Baru'),
+                              markerId: const MarkerId('CheckIn Location'),
                               infoWindow: const InfoWindow(
-                                title: 'PT. Abadi Baru',
+                                title: 'CheckIn Location',
                               ),
                               visible: true,
                               icon: BitmapDescriptor.defaultMarker,
