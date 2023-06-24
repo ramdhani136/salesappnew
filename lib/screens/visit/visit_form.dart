@@ -252,7 +252,7 @@ class VisitForm extends StatelessWidget {
       context: context,
       isScrollControlled: true, // Membuat modal menggunakan tinggi penuh
       builder: (BuildContext context) {
-        final controllerSignature = SignatureController();
+        final SignatureController controllerSignature = SignatureController();
         return Center(
           child: Container(
             width: Get.width, // Lebar penuh
@@ -289,7 +289,10 @@ class VisitForm extends StatelessWidget {
                                 await showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      const DialogSignature(),
+                                      DialogSignature(
+                                    id: id,
+                                    visitBloc: visitBloc,
+                                  ),
                                 );
                               },
                               child: Container(

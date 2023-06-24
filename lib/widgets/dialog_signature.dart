@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
 import 'package:signature/signature.dart';
 
 class DialogSignature extends StatelessWidget {
-  const DialogSignature({super.key});
+  VisitBloc visitBloc;
+  String id;
+  DialogSignature({super.key, required this.visitBloc, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +61,13 @@ class DialogSignature extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (signatureController.isNotEmpty) {
-                          // await VisitC.exportSignature();
+                          visitBloc.add(UpdateSignature(
+                              controller: signatureController, id: id));
 
                           Get.back();
                         } else {
                           Get.back();
-                          // await VisitC.clearSignature();
+                          visitBloc.add(ClearSignature(id: id));
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -81,8 +85,8 @@ class DialogSignature extends StatelessWidget {
                           backgroundColor: Colors.red,
                         ),
                         onPressed: () async {
-                          signatureController.value.clear();
-                          // await VisitC.clearSignature();
+                          signatureController.clear();
+                          visitBloc.add(ClearSignature(id: id));
                         },
                         child: const Text("Clear"),
                       ),

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 
 part of 'visit_bloc.dart';
@@ -35,4 +36,21 @@ class ChangeWorkflow extends VisitEvent {
   String id;
   String nextStateId;
   ChangeWorkflow({required this.id, required this.nextStateId});
+}
+
+class UpdateSignature extends VisitEvent {
+  String id;
+  final SignatureController controller;
+
+  UpdateSignature({
+    required this.id,
+    required this.controller,
+  });
+}
+
+class ClearSignature extends VisitEvent {
+  String id;
+  ClearSignature({
+    required this.id,
+  });
 }

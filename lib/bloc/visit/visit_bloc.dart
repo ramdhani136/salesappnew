@@ -13,6 +13,7 @@ import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
+import 'package:signature/signature.dart';
 part 'visit_event.dart';
 part 'visit_state.dart';
 
@@ -32,6 +33,33 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<DeleteOne>(_DeleteOne);
     on<ShowData>(_ShowData);
     on<ChangeWorkflow>(_ChangeWorkflow);
+    on<UpdateSignature>(_exportSignature);
+    on<ClearSignature>(
+      (event, emit) {
+        signature = null;
+        add(ShowData(event.id));
+      },
+    );
+  }
+
+  Future<Uint8List?> _exportSignature(
+      UpdateSignature event, Emitter<VisitState> emit) async {
+    try {
+      final exportController = SignatureController(
+        penStrokeWidth: 2,
+        penColor: Colors.black,
+        exportBackgroundColor: Colors.white,
+        points: event.controller.points,
+      );
+
+      final isSignature = await exportController.toPngBytes();
+      exportController.dispose();
+
+      signature = isSignature;
+      add(ShowData(event.id));
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {

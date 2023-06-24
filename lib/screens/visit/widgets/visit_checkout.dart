@@ -47,7 +47,6 @@ class VisitCheckOut extends StatelessWidget {
                 ),
               );
 
-              print(loc.location);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
