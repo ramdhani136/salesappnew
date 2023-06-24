@@ -144,7 +144,7 @@ class VisitFormInfo extends StatelessWidget {
             ),
           );
         }
-        return Center(
+        return const Center(
           child: Text("No data"),
         );
       },
