@@ -9,7 +9,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
-import 'package:salesappnew/widgets/maps.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_checkout.dart';
 import 'package:signature/signature.dart';
 
 class VisitForm extends StatelessWidget {
@@ -275,7 +275,7 @@ class VisitForm extends StatelessWidget {
                         child: Column(
                           children: [
                             Expanded(
-                              child: Maps(
+                              child: VisitCheckOut(
                                 checkInCordinate: LatLng(
                                   state.data.checkIn!.lat!,
                                   state.data.checkIn!.lng!,
@@ -284,28 +284,32 @@ class VisitForm extends StatelessWidget {
                               ),
                             ),
                             Container(
-                                width: Get.width,
-                                height: Get.width / 1.5,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color.fromARGB(255, 213, 213, 213),
+                              width: Get.width,
+                              height: Get.width / 1.5,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(
+                                    255,
+                                    225,
+                                    225,
+                                    225,
                                   ),
-                                  color: Colors.white,
                                 ),
-                                child:
-                                    //  VisitC.signature == null
-                                    //     ?
-                                    Center(
-                                  child: Text(
-                                    "Please sign",
-                                    style: TextStyle(color: Colors.grey[300]),
-                                  ),
-                                )
-                                // : Padding(
-                                //     padding: const EdgeInsets.all(30.0),
-                                //     child: Image.memory(VisitC.signature!),
-                                //   ),
-                                ),
+                                color: Colors.white,
+                              ),
+                              child: visitBloc.signature == null
+                                  ? Center(
+                                      child: Text(
+                                        "Please sign",
+                                        style:
+                                            TextStyle(color: Colors.grey[300]),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(30.0),
+                                      child: Image.memory(visitBloc.signature!),
+                                    ),
+                            ),
                           ],
                         ),
                       ),

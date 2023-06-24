@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,12 +8,13 @@ import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
-class Maps extends StatelessWidget {
+class VisitCheckOut extends StatelessWidget {
   VisitBloc visitBloc;
   LatLng checkInCordinate;
   late String address;
   late LatLng cordinate;
-  Maps({super.key, required this.checkInCordinate, required this.visitBloc});
+  VisitCheckOut(
+      {super.key, required this.checkInCordinate, required this.visitBloc});
 
   @override
   Widget build(BuildContext context) {
