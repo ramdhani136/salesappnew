@@ -1,8 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import
 
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/models/history_model.dart';
@@ -17,6 +20,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
   String search = "";
   AuthBloc authBloc = AuthBloc(AuthRepository());
+  Position? checkOutCordinates;
+  String? checkOutAddress;
+  Uint8List? signature;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);

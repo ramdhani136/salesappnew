@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
+import 'package:salesappnew/widgets/maps.dart';
+import 'package:signature/signature.dart';
 
 class VisitForm extends StatelessWidget {
   String id;
@@ -216,20 +219,133 @@ class VisitForm extends StatelessWidget {
             value: BlocProvider.of<AuthBloc>(context),
             child: BottomNavigator(2),
           ),
-          floatingActionButton: Visibility(
-            visible: true,
-            child: SizedBox(
-              height: 150.0,
-              width: 70.0,
-              child: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: Colors.grey[850],
-                child: const Icon(Icons.save),
-              ),
-            ),
+          floatingActionButton: BlocBuilder<VisitBloc, VisitState>(
+            builder: (context, state) {
+              if (state is IsShowLoaded) {
+                return Visibility(
+                  visible: state.data.status == "0",
+                  child: SizedBox(
+                    height: 150.0,
+                    width: 70.0,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        showCustomModal(
+                            context, BlocProvider.of<VisitBloc>(context));
+                      },
+                      backgroundColor: Colors.grey[850],
+                      child: const Icon(Icons.done_outlined),
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
           ),
         ),
       ),
+    );
+  }
+
+  void showCustomModal(BuildContext context, VisitBloc visitBloc) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Membuat modal menggunakan tinggi penuh
+      builder: (BuildContext context) {
+        final controllerSignature = SignatureController();
+        return Center(
+          child: Container(
+            width: Get.width, // Lebar penuh
+            // height: 300, // Tinggi penuh
+            height: MediaQuery.of(context).size.height, // Tinggi penuh
+            child: BlocBuilder<VisitBloc, VisitState>(
+              bloc: visitBloc,
+              builder: (context, state) {
+                if (state is IsShowLoaded) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // InkWell(
+                      //   child: Text('Tutup'),
+                      //   onTap: () {
+                      //     Navigator.of(context).pop(); // Menutup modal
+                      //   },
+                      // ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Maps(
+                                checkInCordinate: LatLng(
+                                  state.data.checkIn!.lat!,
+                                  state.data.checkIn!.lng!,
+                                ),
+                                visitBloc: visitBloc,
+                              ),
+                            ),
+                            Container(
+                                width: Get.width,
+                                height: Get.width / 1.5,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color.fromARGB(255, 213, 213, 213),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child:
+                                    //  VisitC.signature == null
+                                    //     ?
+                                    Center(
+                                  child: Text(
+                                    "Please sign",
+                                    style: TextStyle(color: Colors.grey[300]),
+                                  ),
+                                )
+                                // : Padding(
+                                //     padding: const EdgeInsets.all(30.0),
+                                //     child: Image.memory(VisitC.signature!),
+                                //   ),
+                                ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(20),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print(visitBloc.checkOutAddress);
+                            print(visitBloc.checkOutCordinates);
+                            // Aksi saat tombol ditekan
+                          },
+                          child: Text(
+                            'Check Out',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(255, 33, 143, 36),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 13),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      )
+
+                      // Text('Isi modal kustom'),
+                    ],
+                  );
+                }
+                return Container();
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

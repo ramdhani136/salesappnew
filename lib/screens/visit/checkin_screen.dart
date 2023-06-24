@@ -47,41 +47,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
           if (state is LocationFailure) {
             // _controller = Completer<GoogleMapController>();
             loc.add(GetLocationGps(notLoading: true));
-
-            // return Center(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(20),
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Container(
-            //           width: 300,
-            //           height: 180,
-            //           child: Image(
-            //             image: state.error !=
-            //                     "The location service on the device is disabled."
-            //                 ? const AssetImage("assets/icons/networkerror.png")
-            //                 : const AssetImage("assets/icons/maps.png"),
-            //             fit: BoxFit.contain,
-            //           ),
-            //         ),
-            //         const SizedBox(
-            //           height: 10,
-            //         ),
-            //         Text(
-            //           state.error ==
-            //                   "The location service on the device is disabled."
-            //               ? "Gps location is disabled"
-            //               : "Network Error!",
-            //           style: const TextStyle(
-            //             fontSize: 16,
-            //             color: Colors.grey,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // );
           }
 
           if (loc.cordinate != null) {
