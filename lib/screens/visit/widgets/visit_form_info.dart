@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/widgets/searchable_list.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitFormInfo extends StatefulWidget {
@@ -147,8 +147,13 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                 ),
                 child: ListView(
                   children: [
-                    SearchableList(
+                    CustomerField(
                       controller: customerC,
+                      type: Type.standard,
+                      disabled: false,
+                      onChange: (e) {
+                        print(e);
+                      },
                     ),
                   ],
                 ),

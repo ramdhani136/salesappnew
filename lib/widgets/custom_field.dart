@@ -1,9 +1,30 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SearchableList extends StatelessWidget {
+enum Type {
+  standard,
+  infiniteList,
+  list,
+}
+
+class CustomerField extends StatelessWidget {
+  String? placeholder;
+  Type type;
+  bool disabled;
+  Function? onChange;
+  Function? onReset;
   TextEditingController controller = TextEditingController();
-  SearchableList({super.key, required this.controller});
+  CustomerField({
+    super.key,
+    required this.controller,
+    required this.type,
+    this.disabled = false,
+    this.onChange,
+    this.onReset,
+    this.placeholder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +40,35 @@ class SearchableList extends StatelessWidget {
         ),
         InkWell(
             onTap: () {
-              showCustomModal(context);
+              if (!disabled) {
+                if (type == Type.infiniteList) {
+                  showCustomModal(context);
+                }
+              }
             },
             child: TextField(
               controller: controller,
+              onChanged: (value) {
+                if (onChange != null && !disabled) {
+                  onChange!(value);
+                }
+              },
               decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  onPressed: () async {},
-                  icon: const Icon(
-                    Icons.close,
-                    size: 20,
+                suffixIcon: Visibility(
+                  visible: !disabled,
+                  child: IconButton(
+                    onPressed: () async {
+                      if (!disabled) {
+                        controller.text = "";
+                        if (onReset != null) {
+                          onReset!();
+                        }
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 20,
+                    ),
                   ),
                 ),
                 enabledBorder: const OutlineInputBorder(
@@ -38,12 +78,12 @@ class SearchableList extends StatelessWidget {
                   ),
                 ),
                 border: const OutlineInputBorder(),
-                hintText: "Search your data",
+                hintText: placeholder ?? "Search your data",
                 hintStyle: TextStyle(color: Colors.grey[300]),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               ),
-              enabled: false,
+              enabled: !disabled,
             )),
       ],
     );
