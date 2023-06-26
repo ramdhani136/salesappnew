@@ -84,7 +84,13 @@ class _CustomFieldState extends State<CustomField> {
                   });
                 }
               },
+              style: TextStyle(
+                color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
+              ),
               decoration: InputDecoration(
+                // disabledBorder: UnderlineInputBorder(
+                //   borderSide: BorderSide(color: Colors.grey),
+                // ),
                 suffixIcon: Visibility(
                   visible: !widget.disabled,
                   child: IconButton(

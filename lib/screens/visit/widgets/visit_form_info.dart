@@ -207,10 +207,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                       title: "Customer",
                       controller: customerC,
                       type: Type.standard,
-                      disabled: false,
-                      onChange: (e) {
-                        print(e);
-                      },
+                      disabled: true,
                     ),
                     const SizedBox(
                       height: 15,
@@ -237,7 +234,6 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                       title: "Pic",
                       controller: picC,
                       type: Type.standard,
-                      disabled: true,
                     ),
                     const SizedBox(
                       height: 15,
