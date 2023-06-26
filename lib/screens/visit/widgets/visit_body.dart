@@ -105,8 +105,6 @@ class _VisitBodyState extends State<VisitBody> {
         }
       },
       builder: (context, state) {
-        print(state);
-
         if (state is IsLoading) {
           return const Center(
             child: CircularProgressIndicator(),

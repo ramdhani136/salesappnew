@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/widgets/searchable_list.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitFormInfo extends StatelessWidget {
@@ -132,6 +133,7 @@ class VisitFormInfo extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
+                    SearchableList(),
                     Text("${state.data.name}"),
                     Text("${state.data.checkIn!.lat}"),
                     Text("${state.data.checkIn!.lng}"),

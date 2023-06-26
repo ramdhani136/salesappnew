@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
@@ -53,18 +52,26 @@ class VisitBodyList extends StatelessWidget {
           );
         },
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<VisitForm>(
-              builder: (_) => MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: BlocProvider.of<AuthBloc>(context),
-                  ),
-                ],
-                child: VisitForm(id: "${data.id}", visitBloc: visitBloc),
-              ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  VisitForm(id: "${data.id}", visitBloc: visitBloc),
             ),
           );
+
+          // Navigator.of(context).push(
+          //   MaterialPageRoute<VisitForm>(
+          //     builder: (_) => MultiBlocProvider(
+          //       providers: [
+          //         BlocProvider.value(
+          //           value: BlocProvider.of<AuthBloc>(context),
+          //         ),
+          //       ],
+          //       child: VisitForm(id: "${data.id}", visitBloc: visitBloc),
+          //     ),
+          //   ),
+          // );
         },
         child: Stack(
           children: [

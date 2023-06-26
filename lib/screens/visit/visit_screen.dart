@@ -8,7 +8,6 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
-import 'package:salesappnew/widgets/input_custom.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatefulWidget {
@@ -164,7 +163,6 @@ class _VisitScreenState extends State<VisitScreen> {
                       ),
                       child: ListView(
                         children: [
-                          InfiniteScrollSelectList(),
                           const SizedBox(height: 20),
                           Text(
                             "Type :",
