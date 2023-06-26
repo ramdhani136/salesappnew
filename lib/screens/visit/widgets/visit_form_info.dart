@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -257,6 +259,42 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     ),
                     const SizedBox(
                       height: 15,
+                    ),
+                    Visibility(
+                      visible: state.data.signature != null,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Signature",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: Get.width,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color.fromARGB(255, 214, 214, 214),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: state.data.signature != null
+                                  ? Image.memory(
+                                      base64.decode(state.data.signature!),
+                                    )
+                                  : Container(),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

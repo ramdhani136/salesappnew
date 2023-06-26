@@ -15,6 +15,7 @@ class Visitmodel {
   int? rate;
   Branch? createdBy;
   String? status;
+  String? signature;
   String? workflowState;
   DateTime? updatedAt;
   Check? checkOut;
@@ -38,6 +39,7 @@ class Visitmodel {
     this.customerGroup,
     this.branch,
     this.schedulelist,
+    this.signature,
   });
 
   factory Visitmodel.fromJson(Map<String, dynamic> json) => Visitmodel(
@@ -50,6 +52,7 @@ class Visitmodel {
         rate: json["rate"],
         createdBy: Branch.fromJson(json["createdBy"]),
         status: json["status"],
+        signature: json["signature"],
         workflowState: json["workflowState"],
         updatedAt: DateTime.parse(json["updatedAt"]),
         checkOut:
@@ -65,7 +68,6 @@ class Visitmodel {
 
       return data.map((e) => Visitmodel.fromJson(e)).toList();
     } catch (e) {
-      print(e);
       rethrow;
     }
   }
@@ -80,6 +82,7 @@ class Visitmodel {
         "rate": rate,
         "createdBy": createdBy!.toJson(),
         "status": status,
+        "signature": signature,
         "workflowState": workflowState,
         "updatedAt": updatedAt!.toIso8601String(),
         "checkOut": checkOut != null ? checkOut!.toJson() : null,
