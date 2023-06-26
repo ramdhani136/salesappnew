@@ -24,6 +24,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   AuthBloc authBloc = AuthBloc(AuthRepository());
   Position? checkOutCordinates;
   String? checkOutAddress;
+  int? tabActive;
   Uint8List? signature;
 
   VisitBloc() : super(VisitInitial()) {
@@ -150,7 +151,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         history: history,
       ));
     } catch (e) {
-      print(e);
       emit(IsFailure(e.toString()));
     }
   }
@@ -181,6 +181,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             ]
           ],
           search: event.search);
+
+      print(event.status);
 
       if (getData['status'] == 200) {
         _page = getData['nextPage'];

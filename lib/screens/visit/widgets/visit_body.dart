@@ -32,6 +32,7 @@ class _VisitBodyState extends State<VisitBody> {
   void initState() {
     super.initState();
     visitBloc = BlocProvider.of<VisitBloc>(context);
+
     _textEditingController = TextEditingController(text: visitBloc.search);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       visitBloc.add(GetData(
@@ -74,6 +75,7 @@ class _VisitBodyState extends State<VisitBody> {
   Widget build(BuildContext context) {
     return BlocConsumer<VisitBloc, VisitState>(
       listener: (context, state) {
+        visitBloc.tabActive = widget.status;
         if (state is DeleteSuccess) {
           visitBloc.add(GetData(
             status: widget.status,
@@ -103,6 +105,8 @@ class _VisitBodyState extends State<VisitBody> {
         }
       },
       builder: (context, state) {
+        print(state);
+
         if (state is IsLoading) {
           return const Center(
             child: CircularProgressIndicator(),

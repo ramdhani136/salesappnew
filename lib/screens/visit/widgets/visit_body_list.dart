@@ -61,7 +61,7 @@ class VisitBodyList extends StatelessWidget {
                     value: BlocProvider.of<AuthBloc>(context),
                   ),
                 ],
-                child: VisitForm(id: "${data.id}"),
+                child: VisitForm(id: "${data.id}", visitBloc: visitBloc),
               ),
             ),
           );
