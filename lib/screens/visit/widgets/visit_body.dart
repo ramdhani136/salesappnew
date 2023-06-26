@@ -179,6 +179,7 @@ class _VisitBodyState extends State<VisitBody> {
                           state.pageLoading = true;
                           state.hasMore = false;
                           visitBloc.add(GetData(
+                            status: visitBloc.tabActive ?? 1,
                             search: _textEditingController.text,
                           ));
                         }

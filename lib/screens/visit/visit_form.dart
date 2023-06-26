@@ -24,6 +24,7 @@ class VisitForm extends StatelessWidget {
     List<Tab> myTabs = <Tab>[
       const Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.info,
@@ -45,6 +46,7 @@ class VisitForm extends StatelessWidget {
       ),
       const Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.task,
@@ -66,6 +68,7 @@ class VisitForm extends StatelessWidget {
       ),
       const Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.note,
