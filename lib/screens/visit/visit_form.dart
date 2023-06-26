@@ -262,7 +262,7 @@ class VisitForm extends StatelessWidget {
               bloc: visitBloc,
               builder: (context, state) {
                 if (state is IsLoading) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
