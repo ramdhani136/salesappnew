@@ -182,8 +182,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           ],
           search: event.search);
 
-      print(event.status);
-
       if (getData['status'] == 200) {
         _page = getData['nextPage'];
         List<Visitmodel> visitList = Visitmodel.fromJsonList(getData['data']);
