@@ -11,6 +11,7 @@ enum Type {
 
 class CustomerField extends StatelessWidget {
   String? placeholder;
+  String title;
   Type type;
   bool disabled;
   Function? onChange;
@@ -24,6 +25,7 @@ class CustomerField extends StatelessWidget {
     this.onChange,
     this.onReset,
     this.placeholder,
+    required this.title,
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomerField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Customer",
+          title,
           style: TextStyle(color: Colors.grey[700]),
         ),
         const SizedBox(

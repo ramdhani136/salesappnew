@@ -17,11 +17,19 @@ class VisitFormInfo extends StatefulWidget {
 
 class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController customerC = TextEditingController();
+  TextEditingController groupC = TextEditingController();
+  TextEditingController branchC = TextEditingController();
+  TextEditingController typeC = TextEditingController();
+  TextEditingController nameC = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     customerC.dispose();
+    groupC.dispose();
+    branchC.dispose();
+    typeC.dispose();
+    nameC.dispose();
   }
 
   @override
@@ -36,6 +44,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
 
         if (state is IsShowLoaded) {
           customerC.text = state.data.customer!.name;
+          groupC.text = state.data.customerGroup!.name;
+          branchC.text = state.data.branch!.name;
+          typeC.text = state.data.type!;
+          nameC.text = state.data.name!;
           return SlidingUpPanel(
             controller: panelController,
             defaultPanelState: PanelState.CLOSED,
@@ -74,7 +86,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 8),
+                                horizontal: 20, vertical: 8),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 52, 52, 52),
@@ -148,12 +160,52 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                 child: ListView(
                   children: [
                     CustomerField(
+                      title: "Name",
+                      controller: nameC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomerField(
+                      title: "Type",
+                      controller: typeC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomerField(
+                      title: "Customer",
                       controller: customerC,
                       type: Type.standard,
                       disabled: false,
                       onChange: (e) {
                         print(e);
                       },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomerField(
+                      title: "Group",
+                      controller: groupC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomerField(
+                      title: "Branch",
+                      controller: branchC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
                     ),
                   ],
                 ),
