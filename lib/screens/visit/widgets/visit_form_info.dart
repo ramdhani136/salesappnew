@@ -6,10 +6,23 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/widgets/searchable_list.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class VisitFormInfo extends StatelessWidget {
+class VisitFormInfo extends StatefulWidget {
   const VisitFormInfo({
     super.key,
   });
+
+  @override
+  State<VisitFormInfo> createState() => _VisitFormInfoState();
+}
+
+class _VisitFormInfoState extends State<VisitFormInfo> {
+  TextEditingController customerC = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    customerC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +35,7 @@ class VisitFormInfo extends StatelessWidget {
         }
 
         if (state is IsShowLoaded) {
+          customerC.text = state.data.customer!.name;
           return SlidingUpPanel(
             controller: panelController,
             defaultPanelState: PanelState.CLOSED,
@@ -133,14 +147,9 @@ class VisitFormInfo extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    SearchableList(),
-                    Text("${state.data.name}"),
-                    Text("${state.data.checkIn!.lat}"),
-                    Text("${state.data.checkIn!.lng}"),
-                    Text("${state.data.checkOut?.lng}"),
-                    Text(
-                      "Dua",
-                    )
+                    SearchableList(
+                      controller: customerC,
+                    ),
                   ],
                 ),
               ),

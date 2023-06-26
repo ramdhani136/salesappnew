@@ -2,17 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchableList extends StatelessWidget {
-  const SearchableList({super.key});
+  TextEditingController controller = TextEditingController();
+  SearchableList({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          showCustomModal(context);
-        },
-        child: TextField(
-          enabled: false,
-        ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Customer",
+          style: TextStyle(color: Colors.grey[700]),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        InkWell(
+            onTap: () {
+              showCustomModal(context);
+            },
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  onPressed: () async {},
+                  icon: const Icon(
+                    Icons.close,
+                    size: 20,
+                  ),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(255, 184, 183, 183),
+                    width: 1,
+                  ),
+                ),
+                border: const OutlineInputBorder(),
+                hintText: "Search your data",
+                hintStyle: TextStyle(color: Colors.grey[300]),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              ),
+              enabled: false,
+            )),
+      ],
+    );
   }
 
   void showCustomModal(BuildContext context) {
@@ -32,7 +66,8 @@ class SearchableList extends StatelessWidget {
                 Expanded(child: ListView.builder(
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text("ddd"),
+                      title: Text("PT. Jaya Abadi"),
+                      subtitle: Text("Area 1"),
                     );
                   },
                 ))
