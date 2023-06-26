@@ -22,8 +22,9 @@ class ChangeSearch extends VisitEvent {
 
 class ShowData extends VisitEvent {
   String id;
+  bool isLoading;
 
-  ShowData(this.id);
+  ShowData({required this.id, this.isLoading = true});
 }
 
 class DeleteOne extends VisitEvent {

@@ -122,7 +122,7 @@ class VisitFormInfo extends StatelessWidget {
             ),
             body: RefreshIndicator(
               onRefresh: () async {
-                visitBloc.add(ShowData("${state.data.id}"));
+                visitBloc.add(ShowData(id: "${state.data.id}"));
               },
               child: Padding(
                 padding: const EdgeInsets.only(

@@ -92,7 +92,7 @@ class VisitForm extends StatelessWidget {
     );
 
     return BlocProvider(
-      create: (context) => VisitBloc()..add(ShowData(id)),
+      create: (context) => VisitBloc()..add(ShowData(id: id)),
       child: DefaultTabController(
         initialIndex: 0,
         length: myTabs.length,
@@ -131,6 +131,7 @@ class VisitForm extends StatelessWidget {
                   }
 
                   if (state is IsShowLoaded) {
+                    state as IsShowLoaded;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -260,6 +261,11 @@ class VisitForm extends StatelessWidget {
             child: BlocBuilder<VisitBloc, VisitState>(
               bloc: visitBloc,
               builder: (context, state) {
+                if (state is IsLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 if (state is IsShowLoaded) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

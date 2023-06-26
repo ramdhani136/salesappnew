@@ -28,7 +28,7 @@ class VisitCheckOut extends StatelessWidget {
         body: BlocBuilder<LocationBloc, LocationState>(
           builder: (context, state) {
             LocationBloc loc = BlocProvider.of<LocationBloc>(context);
-
+            print(state);
             if (state is LocationLoading) {
               return const Center(
                 child: CircularProgressIndicator(),

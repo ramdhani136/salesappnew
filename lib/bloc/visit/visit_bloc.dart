@@ -39,7 +39,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<ClearSignature>(
       (event, emit) {
         signature = null;
-        add(ShowData(event.id));
+        add(ShowData(
+          id: event.id,
+          isLoading: false,
+        ));
       },
     );
   }
@@ -58,7 +61,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       exportController.dispose();
 
       signature = isSignature;
-      add(ShowData(event.id));
+      add(ShowData(
+        id: event.id,
+        isLoading: false,
+      ));
     } catch (e) {
       rethrow;
     }
@@ -90,10 +96,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         throw data['msg'];
       }
 
-      add(ShowData(event.id));
+      add(ShowData(id: event.id));
     } catch (e) {
       emit(IsFailure(e.toString()));
-      add(ShowData(event.id));
+      add(ShowData(id: event.id));
     }
   }
 
@@ -113,16 +119,18 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         throw data['msg'];
       }
 
-      add(ShowData(event.id));
+      add(ShowData(id: event.id, isLoading: false));
     } catch (e) {
       emit(IsFailure(e.toString()));
-      add(ShowData(event.id));
+      add(ShowData(id: event.id, isLoading: false));
     }
   }
 
   Future<void> _ShowData(ShowData event, Emitter<VisitState> emit) async {
     try {
-      emit(IsLoading());
+      if (event.isLoading) {
+        emit(IsLoading());
+      }
       Map<String, dynamic> data = await FetchData(data: Data.visit).Show(
         event.id,
       );
