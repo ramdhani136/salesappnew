@@ -9,15 +9,17 @@ enum Type {
   list,
 }
 
-class CustomerField extends StatelessWidget {
+class CustomField extends StatefulWidget {
   String? placeholder;
+  bool mandatory;
   String title;
   Type type;
   bool disabled;
   Function? onChange;
   Function? onReset;
   TextEditingController controller = TextEditingController();
-  CustomerField({
+
+  CustomField({
     super.key,
     required this.controller,
     required this.type,
@@ -26,7 +28,24 @@ class CustomerField extends StatelessWidget {
     this.onReset,
     this.placeholder,
     required this.title,
+    this.mandatory = false,
   });
+
+  @override
+  State<CustomField> createState() => _CustomFieldState();
+}
+
+class _CustomFieldState extends State<CustomField> {
+  Color colorBorder = Color.fromARGB(255, 182, 182, 182);
+
+  void initState() {
+    super.initState();
+    if (widget.mandatory) {
+      colorBorder = widget.controller.text != ""
+          ? Color.fromARGB(255, 182, 182, 182)
+          : Colors.red;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +53,7 @@ class CustomerField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          widget.title,
           style: TextStyle(color: Colors.grey[700]),
         ),
         const SizedBox(
@@ -42,29 +61,44 @@ class CustomerField extends StatelessWidget {
         ),
         InkWell(
             onTap: () {
-              if (!disabled) {
-                if (type == Type.infiniteList) {
+              if (!widget.disabled) {
+                if (widget.type == Type.infiniteList) {
                   showCustomModal(context);
                 }
               }
             },
             child: TextField(
-              controller: controller,
+              controller: widget.controller,
               onChanged: (value) {
-                if (onChange != null && !disabled) {
-                  onChange!(value);
+                if (widget.onChange != null && !widget.disabled) {
+                  widget.onChange!(value);
+                }
+
+                if (widget.mandatory) {
+                  setState(() {
+                    if (value != "") {
+                      colorBorder = Color.fromARGB(255, 182, 182, 182);
+                    } else {
+                      colorBorder = Colors.red;
+                    }
+                  });
                 }
               },
               decoration: InputDecoration(
                 suffixIcon: Visibility(
-                  visible: !disabled,
+                  visible: !widget.disabled,
                   child: IconButton(
                     onPressed: () async {
-                      if (!disabled) {
-                        controller.text = "";
-                        if (onReset != null) {
-                          onReset!();
+                      if (!widget.disabled) {
+                        widget.controller.text = "";
+                        if (widget.onReset != null) {
+                          widget.onReset!();
                         }
+                        setState(() {
+                          if (widget.mandatory) {
+                            colorBorder = Colors.red;
+                          }
+                        });
                       }
                     },
                     icon: const Icon(
@@ -73,19 +107,16 @@ class CustomerField extends StatelessWidget {
                     ),
                   ),
                 ),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(255, 184, 183, 183),
-                    width: 1,
-                  ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder),
                 ),
-                border: const OutlineInputBorder(),
-                hintText: placeholder ?? "Search your data",
+                // border: const OutlineInputBorder(),
+                hintText: widget.placeholder ?? "Search your data",
                 hintStyle: TextStyle(color: Colors.grey[300]),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               ),
-              enabled: !disabled,
+              enabled: !widget.disabled,
             )),
       ],
     );

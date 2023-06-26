@@ -157,6 +157,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   Future<void> _GetAllData(GetData event, Emitter<VisitState> emit) async {
     try {
+      signature = null;
+      checkOutAddress = null;
+      checkOutCordinates = null;
       if (state is! IsLoaded || event.getRefresh) {
         emit(IsLoading());
       } else {

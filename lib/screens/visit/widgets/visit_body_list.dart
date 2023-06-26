@@ -55,9 +55,8 @@ class VisitBodyList extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  VisitForm(id: "${data.id}", visitBloc: visitBloc),
-            ),
+                builder: (context) =>
+                    VisitForm(id: "${data.id}", visitBloc: visitBloc)),
           );
 
           // Navigator.of(context).push(

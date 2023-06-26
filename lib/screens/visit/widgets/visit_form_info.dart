@@ -21,6 +21,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController branchC = TextEditingController();
   TextEditingController typeC = TextEditingController();
   TextEditingController nameC = TextEditingController();
+  TextEditingController workflowC = TextEditingController();
+  TextEditingController picC = TextEditingController();
+  TextEditingController phoneC = TextEditingController();
+  TextEditingController dateC = TextEditingController();
 
   @override
   void dispose() {
@@ -30,6 +34,9 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
     branchC.dispose();
     typeC.dispose();
     nameC.dispose();
+    workflowC.dispose();
+    picC.dispose();
+    phoneC.dispose();
   }
 
   @override
@@ -38,6 +45,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
+
         if (state is IsLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -48,6 +56,12 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           branchC.text = state.data.branch!.name;
           typeC.text = state.data.type!;
           nameC.text = state.data.name!;
+          workflowC.text = state.data.workflowState!;
+          picC.text = state.data.contact!.name;
+          phoneC.text = "${state.data.contact!.phone}";
+          dateC.text = "${DateFormat.yMd().add_jm().format(
+                DateTime.parse("${state.data.updatedAt}").toLocal(),
+              )}";
           return SlidingUpPanel(
             controller: panelController,
             defaultPanelState: PanelState.CLOSED,
@@ -156,10 +170,11 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                   left: 20,
                   right: 20,
                   top: 20,
+                  bottom: kBottomNavigationBarHeight + 160,
                 ),
                 child: ListView(
                   children: [
-                    CustomerField(
+                    CustomField(
                       title: "Name",
                       controller: nameC,
                       type: Type.standard,
@@ -168,7 +183,16 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomerField(
+                    CustomField(
+                      title: "Update At",
+                      controller: dateC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomField(
                       title: "Type",
                       controller: typeC,
                       type: Type.standard,
@@ -177,7 +201,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomerField(
+                    CustomField(
                       title: "Customer",
                       controller: customerC,
                       type: Type.standard,
@@ -189,7 +213,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomerField(
+                    CustomField(
                       title: "Group",
                       controller: groupC,
                       type: Type.standard,
@@ -198,9 +222,36 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomerField(
+                    CustomField(
                       title: "Branch",
                       controller: branchC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomField(
+                      title: "Pic",
+                      controller: picC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomField(
+                      title: "Phone",
+                      controller: phoneC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomField(
+                      title: "Status",
+                      controller: workflowC,
                       type: Type.standard,
                       disabled: true,
                     ),
