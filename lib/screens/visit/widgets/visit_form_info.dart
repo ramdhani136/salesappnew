@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -66,35 +67,6 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           dateC.text = "${DateFormat.yMd().add_jm().format(
                 DateTime.parse("${state.data.updatedAt}").toLocal(),
               )}";
-          List contact = [];
-
-          void GetContact() async {
-            try {
-              Map<String, dynamic> result =
-                  await FetchData(data: Data.contact).FIND(
-                page: 1,
-                filters: [
-                  ["customer", "=", "${state.data.customer!.id}"],
-                ],
-                fields: ["name", "phone"],
-              );
-
-              List<dynamic> setData = result['data'].map((item) {
-                return {
-                  'title': item["name"],
-                  'subTitle': item["phone"] ?? "",
-                  'value': item["_id"],
-                };
-              }).toList();
-
-              if (result['status'] != 200) {
-                throw result;
-              }
-              contact = setData;
-            } catch (e) {
-              throw e;
-            }
-          }
 
           return SlidingUpPanel(
             controller: panelController,
@@ -262,13 +234,23 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomField(
-                      title: "Pic",
-                      controller: picC,
-                      mandatory: true,
-                      type: Type.select,
-                      // getData: GetContact(),
-                      data: contact,
+                    BlocProvider(
+                      create: (context) => ContactBloc()
+                        ..add(GetListInput(
+                          customerId: state.data.customer!.id,
+                        )),
+                      child: BlocBuilder<ContactBloc, ContactState>(
+                        builder: (context, state) {
+                          return CustomField(
+                            title: "Pic",
+                            controller: picC,
+                            mandatory: true,
+                            type: Type.select,
+                            // getData: GetContact(),
+                            data: state is ContactInput ? state.data : [],
+                          );
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 15,

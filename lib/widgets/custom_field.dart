@@ -72,7 +72,6 @@ class _CustomFieldState extends State<CustomField> {
           visible: widget.type == Type.select,
           child: TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
-              autofocus: true,
               style: TextStyle(
                 fontSize: 16, // Ubah ukuran font sesuai kebutuhan
                 color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
