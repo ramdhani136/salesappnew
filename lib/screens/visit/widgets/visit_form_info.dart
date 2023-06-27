@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -44,6 +45,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   @override
   Widget build(BuildContext context) {
     final PanelController panelController = PanelController();
+
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
@@ -64,6 +66,36 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           dateC.text = "${DateFormat.yMd().add_jm().format(
                 DateTime.parse("${state.data.updatedAt}").toLocal(),
               )}";
+          List contact = [];
+
+          void GetContact() async {
+            try {
+              Map<String, dynamic> result =
+                  await FetchData(data: Data.contact).FIND(
+                page: 1,
+                filters: [
+                  ["customer", "=", "${state.data.customer!.id}"],
+                ],
+                fields: ["name", "phone"],
+              );
+
+              List<dynamic> setData = result['data'].map((item) {
+                return {
+                  'title': item["name"],
+                  'subTitle': item["phone"] ?? "",
+                  'value': item["_id"],
+                };
+              }).toList();
+
+              if (result['status'] != 200) {
+                throw result;
+              }
+              contact = setData;
+            } catch (e) {
+              throw e;
+            }
+          }
+
           return SlidingUpPanel(
             controller: panelController,
             defaultPanelState: PanelState.CLOSED,
@@ -233,7 +265,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     CustomField(
                       title: "Pic",
                       controller: picC,
-                      type: Type.standard,
+                      mandatory: true,
+                      type: Type.select,
+                      // getData: GetContact(),
+                      data: contact,
                     ),
                     const SizedBox(
                       height: 15,

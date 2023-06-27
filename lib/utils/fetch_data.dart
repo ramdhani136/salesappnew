@@ -60,9 +60,11 @@ class FetchData {
   }) async {
     try {
       final setFilter = jsonEncode(filters);
+      final setFields = jsonEncode(fields);
 
       String uri =
-          "${config.baseUri}$doc?page=$page${filters!.isNotEmpty ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit";
+          "${config.baseUri}$doc?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}";
+
       final response = await http.get(
         Uri.parse(uri),
         headers: {

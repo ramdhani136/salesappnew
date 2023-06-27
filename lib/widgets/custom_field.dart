@@ -1,22 +1,21 @@
 // ignore_for_file: must_be_immutable
-
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-enum Type {
-  standard,
-  infiniteList,
-  list,
-}
+enum Type { standard, infinite, select }
 
 class CustomField extends StatefulWidget {
   String? placeholder;
   bool mandatory;
-  String title;
+  String? title;
   Type type;
   bool disabled;
   Function? onChange;
   Function? onReset;
+  Future<List>? getData;
+  List? data;
+
   TextEditingController controller = TextEditingController();
 
   CustomField({
@@ -27,8 +26,10 @@ class CustomField extends StatefulWidget {
     this.onChange,
     this.onReset,
     this.placeholder,
-    required this.title,
+    this.title,
     this.mandatory = false,
+    this.getData,
+    this.data,
   });
 
   @override
@@ -52,17 +53,97 @@ class _CustomFieldState extends State<CustomField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: TextStyle(color: Colors.grey[700]),
+        Visibility(
+          visible: widget.title != null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${widget.title}",
+                style: TextStyle(color: Colors.grey[700]),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
-        const SizedBox(
-          height: 10,
+        Visibility(
+          visible: widget.type == Type.select,
+          child: TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              autofocus: true,
+              style: TextStyle(
+                fontSize: 16, // Ubah ukuran font sesuai kebutuhan
+                color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
+              ),
+              decoration: InputDecoration(
+                suffixIcon: Visibility(
+                  visible: !widget.disabled,
+                  child: IconButton(
+                    onPressed: () async {
+                      if (!widget.disabled) {
+                        widget.controller.text = "";
+                        if (widget.onReset != null) {
+                          widget.onReset!();
+                        }
+                        setState(() {
+                          if (widget.mandatory) {
+                            colorBorder = Colors.red;
+                          }
+                        });
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 20,
+                    ),
+                  ),
+                ),
+
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder),
+                ),
+                // border: const OutlineInputBorder(),
+                hintText: widget.placeholder ?? "Search your data",
+                hintStyle: TextStyle(
+                  color: Colors.grey[300],
+                  fontSize: 16,
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              ),
+              controller: widget.controller,
+              enabled: !widget.disabled,
+            ),
+            suggestionsCallback: (pattern) async {
+              if (widget.data != null && widget.type == Type.select) {
+                return widget.data!;
+              }
+              return [];
+            },
+            itemBuilder: (context, suggestion) {
+              if (widget.data != null && widget.type == Type.select) {
+                return ListTile(
+                  title: Text("${suggestion['title']}"),
+                  subtitle: Text('${suggestion['subTitle']}'),
+                );
+              }
+              return Container();
+            },
+            onSuggestionSelected: (suggestion) {
+              if (widget.onChange != null) {
+                widget.onChange!(suggestion);
+              }
+            },
+          ),
         ),
-        InkWell(
+        Visibility(
+          visible: widget.type == Type.infinite || widget.type == Type.standard,
+          child: InkWell(
             onTap: () {
               if (!widget.disabled) {
-                if (widget.type == Type.infiniteList) {
+                if (widget.type == Type.infinite) {
                   showCustomModal(context);
                 }
               }
@@ -123,7 +204,9 @@ class _CustomFieldState extends State<CustomField> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               ),
               enabled: !widget.disabled,
-            )),
+            ),
+          ),
+        ),
       ],
     );
   }
