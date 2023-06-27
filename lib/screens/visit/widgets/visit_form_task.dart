@@ -1,5 +1,4 @@
 // ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
@@ -14,7 +13,7 @@ class VisitFormTask extends StatelessWidget {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
 
         if (state is IsLoading) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -29,7 +28,7 @@ class VisitFormTask extends StatelessWidget {
               child: ListView.builder(
                 itemCount: state.task.length,
                 itemBuilder: (context, index) {
-                  return Text("${state.task[index].name}");
+                  return Text(state.task[index].name);
                 },
               ),
             ),
