@@ -142,7 +142,7 @@ class VisitBodyList extends StatelessWidget {
               top: -0,
               child: Container(
                 width: Get.width - 30,
-                height: 40,
+                height: 35,
                 margin: const EdgeInsets.only(
                   bottom: 15,
                 ),
@@ -162,7 +162,7 @@ class VisitBodyList extends StatelessWidget {
                         "${data.name}",
                         style: TextStyle(
                           color: colorFontHeader,
-                          fontSize: 16.5,
+                          fontSize: 16,
                         ),
                       ),
                       Text(
@@ -170,7 +170,7 @@ class VisitBodyList extends StatelessWidget {
                         style: TextStyle(
                             color: colorFontHeader,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13),
+                            fontSize: 14),
                       ),
                     ],
                   ),

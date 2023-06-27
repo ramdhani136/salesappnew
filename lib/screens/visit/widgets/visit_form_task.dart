@@ -83,9 +83,10 @@ class VisitFormTask extends StatelessWidget {
                       return false;
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 20,
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        top: 20,
                       ),
                       child: ListView.builder(
                         itemCount: dataTask.length,
