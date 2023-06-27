@@ -15,7 +15,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       if (event.isLoading) {
         emit(ContactIsLoading());
       }
-      Map<String, dynamic> result = await FetchData(data: Data.contact).FIND(
+      Map<String, dynamic> result = await FetchData(data: Data.contact).FINDALL(
         page: 1,
         filters: [
           ["customer", "=", event.customerId],

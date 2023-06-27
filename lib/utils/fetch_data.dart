@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/utils/local_data.dart';
 
-enum Data { visit, callsheet, customer, customergroup, contact, memo }
+enum Data { visit, callsheet, customer, customergroup, contact, memo, erp }
 
 class FetchData {
   final Data data;
@@ -16,12 +16,6 @@ class FetchData {
 
   FetchData({
     required this.data,
-    // this.fields,
-    // this.filters,
-    // this.orderBy,
-    // this.params,
-    // this.search,
-    // this.limit = 10,
   }) {
     switch (data) {
       case Data.visit:
@@ -42,6 +36,9 @@ class FetchData {
       case Data.memo:
         doc = "memo";
         break;
+      case Data.erp:
+        doc = "erp";
+        break;
       default:
     }
   }
@@ -49,7 +46,7 @@ class FetchData {
   Config config = Config();
   LocalData localData = LocalData();
 
-  Future<Map<String, dynamic>> FIND<T>({
+  Future<Map<String, dynamic>> FINDALL<T>({
     List<String>? fields,
     List<List<String>>? filters,
     String? orderBy,
@@ -63,7 +60,7 @@ class FetchData {
       final setFields = jsonEncode(fields);
 
       String uri =
-          "${config.baseUri}$doc?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}";
+          "${config.baseUri}$doc${params != null ? params : ""}?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}";
 
       final response = await http.get(
         Uri.parse(uri),
@@ -81,7 +78,7 @@ class FetchData {
     }
   }
 
-  Future<dynamic> Show<T>(String id) async {
+  Future<dynamic> FINDONE<T>(String id) async {
     try {
       String uri = "${config.baseUri}$doc/$id";
       final response = await http.get(
@@ -99,7 +96,7 @@ class FetchData {
     }
   }
 
-  Future<dynamic> Update<T>(String id, Map<String, dynamic> body) async {
+  Future<dynamic> UPDATEONE<T>(String id, Map<String, dynamic> body) async {
     try {
       String uri = "${config.baseUri}$doc/$id";
       final response = await http.put(
@@ -118,7 +115,7 @@ class FetchData {
     }
   }
 
-  Future<dynamic> Delete<T>(String id) async {
+  Future<dynamic> DELETEONE<T>(String id) async {
     try {
       String uri = "${config.baseUri}$doc/$id";
       final response = await http.delete(

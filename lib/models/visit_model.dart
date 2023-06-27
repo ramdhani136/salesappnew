@@ -9,7 +9,7 @@ class Visitmodel {
   String? id;
   String? name;
   String? type;
-  Branch? customer;
+  Customer? customer;
   Contact? contact;
   Check? checkIn;
   int? rate;
@@ -46,7 +46,7 @@ class Visitmodel {
         id: json["_id"],
         name: json["name"],
         type: json["type"],
-        customer: Branch.fromJson(json["customer"]),
+        customer: Customer.fromJson(json["customer"]),
         contact: Contact.fromJson(json["contact"]),
         checkIn: Check.fromJson(json["checkIn"]),
         rate: json["rate"],
@@ -109,6 +109,30 @@ class Branch {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+      };
+}
+
+class Customer {
+  String id;
+  String name;
+  String? erpId;
+
+  Customer({
+    required this.id,
+    required this.name,
+    this.erpId,
+  });
+
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+        id: json["_id"],
+        name: json["name"],
+        erpId: json["erpId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "erpId": erpId,
       };
 }
 

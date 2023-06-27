@@ -74,7 +74,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {
     try {
-      dynamic data = await FetchData(data: Data.visit).Delete(event.id);
+      dynamic data = await FetchData(data: Data.visit).DELETEONE(event.id);
       if ((data['status']) != 200) {
         throw data['msg'];
       }
@@ -88,7 +88,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       ChangeWorkflow event, Emitter<VisitState> emit) async {
     try {
       emit(IsLoading());
-      dynamic data = await FetchData(data: Data.visit).Update(
+      dynamic data = await FetchData(data: Data.visit).UPDATEONE(
         event.id,
         {"nextState": event.nextStateId},
       );
@@ -107,7 +107,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   Future<void> _SetCheckOut(SetCheckOut event, Emitter<VisitState> emit) async {
     try {
       emit(IsLoading());
-      dynamic data = await FetchData(data: Data.visit).Update(
+      dynamic data = await FetchData(data: Data.visit).UPDATEONE(
         event.id,
         {
           "signature": base64.encode(signature!),
@@ -132,7 +132,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (event.isLoading) {
         emit(IsLoading());
       }
-      Map<String, dynamic> data = await FetchData(data: Data.visit).Show(
+      Map<String, dynamic> data = await FetchData(data: Data.visit).FINDONE(
         event.id,
       );
 
@@ -178,7 +178,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         );
       }
 
-      Map<String, dynamic> getData = await FetchData(data: Data.visit).FIND(
+      Map<String, dynamic> getData = await FetchData(data: Data.visit).FINDALL(
           page: event.getRefresh ? 1 : _page,
           filters: [
             [
