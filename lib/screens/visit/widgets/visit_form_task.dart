@@ -24,15 +24,18 @@ class VisitFormTask extends StatelessWidget {
             onRefresh: () async {
               visitBloc.add(ShowData(id: "${state.data.id}"));
             },
-            child: ListView.builder(
-              itemCount: state.task.length,
-              itemBuilder: (context, index) {
-                return Text("${state.task[index].name}");
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: ListView.builder(
+                itemCount: state.task.length,
+                itemBuilder: (context, index) {
+                  return Text("${state.task[index].name}");
+                },
+              ),
             ),
           );
         }
-        return Center(
+        return const Center(
           child: Text(
             "No Task",
             style: TextStyle(
