@@ -98,7 +98,7 @@ class VisitFormTask extends StatelessWidget {
                                     color: Colors.grey.withOpacity(0.3),
                                     width: 1,
                                   ),
-                                  borderRadius: BorderRadius.all(
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                   // boxShadow: [
@@ -117,7 +117,7 @@ class VisitFormTask extends StatelessWidget {
                                       width: Get.width,
                                       height: 35,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10),
                                         ),
@@ -138,6 +138,7 @@ class VisitFormTask extends StatelessWidget {
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontStyle: FontStyle.italic,
+                                              fontSize: 15,
                                             ),
                                           ),
                                         ),
