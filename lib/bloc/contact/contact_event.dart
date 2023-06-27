@@ -9,3 +9,5 @@ class GetListInput extends ContactEvent {
 
   GetListInput({required this.customerId, this.isLoading = true});
 }
+
+class EventChangeData extends ContactEvent {}

@@ -7,14 +7,16 @@ enum Type { standard, infinite, select }
 
 class CustomField extends StatefulWidget {
   String? placeholder;
-  bool mandatory;
+  bool valid;
   String? title;
   Type type;
   bool disabled;
   Function? onChange;
   Function? onReset;
   Future<List>? getData;
+  Function? onTap;
   List? data;
+  bool loading;
 
   TextEditingController controller = TextEditingController();
 
@@ -25,11 +27,13 @@ class CustomField extends StatefulWidget {
     this.disabled = false,
     this.onChange,
     this.onReset,
+    this.onTap,
     this.placeholder,
     this.title,
-    this.mandatory = false,
+    this.valid = true,
     this.getData,
     this.data,
+    this.loading = false,
   });
 
   @override
@@ -41,7 +45,7 @@ class _CustomFieldState extends State<CustomField> {
 
   void initState() {
     super.initState();
-    if (widget.mandatory) {
+    if (!widget.valid) {
       colorBorder = widget.controller.text != ""
           ? Color.fromARGB(255, 182, 182, 182)
           : Colors.red;
@@ -70,71 +74,83 @@ class _CustomFieldState extends State<CustomField> {
         ),
         Visibility(
           visible: widget.type == Type.select,
-          child: TypeAheadField(
-            textFieldConfiguration: TextFieldConfiguration(
-              style: TextStyle(
-                fontSize: 16, // Ubah ukuran font sesuai kebutuhan
-                color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
-              ),
-              decoration: InputDecoration(
-                suffixIcon: Visibility(
-                  visible: !widget.disabled,
-                  child: IconButton(
-                    onPressed: () async {
-                      if (!widget.disabled) {
-                        widget.controller.text = "";
-                        if (widget.onReset != null) {
-                          widget.onReset!();
-                        }
-                        setState(() {
-                          if (widget.mandatory) {
-                            colorBorder = Colors.red;
+          child: InkWell(
+            onTap: () {
+              if (widget.onTap != null) {
+                widget.onTap!();
+              }
+            },
+            child: TypeAheadField(
+              loadingBuilder: (context) {
+                return Visibility(
+                    visible: widget.loading,
+                    child: Center(child: CircularProgressIndicator()));
+              },
+              textFieldConfiguration: TextFieldConfiguration(
+                style: TextStyle(
+                  fontSize: 16, // Ubah ukuran font sesuai kebutuhan
+                  color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
+                ),
+                decoration: InputDecoration(
+                  suffixIcon: Visibility(
+                    visible: !widget.disabled,
+                    child: IconButton(
+                      onPressed: () async {
+                        if (!widget.disabled) {
+                          widget.controller.text = "";
+                          if (widget.onReset != null) {
+                            widget.onReset!();
                           }
-                        });
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      size: 20,
+                          setState(() {
+                            if (!widget.valid) {
+                              colorBorder = Colors.red;
+                            }
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        size: 20,
+                      ),
                     ),
                   ),
-                ),
 
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: colorBorder),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: colorBorder),
+                  ),
+                  // border: const OutlineInputBorder(),
+                  hintText: widget.placeholder ?? "Search your data",
+                  hintStyle: TextStyle(
+                    color: Colors.grey[300],
+                    fontSize: 16,
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
-                // border: const OutlineInputBorder(),
-                hintText: widget.placeholder ?? "Search your data",
-                hintStyle: TextStyle(
-                  color: Colors.grey[300],
-                  fontSize: 16,
-                ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                controller: widget.controller,
+                enabled: !widget.disabled,
               ),
-              controller: widget.controller,
-              enabled: !widget.disabled,
+              suggestionsCallback: (pattern) async {
+                if (widget.data != null && widget.type == Type.select) {
+                  return widget.data!;
+                }
+                return [];
+              },
+              itemBuilder: (context, suggestion) {
+                if (widget.data != null && widget.type == Type.select) {
+                  return ListTile(
+                    title: Text("${suggestion['title']}"),
+                    subtitle: Text('${suggestion['subTitle']}'),
+                  );
+                }
+                return Container();
+              },
+              onSuggestionSelected: (suggestion) {
+                if (widget.onChange != null) {
+                  widget.onChange!(suggestion);
+                }
+              },
             ),
-            suggestionsCallback: (pattern) async {
-              if (widget.data != null && widget.type == Type.select) {
-                return widget.data!;
-              }
-              return [];
-            },
-            itemBuilder: (context, suggestion) {
-              if (widget.data != null && widget.type == Type.select) {
-                return ListTile(
-                  title: Text("${suggestion['title']}"),
-                  subtitle: Text('${suggestion['subTitle']}'),
-                );
-              }
-              return Container();
-            },
-            onSuggestionSelected: (suggestion) {
-              if (widget.onChange != null) {
-                widget.onChange!(suggestion);
-              }
-            },
           ),
         ),
         Visibility(
@@ -154,7 +170,7 @@ class _CustomFieldState extends State<CustomField> {
                   widget.onChange!(value);
                 }
 
-                if (widget.mandatory) {
+                if (!widget.valid) {
                   setState(() {
                     if (value != "") {
                       colorBorder = Color.fromARGB(255, 182, 182, 182);
@@ -181,7 +197,7 @@ class _CustomFieldState extends State<CustomField> {
                           widget.onReset!();
                         }
                         setState(() {
-                          if (widget.mandatory) {
+                          if (!widget.valid) {
                             colorBorder = Colors.red;
                           }
                         });

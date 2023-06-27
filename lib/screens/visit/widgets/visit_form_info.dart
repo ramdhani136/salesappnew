@@ -240,14 +240,26 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           customerId: state.data.customer!.id,
                         )),
                       child: BlocBuilder<ContactBloc, ContactState>(
-                        builder: (context, state) {
-                          return CustomField(
-                            title: "Pic",
-                            controller: picC,
-                            mandatory: true,
-                            type: Type.select,
-                            // getData: GetContact(),
-                            data: state is ContactInput ? state.data : [],
+                        builder: (context, stateContact) {
+                          return InkWell(
+                            child: CustomField(
+                              title: "Pic",
+                              controller: picC,
+                              valid: true,
+                              type: Type.select,
+                              // getData: GetContact(),
+                              data: stateContact is ContactInput
+                                  ? stateContact.data
+                                  : [],
+                              onChange: (e) {
+                                picC.text = e['title'];
+                                phoneC.text = "${e['subTitle']}";
+                              },
+                              onReset: () {
+                                picC.text = "";
+                                phoneC.text = "";
+                              },
+                            ),
                           );
                         },
                       ),
@@ -255,11 +267,14 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomField(
-                      title: "Phone",
-                      controller: phoneC,
-                      type: Type.standard,
-                      disabled: true,
+                    Visibility(
+                      visible: phoneC.text != "",
+                      child: CustomField(
+                        title: "Phone",
+                        controller: phoneC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
                     ),
                     const SizedBox(
                       height: 15,

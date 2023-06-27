@@ -17,9 +17,9 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       }
       Map<String, dynamic> result = await FetchData(data: Data.contact).FIND(
         page: 1,
-        filters: [
-          ["customer", "=", event.customerId],
-        ],
+        // filters: [
+        //   ["customer", "=", event.customerId],
+        // ],
         fields: ["name", "phone"],
       );
 
