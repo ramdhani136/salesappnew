@@ -73,15 +73,15 @@ class VisitFormTask extends StatelessWidget {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.5), // Warna bayangan
-                                    spreadRadius: 3, // Jarak sebar bayangan
-                                    blurRadius: 7, // Jarak blur bayangan
-                                    offset: Offset(0, 2), // Posisi bayangan
-                                  ),
-                                ],
+                                // boxShadow: [
+                                //   BoxShadow(
+                                //     color: Colors.grey
+                                //         .withOpacity(0.5), // Warna bayangan
+                                //     spreadRadius: 3, // Jarak sebar bayangan
+                                //     blurRadius: 2, // Jarak blur bayangan
+                                //     offset: Offset(0, 4), // Posisi bayangan
+                                //   ),
+                                // ],
                               ),
                               child: Column(
                                 children: [
@@ -95,7 +95,7 @@ class VisitFormTask extends StatelessWidget {
                                       ),
                                       color: dataTask[index].from !=
                                               "Sales Invoice"
-                                          ? Colors.grey[800]
+                                          ? Colors.yellow[800]
                                           : Colors.red[400],
                                     ),
                                     child: Align(
