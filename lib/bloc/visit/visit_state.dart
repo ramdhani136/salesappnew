@@ -28,10 +28,12 @@ class IsShowLoaded extends VisitState {
   Visitmodel data;
   List<HistoryModel> history;
   List<ActionModel> workflow;
+  List<TaskVisitModel> task;
   IsShowLoaded({
     required this.data,
     required this.history,
     required this.workflow,
+    required this.task,
   });
 }
 

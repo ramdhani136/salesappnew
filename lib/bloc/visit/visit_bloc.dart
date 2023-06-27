@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -141,6 +141,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
       List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);
 
+      List<TaskVisitModel> task =
+          TaskVisitModel.fromJsonList(data['data']['taskNotes']);
+
       if ((data['status']) != 200) {
         throw data['msg'];
       }
@@ -149,6 +152,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         data: result,
         workflow: action,
         history: history,
+        task: task,
       ));
     } catch (e) {
       emit(IsFailure(e.toString()));

@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_form_task.dart';
 import 'package:salesappnew/widgets/bottom_navigator.dart';
 import 'package:salesappnew/widgets/dialog_signature.dart';
 import 'package:salesappnew/widgets/drawe_app_button.dart';
@@ -230,7 +231,7 @@ class VisitForm extends StatelessWidget {
             body: TabBarView(
               children: [
                 VisitFormInfo(),
-                Text("home"),
+                VisitFormTask(),
                 Text("home"),
               ],
             ),

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -243,6 +242,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         builder: (context, stateContact) {
                           return InkWell(
                             child: CustomField(
+                              disabled: state.data.status != "0",
                               title: "Pic",
                               controller: picC,
                               valid: true,
