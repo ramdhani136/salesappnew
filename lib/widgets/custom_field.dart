@@ -131,8 +131,16 @@ class _CustomFieldState extends State<CustomField> {
                 enabled: !widget.disabled,
               ),
               suggestionsCallback: (pattern) async {
+                print(pattern);
                 if (widget.data != null && widget.type == Type.select) {
-                  return widget.data!;
+                  List filter = widget.data!
+                      .where(
+                        (item) => item['title']
+                            .toLowerCase()
+                            .contains(pattern.toLowerCase()),
+                      )
+                      .toList();
+                  return filter;
                 }
                 return [];
               },
