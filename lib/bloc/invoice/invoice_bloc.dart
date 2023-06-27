@@ -15,7 +15,9 @@ Future<void> _GetOverDue(
     InvoiceGetOverDue event, Emitter<InvoiceState> emit) async {
   try {
     if (event.customerId != "null") {
-      emit(InvoiceLoading());
+      if (event.loadingPage) {
+        emit(InvoiceLoading());
+      }
 
       Map<String, dynamic> result = await FetchData(data: Data.erp).FINDALL(
         params: "/Sales Invoice",
@@ -42,15 +44,26 @@ Future<void> _GetOverDue(
         ],
       );
 
+      print(result);
+
       if ((result['status']) != 200) {
         throw result['msg'];
       }
 
-      emit(InvoiceLoadedOverdue(
-        data: result['data'],
-      ));
+      emit(
+        InvoiceLoadedOverdue(
+          data: result['data'],
+          hasMore: result['hasMore'],
+        ),
+      );
     }
   } catch (e) {
     emit(InvoiceFailure(e.toString()));
+    emit(
+      InvoiceLoadedOverdue(
+        data: [],
+        hasMore: false,
+      ),
+    );
   }
 }

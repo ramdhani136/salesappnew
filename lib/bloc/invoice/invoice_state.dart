@@ -9,7 +9,14 @@ class InvoiceLoading extends InvoiceState {}
 
 class InvoiceLoadedOverdue extends InvoiceState {
   List data;
-  InvoiceLoadedOverdue({required this.data});
+  bool hasMore;
+  bool loadingList;
+
+  InvoiceLoadedOverdue({
+    required this.data,
+    this.hasMore = false,
+    this.loadingList = false,
+  });
 }
 
 class InvoiceFailure extends InvoiceState {

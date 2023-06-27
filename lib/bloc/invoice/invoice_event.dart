@@ -7,6 +7,10 @@ abstract class InvoiceEvent {}
 
 class InvoiceGetOverDue extends InvoiceEvent {
   String customerId;
+  bool loadingPage;
 
-  InvoiceGetOverDue(this.customerId);
+  InvoiceGetOverDue({
+    required this.customerId,
+    this.loadingPage = true,
+  });
 }
