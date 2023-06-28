@@ -43,7 +43,7 @@ class VisitFormResult extends StatelessWidget {
         builder: (context, state) {
           if (state is IsShowLoaded) {
             return Visibility(
-              visible: state.data.checkOut == null,
+              visible: state.data.status == "0",
               child: SizedBox(
                 height: 70.0,
                 width: 60.0,

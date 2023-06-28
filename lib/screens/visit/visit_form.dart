@@ -1,17 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
-import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/screens/visit/widgets/visit_checkout_modal.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_task.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_result.dart';
-import 'package:salesappnew/widgets/bottom_navigator.dart';
-
 import 'package:salesappnew/widgets/drawe_app_button.dart';
 
 class VisitForm extends StatelessWidget {
@@ -146,7 +140,12 @@ class VisitForm extends StatelessWidget {
                 child: BlocBuilder<VisitBloc, VisitState>(
                   builder: (context, state) {
                     if (state is IsLoading) {
-                      return Text("Loading...");
+                      return Text(
+                        "Loading...",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      );
                     }
 
                     if (state is IsShowLoaded) {
@@ -163,7 +162,7 @@ class VisitForm extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 3),
                                 child: Text(
                                   " Visit (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
-                                  style: const TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                             ],

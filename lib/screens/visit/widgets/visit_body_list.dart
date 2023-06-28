@@ -131,7 +131,7 @@ class VisitBodyList extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     Rating(1.0),
                     const SizedBox(height: 48),
                   ],
