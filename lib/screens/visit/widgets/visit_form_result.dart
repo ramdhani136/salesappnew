@@ -28,7 +28,6 @@ class VisitFormResult extends StatelessWidget {
                   onNotification: (ScrollNotification scrollInfo) {
                     if (scrollInfo.metrics.pixels ==
                         scrollInfo.metrics.maxScrollExtent) {
-                      print("refresh");
                       state.hasMore = false;
                       visitNoteBloc.add(
                         GetVisitNote(visitId),
