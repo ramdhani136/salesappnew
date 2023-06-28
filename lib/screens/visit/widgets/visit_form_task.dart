@@ -32,7 +32,8 @@ class VisitFormTask extends StatelessWidget {
               ),
             child: BlocBuilder<InvoiceBloc, InvoiceState>(
               builder: (context, stateInv) {
-                if (stateInv is InvoiceLoadedOverdue) {
+                if (state.data.status == "0" &&
+                    stateInv is InvoiceLoadedOverdue) {
                   if (stateInv.data.isNotEmpty) {
                     List setData = stateInv.data.map((item) {
                       var currencyFormat = NumberFormat.currency(
