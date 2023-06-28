@@ -193,31 +193,26 @@ class VisitFormTask extends StatelessWidget {
                               );
                             },
                           ),
-                          BlocBuilder<InvoiceBloc, InvoiceState>(builder: (
-                            context,
-                            stateInv,
-                          ) {
-                            return Visibility(
-                              visible: stateInv is InvoiceInfiniteLoading,
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Center(
-                                      child: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.amber,
-                                        ),
+                          Visibility(
+                            visible: stateInv is InvoiceInfiniteLoading,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.amber,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            );
-                          }),
+                            ),
+                          ),
                         ],
                       ),
                     ),
