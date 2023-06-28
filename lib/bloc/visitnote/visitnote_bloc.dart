@@ -22,7 +22,7 @@ Future<void> _GetData(
 ) async {
   try {
     int _page = 1;
-    if (state is VisitNoteIsLoaded) {
+    if (state is VisitNoteIsLoaded && !event.refresh) {
       _page = state.page;
     } else {
       emit(VisitNoteIsLoading());
@@ -38,9 +38,11 @@ Future<void> _GetData(
 
     List<VisitNoteModel> newData = VisitNoteModel.fromJsonList(result['data']);
     List<VisitNoteModel> currentData = [];
-    if (state is VisitNoteIsLoaded) {
+    if (state is VisitNoteIsLoaded && !event.refresh) {
       currentData = (state as VisitNoteIsLoaded).data;
       currentData.addAll(newData);
+    } else {
+      currentData = newData;
     }
 
     emit(

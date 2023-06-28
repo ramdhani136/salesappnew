@@ -10,7 +10,10 @@ class VisitFormResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VisitnoteBloc()..add(GetVisitNote(visitId)),
+      create: (context) => VisitnoteBloc()
+        ..add(GetVisitNote(
+          visitId: visitId,
+        )),
       child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
         builder: (context, state) {
           VisitnoteBloc visitNoteBloc = BlocProvider.of<VisitnoteBloc>(context);
@@ -30,7 +33,10 @@ class VisitFormResult extends StatelessWidget {
                         scrollInfo.metrics.maxScrollExtent) {
                       state.hasMore = false;
                       visitNoteBloc.add(
-                        GetVisitNote(visitId),
+                        GetVisitNote(
+                          visitId: visitId,
+                          refresh: false,
+                        ),
                       );
                     }
                     return false;
@@ -49,7 +55,13 @@ class VisitFormResult extends StatelessWidget {
                     ),
                   ),
                 ),
-                onRefresh: () async {},
+                onRefresh: () async {
+                  visitNoteBloc.add(
+                    GetVisitNote(
+                      visitId: visitId,
+                    ),
+                  );
+                },
               ),
               floatingActionButton: BlocBuilder<VisitBloc, VisitState>(
                 builder: (context, state) {
