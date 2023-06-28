@@ -228,11 +228,11 @@ class VisitForm extends StatelessWidget {
                 ),
               ),
             ),
-            body: const TabBarView(
+            body: TabBarView(
               children: [
-                VisitFormInfo(),
-                VisitFormTask(),
-                VisitFormResult(),
+                const VisitFormInfo(),
+                const VisitFormTask(),
+                VisitFormResult(visitId: id),
               ],
             ),
             // bottomNavigationBar: BlocProvider.value(
