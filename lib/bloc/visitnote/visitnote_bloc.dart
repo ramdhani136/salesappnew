@@ -39,7 +39,7 @@ Future<void> _GetData(
     List<VisitNoteModel> newData = VisitNoteModel.fromJsonList(result['data']);
     List<VisitNoteModel> currentData = [];
     if (state is VisitNoteIsLoaded && !event.refresh) {
-      currentData = (state as VisitNoteIsLoaded).data;
+      currentData = state.data;
       currentData.addAll(newData);
     } else {
       currentData = newData;
