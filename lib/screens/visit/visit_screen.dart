@@ -315,7 +315,7 @@ class _VisitScreenState extends State<VisitScreen> {
               ),
             ),
             body: const Padding(
-              padding: EdgeInsets.only(bottom: 200),
+              padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight + 90),
               child: TabBarView(
                 children: [
                   VisitBody(
@@ -337,10 +337,10 @@ class _VisitScreenState extends State<VisitScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: BlocProvider.value(
-            value: BlocProvider.of<AuthBloc>(context),
-            child: BottomNavigator(2),
-          ),
+          // bottomNavigationBar: BlocProvider.value(
+          //   value: BlocProvider.of<AuthBloc>(context),
+          //   child: BottomNavigator(2),
+          // ),
         ),
       ),
     );

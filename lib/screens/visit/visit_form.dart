@@ -236,10 +236,10 @@ class VisitForm extends StatelessWidget {
                 VisitFormResult(),
               ],
             ),
-            bottomNavigationBar: BlocProvider.value(
-              value: BlocProvider.of<AuthBloc>(context),
-              child: BottomNavigator(2),
-            ),
+            // bottomNavigationBar: BlocProvider.value(
+            //   value: BlocProvider.of<AuthBloc>(context),
+            //   child: BottomNavigator(2),
+            // ),
           ),
         ),
       ),

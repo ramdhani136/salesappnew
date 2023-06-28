@@ -176,7 +176,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     left: 20,
                     right: 20,
                     top: 20,
-                    bottom: kBottomNavigationBarHeight + 160,
+                    bottom: kBottomNavigationBarHeight + 100,
                   ),
                   child: ListView(
                     children: [
