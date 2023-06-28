@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -7,15 +9,23 @@ part 'invoice_state.dart';
 
 class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   InvoiceBloc() : super(InvoiceInitial()) {
-    on<InvoiceGetOverDue>(_GetOverDue);
+    on<InvoiceGetOverDue>(
+      (event, emit) {
+        return _GetOverDue(event, emit, state);
+      },
+    );
   }
 }
 
-Future<void> _GetOverDue(
-    InvoiceGetOverDue event, Emitter<InvoiceState> emit) async {
+Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
+    InvoiceState state) async {
   try {
+    int _page = 1;
     if (event.customerId != "null") {
-      if (event.loadingPage) {
+      if (state is InvoiceLoadedOverdue) {
+        emit(InvoiceInfiniteLoading());
+        _page = state.page;
+      } else {
         emit(InvoiceLoading());
       }
 
@@ -42,9 +52,8 @@ Future<void> _GetOverDue(
           "outstanding_amount",
           "payment_terms_template"
         ],
+        page: _page,
       );
-
-      print(result);
 
       if ((result['status']) != 200) {
         throw result['msg'];
@@ -54,16 +63,24 @@ Future<void> _GetOverDue(
         InvoiceLoadedOverdue(
           data: result['data'],
           hasMore: result['hasMore'],
+          page: result['nextPage'],
         ),
       );
     }
   } catch (e) {
-    emit(InvoiceFailure(e.toString()));
-    emit(
-      InvoiceLoadedOverdue(
-        data: [],
-        hasMore: false,
-      ),
+    if (state is InvoiceLoadedOverdue) {
+      InvoiceLoadedOverdue current = state as InvoiceLoadedOverdue;
+      state.hasMore = false;
+    }
+
+    Fluttertoast.showToast(
+      msg: "${e}",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.grey[800],
+      textColor: Colors.white,
     );
+
+    emit(InvoiceFailure(e.toString()));
   }
 }

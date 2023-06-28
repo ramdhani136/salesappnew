@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'invoice_bloc.dart';
 
 @immutable
@@ -7,15 +9,17 @@ class InvoiceInitial extends InvoiceState {}
 
 class InvoiceLoading extends InvoiceState {}
 
+class InvoiceInfiniteLoading extends InvoiceState {}
+
 class InvoiceLoadedOverdue extends InvoiceState {
   List data;
   bool hasMore;
-  bool loadingList;
+  int page;
 
   InvoiceLoadedOverdue({
     required this.data,
     this.hasMore = false,
-    this.loadingList = false,
+    this.page = 1,
   });
 }
 

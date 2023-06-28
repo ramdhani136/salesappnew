@@ -67,19 +67,18 @@ class VisitFormTask extends StatelessWidget {
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       if (scrollInfo.metrics.pixels ==
-                          scrollInfo.metrics.maxScrollExtent) {
-                        print(true);
+                                  scrollInfo.metrics.maxScrollExtent &&
+                              (stateInv is InvoiceLoadedOverdue)
+                          ? (stateInv).hasMore
+                          : false) {
+                        stateInv.hasMore = false;
+                        BlocProvider.of<InvoiceBloc>(context).add(
+                          InvoiceGetOverDue(
+                              customerId: state.data.customer!.erpId!,
+                              loadingPage: false),
+                        );
                       }
-                      // if (scrollInfo.metrics.pixels ==
-                      //         scrollInfo.metrics.maxScrollExtent &&
-                      //     state.hasMore) {
-                      //   state.pageLoading = true;
-                      //   state.hasMore = false;
-                      //   visitBloc.add(GetData(
-                      //     status: visitBloc.tabActive ?? 1,
-                      //     search: _textEditingController.text,
-                      //   ));
-                      // }
+
                       return false;
                     },
                     child: Padding(
@@ -88,114 +87,138 @@ class VisitFormTask extends StatelessWidget {
                         right: 15,
                         top: 20,
                       ),
-                      child: ListView.builder(
-                        itemCount: dataTask.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    width: 1,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //     color: Colors.grey
-                                  //         .withOpacity(0.5), // Warna bayangan
-                                  //     spreadRadius: 3, // Jarak sebar bayangan
-                                  //     blurRadius: 2, // Jarak blur bayangan
-                                  //     offset: Offset(0, 4), // Posisi bayangan
-                                  //   ),
-                                  // ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: Get.width,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                        ),
-                                        color: dataTask[index].from !=
-                                                "Sales Invoice"
-                                            ? Colors.yellow[800]
-                                            : Colors.red[400],
+                      child: Stack(
+                        children: [
+                          ListView.builder(
+                            itemCount: dataTask.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        width: 1,
                                       ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 15,
-                                          ),
-                                          child: Text(
-                                            "${dataTask[index].name} (${dataTask[index].from})",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
                                     ),
-                                    IntrinsicHeight(
-                                      child: Container(
-                                        width: Get.width,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(10),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: Get.width,
+                                          height: 35,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                            ),
+                                            color: dataTask[index].from !=
+                                                    "Sales Invoice"
+                                                ? Colors.yellow[800]
+                                                : Colors.red[400],
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 12,
-                                            right: 12,
-                                            bottom: 12,
-                                            top: 8,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                dataTask[index].title,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 15,
+                                              ),
+                                              child: Text(
+                                                "${dataTask[index].name} (${dataTask[index].from})",
                                                 style: const TextStyle(
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                dataTask[index].notes,
-                                                style: TextStyle(
+                                                  fontStyle: FontStyle.italic,
                                                   fontSize: 15,
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
+                                        IntrinsicHeight(
+                                          child: Container(
+                                            width: Get.width,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(10),
+                                                bottomRight:
+                                                    Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 12,
+                                                right: 12,
+                                                bottom: 12,
+                                                top: 8,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    dataTask[index].title,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    dataTask[index].notes,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          BlocBuilder<InvoiceBloc, InvoiceState>(builder: (
+                            context,
+                            stateInv,
+                          ) {
+                            return Visibility(
+                              visible: stateInv is InvoiceInfiniteLoading,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Center(
+                                      child: SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.amber,
+                                        ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          );
-                        },
+                            );
+                          }),
+                        ],
                       ),
                     ),
                   ),

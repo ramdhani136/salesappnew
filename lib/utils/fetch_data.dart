@@ -62,6 +62,7 @@ class FetchData {
       String uri =
           "${config.baseUri}$doc${params != null ? params : ""}?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}";
 
+      print(uri);
       final response = await http.get(
         Uri.parse(uri),
         headers: {
