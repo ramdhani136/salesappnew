@@ -32,7 +32,8 @@ class VisitFormResult extends StatelessWidget {
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollInfo) {
                     if (scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
+                            scrollInfo.metrics.maxScrollExtent &&
+                        state.hasMore) {
                       state.hasMore = false;
                       visitNoteBloc.add(
                         GetVisitNote(
@@ -50,9 +51,12 @@ class VisitFormResult extends StatelessWidget {
                       top: 20,
                     ),
                     child: ListView.builder(
-                      itemCount: 50,
+                      itemCount: state.data.length,
                       itemBuilder: (context, index) {
-                        return Text("Halo");
+                        return ListTile(
+                          title: Text(state.data[index].title),
+                          subtitle: Text(state.data[index].notes),
+                        );
                       },
                     ),
                   ),

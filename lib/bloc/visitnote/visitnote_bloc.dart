@@ -29,6 +29,7 @@ Future<void> _GetData(
     }
 
     Map<String, dynamic> result = await FetchData(data: Data.visitnote).FINDALL(
+      params: "/visit/${event.visitId}",
       page: _page,
     );
 
@@ -37,6 +38,7 @@ Future<void> _GetData(
     }
 
     List<VisitNoteModel> newData = VisitNoteModel.fromJsonList(result['data']);
+
     List<VisitNoteModel> currentData = [];
     if (state is VisitNoteIsLoaded && !event.refresh) {
       currentData = state.data;
