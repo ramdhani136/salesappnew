@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_checkout_modal.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -66,266 +67,292 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                 DateTime.parse("${state.data.updatedAt}").toLocal(),
               )}";
 
-          return SlidingUpPanel(
-            controller: panelController,
-            defaultPanelState: PanelState.CLOSED,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(18),
-            ),
-            parallaxEnabled: true,
-            maxHeight: Get.height / 2,
-            minHeight: 30,
-            panel: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        panelController.isPanelOpen
-                            ? panelController.close()
-                            : panelController.open();
-                      },
-                      child: Container(
-                        width: 30,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12),
+          return Scaffold(
+            body: SlidingUpPanel(
+              controller: panelController,
+              defaultPanelState: PanelState.CLOSED,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(18),
+              ),
+              parallaxEnabled: true,
+              maxHeight: Get.height / 2,
+              minHeight: 30,
+              panel: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          panelController.isPanelOpen
+                              ? panelController.close()
+                              : panelController.open();
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: ListView.builder(
-                        itemCount: state.history.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 52, 52, 52),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Color.fromARGB(
-                                      255, 32, 32, 32), // Warna border
-                                  width: 1.0, // Ketebalan border
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: ListView.builder(
+                          itemCount: state.history.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 52, 52, 52),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Color.fromARGB(
+                                        255, 32, 32, 32), // Warna border
+                                    width: 1.0, // Ketebalan border
+                                  ),
                                 ),
-                              ),
-                              child: ListTile(
-                                title: Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        state.history[index].user.name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontStyle: FontStyle.italic,
+                                child: ListTile(
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          state.history[index].user.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontStyle: FontStyle.italic,
+                                          ),
                                         ),
+                                        Text(
+                                          DateFormat.yMd().add_jm().format(
+                                                DateTime.parse(
+                                                        "${state.history[index].createdAt}")
+                                                    .toLocal(),
+                                              ),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    child: Text(
+                                      state.history[index].message,
+                                      style: TextStyle(
+                                        color: Colors.white,
                                       ),
-                                      Text(
-                                        DateFormat.yMd().add_jm().format(
-                                              DateTime.parse(
-                                                      "${state.history[index].createdAt}")
-                                                  .toLocal(),
-                                            ),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14,
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                  ),
-                                  child: Text(
-                                    state.history[index].message,
-                                    style: TextStyle(
-                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            body: RefreshIndicator(
-              onRefresh: () async {
-                visitBloc.add(ShowData(id: "${state.data.id}"));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: 20,
-                  bottom: kBottomNavigationBarHeight + 160,
-                ),
-                child: ListView(
-                  children: [
-                    CustomField(
-                      title: "Name",
-                      controller: nameC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Update At",
-                      controller: dateC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Type",
-                      controller: typeC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Customer",
-                      controller: customerC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Group",
-                      controller: groupC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Branch",
-                      controller: branchC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    BlocProvider(
-                      create: (context) => ContactBloc()
-                        ..add(GetListInput(
-                          customerId: state.data.customer!.id,
-                        )),
-                      child: BlocBuilder<ContactBloc, ContactState>(
-                        builder: (context, stateContact) {
-                          return InkWell(
-                            child: CustomField(
-                              disabled: state.data.status != "0",
-                              title: "Pic",
-                              controller: picC,
-                              valid: true,
-                              type: Type.select,
-                              // getData: GetContact(),
-                              data: stateContact is ContactInput
-                                  ? stateContact.data
-                                  : [],
-                              onChange: (e) {
-                                picC.text = e['title'];
-                                phoneC.text = "${e['subTitle']}";
-                              },
-                              onReset: () {
-                                picC.text = "";
-                                phoneC.text = "";
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Visibility(
-                      visible: phoneC.text != "",
-                      child: CustomField(
-                        title: "Phone",
-                        controller: phoneC,
-                        type: Type.standard,
-                        disabled: true,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomField(
-                      title: "Status",
-                      controller: workflowC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Visibility(
-                      visible: state.data.signature != null,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Signature",
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            width: Get.width,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color.fromARGB(255, 214, 214, 214),
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(30.0),
-                              child: state.data.signature != null
-                                  ? Image.memory(
-                                      base64.decode(state.data.signature!),
-                                    )
-                                  : Container(),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  visitBloc.add(ShowData(id: "${state.data.id}"));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: kBottomNavigationBarHeight + 160,
+                  ),
+                  child: ListView(
+                    children: [
+                      CustomField(
+                        title: "Name",
+                        controller: nameC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Update At",
+                        controller: dateC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Type",
+                        controller: typeC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Customer",
+                        controller: customerC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Group",
+                        controller: groupC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Branch",
+                        controller: branchC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      BlocProvider(
+                        create: (context) => ContactBloc()
+                          ..add(GetListInput(
+                            customerId: state.data.customer!.id,
+                          )),
+                        child: BlocBuilder<ContactBloc, ContactState>(
+                          builder: (context, stateContact) {
+                            return InkWell(
+                              child: CustomField(
+                                disabled: state.data.status != "0",
+                                title: "Pic",
+                                controller: picC,
+                                valid: true,
+                                type: Type.select,
+                                // getData: GetContact(),
+                                data: stateContact is ContactInput
+                                    ? stateContact.data
+                                    : [],
+                                onChange: (e) {
+                                  picC.text = e['title'];
+                                  phoneC.text = "${e['subTitle']}";
+                                },
+                                onReset: () {
+                                  picC.text = "";
+                                  phoneC.text = "";
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Visibility(
+                        visible: phoneC.text != "",
+                        child: CustomField(
+                          title: "Phone",
+                          controller: phoneC,
+                          type: Type.standard,
+                          disabled: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomField(
+                        title: "Status",
+                        controller: workflowC,
+                        type: Type.standard,
+                        disabled: true,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Visibility(
+                        visible: state.data.signature != null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Signature",
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: Get.width,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 214, 214, 214),
+                                ),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(30.0),
+                                child: state.data.signature != null
+                                    ? Image.memory(
+                                        base64.decode(state.data.signature!),
+                                      )
+                                    : Container(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            floatingActionButton: BlocBuilder<VisitBloc, VisitState>(
+              builder: (context, state) {
+                if (state is IsShowLoaded) {
+                  return Visibility(
+                    visible: state.data.checkOut == null,
+                    child: SizedBox(
+                      height: 140.0,
+                      width: 60.0,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showCheckInModal(
+                              context,
+                              BlocProvider.of<VisitBloc>(context),
+                              "${state.data.id}");
+                        },
+                        backgroundColor: Colors.grey[850],
+                        child: const Icon(Icons.done_outlined),
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
           );
         }
