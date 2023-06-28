@@ -27,6 +27,7 @@ Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
         _page = state.page;
       } else {
         emit(InvoiceLoading());
+        emit(InvoiceInfiniteLoading());
       }
 
       Map<String, dynamic> result = await FetchData(data: Data.erp).FINDALL(

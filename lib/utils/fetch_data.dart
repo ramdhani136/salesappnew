@@ -8,7 +8,17 @@ import 'dart:convert';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/utils/local_data.dart';
 
-enum Data { visit, callsheet, customer, customergroup, contact, memo, erp }
+enum Data {
+  visit,
+  callsheet,
+  customer,
+  customergroup,
+  contact,
+  memo,
+  erp,
+  visitnote,
+  callsheetNote
+}
 
 class FetchData {
   final Data data;
@@ -38,6 +48,12 @@ class FetchData {
         break;
       case Data.erp:
         doc = "erp";
+        break;
+      case Data.visitnote:
+        doc = "visitnote";
+        break;
+      case Data.callsheetNote:
+        doc = "callsheetnote";
         break;
       default:
     }
