@@ -1,24 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
-import 'package:intl/intl.dart';
 
 class VisitFormTask extends StatelessWidget {
-  const VisitFormTask({super.key});
+  String visitId;
+  VisitFormTask({
+    Key? key,
+    required this.visitId,
+  }) : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
-    bool refresh = false;
+    BlocProvider.of<VisitBloc>(context).add(
+      ShowData(
+        id: visitId,
+        isLoading: false,
+      ),
+    );
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
 
         if (state is IsLoading) {
-          refresh = true;
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -31,7 +41,7 @@ class VisitFormTask extends StatelessWidget {
             create: (context) => InvoiceBloc(),
             child: BlocBuilder<InvoiceBloc, InvoiceState>(
               builder: (context, stateInv) {
-                if (stateInv is InvoiceInitial && refresh) {
+                if (stateInv is InvoiceInitial) {
                   BlocProvider.of<InvoiceBloc>(context).add(
                     InvoiceGetOverDue(
                         customerId: "${state.data.customer?.erpId}"),

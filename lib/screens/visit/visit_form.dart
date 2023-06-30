@@ -236,7 +236,7 @@ class VisitForm extends StatelessWidget {
             body: TabBarView(
               children: [
                 const VisitFormInfo(),
-                const VisitFormTask(),
+                VisitFormTask(visitId: id),
                 VisitFormResult(visitId: id),
               ],
             ),
