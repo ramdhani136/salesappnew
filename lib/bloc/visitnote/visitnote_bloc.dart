@@ -84,13 +84,8 @@ Future<void> _ShowData(
       throw result['msg'];
     }
 
-    print(result);
-
-    VisitNoteModel data = [] as VisitNoteModel;
-
-    emit(VisitNoteShow(data: data));
+    emit(VisitNoteShow(data: result['data']));
   } catch (e) {
-    print(e);
     emit(
       VisitNoteIsFailure(
         e.toString(),

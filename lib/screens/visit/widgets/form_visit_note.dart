@@ -12,6 +12,8 @@ void FormVisitNote({
   String? id,
   String? visitId,
 }) {
+  final TextEditingController titleC = TextEditingController();
+  final TextEditingController noteC = TextEditingController();
   VisitnoteBloc vBloc = VisitnoteBloc();
   showModalBottomSheet(
     context: context,
@@ -20,7 +22,6 @@ void FormVisitNote({
       return WillPopScope(
         onWillPop: () async {
           if (visitId != null && id != null) {
-            print("refresh");
             bloc.add(
               GetVisitNote(
                 visitId: visitId,
@@ -33,13 +34,16 @@ void FormVisitNote({
         child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
           bloc: vBloc,
           builder: (context, state) {
-            print(state);
             // print(state);
             if (id != null && visitId != null && state is VisitnoteInitial) {
-              print("ambil");
               vBloc.add(
                 ShowVisitNote(id: id),
               );
+            }
+
+            if (state is VisitNoteShow) {
+              titleC.text = state.data['title'];
+              noteC.text = state.data['notes'];
             }
 
             return Column(
@@ -112,6 +116,7 @@ void FormVisitNote({
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextField(
+                            controller: titleC,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                             decoration: InputDecoration(
@@ -122,6 +127,7 @@ void FormVisitNote({
                           Expanded(
                             child: Container(
                               child: TextField(
+                                controller: noteC,
                                 keyboardType: TextInputType.multiline,
                                 maxLines: null,
                                 decoration: InputDecoration(

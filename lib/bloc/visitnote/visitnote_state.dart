@@ -26,7 +26,7 @@ class VisitNoteIsLoaded extends VisitnoteState {
 }
 
 class VisitNoteShow extends VisitnoteState {
-  VisitNoteModel data;
+  Map data;
   VisitNoteShow({required this.data});
 }
 
