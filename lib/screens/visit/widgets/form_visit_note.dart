@@ -123,6 +123,10 @@ void FormVisitNote({
                               // border: InputBorder.none,
                               hintText: 'Title',
                             ),
+                            style: TextStyle(
+                              fontWeight: FontWeight
+                                  .bold, // Menentukan teks menjadi tebal (bold)
+                            ),
                           ),
                           Expanded(
                             child: Container(
