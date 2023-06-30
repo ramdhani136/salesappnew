@@ -104,8 +104,6 @@ class VisitForm extends StatelessWidget {
       },
       child: BlocProvider.value(
         value: visitBloc,
-
-        // create: (context) => VisitBloc()..add(ShowData(id: id)),
         child: DefaultTabController(
           initialIndex: 0,
           length: myTabs.length,

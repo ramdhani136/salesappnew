@@ -21,6 +21,7 @@ Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
     InvoiceState state) async {
   try {
     int _page = 1;
+
     if (event.customerId != "null") {
       if (state is InvoiceLoadedOverdue) {
         emit(InvoiceInfiniteLoading());

@@ -12,11 +12,13 @@ class VisitFormTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool refresh = false;
     return BlocBuilder<VisitBloc, VisitState>(
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
 
         if (state is IsLoading) {
+          refresh = true;
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -26,12 +28,15 @@ class VisitFormTask extends StatelessWidget {
           List<TaskVisitModel> dataTask = state.task;
 
           return BlocProvider(
-            create: (context) => InvoiceBloc()
-              ..add(
-                InvoiceGetOverDue(customerId: "${state.data.customer?.erpId}"),
-              ),
+            create: (context) => InvoiceBloc(),
             child: BlocBuilder<InvoiceBloc, InvoiceState>(
               builder: (context, stateInv) {
+                if (stateInv is InvoiceInitial && refresh) {
+                  BlocProvider.of<InvoiceBloc>(context).add(
+                    InvoiceGetOverDue(
+                        customerId: "${state.data.customer?.erpId}"),
+                  );
+                }
                 if (state.data.status == "0" &&
                     stateInv is InvoiceLoadedOverdue) {
                   if (stateInv.data.isNotEmpty) {
