@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
@@ -101,7 +100,6 @@ class VisitFormTask extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         left: 15,
                         right: 15,
-                        top: 20,
                       ),
                       child: Stack(
                         children: [
@@ -110,6 +108,12 @@ class VisitFormTask extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
+                                  Visibility(
+                                    visible: index == 0,
+                                    child: const SizedBox(
+                                      height: 20,
+                                    ),
+                                  ),
                                   Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
