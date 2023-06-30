@@ -131,16 +131,10 @@ class VisitFormResult extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  DateFormat.yMd()
-                                                      .add_jm()
-                                                      .format(
-                                                        DateTime.parse(
-                                                                "${state.data[index].updatedAt}")
-                                                            .toLocal(),
-                                                      ),
-                                                  style: const TextStyle(
+                                                  state.data[index].title,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 12.5,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -149,7 +143,24 @@ class VisitFormResult extends StatelessWidget {
                                                 Text(
                                                   state.data[index].notes,
                                                   style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  DateFormat.yMd()
+                                                      .add_jm()
+                                                      .format(
+                                                        DateTime.parse(
+                                                                "${state.data[index].updatedAt}")
+                                                            .toLocal(),
+                                                      ),
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13.5,
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -183,9 +194,9 @@ class VisitFormResult extends StatelessWidget {
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     horizontal:
-                                                                        8.0,
+                                                                        6.0,
                                                                     vertical:
-                                                                        6.0), // Atur padding dalam kotak tag
+                                                                        4.0),
                                                             decoration:
                                                                 BoxDecoration(
                                                               color: Colors
