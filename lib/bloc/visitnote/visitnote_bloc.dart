@@ -24,6 +24,10 @@ Future<void> _GetData(
     int _page = 1;
     if (state is VisitNoteIsLoaded && !event.refresh) {
       _page = state.page;
+      state.IsloadingPage = true;
+      emit(
+        VisitNoteIsLoaded(data: state.data, IsloadingPage: true),
+      );
     } else {
       emit(VisitNoteIsLoading());
     }
@@ -52,6 +56,8 @@ Future<void> _GetData(
         data: currentData,
         hasMore: result['hasMore'],
         total: result['total'],
+        page: result['nextPage'],
+        // IsloadingPage: false,
       ),
     );
   } catch (e) {

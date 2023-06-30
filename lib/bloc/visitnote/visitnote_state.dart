@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
 
 part of 'visitnote_bloc.dart';
 
@@ -14,12 +14,14 @@ class VisitNoteIsLoaded extends VisitnoteState {
   bool hasMore;
   int page;
   int total;
+  bool IsloadingPage;
 
   VisitNoteIsLoaded({
     required this.data,
     this.hasMore = false,
     this.page = 1,
     this.total = 1,
+    this.IsloadingPage = false,
   });
 }
 

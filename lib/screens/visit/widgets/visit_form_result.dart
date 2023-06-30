@@ -28,46 +28,70 @@ class VisitFormResult extends StatelessWidget {
 
           if (state is VisitNoteIsLoaded) {
             return Scaffold(
-              body: RefreshIndicator(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollInfo) {
-                    if (scrollInfo.metrics.pixels ==
-                            scrollInfo.metrics.maxScrollExtent &&
-                        state.hasMore) {
-                      state.hasMore = false;
+              body: Stack(
+                children: [
+                  RefreshIndicator(
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent &&
+                            state.hasMore) {
+                          state.hasMore = false;
+                          visitNoteBloc.add(
+                            GetVisitNote(
+                              visitId: visitId,
+                              refresh: false,
+                            ),
+                          );
+                        }
+                        return false;
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          top: 20,
+                        ),
+                        child: ListView.builder(
+                          itemCount: state.data.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(state.data[index].title),
+                              subtitle: Text(state.data[index].notes),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    onRefresh: () async {
                       visitNoteBloc.add(
                         GetVisitNote(
                           visitId: visitId,
-                          refresh: false,
                         ),
                       );
-                    }
-                    return false;
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      top: 20,
-                    ),
-                    child: ListView.builder(
-                      itemCount: state.data.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(state.data[index].title),
-                          subtitle: Text(state.data[index].notes),
-                        );
-                      },
+                    },
+                  ),
+                  Visibility(
+                    visible: state.IsloadingPage,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                onRefresh: () async {
-                  visitNoteBloc.add(
-                    GetVisitNote(
-                      visitId: visitId,
-                    ),
-                  );
-                },
+                ],
               ),
               floatingActionButton: BlocBuilder<VisitBloc, VisitState>(
                 builder: (context, state) {
@@ -90,7 +114,14 @@ class VisitFormResult extends StatelessWidget {
               ),
             );
           }
-          return Container();
+          return const Center(
+            child: Text(
+              "No data",
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          );
         },
       ),
     );

@@ -63,9 +63,9 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           workflowC.text = state.data.workflowState!;
           picC.text = state.data.contact!.name;
           phoneC.text = "${state.data.contact!.phone}";
-          dateC.text = "${DateFormat.yMd().add_jm().format(
+          dateC.text = DateFormat.yMd().add_jm().format(
                 DateTime.parse("${state.data.updatedAt}").toLocal(),
-              )}";
+              );
 
           return Scaffold(
             body: SlidingUpPanel(
@@ -176,7 +176,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     left: 20,
                     right: 20,
                     top: 20,
-                    bottom: kBottomNavigationBarHeight + 100,
+                    bottom: kBottomNavigationBarHeight + 130,
                   ),
                   child: ListView(
                     children: [

@@ -188,7 +188,7 @@ class _VisitBodyState extends State<VisitBody> {
                       child: Stack(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
+                            padding: const EdgeInsets.only(bottom: 40),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -229,7 +229,7 @@ class _VisitBodyState extends State<VisitBody> {
                           Visibility(
                             visible: state.pageLoading,
                             child: const Padding(
-                              padding: EdgeInsets.only(bottom: 30),
+                              padding: EdgeInsets.only(bottom: 60),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
