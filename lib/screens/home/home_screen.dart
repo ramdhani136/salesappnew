@@ -33,7 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         leading: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           return IconButton(
-              icon: const Icon(Icons.apps_outlined),
+              icon: const Icon(
+                Icons.menu,
+                color: Color.fromARGB(255, 121, 8, 14),
+              ),
               onPressed: () {
                 BlocProvider.of<AuthBloc>(context).add(OnLogout());
                 // context.read<AuthBloc>().add(OnLogout());

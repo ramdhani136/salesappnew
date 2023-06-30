@@ -6,7 +6,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_task.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_result.dart';
-import 'package:salesappnew/widgets/drawe_app_button.dart';
+import 'package:salesappnew/widgets/back_button_custom.dart';
 
 class VisitForm extends StatelessWidget {
   String id;
@@ -152,7 +152,14 @@ class VisitForm extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const DrawerAppButton(),
+                          BackButtonCustom(onBack: () {
+                            print("coba");
+                            visitBloc.add(GetData(
+                              status: visitBloc.tabActive ?? 1,
+                              getRefresh: true,
+                              search: visitBloc.search,
+                            ));
+                          }),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [

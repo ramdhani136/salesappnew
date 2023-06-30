@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
-import 'package:salesappnew/widgets/drawe_app_button.dart';
+import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatefulWidget {
@@ -72,7 +72,7 @@ class _VisitScreenState extends State<VisitScreen> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const DrawerAppButton(),
+                BackButtonCustom(),
                 const Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
