@@ -41,6 +41,12 @@ void FormVisitNote({
               );
             }
 
+            if (state is VisitNoteIsLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
             if (state is VisitNoteShow) {
               titleC.text = state.data['title'];
               noteC.text = state.data['notes'];
@@ -71,11 +77,11 @@ void FormVisitNote({
                       }),
                       const Row(
                         children: [
-                          Icon(Icons.directions_run, size: 17),
+                          Icon(Icons.note, size: 17),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3),
                             child: Text(
-                              "Visit List",
+                              "Notes",
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
