@@ -340,7 +340,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                       width: 60.0,
                       child: FloatingActionButton(
                         onPressed: () {
-                          showCheckInModal(
+                          showCheckOutModal(
                               context,
                               BlocProvider.of<VisitBloc>(context),
                               "${state.data.id}");

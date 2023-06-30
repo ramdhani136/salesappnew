@@ -6,7 +6,7 @@ import 'package:salesappnew/screens/visit/widgets/visit_checkout.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/widgets/dialog_signature.dart';
 
-void showCheckInModal(BuildContext context, VisitBloc visitBloc, String id) {
+void showCheckOutModal(BuildContext context, VisitBloc visitBloc, String id) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true, // Membuat modal menggunakan tinggi penuh
