@@ -12,6 +12,9 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     on<GetVisitNote>(
       (event, emit) => _GetData(event, emit, state),
     );
+    on<ShowVisitNote>(
+      (event, emit) => _ShowData(event, emit, state),
+    );
   }
 }
 
@@ -61,6 +64,33 @@ Future<void> _GetData(
       ),
     );
   } catch (e) {
+    emit(
+      VisitNoteIsFailure(
+        e.toString(),
+      ),
+    );
+  }
+}
+
+Future<void> _ShowData(
+  ShowVisitNote event,
+  Emitter<VisitnoteState> emit,
+  VisitnoteState state,
+) async {
+  try {
+    emit(VisitNoteIsLoading());
+    dynamic result = await FetchData(data: Data.visitnote).FINDONE(event.id);
+    if (result['status'] != 200) {
+      throw result['msg'];
+    }
+
+    print(result);
+
+    VisitNoteModel data = [] as VisitNoteModel;
+
+    emit(VisitNoteShow(data: data));
+  } catch (e) {
+    print(e);
     emit(
       VisitNoteIsFailure(
         e.toString(),

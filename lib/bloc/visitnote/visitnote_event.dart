@@ -11,3 +11,26 @@ class GetVisitNote extends VisitnoteEvent {
     this.refresh = true,
   });
 }
+
+class ShowVisitNote extends VisitnoteEvent {
+  String id;
+  ShowVisitNote({
+    required this.id,
+  });
+}
+
+class DeleteVisitNote extends VisitnoteEvent {
+  String id;
+  DeleteVisitNote({
+    required this.id,
+  });
+}
+
+class UpdateVisitNote extends VisitnoteEvent {
+  String id;
+  Map<String, dynamic> data;
+  UpdateVisitNote({
+    required this.id,
+    required this.data,
+  });
+}

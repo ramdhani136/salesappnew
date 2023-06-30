@@ -25,6 +25,11 @@ class VisitNoteIsLoaded extends VisitnoteState {
   });
 }
 
+class VisitNoteShow extends VisitnoteState {
+  VisitNoteModel data;
+  VisitNoteShow({required this.data});
+}
+
 class VisitNoteIsFailure extends VisitnoteState {
   String error;
   VisitNoteIsFailure(this.error);

@@ -66,154 +66,170 @@ class VisitFormResult extends StatelessWidget {
                                       height: 20,
                                     ),
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(
-                                          height: 10,
+                                  InkWell(
+                                    onTap: () {
+                                      FormVisitNote(
+                                        context: context,
+                                        bloc: BlocProvider.of<VisitnoteBloc>(
+                                          context,
                                         ),
-                                        IntrinsicHeight(
-                                          child: Container(
-                                            width: Get.width,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-                                                bottomRight:
-                                                    Radius.circular(10),
+                                        id: state.data[index].id,
+                                        visitId: visitId,
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          IntrinsicHeight(
+                                            child: Container(
+                                              width: Get.width,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  bottomRight:
+                                                      Radius.circular(10),
+                                                ),
                                               ),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 12,
-                                                right: 12,
-                                                bottom: 12,
-                                                top: 8,
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    state.data[index].title,
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    state.data[index].notes,
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    DateFormat.yMd()
-                                                        .add_jm()
-                                                        .format(
-                                                          DateTime.parse(
-                                                                  "${state.data[index].updatedAt}")
-                                                              .toLocal(),
-                                                        ),
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13.5,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Container(
-                                                    width: Get.width,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      border: Border(
-                                                        top: BorderSide(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              227,
-                                                              225,
-                                                              225),
-                                                          width: 1.0,
-                                                        ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 12,
+                                                  right: 12,
+                                                  bottom: 12,
+                                                  top: 8,
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      state.data[index].title,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 10),
-                                                      child: Wrap(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              right: 8,
-                                                              bottom: 5,
-                                                            ),
-                                                            child: Container(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          6.0,
-                                                                      vertical:
-                                                                          4.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .green[800],
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            4.0),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      state.data[index].notes,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      DateFormat.yMd()
+                                                          .add_jm()
+                                                          .format(
+                                                            DateTime.parse(
+                                                                    "${state.data[index].updatedAt}")
+                                                                .toLocal(),
+                                                          ),
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 13.5,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Container(
+                                                      width: Get.width,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        border: Border(
+                                                          top: BorderSide(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    227,
+                                                                    225,
+                                                                    225),
+                                                            width: 1.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 10),
+                                                        child: Wrap(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                right: 8,
+                                                                bottom: 5,
                                                               ),
-                                                              child: Text(
-                                                                'Price',
-                                                                style:
-                                                                    TextStyle(
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            6.0,
+                                                                        vertical:
+                                                                            4.0),
+                                                                decoration:
+                                                                    BoxDecoration(
                                                                   color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      13.0,
-                                                                  // fontWeight:
-                                                                  //     FontWeight
-                                                                  //         .bold,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic,
+                                                                          .green[
+                                                                      800],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              4.0),
+                                                                ),
+                                                                child: Text(
+                                                                  'Price',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        13.0,
+                                                                    // fontWeight:
+                                                                    //     FontWeight
+                                                                    //         .bold,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
@@ -277,9 +293,10 @@ class VisitFormResult extends StatelessWidget {
                     child: FloatingActionButton(
                       onPressed: () {
                         FormVisitNote(
-                            context,
-                            BlocProvider.of<VisitnoteBloc>(context),
-                            "${state.data.id}");
+                          context: context,
+                          visitId: visitId,
+                          bloc: BlocProvider.of<VisitnoteBloc>(context),
+                        );
                       },
                       backgroundColor: Colors.grey[850],
                       child: const Icon(Icons.add),
