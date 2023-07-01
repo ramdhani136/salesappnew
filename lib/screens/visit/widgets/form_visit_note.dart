@@ -9,11 +9,17 @@ import 'package:salesappnew/widgets/back_button_custom.dart';
 void FormVisitNote({
   required BuildContext context,
   required VisitnoteBloc bloc,
-  String? id,
+  String? noteId,
   String? visitId,
 }) {
   final TextEditingController titleC = TextEditingController();
   final TextEditingController noteC = TextEditingController();
+  String? id;
+
+  if (noteId != null) {
+    id = noteId;
+  }
+
   VisitnoteBloc vBloc = VisitnoteBloc();
   showModalBottomSheet(
     context: context,
@@ -21,7 +27,7 @@ void FormVisitNote({
     builder: (BuildContext context) {
       return WillPopScope(
         onWillPop: () async {
-          if (visitId != null && id != null) {
+          if (visitId != null) {
             bloc.add(
               GetVisitNote(
                 visitId: visitId,
@@ -37,7 +43,7 @@ void FormVisitNote({
             // print(state);
             if (id != null && visitId != null && state is VisitnoteInitial) {
               vBloc.add(
-                ShowVisitNote(id: id),
+                ShowVisitNote(id: "${id}"),
               );
             }
 
@@ -48,6 +54,7 @@ void FormVisitNote({
             }
 
             if (state is VisitNoteShow) {
+              id ??= state.data['_id'];
               titleC.text = state.data['title'];
               noteC.text = state.data['notes'];
             }
@@ -55,10 +62,7 @@ void FormVisitNote({
             return Column(
               children: [
                 Container(
-                  width: Get.width,
-                  color: Color(0xFFE6212A),
-                  height: Get.statusBarHeight - 21,
-                ),
+                    width: Get.width, color: Color(0xFFE6212A), height: 50),
                 AppBar(
                   elevation: 0,
                   automaticallyImplyLeading: false,
@@ -67,7 +71,7 @@ void FormVisitNote({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       BackButtonCustom(onBack: () {
-                        if (visitId != null && id != null) {
+                        if (visitId != null) {
                           bloc.add(
                             GetVisitNote(
                               visitId: visitId,
@@ -199,10 +203,24 @@ void FormVisitNote({
                           width: 60.0,
                           child: FloatingActionButton(
                             onPressed: () {
-                              // FormVisitNote(
-                              //     context,
-                              //     BlocProvider.of<VisitnoteBloc>(context),
-                              //     "${state.data.id}");
+                              if (id != null) {
+                                vBloc.add(UpdateVisitNote(
+                                  id: "${id}",
+                                  data: {
+                                    "title": titleC.text,
+                                    "notes": noteC.text
+                                  },
+                                ));
+                              } else {
+                                vBloc.add(InsertVisitNote(
+                                  data: {
+                                    "title": titleC.text,
+                                    "notes": noteC.text,
+                                    "visitId": visitId,
+                                    "tags": ["648035669c2e5446ae9218f3"],
+                                  },
+                                ));
+                              }
                             },
                             backgroundColor: Colors.grey[850],
                             child: const Icon(Icons.save),

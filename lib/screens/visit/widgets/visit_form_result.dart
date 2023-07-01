@@ -26,6 +26,11 @@ class VisitFormResult extends StatelessWidget {
             builder: (context, state) {
               VisitnoteBloc visitNoteBloc =
                   BlocProvider.of<VisitnoteBloc>(context);
+
+              if (state is VisitNoteDeleteSuccess) {
+                visitNoteBloc.add(GetVisitNote(visitId: visitId));
+              }
+
               if (state is VisitNoteIsLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -67,13 +72,49 @@ class VisitFormResult extends StatelessWidget {
                                     ),
                                   ),
                                   InkWell(
+                                    onLongPress: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text("Really?"),
+                                            content: const Text(
+                                                "You want to delete this data??"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                                child: const Text("No"),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  try {
+                                                    visitNoteBloc.add(
+                                                      DeleteVisitNote(
+                                                        id: state
+                                                            .data[index].id,
+                                                      ),
+                                                    );
+                                                    Get.back();
+                                                  } catch (e) {
+                                                    rethrow;
+                                                  }
+                                                },
+                                                child: const Text("Yes"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
                                     onTap: () {
                                       FormVisitNote(
                                         context: context,
                                         bloc: BlocProvider.of<VisitnoteBloc>(
                                           context,
                                         ),
-                                        id: state.data[index].id,
+                                        noteId: state.data[index].id,
                                         visitId: visitId,
                                       );
                                     },

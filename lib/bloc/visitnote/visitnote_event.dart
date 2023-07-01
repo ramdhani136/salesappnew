@@ -34,3 +34,10 @@ class UpdateVisitNote extends VisitnoteEvent {
     required this.data,
   });
 }
+
+class InsertVisitNote extends VisitnoteEvent {
+  Map<String, dynamic> data;
+  InsertVisitNote({
+    required this.data,
+  });
+}

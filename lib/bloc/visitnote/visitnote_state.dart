@@ -30,6 +30,8 @@ class VisitNoteShow extends VisitnoteState {
   VisitNoteShow({required this.data});
 }
 
+class VisitNoteDeleteSuccess extends VisitnoteState {}
+
 class VisitNoteIsFailure extends VisitnoteState {
   String error;
   VisitNoteIsFailure(this.error);
