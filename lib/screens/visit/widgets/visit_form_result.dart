@@ -116,6 +116,8 @@ class VisitFormResult extends StatelessWidget {
                                         ),
                                         noteId: state.data[index].id,
                                         visitId: visitId,
+                                        visitBloc:
+                                            BlocProvider.of<VisitBloc>(context),
                                       );
                                     },
                                     child: Container(
@@ -337,6 +339,7 @@ class VisitFormResult extends StatelessWidget {
                           context: context,
                           visitId: visitId,
                           bloc: BlocProvider.of<VisitnoteBloc>(context),
+                          visitBloc: BlocProvider.of<VisitBloc>(context),
                         );
                       },
                       backgroundColor: Colors.grey[850],
