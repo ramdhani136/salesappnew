@@ -335,7 +335,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          return const CheckInScreen();
+                          return CheckInScreen(
+                            customerId: "648028c78020c9ef03834644",
+                          );
                         },
                       ),
                     );

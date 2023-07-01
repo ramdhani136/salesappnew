@@ -174,7 +174,7 @@ class VisitFormResult extends StatelessWidget {
                                                     Text(
                                                       state.data[index].notes,
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.5,
                                                       ),
                                                     ),
                                                     const SizedBox(

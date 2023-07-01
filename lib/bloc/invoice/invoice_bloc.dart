@@ -20,12 +20,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
     InvoiceState state) async {
   try {
-    int _page = 1;
+    int page = 1;
 
     if (event.customerId != "null") {
       if (state is InvoiceLoadedOverdue) {
         emit(InvoiceInfiniteLoading());
-        _page = state.page;
+        page = state.page;
       } else {
         emit(InvoiceLoading());
         emit(InvoiceInfiniteLoading());
@@ -54,7 +54,7 @@ Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
           "outstanding_amount",
           "payment_terms_template"
         ],
-        page: _page,
+        page: page,
       );
 
       if ((result['status']) != 200) {

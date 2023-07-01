@@ -46,6 +46,28 @@ class _VisitScreenState extends State<VisitScreen> {
     ),
   ];
 
+  void _showModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: 20), // Adjust the width as needed
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Content goes here'),
+              // Additional widgets
+            ],
+          ),
+          actions: <Widget>[
+            // Actions
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     TabBar MyTabBar = TabBar(
@@ -89,18 +111,7 @@ class _VisitScreenState extends State<VisitScreen> {
                   // IconSearch(),
                   IconButton(
                     onPressed: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute<VisitForm>(
-                      //     builder: (_) => MultiBlocProvider(
-                      //       providers: [
-                      //         BlocProvider.value(
-                      //           value: BlocProvider.of<AuthBloc>(context),
-                      //         ),
-                      //       ],
-                      //       child: VisitForm(),
-                      //     ),
-                      //   ),
-                      // );
+                      _showModal(context);
                     },
                     icon: const Icon(
                       Icons.add,
