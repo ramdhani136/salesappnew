@@ -9,10 +9,14 @@ class LocationInitial extends LocationState {}
 class LocationLoading extends LocationState {}
 
 class LocationLoaded extends LocationState {
-  // String? address;
+  BitmapDescriptor? IconEtmMaps;
+  BitmapDescriptor? IconCustomerMaps;
   // Position? cordinate;
 
-  // LocationAddress(this.address, this.cordinate);
+  LocationLoaded({
+    this.IconEtmMaps = BitmapDescriptor.defaultMarker,
+    this.IconCustomerMaps = BitmapDescriptor.defaultMarker,
+  });
 }
 
 class LocationFailure extends LocationState {

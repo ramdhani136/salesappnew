@@ -73,7 +73,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         duration: const Duration(seconds: 2),
                       ),
                     );
-                    return Maps(locationbloc, _controller);
+                    return Maps(locationbloc, _controller, state);
                   }
 
                   return const Center(
@@ -501,14 +501,19 @@ class _CheckInScreenState extends State<CheckInScreen> {
 }
 
 // ignore: non_constant_identifier_names
-GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
+GoogleMap Maps(
+    LocationBloc loc, Completer<GoogleMapController> _controller, state) {
+  LocationLoaded? data;
+  if (state is LocationLoaded) {
+    data = state;
+  }
+
   return GoogleMap(
     mapType: MapType.normal,
-    // myLocationEnabled: true,
+    myLocationEnabled: true,
     trafficEnabled: true,
     compassEnabled: true,
-    // myLocationButtonEnabled: true,
-
+    myLocationButtonEnabled: true,
     markers: {
       Marker(
         onTap: () {},
@@ -516,7 +521,7 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
         infoWindow: const InfoWindow(
           title: 'Your Location!',
         ),
-        icon: BitmapDescriptor.defaultMarker,
+        icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
         position: LatLng(
           loc.cordinate!.latitude,
           loc.cordinate!.longitude,
@@ -529,7 +534,7 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
           title: 'PT. Abadi Baru',
         ),
         visible: true,
-        icon: BitmapDescriptor.defaultMarker,
+        icon: data!.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
         position: LatLng(-6.5107604, 106.8638661),
       )
     },
@@ -549,18 +554,9 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
       Polygon(
         polygonId: const PolygonId('area_1'),
         points: [
-          LatLng(
-            loc.cordinate!.latitude,
-            loc.cordinate!.longitude,
-          ),
-          LatLng(
-            loc.cordinate!.latitude,
-            loc.cordinate!.longitude,
-          ),
-          LatLng(
-            loc.cordinate!.latitude,
-            loc.cordinate!.longitude,
-          ),
+          LatLng(-6.5107604, 106.8638661),
+          LatLng(-6.5107604, 106.8638661),
+          LatLng(-6.5107604, 106.8638661),
         ],
         fillColor: Colors.blue.withOpacity(0.5), // Warna area jangkauan
         strokeColor: Colors.blue, // Warna garis tepi area jangkauan
@@ -569,10 +565,7 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller) {
     circles: <Circle>{
       Circle(
         circleId: const CircleId('myLocation'),
-        center: LatLng(
-          loc.cordinate!.latitude,
-          loc.cordinate!.longitude,
-        ), // Koordinat lokasi saat ini
+        center: LatLng(-6.5107604, 106.8638661), // Koordinat lokasi saat ini
         radius: 50, // Jari-jari dalam meter
         strokeWidth: 2,
         strokeColor: Colors.amber,
