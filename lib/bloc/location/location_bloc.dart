@@ -124,7 +124,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
                 //     110);
                 await getBytesFromAsset('assets/icons/etm.png', 250);
             final Uint8List customerIcon = await getBytesFromAsset(
-                'assets/icons/pincustomermaps.png', 230);
+                'assets/icons/pincustomermaps.png', 250);
 
             emit(LocationLoaded(
               IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
@@ -143,7 +143,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           if (cordinate != null) {
             address = await location.chekcAdress(cordinate!);
             final Uint8List markerIcon =
-                await getBytesFromAsset('assets/icons/etm.png', 230);
+                await getBytesFromAsset('assets/icons/etm.png', 250);
             // final Uint8List markerIcon = await getBytesFromUrl(
             //     'http://103.56.149.31:5500/images/users/Miana%20Siva.40.05.jpeg',
             //     110);
