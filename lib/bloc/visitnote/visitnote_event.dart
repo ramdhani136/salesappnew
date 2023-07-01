@@ -14,8 +14,10 @@ class GetVisitNote extends VisitnoteEvent {
 
 class ShowVisitNote extends VisitnoteEvent {
   String id;
+  bool isLoading;
   ShowVisitNote({
     required this.id,
+    this.isLoading = true,
   });
 }
 

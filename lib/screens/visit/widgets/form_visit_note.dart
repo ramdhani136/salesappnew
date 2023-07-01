@@ -15,6 +15,7 @@ void FormVisitNote({
   final TextEditingController titleC = TextEditingController();
   final TextEditingController noteC = TextEditingController();
   String? id;
+  List tags = [];
 
   if (noteId != null) {
     id = noteId;
@@ -54,6 +55,7 @@ void FormVisitNote({
             }
 
             if (state is VisitNoteShow) {
+              tags = state.data['tags'];
               id ??= state.data['_id'];
               titleC.text = state.data['title'];
               noteC.text = state.data['notes'];
@@ -172,10 +174,10 @@ void FormVisitNote({
                               color: Colors.grey[300],
                             ),
                             child: Wrap(
-                              children: [
-                                ElevatedButton.icon(
+                              children: tags.map((e) {
+                                return ElevatedButton.icon(
                                   onPressed: () {
-                                    // Aksi yang akan dilakukan saat tombol ditekan
+                                    print(e['_id']);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.green[
@@ -185,9 +187,9 @@ void FormVisitNote({
                                     Icons.clear,
                                     size: 16,
                                   ),
-                                  label: Text('Clear'),
-                                )
-                              ],
+                                  label: Text(e['name']),
+                                );
+                              }).toList(),
                             ),
                           ),
                           const SizedBox(

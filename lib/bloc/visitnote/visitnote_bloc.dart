@@ -1,4 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -89,7 +91,9 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     VisitnoteState state,
   ) async {
     try {
-      emit(VisitNoteIsLoading());
+      if (event.isLoading) {
+        emit(VisitNoteIsLoading());
+      }
       dynamic result = await FetchData(data: Data.visitnote).FINDONE(event.id);
       if (result['status'] != 200) {
         throw result['msg'];
@@ -111,7 +115,7 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     VisitnoteState state,
   ) async {
     try {
-      emit(VisitNoteIsLoading());
+      // emit(VisitNoteIsLoading());
       dynamic result = await FetchData(data: Data.visitnote).UPDATEONE(
         event.id,
         event.data,
@@ -122,6 +126,7 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       }
       add(ShowVisitNote(
         id: event.id,
+        isLoading: false,
       ));
     } catch (e) {
       emit(
@@ -172,9 +177,9 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
 
       add(ShowVisitNote(
         id: result['data']['_id'],
+        isLoading: false,
       ));
     } catch (e) {
-      print(e);
       emit(
         VisitNoteIsFailure(
           e.toString(),
