@@ -71,12 +71,11 @@ Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
     }
   } catch (e) {
     if (state is InvoiceLoadedOverdue) {
-      InvoiceLoadedOverdue current = state as InvoiceLoadedOverdue;
       state.hasMore = false;
     }
 
     Fluttertoast.showToast(
-      msg: "${e}",
+      msg: "$e",
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Colors.grey[800],

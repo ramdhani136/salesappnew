@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -190,6 +190,13 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       if (result['status'] != 200) {
         throw result['msg'];
       }
+      Fluttertoast.showToast(
+        msg: "Saved",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
 
       add(ShowVisitNote(
         id: result['data']['_id'],
