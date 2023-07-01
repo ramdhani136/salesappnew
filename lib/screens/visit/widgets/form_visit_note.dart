@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -41,7 +42,8 @@ void FormVisitNote({
         child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
           bloc: vBloc,
           builder: (context, state) {
-            // print(state);
+            if (state is VisitNoteIsFailure) {}
+
             if (id != null && visitId != null && state is VisitnoteInitial) {
               vBloc.add(
                 ShowVisitNote(id: "${id}"),

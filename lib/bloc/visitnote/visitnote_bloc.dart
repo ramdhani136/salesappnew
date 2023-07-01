@@ -1,8 +1,10 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/models/visitnotes_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
@@ -124,11 +126,25 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       if (result['status'] != 200) {
         throw result['msg'];
       }
+      Fluttertoast.showToast(
+        msg: "Saved",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       add(ShowVisitNote(
         id: event.id,
         isLoading: false,
       ));
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       emit(
         VisitNoteIsFailure(
           e.toString(),
@@ -180,6 +196,13 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
         isLoading: false,
       ));
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       emit(
         VisitNoteIsFailure(
           e.toString(),
