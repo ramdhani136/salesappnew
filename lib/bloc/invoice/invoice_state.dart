@@ -25,7 +25,7 @@ class InvoiceLoadedOverdue extends InvoiceState {
 
 class InvoiceShowIsLoaded extends InvoiceState {
   InvoiceModel data;
-  List<ActionModel> workflow;
+  List<dynamic> workflow;
   InvoiceShowIsLoaded({
     required this.data,
     required this.workflow,

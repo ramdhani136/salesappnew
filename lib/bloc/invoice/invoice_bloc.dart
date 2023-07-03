@@ -34,7 +34,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         throw result['msg'];
       }
       InvoiceModel data = InvoiceModel.fromJson(result['data']);
-      List<ActionModel> action = ActionModel.fromJsonList(result['workflow']);
+      List<dynamic> action = result['workflow'];
 
       emit(InvoiceShowIsLoaded(data: data, workflow: action));
     } catch (e) {

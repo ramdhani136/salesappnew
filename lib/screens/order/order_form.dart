@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
+import 'package:salesappnew/bloc/order/order_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceFormScreen extends StatelessWidget {
+class OrderFormScreen extends StatelessWidget {
   String id;
-  InvoiceFormScreen({super.key, required this.id});
+  OrderFormScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +17,18 @@ class InvoiceFormScreen extends StatelessWidget {
       locale: 'id',
     );
     return BlocProvider(
-      create: (context) => InvoiceBloc()
+      create: (context) => OrderBloc()
         ..add(
-          GetInvoiceShow(invoiceID: id),
+          GetOrdershow(id: id),
         ),
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFFE6212A),
-          title: BlocBuilder<InvoiceBloc, InvoiceState>(
+          title: BlocBuilder<OrderBloc, OrderState>(
             builder: (context, state) {
-              if (state is InvoiceLoading) {
+              if (state is OrderIsLoading) {
                 return const Text(
                   "Loading...",
                   style: TextStyle(
@@ -36,7 +36,7 @@ class InvoiceFormScreen extends StatelessWidget {
                   ),
                 );
               }
-              if (state is InvoiceShowIsLoaded) {
+              if (state is OrderShowIsLoaded) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -47,7 +47,7 @@ class InvoiceFormScreen extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
-                            "Sales Invoice",
+                            "Sales Order",
                             style: TextStyle(fontSize: 16),
                           ),
                         ),
@@ -57,8 +57,8 @@ class InvoiceFormScreen extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            BlocProvider.of<InvoiceBloc>(context).add(
-                              GetInvoiceShow(invoiceID: id),
+                            BlocProvider.of<OrderBloc>(context).add(
+                              GetOrdershow(id: id),
                             );
                           },
                           icon: const Icon(
@@ -111,8 +111,8 @@ class InvoiceFormScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      BlocProvider.of<InvoiceBloc>(context).add(
-                        GetInvoiceShow(invoiceID: id),
+                      BlocProvider.of<OrderBloc>(context).add(
+                        GetOrdershow(id: id),
                       );
                     },
                     icon: const Icon(
@@ -126,15 +126,15 @@ class InvoiceFormScreen extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: BlocBuilder<InvoiceBloc, InvoiceState>(
+        body: BlocBuilder<OrderBloc, OrderState>(
           builder: (context, state) {
-            if (state is InvoiceLoading) {
+            if (state is OrderIsLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            if (state is InvoiceShowIsLoaded) {
+            if (state is OrderShowIsLoaded) {
               return Column(
                 children: [
                   Container(
@@ -208,21 +208,21 @@ class InvoiceFormScreen extends StatelessWidget {
                                 ':',
                                 '${state.data.setWarehouse}'
                               ]),
-                              buildRow([
-                                'Outstanding',
-                                ':',
-                                (formatCurrency
-                                    .format(state.data.outstandingAmount))
-                              ]),
+                              // buildRow([
+                              //   'Outstanding',
+                              //   ':',
+                              //   (formatCurrency
+                              //       .format(state.data.outstandingAmount))
+                              // ]),
                               buildRow(['Status', ':', '${state.data.status}']),
-                              buildRow([
-                                'Transaction on',
-                                ':',
-                                (DateFormat.yMMMEd().add_jm().format(
-                                      DateTime.parse("${state.data.dueDate}")
-                                          .toLocal(),
-                                    )),
-                              ]),
+                              // buildRow([
+                              //   'Transaction on',
+                              //   ':',
+                              //   (DateFormat.yMMMEd().add_jm().format(
+                              //         DateTime.parse("${state.data.dueDate}")
+                              //             .toLocal(),
+                              //       )),
+                              // ]),
                             ],
                           ),
                         ),
@@ -418,14 +418,20 @@ class InvoiceFormScreen extends StatelessWidget {
               );
             }
 
-            return Row(
-              children: [
-                BackButtonCustom(),
-                const Text(
-                  "Sales Invoice",
-                  style: TextStyle(fontSize: 16),
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  state is OrderIsFailure
+                      ? (state as OrderIsFailure).error
+                      : "No Data",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  textAlign:
+                      TextAlign.center, // Menyebabkan teks menjadi rata tengah
                 ),
-              ],
+              ),
             );
           },
         ),
