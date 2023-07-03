@@ -44,7 +44,7 @@ class ItemFormScreen extends StatelessWidget {
                     BackButtonCustom(),
                     const Row(
                       children: [
-                        Icon(Icons.currency_exchange, size: 17),
+                        Icon(Icons.assignment, size: 17),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
