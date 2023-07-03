@@ -14,9 +14,9 @@ class ItemFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = NumberFormat.simpleCurrency(
-      locale: 'id',
-    );
+    // final formatCurrency = NumberFormat.simpleCurrency(
+    //   locale: 'id',
+    // );
     return BlocProvider(
       create: (context) => ItemBloc()
         ..add(
