@@ -48,7 +48,7 @@ class ItemFormScreen extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
-                            "Sales Order",
+                            "Item List",
                             style: TextStyle(fontSize: 16),
                           ),
                         ),
