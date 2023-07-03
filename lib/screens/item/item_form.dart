@@ -268,13 +268,16 @@ class ItemFormScreen extends StatelessWidget {
                                       buildRow([
                                         'Ordered Qty',
                                         ':',
-                                        numberFormat
-                                            .format(stateBin.data[0].orderedQty)
+                                        numberFormat.format(
+                                          stateBin.data[0].orderedQty,
+                                        )
                                       ]),
                                       buildRow([
                                         'Reserved Qty',
                                         ':',
-                                        '${stateBin.data[0].reservedQty}'
+                                        numberFormat.format(
+                                          stateBin.data[0].reservedQty,
+                                        )
                                       ]),
                                     ],
                                   ),
