@@ -10,11 +10,13 @@ class ItemIsLoading extends ItemState {}
 class ItemInfiniteLoading extends ItemState {}
 
 class ItemShowIsLoaded extends ItemState {
+  String? erpUrl;
   ItemModel data;
   List<dynamic> workflow;
   ItemShowIsLoaded({
     required this.data,
     required this.workflow,
+    this.erpUrl,
   });
 }
 

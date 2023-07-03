@@ -14,6 +14,7 @@ class ItemModel {
   DateTime? creation;
   DateTime? modified;
   String? modifiedBy;
+  String? image;
   num? idx;
   num? docstatus;
   String? workflowState;
@@ -96,6 +97,7 @@ class ItemModel {
     this.modified,
     this.modifiedBy,
     this.idx,
+    this.image,
     this.docstatus,
     this.workflowState,
     this.namingSeries,
@@ -173,6 +175,7 @@ class ItemModel {
 
   factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
         name: json["name"],
+        image: json["image"],
         owner: json["owner"],
         creation:
             json["creation"] == null ? null : DateTime.parse(json["creation"]),
@@ -282,6 +285,7 @@ class ItemModel {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "image": image,
         "owner": owner,
         "creation": creation?.toIso8601String(),
         "modified": modified?.toIso8601String(),

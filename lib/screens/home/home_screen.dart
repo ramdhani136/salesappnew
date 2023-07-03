@@ -8,6 +8,7 @@ import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
+import 'package:salesappnew/screens/item/item_form.dart';
 import 'package:salesappnew/screens/order/order_form.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
@@ -244,7 +245,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.bus_alert_sharp,
                   ),
                   HomeMenuList(
-                    RunFUnction: () {},
+                    RunFUnction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ItemFormScreen(
+                              id: "012002000025",
+                            );
+                          },
+                        ),
+                      );
+                    },
                     title: "Item",
                     icon: Icons.gif_box_sharp,
                   ),

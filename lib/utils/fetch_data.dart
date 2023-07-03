@@ -17,7 +17,8 @@ enum Data {
   memo,
   erp,
   visitnote,
-  callsheetNote
+  callsheetNote,
+  users
 }
 
 class FetchData {
@@ -54,6 +55,9 @@ class FetchData {
         break;
       case Data.callsheetNote:
         doc = "callsheetnote";
+        break;
+      case Data.users:
+        doc = "users";
         break;
       default:
     }

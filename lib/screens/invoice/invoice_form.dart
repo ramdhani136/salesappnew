@@ -418,14 +418,20 @@ class InvoiceFormScreen extends StatelessWidget {
               );
             }
 
-            return Row(
-              children: [
-                BackButtonCustom(),
-                const Text(
-                  "Sales Invoice",
-                  style: TextStyle(fontSize: 16),
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  state is InvoiceFailure
+                      ? (state as InvoiceFailure).error
+                      : "No Data",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  textAlign:
+                      TextAlign.center, // Menyebabkan teks menjadi rata tengah
                 ),
-              ],
+              ),
             );
           },
         ),
