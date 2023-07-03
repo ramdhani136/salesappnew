@@ -1,5 +1,4 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +95,8 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       if (event.isLoading) {
         emit(VisitNoteIsLoading());
       }
-      dynamic result = await FetchData(data: Data.visitnote).FINDONE(event.id);
+      dynamic result =
+          await FetchData(data: Data.visitnote).FINDONE(id: event.id);
       if (result['status'] != 200) {
         throw result['msg'];
       }

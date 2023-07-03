@@ -23,6 +23,15 @@ class InvoiceLoadedOverdue extends InvoiceState {
   });
 }
 
+class InvoiceShowIsLoaded extends InvoiceState {
+  InvoiceModel data;
+  List<ActionModel> workflow;
+  InvoiceShowIsLoaded({
+    required this.data,
+    required this.workflow,
+  });
+}
+
 class InvoiceFailure extends InvoiceState {
   String error;
   InvoiceFailure(this.error);

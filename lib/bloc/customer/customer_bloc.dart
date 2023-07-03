@@ -18,7 +18,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     try {
       emit(CustomerIsLoading());
       final Map<String, dynamic> response =
-          await FetchData(data: Data.customer).FINDONE(event.customerId);
+          await FetchData(data: Data.customer).FINDONE(id: event.customerId);
 
       if (response['status'] != 200) {
         throw response['msg'];

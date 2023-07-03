@@ -113,9 +113,9 @@ class FetchData {
     }
   }
 
-  Future<dynamic> FINDONE<T>(String id) async {
+  Future<dynamic> FINDONE<T>({required String id, String? params}) async {
     try {
-      String uri = "${config.baseUri}$doc/$id";
+      String uri = "${config.baseUri}$doc${params ?? ""}/$id";
       final response = await http.get(
         Uri.parse(uri),
         headers: {

@@ -172,15 +172,16 @@ class VisitForm extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.search,
-                                color: Color.fromARGB(255, 121, 8, 14),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.search,
+                                  color: Color.fromARGB(255, 121, 8, 14),
+                                ),
                               ),
-                            ),
-                            Visibility(
+                              Visibility(
                                 visible: state.workflow.isNotEmpty,
                                 child: PopupMenuButton(
                                   padding: const EdgeInsets.all(0),
@@ -211,8 +212,10 @@ class VisitForm extends StatelessWidget {
                                       );
                                     }).toList();
                                   },
-                                )),
-                          ])
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       );
                     }

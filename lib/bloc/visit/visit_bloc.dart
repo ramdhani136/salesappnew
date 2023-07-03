@@ -133,7 +133,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         emit(IsLoading());
       }
       Map<String, dynamic> data = await FetchData(data: Data.visit).FINDONE(
-        event.id,
+        id: event.id,
       );
 
       Visitmodel result = Visitmodel.fromJson(data['data']);
