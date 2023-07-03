@@ -180,11 +180,8 @@ class OrderFormScreen extends StatelessWidget {
                               2: FractionColumnWidth(0.6),
                             },
                             children: [
-                              buildRow([
-                                'Invoice Number',
-                                ':',
-                                '${state.data.name}'
-                              ]),
+                              buildRow(
+                                  ['Order Number', ':', '${state.data.name}']),
                               buildRow([
                                 'Transaction on',
                                 ':',
