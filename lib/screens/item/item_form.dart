@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/bin/bin_bloc.dart';
 import 'package:salesappnew/bloc/item/item_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -14,9 +15,7 @@ class ItemFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final formatCurrency = NumberFormat.simpleCurrency(
-    //   locale: 'id',
-    // );
+    NumberFormat numberFormat = NumberFormat.decimalPattern('en_US');
     return BlocProvider(
       create: (context) => ItemBloc()
         ..add(
@@ -172,8 +171,11 @@ class ItemFormScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 20),
+                          padding: const EdgeInsets.only(
+                            left: 25,
+                            right: 25,
+                            top: 20,
+                          ),
                           child: Table(
                             columnWidths: const {
                               0: FractionColumnWidth(0.33),
@@ -221,6 +223,68 @@ class ItemFormScreen extends StatelessWidget {
                               ]),
                             ],
                           ),
+                        ),
+                        BlocBuilder<BinBloc, BinState>(
+                          bloc: BinBloc()
+                            ..add(
+                              GetBinByItem(
+                                itemId: state.data.itemCode!,
+                              ),
+                            ),
+                          builder: (context, stateBin) {
+                            if (stateBin is BinIsLoading) {
+                              return Container(
+                                width: 10,
+                                height: 50,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              );
+                            }
+                            if (stateBin is BinByItemIsLoaded) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 25, right: 25, bottom: 20),
+                                child: Visibility(
+                                  visible: stateBin.data.isNotEmpty,
+                                  child: Table(
+                                    columnWidths: const {
+                                      0: FractionColumnWidth(0.33),
+                                      1: FractionColumnWidth(0.07),
+                                      2: FractionColumnWidth(0.6),
+                                    },
+                                    // border: TableBorder.all(),
+                                    children: [
+                                      buildRow([
+                                        'Actual Qty',
+                                        ':',
+                                        numberFormat.format(
+                                          stateBin.data[0].actualQty,
+                                        )
+                                      ]),
+                                      buildRow([
+                                        'Ordered Qty',
+                                        ':',
+                                        numberFormat
+                                            .format(stateBin.data[0].orderedQty)
+                                      ]),
+                                      buildRow([
+                                        'Reserved Qty',
+                                        ':',
+                                        '${stateBin.data[0].reservedQty}'
+                                      ]),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container(
+                              padding: const EdgeInsets.only(bottom: 20),
+                            );
+                          },
                         ),
                       ],
                     ),

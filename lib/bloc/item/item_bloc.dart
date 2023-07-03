@@ -43,7 +43,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
           erpUri = "${user['data']['ErpSite']}";
         }
       }
-      print(erpUri);
+
       emit(ItemShowIsLoaded(data: data, workflow: action, erpUrl: erpUri));
     } catch (e) {
       emit(ItemIsFailure(e.toString()));
