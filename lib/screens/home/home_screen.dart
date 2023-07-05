@@ -354,9 +354,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Container();
               },
             ),
-            const SizedBox(
-              height: 20,
-            ),
           ],
         ),
       ),
@@ -526,22 +523,25 @@ class LocationAroundYou extends StatelessWidget {
                         },
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Center(
-                            child: SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
-                                color: Colors.amber,
+                    Visibility(
+                      visible: state is CustomerIsLoaded && state.IsloadingPage,
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                  color: Colors.amber,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
