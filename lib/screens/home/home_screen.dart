@@ -411,7 +411,7 @@ class LocationAroundYou extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Location Around you (${state is CustomerIsLoaded ? state.total.toString() : ""})",
+                  "Location Around you (${state is CustomerIsLoaded ? state.data.length.toString() : ""})",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -464,24 +464,25 @@ class LocationAroundYou extends StatelessWidget {
             Visibility(
               visible: state is CustomerIsLoaded,
               child: NotificationListener<ScrollNotification>(
-                // onNotification: (ScrollNotification scrollInfo) {
-                //   if (scrollInfo.metrics.pixels ==
-                //               scrollInfo.metrics.maxScrollExtent &&
-                //           (state is CustomerIsLoaded)
-                //       ? (state).hasMore
-                //       : false) {
-                //     state.hasMore = false;
-                //     customerBloc.add(
-                //       GetAllCustomer(
-                //         nearby: Nearby(
-                //             lat: locationbloc.cordinate!.latitude,
-                //             lng: locationbloc.cordinate!.longitude),
-                //       ),
-                //     );
-                //   }
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (scrollInfo.metrics.pixels ==
+                              scrollInfo.metrics.maxScrollExtent &&
+                          (state is CustomerIsLoaded)
+                      ? (state).hasMore
+                      : false) {
+                    state.hasMore = false;
+                    customerBloc.add(
+                      GetAllCustomer(
+                        nearby: Nearby(
+                            lat: locationbloc.cordinate!.latitude,
+                            lng: locationbloc.cordinate!.longitude),
+                        refresh: false,
+                      ),
+                    );
+                  }
 
-                //   return false;
-                // },
+                  return false;
+                },
                 child: Column(
                   children: [
                     SizedBox(
