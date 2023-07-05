@@ -411,7 +411,7 @@ class LocationAroundYou extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Location Around you (${state is CustomerIsLoaded ? state.data.length.toString() : ""})",
+                  "Location Around you (${state is CustomerIsLoaded ? state.data.length.toString() : "0"})",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
