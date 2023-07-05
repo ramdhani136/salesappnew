@@ -109,15 +109,36 @@ class VisitFormResult extends StatelessWidget {
                                       );
                                     },
                                     onTap: () {
-                                      FormVisitNote(
-                                        context: context,
-                                        bloc: BlocProvider.of<VisitnoteBloc>(
-                                          context,
+                                      // FormVisitNote(
+                                      //   context: context,
+                                      //   bloc: BlocProvider.of<VisitnoteBloc>(
+                                      //     context,
+                                      //   ),
+                                      //   noteId: state.data[index].id,
+                                      //   visitId: visitId,
+                                      //   visitBloc:
+                                      //       BlocProvider.of<VisitBloc>(context),
+                                      // );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute<FormVisitNoteNew>(
+                                          builder: (_) => MultiBlocProvider(
+                                            providers: [
+                                              BlocProvider.value(
+                                                value: BlocProvider.of<
+                                                    VisitnoteBloc>(context),
+                                              ),
+                                              BlocProvider.value(
+                                                value:
+                                                    BlocProvider.of<VisitBloc>(
+                                                        context),
+                                              ),
+                                            ],
+                                            child: FormVisitNoteNew(
+                                              visitId: visitId,
+                                              noteId: state.data[index].id,
+                                            ),
+                                          ),
                                         ),
-                                        noteId: state.data[index].id,
-                                        visitId: visitId,
-                                        visitBloc:
-                                            BlocProvider.of<VisitBloc>(context),
                                       );
                                     },
                                     child: Container(
@@ -335,11 +356,21 @@ class VisitFormResult extends StatelessWidget {
                     width: 60.0,
                     child: FloatingActionButton(
                       onPressed: () {
-                        FormVisitNote(
-                          context: context,
-                          visitId: visitId,
-                          bloc: BlocProvider.of<VisitnoteBloc>(context),
-                          visitBloc: BlocProvider.of<VisitBloc>(context),
+                        Navigator.of(context).push(
+                          MaterialPageRoute<FormVisitNoteNew>(
+                            builder: (_) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value:
+                                      BlocProvider.of<VisitnoteBloc>(context),
+                                ),
+                                BlocProvider.value(
+                                  value: BlocProvider.of<VisitBloc>(context),
+                                ),
+                              ],
+                              child: FormVisitNoteNew(visitId: state.data.id!),
+                            ),
+                          ),
                         );
                       },
                       backgroundColor: Colors.grey[850],

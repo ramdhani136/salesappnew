@@ -211,23 +211,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   HomeMenuList(
                     RunFUnction: () {},
-                    title: "Information",
+                    title: "Memo",
                     icon: Icons.info,
-                  ),
-                  HomeMenuList(
-                    RunFUnction: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return InvoiceFormScreen(
-                              id: "SJ-2023-03-0104",
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    title: "Invoice",
-                    icon: Icons.price_change_sharp,
                   ),
                   HomeMenuList(
                     RunFUnction: () {
@@ -243,6 +228,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     title: "Order",
                     icon: Icons.bus_alert_sharp,
+                  ),
+                  HomeMenuList(
+                    RunFUnction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return InvoiceFormScreen(
+                              id: "SJ-2023-03-0104",
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    title: "DN",
+                    icon: Icons.fire_truck_rounded,
+                  ),
+                  HomeMenuList(
+                    RunFUnction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return InvoiceFormScreen(
+                              id: "SJ-2023-03-0104",
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    title: "Invoice",
+                    icon: Icons.price_change_sharp,
                   ),
                   HomeMenuList(
                     RunFUnction: () {
@@ -270,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "Information",
+                  "Memo",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
