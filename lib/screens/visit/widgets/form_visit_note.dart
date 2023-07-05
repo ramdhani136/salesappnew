@@ -42,8 +42,10 @@ class FormVisitNoteNew extends StatelessWidget {
           }
 
           if (state is VisitNoteIsLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
 

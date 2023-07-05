@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/screens/dn/dn_form.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
@@ -13,6 +14,7 @@ import 'package:salesappnew/screens/item/item_form.dart';
 import 'package:salesappnew/screens/order/order_form.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -312,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     width: 320,
                     height: 320 / 1.7,
-                    margin: EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
@@ -325,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     width: 320,
                     height: 320 / 1.7,
-                    margin: EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
@@ -342,92 +344,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Location Around you",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.refresh,
-                    size: 20,
-                    color: Color.fromARGB(255, 114, 114, 114),
-                  ),
-                  onPressed: () {
-                    locationbloc.add(GetLocationGps());
-                  },
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey[100],
-                    ),
-                    // backgroundImage: NetworkImage(
-                    //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
-                  ),
-                  title: Text('PT. Karya Abadi Baru'),
-                  subtitle: Text('Jabodetabek'),
-                  trailing: Text("1.5 km"),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return CheckInScreen(
-                            customerId: "648028c78020c9ef03834644",
-                          );
-                        },
-                      ),
-                    );
-                    // Aksi yang dilakukan saat ListTile ditekan
-                  },
-                ),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey[100],
-                    ),
-                    // backgroundImage: NetworkImage(
-                    //     "https://sgp1.digitaloceanspaces.com/radarbogor/2019/07/PT-Mayora.jpg"),
-                  ),
-                  title: Text('CV. Ekatunggal Timur'),
-                  subtitle: Text('Area 1'),
-                  trailing: Text("2 km"),
-                  onTap: () {
-                    // Aksi yang dilakukan saat ListTile ditekan
-                  },
-                ),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey[100],
-                    ),
-                    // backgroundImage: NetworkImage(
-                    //     "https://assets.ayobandung.com/crop/0x72:960x615/750x500/webp/photo/2022/12/29/1689892557.jpg"),
-                  ),
-                  title: Text('PT. Jati Agung'),
-                  subtitle: Text('Depok'),
-                  trailing: Text("4 km"),
-                  onTap: () {
-                    // Aksi yang dilakukan saat ListTile ditekan
-                  },
-                ),
-              ],
+            BlocBuilder<LocationBloc, LocationState>(
+              bloc: locationbloc,
+              builder: (context, state) {
+                if (state is LocationLoaded) {
+                  return LocationAroundYou(locationbloc: locationbloc);
+                }
+
+                return Container();
+              },
             ),
             const SizedBox(
               height: 20,
@@ -454,6 +379,133 @@ class _HomeScreenState extends State<HomeScreen> {
       //     ),
       //   ],
       // ),
+    );
+  }
+}
+
+class LocationAroundYou extends StatelessWidget {
+  LocationAroundYou({
+    super.key,
+    required this.locationbloc,
+  });
+
+  final LocationBloc locationbloc;
+  final CustomerBloc customerBloc = CustomerBloc();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CustomerBloc, CustomerState>(
+      bloc: customerBloc
+        ..add(
+          GetAllCustomer(
+            nearby: Nearby(
+                lat: locationbloc.cordinate!.latitude,
+                lng: locationbloc.cordinate!.longitude),
+          ),
+        ),
+      builder: (context, state) {
+        return Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Location Around you",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.refresh,
+                    size: 20,
+                    color: Color.fromARGB(255, 114, 114, 114),
+                  ),
+                  onPressed: () {
+                    locationbloc.add(GetLocationGps());
+                  },
+                ),
+              ],
+            ),
+            Visibility(
+              visible: state is CustomerIsFailure,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Text(
+                  state is CustomerIsFailure ? state.error : "",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: state is CustomerIsLoading,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: state is CustomerIsLoaded,
+              child: SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: state is CustomerIsLoaded ? state.data.length : 0,
+                  itemBuilder: (context, index) {
+                    if (state is CustomerIsLoaded) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.grey[300],
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.grey[100],
+                          ),
+                          // backgroundImage: NetworkImage(
+                          //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
+                        ),
+                        title: Text(state.data[index]['name']),
+                        subtitle:
+                            Text(state.data[index]['customerGroup']['name']),
+                        trailing: Text(state.data[index]['distance'] != null
+                            ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
+                            : ""),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CheckInScreen(
+                                  customerId: "648028c78020c9ef03834644",
+                                );
+                              },
+                            ),
+                          );
+                          // Aksi yang dilakukan saat ListTile ditekan
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
