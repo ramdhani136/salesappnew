@@ -35,12 +35,10 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         result = await FetchData(data: Data.customer).FINDALL(
           page: page,
           nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},100]",
-          limit: 5,
         );
       } else {
         result = await FetchData(data: Data.customer).FINDALL(
           page: page,
-          limit: 5,
         );
       }
 
@@ -48,14 +46,11 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         throw result['msg'];
       }
 
-      print(state);
-
       List newData = result['data'];
 
       List currentData = [];
 
       if (state is CustomerIsLoaded && !event.refresh) {
-        print("ddd");
         CustomerIsLoaded current = state as CustomerIsLoaded;
         currentData = current.data;
         currentData.addAll(newData);

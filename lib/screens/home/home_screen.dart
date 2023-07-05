@@ -380,14 +380,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class LocationAroundYou extends StatelessWidget {
+class LocationAroundYou extends StatefulWidget {
   LocationAroundYou({
     super.key,
     required this.locationbloc,
   });
 
   final LocationBloc locationbloc;
+
+  @override
+  State<LocationAroundYou> createState() => _LocationAroundYouState();
+}
+
+class _LocationAroundYouState extends State<LocationAroundYou> {
   final CustomerBloc customerBloc = CustomerBloc();
+
+  @override
+  void dispose() {
+    super.dispose();
+    customerBloc.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -396,8 +408,8 @@ class LocationAroundYou extends StatelessWidget {
         ..add(
           GetAllCustomer(
             nearby: Nearby(
-                lat: locationbloc.cordinate!.latitude,
-                lng: locationbloc.cordinate!.longitude),
+                lat: widget.locationbloc.cordinate!.latitude,
+                lng: widget.locationbloc.cordinate!.longitude),
           ),
         ),
       builder: (context, state) {
@@ -408,8 +420,8 @@ class LocationAroundYou extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Location Around you (${state is CustomerIsLoaded ? state.data.length.toString() : "0"})",
-                  style: TextStyle(
+                  "Location Around you (${state is CustomerIsLoaded ? "${state.data.length} Of ${state.total}" : "0"})",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -421,7 +433,7 @@ class LocationAroundYou extends StatelessWidget {
                     color: Color.fromARGB(255, 114, 114, 114),
                   ),
                   onPressed: () {
-                    locationbloc.add(GetLocationGps());
+                    widget.locationbloc.add(GetLocationGps());
                   },
                 ),
               ],
@@ -429,7 +441,7 @@ class LocationAroundYou extends StatelessWidget {
             Visibility(
               visible: state is CustomerIsFailure,
               child: Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 80),
                 child: Text(
                   state is CustomerIsFailure ? state.error : "",
                   textAlign: TextAlign.center,
@@ -471,8 +483,8 @@ class LocationAroundYou extends StatelessWidget {
                     customerBloc.add(
                       GetAllCustomer(
                         nearby: Nearby(
-                            lat: locationbloc.cordinate!.latitude,
-                            lng: locationbloc.cordinate!.longitude),
+                            lat: widget.locationbloc.cordinate!.latitude,
+                            lng: widget.locationbloc.cordinate!.longitude),
                         refresh: false,
                       ),
                     );
