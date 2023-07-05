@@ -62,12 +62,28 @@ class VisitCheckOut extends StatelessWidget {
                           markers: {
                             Marker(
                               onTap: () {},
+                              markerId: const MarkerId('me'),
+                              infoWindow: const InfoWindow(
+                                title: 'Your Location!',
+                              ),
+                              icon: state is LocationLoaded
+                                  ? state.IconEtmMaps!
+                                  : BitmapDescriptor.defaultMarker,
+                              position: LatLng(
+                                loc.cordinate!.latitude,
+                                loc.cordinate!.longitude,
+                              ),
+                            ),
+                            Marker(
+                              onTap: () {},
                               markerId: const MarkerId('CheckIn Location'),
                               infoWindow: const InfoWindow(
                                 title: 'CheckIn Location',
                               ),
                               visible: true,
-                              icon: BitmapDescriptor.defaultMarker,
+                              icon: state is LocationLoaded
+                                  ? state.IconCustomerMaps!
+                                  : BitmapDescriptor.defaultMarker,
                               position: checkInCordinate,
                             )
                           },
@@ -85,15 +101,86 @@ class VisitCheckOut extends StatelessWidget {
                           circles: <Circle>{
                             Circle(
                               circleId: const CircleId('myLocation'),
-                              center:
-                                  checkInCordinate, // Koordinat lokasi saat ini
-                              radius: 50, // Jari-jari dalam meter
+                              center: checkInCordinate,
+                              radius: state is LocationLoaded
+                                  ? state.distanceCheckOut!.toDouble()
+                                  : 0,
                               strokeWidth: 2,
                               strokeColor: Colors.amber,
                               fillColor: Colors.amber.withOpacity(0.2),
                             ),
                           },
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 30,
+                            horizontal: 15,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFE6212A),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 195, 16, 25),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  final GoogleMapController controller =
+                                      await _controller.future;
+                                  controller.animateCamera(
+                                    CameraUpdate.newCameraPosition(
+                                      CameraPosition(
+                                          target: LatLng(
+                                            loc.cordinate!.latitude,
+                                            loc.cordinate!.longitude,
+                                          ),
+                                          bearing: 192.8334901395799,
+                                          tilt: 59.440717697143555,
+                                          zoom: 18.151926040649414),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFE6212A),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    border: Border.all(
+                                      color: Color.fromARGB(255, 195, 16, 25),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.gps_fixed,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),

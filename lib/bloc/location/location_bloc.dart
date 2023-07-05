@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/utils/location_gps.dart';
 import 'package:http/http.dart' as http;
 
@@ -126,9 +127,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             final Uint8List customerIcon = await getBytesFromAsset(
                 'assets/icons/pincustomermaps.png', 130);
 
+            final Map<String, dynamic> config =
+                await FetchData(data: Data.config).FINDALL();
+
             emit(LocationLoaded(
               IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
               IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
+              distanceCheckIn: config['data']['visit']['checkInDistance'],
+              distanceCheckOut: config['data']['visit']['checkOutDistance'],
             ));
           }
         } catch (e) {
@@ -150,9 +156,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             final Uint8List customerIcon = await getBytesFromAsset(
                 'assets/icons/pincustomermaps.png', 130);
 
+            final Map<String, dynamic> config =
+                await FetchData(data: Data.config).FINDALL();
+
             emit(LocationLoaded(
               IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
               IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
+              distanceCheckIn: config['data']['visit']['checkInDistance'],
+              distanceCheckOut: config['data']['visit']['checkOutDistance'],
             ));
           }
         } catch (e) {

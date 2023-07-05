@@ -18,7 +18,8 @@ enum Data {
   erp,
   visitnote,
   callsheetNote,
-  users
+  users,
+  config,
 }
 
 class FetchData {
@@ -58,6 +59,9 @@ class FetchData {
         break;
       case Data.users:
         doc = "users";
+        break;
+      case Data.config:
+        doc = "config";
         break;
       default:
     }
@@ -100,8 +104,9 @@ class FetchData {
       final setFields = jsonEncode(fields);
 
       String uri =
-          "${config.baseUri}$doc${params != null ? params : ""}?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}${nearby != null ? nearby : ""}";
+          "${config.baseUri}$doc${params ?? ""}?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}${nearby ?? ""}";
 
+      print(uri);
       final response = await http.get(
         Uri.parse(uri),
         headers: {

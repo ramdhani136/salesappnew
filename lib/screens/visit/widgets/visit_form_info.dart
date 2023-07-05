@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/screens/visit/widgets/visit_checkout_modal.dart';
+import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -340,10 +340,14 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                       width: 60.0,
                       child: FloatingActionButton(
                         onPressed: () {
-                          showCheckOutModal(
-                              context,
-                              BlocProvider.of<VisitBloc>(context),
-                              "${state.data.id}");
+                          Navigator.of(context).push(
+                            MaterialPageRoute<CheckOutScreen>(
+                              builder: (_) => BlocProvider.value(
+                                value: BlocProvider.of<VisitBloc>(context),
+                                child: const CheckOutScreen(),
+                              ),
+                            ),
+                          );
                         },
                         backgroundColor: Colors.grey[850],
                         child: const Icon(Icons.done_outlined),
