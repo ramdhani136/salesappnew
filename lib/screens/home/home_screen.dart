@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/screens/dn/dn_form.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -234,8 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return InvoiceFormScreen(
-                              id: "SJ-2023-03-0104",
+                            return DNFormScreen(
+                              id: "BBK-2023-07-ET-0039",
                             );
                           },
                         ),
