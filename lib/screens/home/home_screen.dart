@@ -410,8 +410,8 @@ class LocationAroundYou extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Location Around you",
+                Text(
+                  "Location Around you (${state is CustomerIsLoaded ? state.total.toString() : ""})",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -463,43 +463,87 @@ class LocationAroundYou extends StatelessWidget {
             ),
             Visibility(
               visible: state is CustomerIsLoaded,
-              child: SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  itemCount: state is CustomerIsLoaded ? state.data.length : 0,
-                  itemBuilder: (context, index) {
-                    if (state is CustomerIsLoaded) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.grey[100],
-                          ),
-                          // backgroundImage: NetworkImage(
-                          //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
-                        ),
-                        title: Text(state.data[index]['name']),
-                        subtitle:
-                            Text(state.data[index]['customerGroup']['name']),
-                        trailing: Text(state.data[index]['distance'] != null
-                            ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
-                            : ""),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CheckInScreen(
-                                  customerId: "648028c78020c9ef03834644",
+              child: NotificationListener<ScrollNotification>(
+                // onNotification: (ScrollNotification scrollInfo) {
+                //   if (scrollInfo.metrics.pixels ==
+                //               scrollInfo.metrics.maxScrollExtent &&
+                //           (state is CustomerIsLoaded)
+                //       ? (state).hasMore
+                //       : false) {
+                //     state.hasMore = false;
+                //     customerBloc.add(
+                //       GetAllCustomer(
+                //         nearby: Nearby(
+                //             lat: locationbloc.cordinate!.latitude,
+                //             lng: locationbloc.cordinate!.longitude),
+                //       ),
+                //     );
+                //   }
+
+                //   return false;
+                // },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        itemCount:
+                            state is CustomerIsLoaded ? state.data.length : 0,
+                        itemBuilder: (context, index) {
+                          if (state is CustomerIsLoaded) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.grey[300],
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.grey[100],
+                                ),
+                                // backgroundImage: NetworkImage(
+                                //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
+                              ),
+                              title: Text(state.data[index]['name']),
+                              subtitle: Text(
+                                  state.data[index]['customerGroup']['name']),
+                              trailing: Text(state.data[index]['distance'] !=
+                                      null
+                                  ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
+                                  : ""),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CheckInScreen(
+                                        customerId: "648028c78020c9ef03834644",
+                                      );
+                                    },
+                                  ),
                                 );
+                                // Aksi yang dilakukan saat ListTile ditekan
                               },
-                            ),
-                          );
-                          // Aksi yang dilakukan saat ListTile ditekan
+                            );
+                          }
                         },
-                      );
-                    }
-                  },
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Center(
+                            child: SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

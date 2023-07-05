@@ -35,7 +35,6 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         result = await FetchData(data: Data.customer).FINDALL(
           page: page,
           nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},100]",
-          limit: 5,
         );
       } else {
         result = await FetchData(data: Data.customer).FINDALL(

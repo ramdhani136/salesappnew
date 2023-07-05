@@ -42,7 +42,7 @@ class FormVisitNoteNew extends StatelessWidget {
           }
 
           if (state is VisitNoteIsLoading) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),

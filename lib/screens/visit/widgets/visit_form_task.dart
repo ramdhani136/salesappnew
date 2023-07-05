@@ -232,7 +232,7 @@ class VisitFormTask extends StatelessWidget {
                           ),
                           Visibility(
                             visible: stateInv is InvoiceInfiniteLoading,
-                            child: Padding(
+                            child: const Padding(
                               padding: EdgeInsets.only(bottom: 20),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
