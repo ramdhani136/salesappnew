@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Container(
                     width: 320,
-                    height: 320 / 1.7,
+                    height: 190,
                     margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -529,6 +529,7 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                     ? ClipOval(
                                         child: Image.network(
                                           "${config.baseUri}public/customer/${state.data[index]['img']}",
+                                          key: ValueKey(DateTime.now()),
                                           width: 100,
                                           height: 100,
                                           loadingBuilder: (BuildContext context,

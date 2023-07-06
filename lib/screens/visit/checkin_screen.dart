@@ -9,7 +9,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CheckInScreen extends StatefulWidget {
   String customerId;
@@ -85,13 +87,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       bloc: customerBloc,
                       builder: (context, stateCust) {
                         if (stateCust is CustomerShowLoaded) {
-                          if (stateCust.data.location?.coordinates != null)
-                            locationbloc.add(
-                              GetRealtimeGps(
-                                customerId: widget.customerId,
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
+                          locationbloc.add(
+                            GetRealtimeGps(
+                              customerId: widget.customerId,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
                         }
 
                         if (state is LocationLoaded) {
@@ -586,65 +587,170 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                 return Container();
                                               },
                                             ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Stack(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                children: [
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 15),
-                                                    width: Get.width * 0.9,
-                                                    height: Get.width / 1.85,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                        color: const Color
-                                                                .fromARGB(
-                                                            255, 232, 231, 231),
-                                                      ),
+                                            BlocBuilder<CustomerBloc,
+                                                CustomerState>(
+                                              bloc: customerBloc,
+                                              builder: (context, stateCust) {
+                                                final picker = ImagePicker();
+                                                Future<void> GetPhoto() async {
+                                                  try {
+                                                    final pickedFile =
+                                                        await picker.pickImage(
+                                                            source: ImageSource
+                                                                .camera);
+
+                                                    if (pickedFile != null) {
+                                                      // print(pickedFile);
+                                                    }
+                                                  } catch (e) {
+                                                    print(e);
+                                                  }
+                                                }
+
+                                                if (stateCust
+                                                    is CustomerShowLoaded) {
+                                                  return Align(
+                                                    alignment: Alignment.center,
+                                                    child: Stack(
+                                                      alignment: Alignment
+                                                          .bottomCenter,
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 15),
+                                                          width:
+                                                              Get.width * 0.9,
+                                                          height:
+                                                              Get.width / 1.85,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color: const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  232,
+                                                                  231,
+                                                                  231),
+                                                            ),
+                                                          ),
+                                                          child: stateCust.data
+                                                                      .img ==
+                                                                  null
+                                                              ? const Center(
+                                                                  child: Icon(
+                                                                  Icons
+                                                                      .hide_image_outlined,
+                                                                  color: Color(
+                                                                      0xFFE0E0E0),
+                                                                  size: 100,
+                                                                ))
+                                                              // : VisitC.respImage
+                                                              //             ?.path !=
+                                                              //         null
+                                                              //     ? ClipRRect(
+                                                              //         borderRadius:
+                                                              //             BorderRadius
+                                                              //                 .circular(
+                                                              //                     5),
+                                                              //         child: Image(
+                                                              //           fit: BoxFit
+                                                              //               .fitHeight,
+                                                              //           width: double
+                                                              //               .infinity,
+                                                              //           height: double
+                                                              //               .infinity,
+                                                              //           image:
+                                                              //               FileImage(
+                                                              //             File(VisitC
+                                                              //                 .respImage!
+                                                              //                 .path),
+                                                              //           ),
+                                                              //         ),
+                                                              //       )
+                                                              : ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                  child:
+                                                                      FadeInImage(
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    fadeInCurve:
+                                                                        Curves
+                                                                            .easeInExpo,
+                                                                    fadeOutCurve:
+                                                                        Curves
+                                                                            .easeOutExpo,
+                                                                    placeholder:
+                                                                        const AssetImage(
+                                                                            'assets/images/loading.gif'),
+                                                                    image:
+                                                                        NetworkImage(
+                                                                      "${Config().baseUri}public/customer/${stateCust.data.img}",
+                                                                    ),
+                                                                    imageErrorBuilder:
+                                                                        (_, __,
+                                                                            ___) {
+                                                                      return Image
+                                                                          .asset(
+                                                                        'assets/images/bg1.png',
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 15),
+                                                          width:
+                                                              Get.width * 0.9,
+                                                          height: 35,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .only(
+                                                              bottomLeft: Radius
+                                                                  .circular(5),
+                                                              bottomRight:
+                                                                  Radius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.4),
+                                                          ),
+                                                          child: IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              print("dd");
+                                                              await GetPhoto();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.camera_alt,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 22,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                    child: const Center(
-                                                        child: Icon(
-                                                      Icons.hide_image_outlined,
-                                                      color: Color(0xFFE0E0E0),
-                                                      size: 100,
-                                                    )),
-                                                  ),
-                                                  Container(
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 15),
-                                                    width: Get.width * 0.9,
-                                                    height: 35,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        bottomLeft:
-                                                            Radius.circular(5),
-                                                        bottomRight:
-                                                            Radius.circular(5),
-                                                      ),
-                                                      color: Colors.black
-                                                          .withOpacity(0.4),
-                                                    ),
-                                                    child: IconButton(
-                                                      onPressed: () async {},
-                                                      icon: const Icon(
-                                                        Icons.camera_alt,
-                                                        color: Colors.white,
-                                                        size: 22,
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
+                                                  );
+                                                }
+                                                return Container();
+                                              },
                                             ),
                                           ],
                                         ),
