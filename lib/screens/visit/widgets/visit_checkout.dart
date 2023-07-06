@@ -55,10 +55,10 @@ class VisitCheckOut extends StatelessWidget {
                       children: [
                         GoogleMap(
                           mapType: MapType.normal,
-                          myLocationEnabled: true,
+                          // myLocationEnabled: true,
                           trafficEnabled: true,
                           compassEnabled: true,
-                          myLocationButtonEnabled: true,
+                          // myLocationButtonEnabled: true,
                           markers: {
                             Marker(
                               onTap: () {},

@@ -13,13 +13,14 @@ class LocationLoaded extends LocationState {
   BitmapDescriptor? IconCustomerMaps;
   num? distanceCheckIn;
   num? distanceCheckOut;
-  // Position? cordinate;
+  bool? insite;
 
   LocationLoaded({
     this.IconEtmMaps = BitmapDescriptor.defaultMarker,
     this.IconCustomerMaps = BitmapDescriptor.defaultMarker,
     this.distanceCheckIn,
     this.distanceCheckOut,
+    this.insite,
   });
 }
 

@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
 
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -46,70 +46,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
     }
 
-    // Future<Uint8List> getBytesFromUrl(String url, int width) async {
-    //   http.Response response = await http.get(Uri.parse(url));
-    //   if (response.statusCode == 200) {
-    //     Uint8List imageData = response.bodyBytes;
-    //     ui.Codec codec =
-    //         await ui.instantiateImageCodec(imageData, targetWidth: width);
-    //     ui.FrameInfo fi = await codec.getNextFrame();
-
-    //     final recorder = ui.PictureRecorder();
-    //     final canvas = Canvas(recorder);
-
-    //     final imageSize =
-    //         Size(fi.image.width.toDouble(), fi.image.height.toDouble());
-    //     final avatarSize = Size(width.toDouble(), width.toDouble());
-
-    //     canvas.drawImageRect(
-    //         fi.image,
-    //         Rect.fromLTWH(0, 0, imageSize.width, imageSize.height),
-    //         Rect.fromLTWH(0, 0, avatarSize.width, avatarSize.height),
-    //         Paint());
-
-    //     final picture = recorder.endRecording();
-    //     final img = await picture.toImage(
-    //         avatarSize.width.toInt(), avatarSize.height.toInt());
-    //     final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
-
-    //     return byteData!.buffer.asUint8List();
-    //   } else {
-    //     throw Exception('Failed to load image from $url');
-    //   }
-    // }
-
-    // Future<Uint8List> getBytesFromUrl(String url, int width) async {
-    //   http.Response response = await http.get(Uri.parse(url));
-    //   if (response.statusCode == 200) {
-    //     Uint8List imageData = response.bodyBytes;
-    //     ui.Codec codec =
-    //         await ui.instantiateImageCodec(imageData, targetWidth: width);
-    //     ui.FrameInfo fi = await codec.getNextFrame();
-
-    //     final recorder = ui.PictureRecorder();
-    //     final canvas = Canvas(recorder);
-
-    //     final imageSize =
-    //         Size(fi.image.width.toDouble(), fi.image.height.toDouble());
-    //     final avatarSize = Size(width.toDouble(), width.toDouble());
-
-    //     canvas.drawImageRect(
-    //         fi.image,
-    //         Rect.fromLTWH(0, 0, imageSize.width, imageSize.height),
-    //         Rect.fromLTWH(0, 0, avatarSize.width, avatarSize.height),
-    //         Paint());
-
-    //     final picture = recorder.endRecording();
-    //     final img = await picture.toImage(
-    //         avatarSize.width.toInt(), avatarSize.height.toInt());
-    //     final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
-
-    //     return byteData!.buffer.asUint8List();
-    //   } else {
-    //     throw Exception('Failed to load image from $url');
-    //   }
-    // }
-
     on<LocationEvent>((event, emit) async {
       if (event is GetLocationGps) {
         try {
@@ -130,11 +66,33 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             final Map<String, dynamic> config =
                 await FetchData(data: Data.config).FINDALL();
 
+            bool IsInsite = false;
+            if (event.customerId != null && cordinate != null) {
+              Map<String, dynamic> IsInsiteCustomer =
+                  await FetchData(data: Data.customer).FINDALL(
+                      nearby:
+                          "&nearby=[${cordinate!.latitude},${cordinate!.longitude},50]",
+                      filters: [
+                    [
+                      "_id",
+                      "=",
+                      event.customerId!,
+                    ]
+                  ]);
+
+              if (IsInsiteCustomer['data'] != null) {
+                IsInsite = true;
+              } else {
+                IsInsite = false;
+              }
+            }
+
             emit(LocationLoaded(
               IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
               IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
               distanceCheckIn: config['data']['visit']['checkInDistance'],
               distanceCheckOut: config['data']['visit']['checkOutDistance'],
+              insite: IsInsite,
             ));
           }
         } catch (e) {
@@ -159,11 +117,33 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             final Map<String, dynamic> config =
                 await FetchData(data: Data.config).FINDALL();
 
+            bool IsInsite = false;
+            if (event.customerId != null && cordinate != null) {
+              Map<String, dynamic> IsInsiteCustomer =
+                  await FetchData(data: Data.customer).FINDALL(
+                      nearby:
+                          "&nearby=[${cordinate!.latitude},${cordinate!.longitude},${config['data']['visit']['checkInDistance']}]",
+                      filters: [
+                    [
+                      "_id",
+                      "=",
+                      event.customerId!,
+                    ]
+                  ]);
+
+              if (IsInsiteCustomer['data'] != null) {
+                IsInsite = true;
+              } else {
+                IsInsite = false;
+              }
+            }
+
             emit(LocationLoaded(
               IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
               IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
               distanceCheckIn: config['data']['visit']['checkInDistance'],
               distanceCheckOut: config['data']['visit']['checkOutDistance'],
+              insite: IsInsite,
             ));
           }
         } catch (e) {

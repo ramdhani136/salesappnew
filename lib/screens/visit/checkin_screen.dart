@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
 
 import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/models/customer_model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CheckInScreen extends StatefulWidget {
@@ -71,18 +73,28 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
                   if (state is LocationFailure) {
                     // _controller = Completer<GoogleMapController>();
-                    locationbloc.add(GetLocationGps(notLoading: true));
+                    locationbloc.add(GetLocationGps(
+                      notLoading: true,
+                    ));
                   }
 
                   if (locationbloc.cordinate != null) {
-                    locationbloc.add(
-                      GetRealtimeGps(
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
                     return BlocBuilder<CustomerBloc, CustomerState>(
                         bloc: customerBloc,
                         builder: (context, stateCust) {
+                          if (stateCust is CustomerShowLoaded) {
+                            if (stateCust.data.location?.coordinates != null) {
+                              locationbloc.add(
+                                GetRealtimeGps(
+                                  customerId: widget.customerId,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }
+
                           return Maps(
                               locationbloc, _controller, state, stateCust);
                         });
@@ -175,12 +187,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
         BlocBuilder(
             bloc: visitBloc,
             builder: (context, stateVisit) {
-              // CustomerBloc customerBloc = CustomerBloc()
-              //   ..add(
-              //     ShowCustomer(
-              //       widget.customerId,
-              //     ),
-              //   );
               return SlidingUpPanel(
                 defaultPanelState: PanelState.OPEN,
                 controller: _panelC,
@@ -359,45 +365,95 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                       SizedBox(
                                                         height: 10,
                                                       ),
-                                                      Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 8,
-                                                          vertical: 2,
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          // color: const Color.fromARGB(
-                                                          //     255, 255, 198, 27),
-                                                          color:
-                                                              Colors.red[400],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          border: Border.all(
-                                                            // color: const Color.fromARGB(
-                                                            //     255, 225, 170, 5),
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                218,
-                                                                50,
-                                                                38),
-                                                            width: 1,
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          // "Insite",
-                                                          "Outsite",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            // color: Color.fromARGB(
-                                                            //     255, 156, 118, 3),
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
+                                                      BlocBuilder<LocationBloc,
+                                                          LocationState>(
+                                                        bloc: locationbloc,
+                                                        builder: (context,
+                                                            stateLoc) {
+                                                          if (stateLoc
+                                                              is LocationLoaded) {
+                                                            return Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 2,
+                                                              ),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                // color: const Color.fromARGB(
+                                                                //     255, 255, 198, 27),
+                                                                color: stateLoc
+                                                                        .insite!
+                                                                    ? const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        255,
+                                                                        160,
+                                                                        0)
+                                                                    : Colors.red[
+                                                                        400],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                border:
+                                                                    Border.all(
+                                                                  // color: const Color.fromARGB(
+                                                                  //     255, 225, 170, 5),
+                                                                  color: stateLoc
+                                                                          .insite!
+                                                                      ? const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          237,
+                                                                          151,
+                                                                          2)
+                                                                      : const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          218,
+                                                                          50,
+                                                                          38),
+                                                                  width: 1,
+                                                                ),
+                                                              ),
+                                                              child: Text(
+                                                                stateLoc.insite!
+                                                                    ? "Insite"
+                                                                    : "Outsite",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 13,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          return Column(
+                                                            children: [
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                                height: 20,
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300],
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          );
+                                                        },
                                                       ),
                                                       SizedBox(
                                                         height: 10,
@@ -494,6 +550,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                         horizontal: 16, vertical: 10),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 30, 134, 33),
+                                          width: 1),
                                     ),
                                   ),
                                 ),
@@ -544,9 +604,7 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
 
   if (customer?.data.location?.coordinates != null) {
     double lat = customer!.data.location!.coordinates![1];
-    double lng = customer!.data.location!.coordinates![0];
-    print(lat);
-    print(lng);
+    double lng = customer.data.location!.coordinates![0];
     markers.addAll({
       Marker(
         onTap: () {},
@@ -576,35 +634,11 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
 
   return GoogleMap(
     mapType: MapType.normal,
-    myLocationEnabled: true,
+    // myLocationEnabled: true,
     trafficEnabled: true,
     compassEnabled: true,
-    myLocationButtonEnabled: true,
+    // myLocationButtonEnabled: true,
     markers: markers,
-    // markers: {
-    //   // Marker(
-    //   //   onTap: () {},
-    //   //   markerId: const MarkerId('me'),
-    //   //   infoWindow: const InfoWindow(
-    //   //     title: 'Your Location!',
-    //   //   ),
-    //   //   icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
-    //   //   position: LatLng(
-    //   //     loc.cordinate!.latitude,
-    //   //     loc.cordinate!.longitude,
-    //   //   ),
-    //   // ),
-    //   // Marker(
-    //   //   onTap: () {},
-    //   //   markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
-    //   //   infoWindow: InfoWindow(
-    //   //     title: '${customer != null ? customer.data.name : ""}',
-    //   //   ),
-    //   //   visible: true,
-    //   //   icon: data!.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
-    //   //   position: const LatLng(-6.5107604, 106.8638661),
-    //   // )
-    // },
     initialCameraPosition: CameraPosition(
         target: LatLng(
           loc.cordinate!.latitude,
