@@ -600,10 +600,11 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                 .camera);
 
                                                     if (pickedFile != null) {
-                                                      // print(pickedFile);
+                                                      print(pickedFile);
                                                     }
                                                   } catch (e) {
-                                                    print(e);
+                                                    rethrow;
+                                                    // print(e);
                                                   }
                                                 }
 
