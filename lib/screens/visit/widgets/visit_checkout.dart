@@ -187,7 +187,7 @@ class VisitCheckOut extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${loc.address ?? "Failed to get location info!"}",
+                      loc.address ?? "Failed to get location info!",
                       style: TextStyle(
                         color: Colors.grey[600],
                       ),

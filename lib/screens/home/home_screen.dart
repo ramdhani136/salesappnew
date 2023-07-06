@@ -347,6 +347,24 @@ class _HomeScreenState extends State<HomeScreen> {
             BlocBuilder<LocationBloc, LocationState>(
               bloc: locationbloc,
               builder: (context, state) {
+                if (state is LocationLoading) {
+                  return const Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 223, 223, 223),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
                 if (state is LocationLoaded) {
                   return LocationAroundYou(locationbloc: locationbloc);
                 }
@@ -528,7 +546,6 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                     },
                                   ),
                                 );
-                                // Aksi yang dilakukan saat ListTile ditekan
                               },
                             );
                           }
