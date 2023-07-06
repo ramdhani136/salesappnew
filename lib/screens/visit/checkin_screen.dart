@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
 
 import 'dart:async';
 import 'package:get/get.dart';
@@ -35,6 +35,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
   Widget build(BuildContext context) {
     final _panelC = PanelController();
     VisitBloc visitBloc = VisitBloc();
+    CustomerBloc customerBloc = CustomerBloc()
+      ..add(
+        ShowCustomer(
+          widget.customerId,
+        ),
+      );
+    ;
 
     Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
@@ -73,7 +80,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         duration: const Duration(seconds: 2),
                       ),
                     );
-                    return Maps(locationbloc, _controller, state);
+                    return BlocBuilder<CustomerBloc, CustomerState>(
+                        bloc: customerBloc,
+                        builder: (context, stateCust) {
+                          return Maps(
+                              locationbloc, _controller, state, stateCust);
+                        });
                   }
 
                   return const Center(
@@ -163,12 +175,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
         BlocBuilder(
             bloc: visitBloc,
             builder: (context, stateVisit) {
-              CustomerBloc customerBloc = CustomerBloc()
-                ..add(
-                  ShowCustomer(
-                    widget.customerId,
-                  ),
-                );
+              // CustomerBloc customerBloc = CustomerBloc()
+              //   ..add(
+              //     ShowCustomer(
+              //       widget.customerId,
+              //     ),
+              //   );
               return SlidingUpPanel(
                 defaultPanelState: PanelState.OPEN,
                 controller: _panelC,
@@ -501,11 +513,65 @@ class _CheckInScreenState extends State<CheckInScreen> {
 }
 
 // ignore: non_constant_identifier_names
-GoogleMap Maps(
-    LocationBloc loc, Completer<GoogleMapController> _controller, state) {
+GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
+    state, stateCust) {
   LocationLoaded? data;
+  CustomerShowLoaded? customer;
   if (state is LocationLoaded) {
     data = state;
+  }
+
+  if (stateCust is CustomerShowLoaded) {
+    customer = stateCust;
+  }
+
+  Set<Marker> markers = {
+    Marker(
+      onTap: () {},
+      markerId: const MarkerId('me'),
+      infoWindow: const InfoWindow(
+        title: 'Your Location!',
+      ),
+      icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
+      position: LatLng(
+        loc.cordinate!.latitude,
+        loc.cordinate!.longitude,
+      ),
+    ),
+  };
+
+  Set<Circle> circle = {};
+
+  if (customer?.data.location?.coordinates != null) {
+    double lat = customer!.data.location!.coordinates![1];
+    double lng = customer!.data.location!.coordinates![0];
+    print(lat);
+    print(lng);
+    markers.addAll({
+      Marker(
+        onTap: () {},
+        markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
+        infoWindow: InfoWindow(
+          title: '${customer != null ? customer.data.name : ""}',
+        ),
+        visible: true,
+        icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lng),
+      )
+    });
+
+    circle.addAll({
+      Circle(
+        circleId: CircleId("${customer.data.name}"),
+        center: LatLng(lat, lng), // Koordinat lokasi saat ini
+        radius: data.distanceCheckIn != null
+            ? data.distanceCheckIn!.toDouble()
+            : 50, // Jari-jari dalam meter
+        strokeWidth: 2,
+        strokeColor: Colors.amber,
+        fillColor: Colors.amber.withOpacity(0.2),
+      ),
+    });
   }
 
   return GoogleMap(
@@ -514,30 +580,31 @@ GoogleMap Maps(
     trafficEnabled: true,
     compassEnabled: true,
     myLocationButtonEnabled: true,
-    markers: {
-      Marker(
-        onTap: () {},
-        markerId: const MarkerId('me'),
-        infoWindow: const InfoWindow(
-          title: 'Your Location!',
-        ),
-        icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
-        position: LatLng(
-          loc.cordinate!.latitude,
-          loc.cordinate!.longitude,
-        ),
-      ),
-      Marker(
-        onTap: () {},
-        markerId: const MarkerId('PT. Abadi Baru'),
-        infoWindow: const InfoWindow(
-          title: 'PT. Abadi Baru',
-        ),
-        visible: true,
-        icon: data!.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
-        position: LatLng(-6.5107604, 106.8638661),
-      )
-    },
+    markers: markers,
+    // markers: {
+    //   // Marker(
+    //   //   onTap: () {},
+    //   //   markerId: const MarkerId('me'),
+    //   //   infoWindow: const InfoWindow(
+    //   //     title: 'Your Location!',
+    //   //   ),
+    //   //   icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
+    //   //   position: LatLng(
+    //   //     loc.cordinate!.latitude,
+    //   //     loc.cordinate!.longitude,
+    //   //   ),
+    //   // ),
+    //   // Marker(
+    //   //   onTap: () {},
+    //   //   markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
+    //   //   infoWindow: InfoWindow(
+    //   //     title: '${customer != null ? customer.data.name : ""}',
+    //   //   ),
+    //   //   visible: true,
+    //   //   icon: data!.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
+    //   //   position: const LatLng(-6.5107604, 106.8638661),
+    //   // )
+    // },
     initialCameraPosition: CameraPosition(
         target: LatLng(
           loc.cordinate!.latitude,
@@ -562,15 +629,6 @@ GoogleMap Maps(
         strokeColor: Colors.blue, // Warna garis tepi area jangkauan
       ),
     },
-    circles: <Circle>{
-      Circle(
-        circleId: const CircleId('myLocation'),
-        center: LatLng(-6.5107604, 106.8638661), // Koordinat lokasi saat ini
-        radius: 50, // Jari-jari dalam meter
-        strokeWidth: 2,
-        strokeColor: Colors.amber,
-        fillColor: Colors.amber.withOpacity(0.2),
-      ),
-    },
+    circles: circle,
   );
 }
