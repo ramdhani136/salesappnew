@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/screens/dn/dn_form.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
@@ -519,15 +520,42 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                             state is CustomerIsLoaded ? state.data.length : 0,
                         itemBuilder: (context, index) {
                           if (state is CustomerIsLoaded) {
+                            Config config = Config();
                             return ListTile(
                               leading: CircleAvatar(
+                                radius: 18,
                                 backgroundColor: Colors.grey[300],
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.grey[100],
-                                ),
-                                // backgroundImage: NetworkImage(
-                                //     "https://www.eisai.co.id/id/image/GtkB01.jpg"),
+                                child: state.data[index]['img'] != null
+                                    ? ClipOval(
+                                        child: Image.network(
+                                          "${config.baseUri}public/customer/${state.data[index]['img']}",
+                                          width: 100,
+                                          height: 100,
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                                  loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            );
+                                          },
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Icon(
+                                        Icons.person,
+                                        color: Colors.grey[100],
+                                      ),
                               ),
                               title: Text(state.data[index]['name']),
                               subtitle: Text(
@@ -541,7 +569,7 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return CheckInScreen(
-                                        customerId: "64a4f20b4dfe920baa2cfad0",
+                                        customerId: "64a66ef48c2fa0914a654ecd",
                                       );
                                     },
                                   ),

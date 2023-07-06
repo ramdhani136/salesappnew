@@ -577,7 +577,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                           );
                                                         },
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 10,
                                                       ),
                                                     ],
