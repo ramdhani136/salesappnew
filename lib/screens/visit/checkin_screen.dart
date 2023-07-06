@@ -651,18 +651,18 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
       _controller.complete(controller);
       // controller.setMapStyle();
     },
-    polygons: {
-      Polygon(
-        polygonId: const PolygonId('area_1'),
-        points: [
-          LatLng(-6.5107604, 106.8638661),
-          LatLng(-6.5107604, 106.8638661),
-          LatLng(-6.5107604, 106.8638661),
-        ],
-        fillColor: Colors.blue.withOpacity(0.5), // Warna area jangkauan
-        strokeColor: Colors.blue, // Warna garis tepi area jangkauan
-      ),
-    },
+    // polygons: {
+    //   Polygon(
+    //     polygonId: const PolygonId('area_1'),
+    //     points: [
+    //       LatLng(-6.5107604, 106.8638661),
+    //       LatLng(-6.5107604, 106.8638661),
+    //       LatLng(-6.5107604, 106.8638661),
+    //     ],
+    //     fillColor: Colors.blue.withOpacity(0.5), // Warna area jangkauan
+    //     strokeColor: Colors.blue, // Warna garis tepi area jangkauan
+    //   ),
+    // },
     circles: circle,
   );
 }
