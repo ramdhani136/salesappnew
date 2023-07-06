@@ -29,6 +29,13 @@ class UpdateCustomer extends CustomerEvent {
   });
 }
 
+class ChangeImageCustomer extends CustomerEvent {
+  String id;
+  ChangeImageCustomer({
+    required this.id,
+  });
+}
+
 class Nearby {
   double lat;
   double lng;

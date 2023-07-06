@@ -1,7 +1,14 @@
+// ignore_for_file: unused_local_variable
+
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
+import 'package:path/path.dart';
+import 'package:salesappnew/utils/local_data.dart';
 
 part 'customer_event.dart';
 part 'customer_state.dart';
@@ -11,6 +18,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<ShowCustomer>(_ShowCustomer);
     on<GetAllCustomer>(_GetAllData);
     on<UpdateCustomer>(_UpdateData);
+    on<ChangeImageCustomer>(_ChangeImage);
   }
 
   Future<void> _GetAllData(
@@ -122,6 +130,48 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
           e.toString(),
         ),
       );
+    }
+  }
+
+  Future<void> _ChangeImage(
+    ChangeImageCustomer event,
+    Emitter<CustomerState> emit,
+  ) async {
+    final picker = ImagePicker();
+    try {
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+      if (pickedFile != null) {
+        var stream = http.ByteStream(pickedFile.openRead())..cast();
+        var request = http.MultipartRequest(
+          'PUT',
+          Uri.parse("${Config().baseUri}customer/${event.id}"),
+        );
+
+        var length = await pickedFile.length();
+        var multipartFile = http.MultipartFile(
+          'img',
+          stream,
+          length,
+          filename: basename(pickedFile.path),
+        );
+
+        request.files.add(multipartFile);
+        // request.fields["address"] = "tes";
+        request.headers['authorization'] =
+            'Bearer ${await LocalData().getToken()}';
+        http.Response response = await http.Response.fromStream(
+          await request.send(),
+        );
+
+        if (response.statusCode != 200) {
+          throw response.body;
+        }
+        add(ShowCustomer(event.id));
+      }
+    } catch (e) {
+      rethrow;
+      // print(e);
     }
   }
 }

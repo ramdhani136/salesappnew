@@ -11,7 +11,6 @@ import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CheckInScreen extends StatefulWidget {
   String customerId;
@@ -591,23 +590,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                 CustomerState>(
                                               bloc: customerBloc,
                                               builder: (context, stateCust) {
-                                                final picker = ImagePicker();
-                                                Future<void> GetPhoto() async {
-                                                  try {
-                                                    final pickedFile =
-                                                        await picker.pickImage(
-                                                            source: ImageSource
-                                                                .camera);
-
-                                                    if (pickedFile != null) {
-                                                      print(pickedFile);
-                                                    }
-                                                  } catch (e) {
-                                                    rethrow;
-                                                    // print(e);
-                                                  }
-                                                }
-
                                                 if (stateCust
                                                     is CustomerShowLoaded) {
                                                   return Align(
@@ -735,8 +717,11 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                           child: IconButton(
                                                             onPressed:
                                                                 () async {
-                                                              print("dd");
-                                                              await GetPhoto();
+                                                              customerBloc.add(
+                                                                ChangeImageCustomer(
+                                                                    id: widget
+                                                                        .customerId),
+                                                              );
                                                             },
                                                             icon: const Icon(
                                                               Icons.camera_alt,
