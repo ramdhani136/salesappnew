@@ -541,7 +541,7 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return CheckInScreen(
-                                        customerId: "648028c78020c9ef03834644",
+                                        customerId: "64a4f20b4dfe920baa2cfad0",
                                       );
                                     },
                                   ),

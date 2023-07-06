@@ -10,6 +10,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerBloc() : super(CustomerInitial()) {
     on<ShowCustomer>(_ShowCustomer);
     on<GetAllCustomer>(_GetAllData);
+    on<UpdateCustomer>(_UpdateData);
   }
 
   Future<void> _GetAllData(
@@ -93,6 +94,28 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         response['data'],
       );
       emit(CustomerShowLoaded(data: data));
+    } catch (e) {
+      emit(
+        CustomerIsFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _UpdateData(
+    UpdateCustomer event,
+    Emitter<CustomerState> emit,
+  ) async {
+    try {
+      emit(CustomerIsLoading());
+      final Map<String, dynamic> response =
+          await FetchData(data: Data.customer).UPDATEONE(event.id, event.data);
+
+      if (response['status'] != 200) {
+        throw response['msg'];
+      }
+      add(ShowCustomer(event.id));
     } catch (e) {
       emit(
         CustomerIsFailure(

@@ -75,6 +75,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   if (state is LocationFailure) {
                     // _controller = Completer<GoogleMapController>();
                     locationbloc.add(GetLocationGps(
+                      customerId: widget.customerId,
                       notLoading: true,
                     ));
                   }
@@ -84,16 +85,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       bloc: customerBloc,
                       builder: (context, stateCust) {
                         if (stateCust is CustomerShowLoaded) {
-                          if (stateCust.data.location?.coordinates != null) {
+                          if (stateCust.data.location?.coordinates != null)
                             locationbloc.add(
                               GetRealtimeGps(
                                 customerId: widget.customerId,
                                 duration: const Duration(seconds: 2),
                               ),
                             );
-                          } else {
-                            return Container();
-                          }
                         }
 
                         if (state is LocationLoaded) {
@@ -333,7 +331,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                         children: [
                                                           Text(
                                                             "${stateCustomer.data.name}",
-                                                            style: TextStyle(
+                                                            style:
+                                                                const TextStyle(
                                                               fontSize: 22,
                                                               fontWeight:
                                                                   FontWeight
@@ -353,23 +352,25 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                       ),
                                                       Visibility(
                                                         visible: stateCustomer
-                                                                    .data
-                                                                    .address !=
-                                                                null ||
-                                                            stateCustomer.data
-                                                                    .address !=
-                                                                "",
-                                                        child: Text(
-                                                          "${stateCustomer.data.address}",
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors
-                                                                .grey[700],
-                                                          ),
+                                                                .data.address !=
+                                                            null,
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              stateCustomer.data
+                                                                      .address ??
+                                                                  "",
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .grey[700],
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
                                                       ),
                                                       BlocBuilder<LocationBloc,
                                                           LocationState>(
@@ -378,66 +379,181 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                             stateLoc) {
                                                           if (stateLoc
                                                               is LocationLoaded) {
-                                                            return Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                horizontal: 8,
-                                                                vertical: 2,
-                                                              ),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                // color: const Color.fromARGB(
-                                                                //     255, 255, 198, 27),
-                                                                color: stateLoc
-                                                                        .insite!
-                                                                    ? const Color
-                                                                            .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        160,
-                                                                        0)
-                                                                    : Colors.red[
-                                                                        400],
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
-                                                                border:
-                                                                    Border.all(
-                                                                  // color: const Color.fromARGB(
-                                                                  //     255, 225, 170, 5),
-                                                                  color: stateLoc
-                                                                          .insite!
-                                                                      ? const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          237,
-                                                                          151,
-                                                                          2)
-                                                                      : const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          218,
-                                                                          50,
-                                                                          38),
-                                                                  width: 1,
+                                                            return Row(
+                                                              children: [
+                                                                Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    horizontal:
+                                                                        8,
+                                                                    vertical: 4,
+                                                                  ),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    // color: const Color.fromARGB(
+                                                                    //     255, 255, 198, 27),
+                                                                    color: stateLoc
+                                                                            .insite!
+                                                                        ? const Color.fromARGB(
+                                                                            255,
+                                                                            255,
+                                                                            160,
+                                                                            0)
+                                                                        : Colors
+                                                                            .red[400],
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                    border:
+                                                                        Border
+                                                                            .all(
+                                                                      // color: const Color.fromARGB(
+                                                                      //     255, 225, 170, 5),
+                                                                      color: stateLoc
+                                                                              .insite!
+                                                                          ? const Color.fromARGB(
+                                                                              255,
+                                                                              237,
+                                                                              151,
+                                                                              2)
+                                                                          : const Color.fromARGB(
+                                                                              255,
+                                                                              218,
+                                                                              50,
+                                                                              38),
+                                                                      width: 1,
+                                                                    ),
+                                                                  ),
+                                                                  child: Text(
+                                                                    stateLoc.insite!
+                                                                        ? "Insite"
+                                                                        : "Outsite",
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              child: Text(
-                                                                stateLoc.insite!
-                                                                    ? "Insite"
-                                                                    : "Outsite",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                const SizedBox(
+                                                                  width: 5,
                                                                 ),
-                                                              ),
+                                                                Visibility(
+                                                                  visible: stateCustomer
+                                                                          .data
+                                                                          .location
+                                                                          ?.coordinates ==
+                                                                      null,
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      await showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            title:
+                                                                                const Text("Really?"),
+                                                                            content:
+                                                                                Text("You want to set this cordinate for ${stateCustomer.data.name}?"),
+                                                                            actions: [
+                                                                              TextButton(
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: const Text("No"),
+                                                                              ),
+                                                                              TextButton(
+                                                                                onPressed: () async {
+                                                                                  customerBloc.add(
+                                                                                    UpdateCustomer(
+                                                                                      id: widget.customerId,
+                                                                                      data: {
+                                                                                        'lat': locationbloc.cordinate?.latitude,
+                                                                                        'lng': locationbloc.cordinate?.longitude,
+                                                                                      },
+                                                                                    ),
+                                                                                  );
+                                                                                  locationbloc.add(GetLocationGps(
+                                                                                    customerId: widget.customerId,
+                                                                                  ));
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: const Text("Yes"),
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .symmetric(
+                                                                        horizontal:
+                                                                            8,
+                                                                        vertical:
+                                                                            4,
+                                                                      ),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            55,
+                                                                            55,
+                                                                            55),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(8),
+                                                                        border:
+                                                                            Border.all(
+                                                                          color: const Color.fromARGB(
+                                                                              255,
+                                                                              51,
+                                                                              51,
+                                                                              51),
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          const Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "Set Cordinate",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 13,
+                                                                              fontWeight: FontWeight.w500,
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                3,
+                                                                          ),
+                                                                          Icon(
+                                                                            Icons.gps_fixed_rounded,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                10,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             );
                                                           }
                                                           return Column(

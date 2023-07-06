@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: must_be_immutable
+
 part of 'customer_bloc.dart';
 
 @immutable
@@ -14,6 +17,15 @@ class GetAllCustomer extends CustomerEvent {
   GetAllCustomer({
     this.refresh = true,
     this.nearby,
+  });
+}
+
+class UpdateCustomer extends CustomerEvent {
+  String id;
+  Map<String, dynamic> data;
+  UpdateCustomer({
+    required this.id,
+    required this.data,
   });
 }
 
