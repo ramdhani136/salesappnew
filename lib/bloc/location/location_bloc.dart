@@ -71,7 +71,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               Map<String, dynamic> IsInsiteCustomer =
                   await FetchData(data: Data.customer).FINDALL(
                       nearby:
-                          "&nearby=[${cordinate!.latitude},${cordinate!.longitude},50]",
+                          "&nearby=[${cordinate!.latitude},${cordinate!.longitude},${config['data']['visit']['checkInDistance']}]",
                       filters: [
                     [
                       "_id",

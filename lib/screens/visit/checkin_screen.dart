@@ -9,7 +9,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/models/customer_model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CheckInScreen extends StatefulWidget {
@@ -57,7 +56,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 bloc: locationbloc,
                 builder: (context, state) {
                   if (state is LocationInitial) {
-                    locationbloc.add(GetLocationGps());
+                    locationbloc.add(GetLocationGps(
+                      customerId: widget.customerId,
+                    ));
                   }
                   if (state is LocationLoading) {
                     return const Center(
@@ -80,24 +81,29 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
                   if (locationbloc.cordinate != null) {
                     return BlocBuilder<CustomerBloc, CustomerState>(
-                        bloc: customerBloc,
-                        builder: (context, stateCust) {
-                          if (stateCust is CustomerShowLoaded) {
-                            if (stateCust.data.location?.coordinates != null) {
-                              locationbloc.add(
-                                GetRealtimeGps(
-                                  customerId: widget.customerId,
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
+                      bloc: customerBloc,
+                      builder: (context, stateCust) {
+                        if (stateCust is CustomerShowLoaded) {
+                          if (stateCust.data.location?.coordinates != null) {
+                            locationbloc.add(
+                              GetRealtimeGps(
+                                customerId: widget.customerId,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          } else {
+                            return Container();
                           }
+                        }
 
+                        if (state is LocationLoaded) {
                           return Maps(
                               locationbloc, _controller, state, stateCust);
-                        });
+                        }
+
+                        return Container();
+                      },
+                    );
                   }
 
                   return const Center(
@@ -649,20 +655,8 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
         zoom: 18.151926040649414),
     onMapCreated: (GoogleMapController controller) {
       _controller.complete(controller);
-      // controller.setMapStyle();
     },
-    // polygons: {
-    //   Polygon(
-    //     polygonId: const PolygonId('area_1'),
-    //     points: [
-    //       LatLng(-6.5107604, 106.8638661),
-    //       LatLng(-6.5107604, 106.8638661),
-    //       LatLng(-6.5107604, 106.8638661),
-    //     ],
-    //     fillColor: Colors.blue.withOpacity(0.5), // Warna area jangkauan
-    //     strokeColor: Colors.blue, // Warna garis tepi area jangkauan
-    //   ),
-    // },
+
     circles: circle,
   );
 }
