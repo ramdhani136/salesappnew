@@ -171,7 +171,6 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       }
     } catch (e) {
       rethrow;
-      // print(e);
     }
   }
 }
