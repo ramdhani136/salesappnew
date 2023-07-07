@@ -6,6 +6,7 @@ import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
 import 'package:salesappnew/screens/dn/dn_form.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
@@ -209,7 +210,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.run_circle_sharp,
                   ),
                   HomeMenuList(
-                    RunFUnction: () {},
+                    RunFUnction: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<CallsheetScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const CallsheetScreen(),
+                          ),
+                        ),
+                      );
+                    },
                     title: "Callsheet",
                     icon: Icons.phone,
                   ),

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'callsheet_bloc.dart';
 
 @immutable
@@ -5,11 +7,10 @@ abstract class CallsheetEvent {}
 
 class CallsheetGetAllData extends CallsheetEvent {
   int status = 0;
-  bool pagingRefresh = false;
+  bool getRefresh = false;
   String? search;
 
-  CallsheetGetAllData(
-      {this.status = 0, this.pagingRefresh = false, this.search});
+  CallsheetGetAllData({this.status = 0, this.getRefresh = false, this.search});
 }
 
 class CallsheetChangeWorkflow extends CallsheetEvent {
@@ -34,4 +35,10 @@ class CallsheetDeleteOne extends CallsheetEvent {
   String id;
 
   CallsheetDeleteOne(this.id);
+}
+
+class CallsheetChangeSearch extends CallsheetEvent {
+  String search = "";
+
+  CallsheetChangeSearch(this.search);
 }

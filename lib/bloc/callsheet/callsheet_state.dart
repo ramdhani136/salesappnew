@@ -14,12 +14,14 @@ class CallsheetIsLoaded extends CallsheetState {
   int total = 0;
   bool hasMore = false;
   bool pageLoading = false;
-
-  CallsheetIsLoaded(
-      {required newData,
-      required this.hasMore,
-      required this.total,
-      required this.pageLoading}) {
+  int page;
+  CallsheetIsLoaded({
+    required newData,
+    required this.hasMore,
+    required this.total,
+    required this.pageLoading,
+    this.page = 1,
+  }) {
     data = newData;
   }
 }
