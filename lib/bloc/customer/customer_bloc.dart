@@ -9,7 +9,6 @@ import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:path/path.dart';
 import 'package:salesappnew/utils/local_data.dart';
-import 'package:salesappnew/utils/location_gps.dart';
 
 part 'customer_event.dart';
 part 'customer_state.dart';
@@ -158,7 +157,6 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         );
 
         request.files.add(multipartFile);
-        request.fields["address"] = event.address!;
         request.headers['authorization'] =
             'Bearer ${await LocalData().getToken()}';
         http.Response response = await http.Response.fromStream(

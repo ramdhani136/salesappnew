@@ -480,6 +480,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                                       data: {
                                                                                         'lat': locationbloc.cordinate?.latitude,
                                                                                         'lng': locationbloc.cordinate?.longitude,
+                                                                                        'address': locationbloc.address,
                                                                                       },
                                                                                     ),
                                                                                   );
@@ -721,9 +722,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                 ChangeImageCustomer(
                                                                   id: widget
                                                                       .customerId,
-                                                                  address:
-                                                                      locationbloc
-                                                                          .address,
                                                                 ),
                                                               );
                                                             },
