@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     },
-                    title: "DN",
+                    title: "Delivery",
                     icon: Icons.fire_truck_rounded,
                   ),
                   HomeMenuList(

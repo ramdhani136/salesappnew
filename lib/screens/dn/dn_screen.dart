@@ -97,7 +97,7 @@ class _DnScreen extends State<DnScreen> {
                 BackButtonCustom(),
                 const Row(
                   children: [
-                    Icon(Icons.assignment, size: 17),
+                    Icon(Icons.car_repair, size: 17),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
