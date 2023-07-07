@@ -11,3 +11,17 @@ class GetOrdershow extends OrderEvent {
     required this.id,
   });
 }
+
+class OrderGetAll extends OrderEvent {
+  int status = 0;
+  bool getRefresh = false;
+  String? search;
+
+  OrderGetAll({this.status = 0, this.getRefresh = false, this.search});
+}
+
+class OrderChangeSearch extends OrderEvent {
+  String search = "";
+
+  OrderChangeSearch(this.search);
+}

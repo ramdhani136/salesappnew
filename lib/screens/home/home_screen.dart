@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
 import 'package:salesappnew/screens/item/item_form.dart';
 import 'package:salesappnew/screens/order/order_form.dart';
+import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
 import 'package:intl/intl.dart';
@@ -231,12 +232,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return OrderFormScreen(
-                              id: "SO-2023-06-0185GR",
-                            );
-                          },
+                        MaterialPageRoute<OrderScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const OrderScreen(),
+                          ),
                         ),
                       );
                     },

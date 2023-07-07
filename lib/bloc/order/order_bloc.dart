@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
-
 import 'package:salesappnew/models/order_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -8,8 +9,12 @@ part 'order_event.dart';
 part 'order_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
+  String search = "";
+  int page = 1;
+  int? tabActive;
   OrderBloc() : super(OrderInitial()) {
     on<GetOrdershow>(_ShowData);
+    on<OrderGetAll>(_GetAllData);
   }
 
   Future<void> _ShowData(
@@ -31,6 +36,89 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
       emit(OrderShowIsLoaded(data: data, workflow: action));
     } catch (e) {
+      emit(OrderIsFailure(e.toString()));
+    }
+  }
+
+  Future<void> _GetAllData(OrderGetAll event, Emitter<OrderState> emit) async {
+    try {
+      int page = 1;
+      if (state is! OrderIsLoaded || event.getRefresh) {
+        emit(OrderIsLoading());
+      } else {
+        OrderIsLoaded current = state as OrderIsLoaded;
+        emit(
+          OrderIsLoaded(
+            data: current.data,
+            hasMore: current.hasMore,
+            pageLoading: true,
+          ),
+        );
+      }
+
+      Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
+        page: event.getRefresh ? 1 : page,
+        params: "/Sales Order",
+        fields: [
+          "customer",
+          "name",
+          "modified",
+          "owner",
+          "customer_group",
+          "workflow_state",
+          "docstatus",
+        ],
+        filters: [
+          [
+            "docstatus",
+            "=",
+            "${event.status}",
+          ]
+        ],
+        // search: event.search,
+      );
+
+      if (getData['status'] == 200) {
+        page = getData['nextPage'];
+        List response = getData['data'];
+
+        List currentData = [];
+        if (state is OrderIsLoaded && !event.getRefresh) {
+          currentData = (state as OrderIsLoaded).data;
+          currentData.addAll(response);
+        } else {
+          currentData = response;
+        }
+
+        emit(
+          OrderIsLoaded(
+            data: currentData,
+            hasMore: getData['hasMore'],
+            pageLoading: false,
+          ),
+        );
+      } else if (getData['status'] == 403) {
+        Fluttertoast.showToast(
+          msg: getData['msg'],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
+
+        emit(OrderTokenExpired(getData['msg']));
+      } else {
+        List visitList = [];
+        emit(
+          OrderIsLoaded(
+            data: visitList,
+            hasMore: false,
+            pageLoading: false,
+          ),
+        );
+      }
+    } catch (e) {
+      page = 1;
       emit(OrderIsFailure(e.toString()));
     }
   }
