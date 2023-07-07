@@ -685,7 +685,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                             ___) {
                                                                       return Image
                                                                           .asset(
-                                                                        'assets/images/noimage.png',
+                                                                        'assets/images/noimage.jpg',
                                                                       );
                                                                     },
                                                                   ),
