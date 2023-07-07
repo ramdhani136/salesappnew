@@ -24,3 +24,21 @@ class DnIsFailure extends DnState {
   String error;
   DnIsFailure(this.error);
 }
+
+class DnIsLoaded extends DnState {
+  List data;
+  bool hasMore;
+  bool pageLoading;
+
+  DnIsLoaded({
+    required this.data,
+    this.hasMore = false,
+    this.pageLoading = false,
+  });
+}
+
+class DnTokenExpired extends DnState {
+  String error;
+
+  DnTokenExpired(this.error);
+}
