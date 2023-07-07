@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_form.dart';
+import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
@@ -259,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute<DnScreen>(
+                        MaterialPageRoute<InvoiceScreen>(
                           builder: (_) => BlocProvider.value(
                             value: BlocProvider.of<AuthBloc>(context),
                             child: const InvoiceScreen(),
@@ -273,12 +275,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return ItemFormScreen(
-                              id: "012002000025",
-                            );
-                          },
+                        MaterialPageRoute<ItemScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const ItemScreen(),
+                          ),
                         ),
                       );
                     },
@@ -320,8 +321,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 children: [
                   Container(
-                    width: 320,
-                    height: 190,
+                    width: Get.width - 40,
+                    height: (Get.width - 40) / 1.7,
                     margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       color: Colors.black,
@@ -333,8 +334,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Container(
-                    width: 320,
-                    height: 320 / 1.7,
+                    width: Get.width - 40,
+                    height: (Get.width - 40) / 1.7,
                     margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       color: Colors.black,

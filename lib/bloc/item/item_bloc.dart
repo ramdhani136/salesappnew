@@ -32,10 +32,10 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         ItemIsLoaded current = state as ItemIsLoaded;
         emit(
           ItemIsLoaded(
-            data: current.data,
-            hasMore: current.hasMore,
-            pageLoading: true,
-          ),
+              data: current.data,
+              hasMore: current.hasMore,
+              pageLoading: true,
+              erpUri: current.erpUri),
         );
       }
 
@@ -48,22 +48,17 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
       ];
 
       if (event.search != "" && event.search != null) {
-        filters.add(["name", "like", "${event.search}"]);
+        filters.add(["item_name", "like", "%${event.search}%"]);
       }
 
       Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
         page: event.getRefresh ? 1 : page,
         params: "/Item",
         fields: [
-          "customer",
           "name",
-          "modified",
-          "owner",
-          "customer_group",
-          "workflow_state",
+          "item_name",
+          "image",
           "docstatus",
-          "grand_total",
-          "per_billed"
         ],
         filters: filters,
       );
@@ -80,11 +75,26 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
           currentData = response;
         }
 
+        String? token = await localData.getToken();
+
+        String erpUri = "";
+
+        if (token != null) {
+          Map<String, dynamic> decodedJwt = Jwt.parseJwt(token);
+          Map<String, dynamic> user = await FetchData(data: Data.users).FINDONE(
+            id: decodedJwt['_id'],
+          );
+          if (user['data']['ErpSite'] != null) {
+            erpUri = "${user['data']['ErpSite']}";
+          }
+        }
+
         emit(
           ItemIsLoaded(
             data: currentData,
             hasMore: getData['hasMore'],
             pageLoading: false,
+            erpUri: erpUri,
           ),
         );
       } else if (getData['status'] == 403) {
@@ -104,6 +114,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
             data: visitList,
             hasMore: false,
             pageLoading: false,
+            erpUri: "",
           ),
         );
       }

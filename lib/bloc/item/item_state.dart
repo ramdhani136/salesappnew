@@ -31,11 +31,13 @@ class ItemIsLoaded extends ItemState {
   List data;
   bool hasMore;
   bool pageLoading;
+  String erpUri;
 
   ItemIsLoaded({
     required this.data,
     this.hasMore = false,
     this.pageLoading = false,
+    required this.erpUri,
   });
 }
 
