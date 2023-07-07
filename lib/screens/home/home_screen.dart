@@ -7,15 +7,12 @@ import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
-import 'package:salesappnew/screens/dn/dn_form.dart';
 import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:salesappnew/screens/invoice/invoice_form.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_form.dart';
-import 'package:salesappnew/screens/order/order_form.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
@@ -537,31 +534,47 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                 backgroundColor: Colors.grey[300],
                                 child: state.data[index]['img'] != null
                                     ? ClipOval(
-                                        child: Image.network(
-                                          "${config.baseUri}public/customer/${state.data[index]['img']}",
-                                          key: ValueKey(DateTime.now()),
+                                        child: FadeInImage(
                                           width: 100,
                                           height: 100,
-                                          loadingBuilder: (BuildContext context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                                  loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                  : null,
+                                          fit: BoxFit.cover,
+                                          fadeInCurve: Curves.easeInExpo,
+                                          fadeOutCurve: Curves.easeOutExpo,
+                                          placeholder: const AssetImage(
+                                              'assets/images/loading.gif'),
+                                          image: NetworkImage(
+                                              "${config.baseUri}public/customer/${state.data[index]['img']}"),
+                                          imageErrorBuilder: (_, __, ___) {
+                                            return Image.asset(
+                                              'assets/icons/profile.png',
                                             );
                                           },
-                                          fit: BoxFit.cover,
                                         ),
+                                        // child: Image.network(
+                                        //   "${config.baseUri}public/customer/${state.data[index]['img']}",
+                                        //   key: ValueKey(DateTime.now()),
+                                        //   width: 100,
+                                        //   height: 100,
+                                        //   loadingBuilder: (BuildContext context,
+                                        //       Widget child,
+                                        //       ImageChunkEvent?
+                                        //           loadingProgress) {
+                                        //     if (loadingProgress == null) {
+                                        //       return child;
+                                        //     }
+                                        //     return CircularProgressIndicator(
+                                        //       value: loadingProgress
+                                        //                   .expectedTotalBytes !=
+                                        //               null
+                                        //           ? loadingProgress
+                                        //                   .cumulativeBytesLoaded /
+                                        //               loadingProgress
+                                        //                   .expectedTotalBytes!
+                                        //           : null,
+                                        //     );
+                                        //   },
+                                        //   fit: BoxFit.cover,
+                                        // ),
                                       )
                                     : Icon(
                                         Icons.person,
