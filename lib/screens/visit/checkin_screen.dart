@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, must_be_immutable
 
 import 'dart:async';
 

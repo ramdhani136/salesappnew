@@ -578,6 +578,7 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                               },
                             );
                           }
+                          return null;
                         },
                       ),
                     ),
