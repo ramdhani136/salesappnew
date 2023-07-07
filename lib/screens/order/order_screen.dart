@@ -96,7 +96,7 @@ class _OrderScreen extends State<OrderScreen> {
                 BackButtonCustom(),
                 const Row(
                   children: [
-                    Icon(Icons.currency_bitcoin, size: 17),
+                    Icon(Icons.assignment, size: 17),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
@@ -106,18 +106,9 @@ class _OrderScreen extends State<OrderScreen> {
                     ),
                   ],
                 ),
-                Row(children: [
-                  // IconSearch(),
-                  IconButton(
-                    onPressed: () {
-                      _showModal(context);
-                    },
-                    icon: const Icon(
-                      Icons.add,
-                      color: Color.fromARGB(255, 121, 8, 14),
-                    ),
-                  ),
-                ])
+                const SizedBox(
+                  width: 20,
+                ),
               ],
             ),
             bottom: PreferredSize(

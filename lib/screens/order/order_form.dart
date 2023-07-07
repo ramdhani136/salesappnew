@@ -205,21 +205,22 @@ class OrderFormScreen extends StatelessWidget {
                                 ':',
                                 '${state.data.setWarehouse}'
                               ]),
-                              // buildRow([
-                              //   'Outstanding',
-                              //   ':',
-                              //   (formatCurrency
-                              //       .format(state.data.outstandingAmount))
-                              // ]),
+                              buildRow([
+                                'Delivery Status',
+                                ':',
+                                '${state.data.deliveryStatus}'
+                              ]),
+                              buildRow([
+                                'Delivered',
+                                ':',
+                                '${state.data.perDelivered} %'
+                              ]),
+                              buildRow([
+                                'Billing Status',
+                                ':',
+                                '${state.data.billingStatus}'
+                              ]),
                               buildRow(['Status', ':', '${state.data.status}']),
-                              // buildRow([
-                              //   'Transaction on',
-                              //   ':',
-                              //   (DateFormat.yMMMEd().add_jm().format(
-                              //         DateTime.parse("${state.data.dueDate}")
-                              //             .toLocal(),
-                              //       )),
-                              // ]),
                             ],
                           ),
                         ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/order/order_form.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class OrderBodyList extends StatelessWidget {
   Map<String, dynamic> data;
@@ -18,6 +19,10 @@ class OrderBodyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatCurrency = NumberFormat.simpleCurrency(
+      locale: 'id',
+    );
+
     return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -62,32 +67,6 @@ class OrderBodyList extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // Visibility(
-                    //   visible: data.contact != null,
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text(
-                    //         "${data.contact?.name}",
-                    //         style: TextStyle(
-                    //           fontSize: 15,
-                    //           color: Colors.grey[600],
-                    //         ),
-                    //       ),
-                    //       const SizedBox(
-                    //         height: 5,
-                    //       ),
-                    //       Text(
-                    //         "${data.contact?.phone}",
-                    //         style: TextStyle(
-                    //           fontSize: 15,
-                    //           color: Colors.grey[700],
-                    //           fontWeight: FontWeight.w600,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     const SizedBox(height: 5),
                     Text(
                       "Group :  ${data['customer_group']}",
@@ -97,7 +76,46 @@ class OrderBodyList extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          formatCurrency.format(data['grand_total']),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Visibility(
+                      visible: data['per_delivered'] != 0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearPercentIndicator(
+                            center: Text(
+                              "${data['per_delivered']}%",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            animation: true,
+                            lineHeight: 20.0,
+                            animationDuration: 2000,
+                            width: Get.width * 0.80,
+                            percent:
+                                double.parse("${data['per_delivered']}") / 100,
+                            backgroundColor: Colors.grey[300],
+                            progressColor: data['per_delivered'] < 100
+                                ? Colors.amber
+                                : Colors.green[400],
+                            barRadius: const Radius.circular(16),
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 48),
                   ],
                 ),

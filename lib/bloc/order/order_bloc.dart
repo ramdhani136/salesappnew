@@ -15,6 +15,9 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   OrderBloc() : super(OrderInitial()) {
     on<GetOrdershow>(_ShowData);
     on<OrderGetAll>(_GetAllData);
+    on<OrderChangeSearch>((event, emit) async {
+      search = event.search;
+    });
   }
 
   Future<void> _ShowData(
@@ -56,6 +59,18 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         );
       }
 
+      List<List<String>> filters = [
+        [
+          "docstatus",
+          "=",
+          "${event.status}",
+        ],
+      ];
+
+      if (event.search != "" && event.search != null) {
+        filters.add(["name", "like", "${event.search}"]);
+      }
+
       Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
         page: event.getRefresh ? 1 : page,
         params: "/Sales Order",
@@ -67,15 +82,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           "customer_group",
           "workflow_state",
           "docstatus",
+          "grand_total",
+          "per_delivered"
         ],
-        filters: [
-          [
-            "docstatus",
-            "=",
-            "${event.status}",
-          ]
-        ],
-        // search: event.search,
+        filters: filters,
       );
 
       if (getData['status'] == 200) {
