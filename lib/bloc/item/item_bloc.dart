@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/models/item_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
@@ -9,9 +11,106 @@ part 'item_event.dart';
 part 'item_state.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
+  String search = "";
+  int page = 1;
+  int? tabActive;
   LocalData localData = LocalData();
   ItemBloc() : super(ItemInitial()) {
     on<GetItemShow>(_ShowData);
+    on<ItemGetAll>(_GetAllData);
+    on<ItemChangeSearch>((event, emit) async {
+      search = event.search;
+    });
+  }
+
+  Future<void> _GetAllData(ItemGetAll event, Emitter<ItemState> emit) async {
+    try {
+      int page = 1;
+      if (state is! ItemIsLoaded || event.getRefresh) {
+        emit(ItemIsLoading());
+      } else {
+        ItemIsLoaded current = state as ItemIsLoaded;
+        emit(
+          ItemIsLoaded(
+            data: current.data,
+            hasMore: current.hasMore,
+            pageLoading: true,
+          ),
+        );
+      }
+
+      List<List<String>> filters = [
+        [
+          "docstatus",
+          "=",
+          "${event.status}",
+        ],
+      ];
+
+      if (event.search != "" && event.search != null) {
+        filters.add(["name", "like", "${event.search}"]);
+      }
+
+      Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
+        page: event.getRefresh ? 1 : page,
+        params: "/Item",
+        fields: [
+          "customer",
+          "name",
+          "modified",
+          "owner",
+          "customer_group",
+          "workflow_state",
+          "docstatus",
+          "grand_total",
+          "per_billed"
+        ],
+        filters: filters,
+      );
+
+      if (getData['status'] == 200) {
+        page = getData['nextPage'];
+        List response = getData['data'];
+
+        List currentData = [];
+        if (state is ItemIsLoaded && !event.getRefresh) {
+          currentData = (state as ItemIsLoaded).data;
+          currentData.addAll(response);
+        } else {
+          currentData = response;
+        }
+
+        emit(
+          ItemIsLoaded(
+            data: currentData,
+            hasMore: getData['hasMore'],
+            pageLoading: false,
+          ),
+        );
+      } else if (getData['status'] == 403) {
+        Fluttertoast.showToast(
+          msg: getData['msg'],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
+
+        emit(ItemTokenExpired(getData['msg']));
+      } else {
+        List visitList = [];
+        emit(
+          ItemIsLoaded(
+            data: visitList,
+            hasMore: false,
+            pageLoading: false,
+          ),
+        );
+      }
+    } catch (e) {
+      page = 1;
+      emit(ItemIsFailure(e.toString()));
+    }
   }
 
   Future<void> _ShowData(

@@ -324,11 +324,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 190,
                     margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/promo.png'),
-                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/promo.jpg'),
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                   ),
@@ -337,13 +337,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 320 / 1.7,
                     margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
-                      // image: const DecorationImage(
-                      //   image: NetworkImage(
-                      //       "https://sevima.com/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-18-at-11.57.07-AM.jpeg"),
-                      //   fit: BoxFit.cover,
-                      // ),
+                      image: const DecorationImage(
+                        image: NetworkImage(
+                            "https://suryapersinar.com/images/Article/News-202010/540025/pameran-spring-bed-spinno-sp-mattress-surabaya-08021607272.jpg"),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],

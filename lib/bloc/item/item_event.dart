@@ -11,3 +11,17 @@ class GetItemShow extends ItemEvent {
     required this.id,
   });
 }
+
+class ItemGetAll extends ItemEvent {
+  int status = 0;
+  bool getRefresh = false;
+  String? search;
+
+  ItemGetAll({this.status = 0, this.getRefresh = false, this.search});
+}
+
+class ItemChangeSearch extends ItemEvent {
+  String search = "";
+
+  ItemChangeSearch(this.search);
+}

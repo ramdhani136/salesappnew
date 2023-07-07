@@ -26,3 +26,21 @@ class ItemIsFailure extends ItemState {
   String error;
   ItemIsFailure(this.error);
 }
+
+class ItemIsLoaded extends ItemState {
+  List data;
+  bool hasMore;
+  bool pageLoading;
+
+  ItemIsLoaded({
+    required this.data,
+    this.hasMore = false,
+    this.pageLoading = false,
+  });
+}
+
+class ItemTokenExpired extends ItemState {
+  String error;
+
+  ItemTokenExpired(this.error);
+}
