@@ -109,8 +109,16 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
             pageLoading: false,
           ),
         );
+        throw (getData['msg']);
       }
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       page = 1;
       emit(InvoiceFailure(e.toString()));
     }

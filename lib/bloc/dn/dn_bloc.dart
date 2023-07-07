@@ -103,8 +103,16 @@ class DnBloc extends Bloc<DnEvent, DnState> {
             pageLoading: false,
           ),
         );
+        throw (getData['msg']);
       }
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       page = 1;
       emit(DnIsFailure(e.toString()));
     }

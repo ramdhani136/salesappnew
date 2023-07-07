@@ -117,8 +117,16 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
             erpUri: "",
           ),
         );
+        throw (getData['msg']);
       }
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
       page = 1;
       emit(ItemIsFailure(e.toString()));
     }
