@@ -22,3 +22,17 @@ class GetInvoiceShow extends InvoiceEvent {
     required this.invoiceID,
   });
 }
+
+class InvoiceGetAll extends InvoiceEvent {
+  int status = 0;
+  bool getRefresh = false;
+  String? search;
+
+  InvoiceGetAll({this.status = 0, this.getRefresh = false, this.search});
+}
+
+class InvoiceChangeSearch extends InvoiceEvent {
+  String search = "";
+
+  InvoiceChangeSearch(this.search);
+}

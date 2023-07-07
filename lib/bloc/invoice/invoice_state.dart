@@ -36,3 +36,21 @@ class InvoiceFailure extends InvoiceState {
   String error;
   InvoiceFailure(this.error);
 }
+
+class InvoiceIsLoaded extends InvoiceState {
+  List data;
+  bool hasMore;
+  bool pageLoading;
+
+  InvoiceIsLoaded({
+    required this.data,
+    this.hasMore = false,
+    this.pageLoading = false,
+  });
+}
+
+class InvoiceTokenExpired extends InvoiceState {
+  String error;
+
+  InvoiceTokenExpired(this.error);
+}

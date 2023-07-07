@@ -13,6 +13,7 @@ import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
+import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_form.dart';
 import 'package:salesappnew/screens/order/order_form.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
@@ -261,12 +262,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return InvoiceFormScreen(
-                              id: "SJ-2023-03-0104",
-                            );
-                          },
+                        MaterialPageRoute<DnScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const InvoiceScreen(),
+                          ),
                         ),
                       );
                     },

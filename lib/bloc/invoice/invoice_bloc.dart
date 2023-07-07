@@ -9,6 +9,9 @@ part 'invoice_event.dart';
 part 'invoice_state.dart';
 
 class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
+  String search = "";
+  int page = 1;
+  int? tabActive;
   InvoiceBloc() : super(InvoiceInitial()) {
     on<InvoiceGetOverDue>(
       (event, emit) {
@@ -16,6 +19,103 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       },
     );
     on<GetInvoiceShow>(_ShowData);
+    on<InvoiceGetAll>(_GetAllData);
+    on<InvoiceChangeSearch>((event, emit) async {
+      search = event.search;
+    });
+  }
+
+  Future<void> _GetAllData(
+      InvoiceGetAll event, Emitter<InvoiceState> emit) async {
+    try {
+      int page = 1;
+      if (state is! InvoiceIsLoaded || event.getRefresh) {
+        emit(InvoiceLoading());
+      } else {
+        InvoiceIsLoaded current = state as InvoiceIsLoaded;
+        emit(
+          InvoiceIsLoaded(
+            data: current.data,
+            hasMore: current.hasMore,
+            pageLoading: true,
+          ),
+        );
+      }
+
+      List<List<String>> filters = [
+        [
+          "docstatus",
+          "=",
+          "${event.status}",
+        ],
+      ];
+
+      if (event.search != "" && event.search != null) {
+        filters.add(["name", "like", "${event.search}"]);
+      }
+
+      Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
+        page: event.getRefresh ? 1 : page,
+        params: "/Sales Invoice",
+        fields: [
+          "customer",
+          "name",
+          "modified",
+          "owner",
+          "customer_group",
+          "status",
+          "docstatus",
+          "grand_total",
+          "outstanding_amount"
+        ],
+        // filters: filters,
+      );
+
+      print(getData);
+
+      if (getData['status'] == 200) {
+        page = getData['nextPage'];
+        List response = getData['data'];
+
+        List currentData = [];
+        if (state is InvoiceIsLoaded && !event.getRefresh) {
+          currentData = (state as InvoiceIsLoaded).data;
+          currentData.addAll(response);
+        } else {
+          currentData = response;
+        }
+
+        emit(
+          InvoiceIsLoaded(
+            data: currentData,
+            hasMore: getData['hasMore'],
+            pageLoading: false,
+          ),
+        );
+      } else if (getData['status'] == 403) {
+        Fluttertoast.showToast(
+          msg: getData['msg'],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
+
+        emit(InvoiceTokenExpired(getData['msg']));
+      } else {
+        List visitList = [];
+        emit(
+          InvoiceIsLoaded(
+            data: visitList,
+            hasMore: false,
+            pageLoading: false,
+          ),
+        );
+      }
+    } catch (e) {
+      page = 1;
+      emit(InvoiceFailure(e.toString()));
+    }
   }
 
   Future<void> _ShowData(
