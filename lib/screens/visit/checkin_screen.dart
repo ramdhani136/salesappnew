@@ -719,8 +719,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                 () async {
                                                               customerBloc.add(
                                                                 ChangeImageCustomer(
-                                                                    id: widget
-                                                                        .customerId),
+                                                                  id: widget
+                                                                      .customerId,
+                                                                  address:
+                                                                      locationbloc
+                                                                          .address,
+                                                                ),
                                                               );
                                                             },
                                                             icon: const Icon(

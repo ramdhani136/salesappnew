@@ -31,8 +31,10 @@ class UpdateCustomer extends CustomerEvent {
 
 class ChangeImageCustomer extends CustomerEvent {
   String id;
+  String? address;
   ChangeImageCustomer({
     required this.id,
+    this.address,
   });
 }
 
