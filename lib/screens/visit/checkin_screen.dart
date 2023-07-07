@@ -749,32 +749,58 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    // Aksi saat tombol ditekan
-                                  },
-                                  child: Text(
-                                    'Check In',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Color.fromARGB(255, 33, 143, 36),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 30, 134, 33),
-                                          width: 1),
-                                    ),
-                                  ),
-                                ),
+                              BlocBuilder<LocationBloc, LocationState>(
+                                bloc: locationbloc,
+                                builder: (context, stateCust) {
+                                  if (stateCust is LocationLoaded) {
+                                    return Container(
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Map<String, dynamic> data = {
+                                            "customer": widget.customerId,
+                                            "type": stateCust.insite!
+                                                ? "insite"
+                                                : "outsite",
+                                            "checkInLat": locationbloc
+                                                .cordinate!.latitude,
+                                            "checkInLng": locationbloc
+                                                .cordinate!.longitude,
+                                            "namingSeries":
+                                                "648036f14e83d40f98c441a3",
+                                          };
+                                          visitBloc.add(
+                                            InsertVisit(
+                                              data: data,
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          'Check In',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary:
+                                              Color.fromARGB(255, 33, 143, 36),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            side: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 30, 134, 33),
+                                                width: 1),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return Container();
+                                },
                               )
                             ],
                           ),

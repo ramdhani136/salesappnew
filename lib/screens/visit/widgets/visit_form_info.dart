@@ -61,8 +61,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           typeC.text = state.data.type!;
           nameC.text = state.data.name!;
           workflowC.text = state.data.workflowState!;
-          picC.text = state.data.contact!.name;
-          phoneC.text = "${state.data.contact!.phone}";
+          picC.text =
+              state.data.contact != null ? state.data.contact!.name : "";
+          phoneC.text =
+              state.data.contact != null ? "${state.data.contact!.phone}" : "";
           dateC.text = DateFormat.yMd().add_jm().format(
                 DateTime.parse("${state.data.updatedAt}").toLocal(),
               );
@@ -241,27 +243,28 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           )),
                         child: BlocBuilder<ContactBloc, ContactState>(
                           builder: (context, stateContact) {
-                            return InkWell(
-                              child: CustomField(
-                                disabled: state.data.status != "0",
-                                title: "Pic",
-                                controller: picC,
-                                valid: true,
-                                type: Type.select,
-                                // getData: GetContact(),
-                                data: stateContact is ContactInput
-                                    ? stateContact.data
-                                    : [],
-                                onChange: (e) {
-                                  picC.text = e['title'];
-                                  phoneC.text = "${e['subTitle']}";
-                                },
-                                onReset: () {
-                                  picC.text = "";
-                                  phoneC.text = "";
-                                },
-                              ),
-                            );
+                            return TextField();
+                            // return InkWell(
+                            //   child: CustomField(
+                            //     disabled: state.data.status != "0",
+                            //     title: "Pic",
+                            //     controller: picC,
+                            //     valid: true,
+                            //     type: Type.select,
+                            //     // getData: GetContact(),
+                            //     data: stateContact is ContactInput
+                            //         ? stateContact.data
+                            //         : [],
+                            //     onChange: (e) {
+                            //       picC.text = e['title'];
+                            //       phoneC.text = "${e['subTitle']}";
+                            //     },
+                            //     onReset: () {
+                            //       picC.text = "";
+                            //       phoneC.text = "";
+                            //     },
+                            //   ),
+                            // );
                           },
                         ),
                       ),

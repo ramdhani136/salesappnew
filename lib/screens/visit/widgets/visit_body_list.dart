@@ -104,22 +104,30 @@ class VisitBodyList extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Text(
-                      "${data.contact?.name}",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "${data.contact?.phone}",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[700],
-                        fontWeight: FontWeight.w600,
+                    Visibility(
+                      visible: data.contact != null,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${data.contact?.name}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "${data.contact?.phone}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 5),

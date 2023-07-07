@@ -76,6 +76,15 @@ class VisitFormTask extends StatelessWidget {
                   }
                 }
 
+                if (dataTask.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No Data",
+                      style: TextStyle(color: Colors.grey[500]),
+                    ),
+                  );
+                }
+
                 return RefreshIndicator(
                   onRefresh: () async {
                     visitBloc.add(ShowData(id: "${state.data.id}"));

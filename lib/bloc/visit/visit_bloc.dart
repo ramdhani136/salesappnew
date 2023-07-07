@@ -29,6 +29,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
+    on<InsertVisit>(_PostData);
     on<ChangeSearch>((event, emit) async {
       search = event.search;
     });
@@ -46,6 +47,18 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         ));
       },
     );
+  }
+
+  Future<void> _PostData(InsertVisit event, Emitter<VisitState> emit) async {
+    try {
+      dynamic data = await FetchData(data: Data.visit).ADD(event.data);
+      if ((data['status']) != 200) {
+        throw data['msg'];
+      }
+      print(data);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<Uint8List?> _exportSignature(

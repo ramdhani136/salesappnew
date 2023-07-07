@@ -56,6 +56,11 @@ class ClearSignature extends VisitEvent {
   });
 }
 
+class InsertVisit extends VisitEvent {
+  Map<String, dynamic> data;
+  InsertVisit({required this.data});
+}
+
 class SetCheckOut extends VisitEvent {
   String id;
   SetCheckOut({

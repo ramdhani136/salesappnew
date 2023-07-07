@@ -47,7 +47,8 @@ class Visitmodel {
         name: json["name"],
         type: json["type"],
         customer: Customer.fromJson(json["customer"]),
-        contact: Contact.fromJson(json["contact"]),
+        contact:
+            json["contact"] != null ? Contact.fromJson(json["contact"]) : null,
         checkIn: Check.fromJson(json["checkIn"]),
         rate: json["rate"],
         createdBy: Branch.fromJson(json["createdBy"]),
@@ -77,7 +78,7 @@ class Visitmodel {
         "name": name,
         "type": type,
         "customer": customer!.toJson(),
-        "contact": contact!.toJson(),
+        "contact": contact != null ? contact!.toJson() : null,
         "checkIn": checkIn!.toJson(),
         "rate": rate,
         "createdBy": createdBy!.toJson(),
