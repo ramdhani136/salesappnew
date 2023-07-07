@@ -97,7 +97,7 @@ class _InvoiceScreen extends State<InvoiceScreen> {
                 BackButtonCustom(),
                 const Row(
                   children: [
-                    Icon(Icons.car_repair, size: 17),
+                    Icon(Icons.currency_exchange, size: 17),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(

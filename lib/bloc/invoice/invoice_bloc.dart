@@ -68,10 +68,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
           "grand_total",
           "outstanding_amount"
         ],
-        // filters: filters,
+        filters: filters,
       );
-
-      print(getData);
 
       if (getData['status'] == 200) {
         page = getData['nextPage'];

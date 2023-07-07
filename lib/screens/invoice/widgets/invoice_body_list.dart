@@ -91,32 +91,34 @@ class InvoiceBodyList extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Visibility(
-                      visible: true,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: LinearPercentIndicator(
-                            center: Text(
-                              "${data['outstanding_amount'] - data['grand_total'] / 100}%",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            animation: true,
-                            lineHeight: 20.0,
-                            animationDuration: 2000,
-                            width: Get.width * 0.80,
-                            percent: double.parse(
-                                    "${data['outstanding_amount'] / data['grand_total'] / 100}") /
-                                100,
-                            backgroundColor: Colors.grey[300],
-                            progressColor: (data['outstanding_amount'] /
-                                        data['grand_total'] /
-                                        100) <
-                                    100
-                                ? Colors.amber
-                                : Colors.green[400],
-                            barRadius: const Radius.circular(16),
+                      visible: data['docstatus'] == 1
+                          ? 100 -
+                                  (data['outstanding_amount'] /
+                                      (data['grand_total'] / 100)) !=
+                              0
+                          : false,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearPercentIndicator(
+                          center: Text(
+                            "${100 - (data['outstanding_amount'] / (data['grand_total'] / 100))}%",
+                            style: const TextStyle(color: Colors.white),
                           ),
+                          animation: true,
+                          lineHeight: 20.0,
+                          animationDuration: 2000,
+                          width: Get.width * 0.80,
+                          percent: double.parse(
+                                  "${100 - (data['outstanding_amount'] / (data['grand_total'] / 100))}") /
+                              100,
+                          backgroundColor: Colors.grey[300],
+                          progressColor: 100 -
+                                      (data['outstanding_amount'] /
+                                          (data['grand_total'] / 100)) <
+                                  100
+                              ? Colors.amber
+                              : Colors.green[400],
+                          barRadius: const Radius.circular(16),
                         ),
                       ),
                     ),
