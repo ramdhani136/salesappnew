@@ -8,6 +8,7 @@ import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
 import 'package:salesappnew/screens/dn/dn_form.dart';
+import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 // import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -246,12 +247,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return DNFormScreen(
-                              id: "BBK-2023-07-ET-0039",
-                            );
-                          },
+                        MaterialPageRoute<DnScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const DnScreen(),
+                          ),
                         ),
                       );
                     },
