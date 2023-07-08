@@ -86,78 +86,84 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     ),
                     child: ListView(
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                width: Get.width * 0.9,
-                                height: Get.width / 1.65,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 232, 231, 231),
-                                  ),
-                                ),
-                                child: state.data.img == null
-                                    ? const Center(
-                                        child: Icon(
-                                        Icons.hide_image_outlined,
-                                        color: Color(0xFFE0E0E0),
-                                        size: 100,
-                                      ))
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: FadeInImage(
-                                          fit: BoxFit.fitHeight,
-                                          fadeInCurve: Curves.easeInExpo,
-                                          fadeOutCurve: Curves.easeOutExpo,
-                                          placeholder: const AssetImage(
-                                              'assets/images/loading.gif'),
-                                          image: NetworkImage(
-                                            "${Config().baseUri}public/${state.data.img!}",
-                                          ),
-                                          imageErrorBuilder: (_, __, ___) {
-                                            return Image.asset(
-                                              'assets/images/noimage.jpg',
-                                            );
-                                          },
-                                        ),
-                                      ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                width: Get.width * 0.9,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5),
-                                  ),
-                                  color: Colors.black.withOpacity(0.4),
-                                ),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    visitBloc.add(
-                                      VisitChangeImage(
-                                        id: state.data.id.toString(),
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.camera_alt,
+                        Visibility(
+                          visible: state.data.type == "outsite",
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  width: Get.width * 0.9,
+                                  height: Get.width / 1.65,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
-                                    size: 22,
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 232, 231, 231),
+                                    ),
                                   ),
+                                  child: state.data.img == null
+                                      ? const Center(
+                                          child: Icon(
+                                          Icons.hide_image_outlined,
+                                          color: Color(0xFFE0E0E0),
+                                          size: 100,
+                                        ))
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: FadeInImage(
+                                            fit: BoxFit.fitHeight,
+                                            fadeInCurve: Curves.easeInExpo,
+                                            fadeOutCurve: Curves.easeOutExpo,
+                                            placeholder: const AssetImage(
+                                                'assets/images/loading.gif'),
+                                            image: NetworkImage(
+                                              "${Config().baseUri}public/${state.data.img!}",
+                                            ),
+                                            imageErrorBuilder: (_, __, ___) {
+                                              return Image.asset(
+                                                'assets/images/noimage.jpg',
+                                              );
+                                            },
+                                          ),
+                                        ),
                                 ),
-                              )
-                            ],
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  width: Get.width * 0.9,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5),
+                                    ),
+                                    color: Colors.black.withOpacity(0.4),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () async {
+                                      if (state.data.status == "0") {
+                                        visitBloc.add(
+                                          VisitChangeImage(
+                                            id: state.data.id.toString(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         CustomField(
