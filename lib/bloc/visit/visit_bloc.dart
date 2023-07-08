@@ -122,8 +122,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           await request.send(),
         );
 
-        print(response.statusCode);
-        print(response.body);
         if (response.statusCode != 200) {
           throw response.body;
         }
@@ -131,7 +129,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         add(ShowData(id: event.id));
       }
     } catch (e) {
-      print(e);
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
