@@ -293,37 +293,42 @@ class ItemFormScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: Get.width * 0.9,
-                    height: 255,
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: state.data.image != null && state.data.image != ""
-                        ? InkWell(
-                            onTap: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (BuildContext dialogContext) =>
-                                    SizedBox(
-                                  width: Get.width,
-                                  height: Get.height,
-                                  child: PhotoView(
-                                    imageProvider: NetworkImage(
-                                      'https://${state.erpUrl != null && state.erpUrl != "" ? "${state.erpUrl}" : ""}${state.data.image}',
+                  Expanded(
+                    child: Container(
+                      width: Get.width * 0.9,
+                      height: 255,
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: state.data.image != null && state.data.image != ""
+                          ? InkWell(
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext dialogContext) =>
+                                      SizedBox(
+                                    width: Get.width,
+                                    height: Get.height,
+                                    child: PhotoView(
+                                      imageProvider: NetworkImage(
+                                        'https://${state.erpUrl != null && state.erpUrl != "" ? "${state.erpUrl}" : ""}${state.data.image}',
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: Image.network(
-                              'https://${state.erpUrl != null && state.erpUrl != "" ? "${state.erpUrl}" : ""}${state.data.image}',
+                                );
+                              },
+                              child: Image.network(
+                                'https://${state.erpUrl != null && state.erpUrl != "" ? "${state.erpUrl}" : ""}${state.data.image}',
+                              ),
+                            )
+                          : Image.asset(
+                              "assets/images/noimage.jpg",
                             ),
-                          )
-                        : Image.asset(
-                            "assets/images/noimage.jpg",
-                          ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               );
