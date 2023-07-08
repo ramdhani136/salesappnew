@@ -98,7 +98,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   ) async {
     final picker = ImagePicker();
     try {
-      emit(IsLoading());
       final pickedFile = await picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         var request = http.MultipartRequest(
