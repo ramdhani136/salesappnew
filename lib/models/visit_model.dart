@@ -8,6 +8,7 @@ String visitmodelToJson(Visitmodel data) => json.encode(data.toJson());
 class Visitmodel {
   String? id;
   String? name;
+  String? img;
   String? type;
   Customer? customer;
   Contact? contact;
@@ -40,11 +41,13 @@ class Visitmodel {
     this.branch,
     this.schedulelist,
     this.signature,
+    this.img,
   });
 
   factory Visitmodel.fromJson(Map<String, dynamic> json) => Visitmodel(
         id: json["_id"],
         name: json["name"],
+        img: json["img"],
         type: json["type"],
         customer: Customer.fromJson(json["customer"]),
         contact:
@@ -76,6 +79,7 @@ class Visitmodel {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+        "img": img,
         "type": type,
         "customer": customer!.toJson(),
         "contact": contact != null ? contact!.toJson() : null,

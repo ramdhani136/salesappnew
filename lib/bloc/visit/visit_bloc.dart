@@ -39,6 +39,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       search = event.search;
     });
     on<VisitUpdateData>(_UpdateData);
+    on<VisitChangeImage>(_ChangeImage);
     on<DeleteOne>(_DeleteOne);
     on<ShowData>(_ShowData);
     on<ChangeWorkflow>(_ChangeWorkflow);
@@ -91,31 +92,68 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     return null;
   }
 
+  Future<void> _ChangeImage(
+    VisitChangeImage event,
+    Emitter<VisitState> emit,
+  ) async {
+    final picker = ImagePicker();
+    try {
+      emit(IsLoading());
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        var request = http.MultipartRequest(
+          'PUT',
+          Uri.parse("${Config().baseUri}visit/${event.id}"),
+        );
+
+        var stream = http.ByteStream(pickedFile.openRead())..cast();
+        var length = await pickedFile.length();
+        var multipartFile = http.MultipartFile(
+          'img',
+          stream,
+          length,
+          filename: basename(pickedFile.path),
+        );
+        request.files.add(multipartFile);
+
+        request.headers['authorization'] =
+            'Bearer ${await LocalData().getToken()}';
+        http.Response response = await http.Response.fromStream(
+          await request.send(),
+        );
+
+        print(response.statusCode);
+        print(response.body);
+        if (response.statusCode != 200) {
+          throw response.body;
+        }
+
+        add(ShowData(id: event.id));
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
+    }
+  }
+
   Future<void> _UpdateData(
     VisitUpdateData event,
     Emitter<VisitState> emit,
   ) async {
-    // final picker = ImagePicker();
     try {
       emit(IsLoading());
-      // final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
       var request = http.MultipartRequest(
         'PUT',
         Uri.parse("${Config().baseUri}visit/${event.id}"),
       );
 
-      // if (pickedFile != null) {
-      //   var stream = http.ByteStream(pickedFile.openRead())..cast();
-      //   var length = await pickedFile.length();
-      //   var multipartFile = http.MultipartFile(
-      //     'img',
-      //     stream,
-      //     length,
-      //     filename: basename(pickedFile.path),
-      //   );
-      //   request.files.add(multipartFile);
-      // }
       request.fields["contact"] = event.data['contact'];
       request.headers['authorization'] =
           'Bearer ${await LocalData().getToken()}';

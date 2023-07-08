@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -80,11 +81,85 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     padding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
-                      top: 20,
+                      top: 10,
                       bottom: 30,
                     ),
                     child: ListView(
                       children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                width: Get.width * 0.9,
+                                height: Get.width / 1.65,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: const Color.fromARGB(
+                                        255, 232, 231, 231),
+                                  ),
+                                ),
+                                child: state.data.img == null
+                                    ? const Center(
+                                        child: Icon(
+                                        Icons.hide_image_outlined,
+                                        color: Color(0xFFE0E0E0),
+                                        size: 100,
+                                      ))
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: FadeInImage(
+                                          fit: BoxFit.fitHeight,
+                                          fadeInCurve: Curves.easeInExpo,
+                                          fadeOutCurve: Curves.easeOutExpo,
+                                          placeholder: const AssetImage(
+                                              'assets/images/loading.gif'),
+                                          image: NetworkImage(
+                                            "${Config().baseUri}public/${state.data.img!}",
+                                          ),
+                                          imageErrorBuilder: (_, __, ___) {
+                                            return Image.asset(
+                                              'assets/images/noimage.jpg',
+                                            );
+                                          },
+                                        ),
+                                      ),
+                              ),
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                width: Get.width * 0.9,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(5),
+                                    bottomRight: Radius.circular(5),
+                                  ),
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
+                                child: IconButton(
+                                  onPressed: () async {
+                                    visitBloc.add(
+                                      VisitChangeImage(
+                                        id: state.data.id.toString(),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                    size: 22,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         CustomField(
                           title: "Name",
                           controller: nameC,
@@ -148,6 +223,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             builder: (context, stateContact) {
                               return InkWell(
                                 child: CustomField(
+                                  mandatory: true,
                                   disabled: state.data.status != "0",
                                   title: "Pic",
                                   controller: picC,
@@ -182,6 +258,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         Visibility(
                           visible: phoneC.text != "",
                           child: CustomField(
+                            mandatory: true,
                             title: "Phone",
                             controller: phoneC,
                             type: Type.standard,

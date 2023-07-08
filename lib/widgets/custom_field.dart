@@ -16,6 +16,7 @@ class CustomField extends StatefulWidget {
   Future<List>? getData;
   Function? onTap;
   List? data;
+  bool mandatory;
   bool loading;
 
   TextEditingController controller = TextEditingController();
@@ -33,6 +34,7 @@ class CustomField extends StatefulWidget {
     this.valid = true,
     this.getData,
     this.data,
+    this.mandatory = false,
     this.loading = false,
   });
 
@@ -62,9 +64,23 @@ class _CustomFieldState extends State<CustomField> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${widget.title}",
-                style: TextStyle(color: Colors.grey[700]),
+              Row(
+                children: [
+                  Text(
+                    "${widget.title}",
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  const SizedBox(
+                    width: 2,
+                  ),
+                  Visibility(
+                    visible: widget.mandatory,
+                    child: Text(
+                      "*",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 10,
