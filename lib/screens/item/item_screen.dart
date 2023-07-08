@@ -28,22 +28,22 @@ class _ItemScreen extends State<ItemScreen> {
     ),
     const Tab(
       child: Text(
-        "COMPLETED",
+        "DISABLED",
         style: TextStyle(
           fontSize: 13,
           color: Color.fromARGB(255, 75, 75, 75),
         ),
       ),
     ),
-    const Tab(
-      child: Text(
-        "CANCELED",
-        style: TextStyle(
-          fontSize: 13,
-          color: Color.fromARGB(255, 75, 75, 75),
-        ),
-      ),
-    ),
+    // const Tab(
+    //   child: Text(
+    //     "CANCELED",
+    //     style: TextStyle(
+    //       fontSize: 13,
+    //       color: Color.fromARGB(255, 75, 75, 75),
+    //     ),
+    //   ),
+    // ),
   ];
 
   void _showModal(BuildContext context) {
@@ -327,11 +327,11 @@ class _ItemScreen extends State<ItemScreen> {
                     colorHeader: Color(0xFF20826B),
                     status: 1,
                   ),
-                  ItemScreenBody(
-                    colorFontHeader: Color.fromARGB(255, 230, 230, 230),
-                    colorHeader: Color(0xFF657187),
-                    status: 2,
-                  ),
+                  // ItemScreenBody(
+                  //   colorFontHeader: Color.fromARGB(255, 230, 230, 230),
+                  //   colorHeader: Color(0xFF657187),
+                  //   status: 2,
+                  // ),
                 ],
               ),
             ),

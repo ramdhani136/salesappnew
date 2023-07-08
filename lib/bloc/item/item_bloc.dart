@@ -41,7 +41,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
 
       List<List<String>> filters = [
         [
-          "docstatus",
+          "disabled",
           "=",
           "${event.status}",
         ],
