@@ -146,7 +146,6 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             )),
                           child: BlocBuilder<ContactBloc, ContactState>(
                             builder: (context, stateContact) {
-                              // return TextField();
                               return InkWell(
                                 child: CustomField(
                                   disabled: state.data.status != "0",
@@ -161,6 +160,12 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   onChange: (e) {
                                     picC.text = e['title'];
                                     phoneC.text = "${e['subTitle']}";
+                                    visitBloc.add(
+                                      VisitUpdateData(
+                                        id: state.data.id!,
+                                        data: {"contact": e['value']},
+                                      ),
+                                    );
                                   },
                                   onReset: () {
                                     picC.text = "";

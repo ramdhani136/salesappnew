@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,10 @@ import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
+import 'package:salesappnew/utils/local_data.dart';
 import 'package:signature/signature.dart';
+import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 part 'visit_event.dart';
 part 'visit_state.dart';
 
@@ -33,6 +38,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<ChangeSearch>((event, emit) async {
       search = event.search;
     });
+    on<VisitUpdateData>(_UpdateData);
     on<DeleteOne>(_DeleteOne);
     on<ShowData>(_ShowData);
     on<ChangeWorkflow>(_ChangeWorkflow);
@@ -83,6 +89,55 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       rethrow;
     }
     return null;
+  }
+
+  Future<void> _UpdateData(
+    VisitUpdateData event,
+    Emitter<VisitState> emit,
+  ) async {
+    // final picker = ImagePicker();
+    try {
+      emit(IsLoading());
+      // final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+      var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse("${Config().baseUri}visit/${event.id}"),
+      );
+
+      // if (pickedFile != null) {
+      //   var stream = http.ByteStream(pickedFile.openRead())..cast();
+      //   var length = await pickedFile.length();
+      //   var multipartFile = http.MultipartFile(
+      //     'img',
+      //     stream,
+      //     length,
+      //     filename: basename(pickedFile.path),
+      //   );
+      //   request.files.add(multipartFile);
+      // }
+      request.fields["contact"] = event.data['contact'];
+      request.headers['authorization'] =
+          'Bearer ${await LocalData().getToken()}';
+      http.Response response = await http.Response.fromStream(
+        await request.send(),
+      );
+
+      if (response.statusCode != 200) {
+        throw response.body;
+      }
+
+      add(ShowData(id: event.id));
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
+    }
   }
 
   Future<void> _DeleteOne(DeleteOne event, Emitter<VisitState> emit) async {

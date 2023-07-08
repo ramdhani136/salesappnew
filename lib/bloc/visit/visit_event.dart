@@ -49,6 +49,16 @@ class UpdateSignature extends VisitEvent {
   });
 }
 
+class VisitUpdateData extends VisitEvent {
+  String id;
+  Map<String, dynamic> data;
+
+  VisitUpdateData({
+    required this.id,
+    required this.data,
+  });
+}
+
 class ClearSignature extends VisitEvent {
   String id;
   ClearSignature({

@@ -3,7 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-enum Type { standard, infinite, select }
+enum Type { standard, select }
 
 class CustomField extends StatefulWidget {
   String? placeholder;
@@ -162,14 +162,10 @@ class _CustomFieldState extends State<CustomField> {
           ),
         ),
         Visibility(
-          visible: widget.type == Type.infinite || widget.type == Type.standard,
+          visible: widget.type == Type.standard,
           child: InkWell(
             onTap: () {
-              if (!widget.disabled) {
-                if (widget.type == Type.infinite) {
-                  showCustomModal(context);
-                }
-              }
+              if (!widget.disabled) {}
             },
             child: TextField(
               controller: widget.controller,
@@ -232,36 +228,6 @@ class _CustomFieldState extends State<CustomField> {
           ),
         ),
       ],
-    );
-  }
-
-  void showCustomModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // Membuat modal menggunakan tinggi penuh
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: Get.width,
-            padding:
-                EdgeInsets.only(top: 40, left: 20, right: 20), // Lebar penuh
-            height: MediaQuery.of(context).size.height, // Tinggi penuh
-            child: Column(
-              children: [
-                TextField(),
-                Expanded(child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text("PT. Jaya Abadi"),
-                      subtitle: Text("Area 1"),
-                    );
-                  },
-                ))
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
