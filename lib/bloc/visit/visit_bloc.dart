@@ -129,7 +129,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       add(ShowData(id: event.id));
     } catch (e) {
-      print(e);
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,

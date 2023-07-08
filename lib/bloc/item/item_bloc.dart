@@ -48,7 +48,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
       ];
 
       if (event.search != "" && event.search != null) {
-        filters.add(["item_name", "like", "%${event.search}%"]);
+        filters.add(["item_name", "like", "${event.search}"]);
       }
 
       Map<String, dynamic> getData = await FetchData(data: Data.erp).FINDALL(
@@ -123,12 +123,12 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
       page = 1;
-      emit(ItemIsFailure(e.toString()));
+      // emit(ItemIsFailure(e.toString()));
     }
   }
 

@@ -132,13 +132,12 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
 
       page = 1;
-      emit(OrderIsFailure(e.toString()));
     }
   }
 }

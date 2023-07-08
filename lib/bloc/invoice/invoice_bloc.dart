@@ -115,12 +115,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
       page = 1;
-      emit(InvoiceFailure(e.toString()));
+      // emit(InvoiceFailure(e.toString()));
     }
   }
 
