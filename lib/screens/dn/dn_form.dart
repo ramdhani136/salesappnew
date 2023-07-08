@@ -206,11 +206,11 @@ class DNFormScreen extends StatelessWidget {
                                 '${state.data.setWarehouse}'
                               ]),
                               buildRow(['Status', ':', '${state.data.status}']),
-                              buildRow([
-                                'Notes',
-                                ':',
-                                state.data.catatan ?? "",
-                              ]),
+                              // buildRow([
+                              //   'Notes',
+                              //   ':',
+                              //   state.data.catatan ?? "",
+                              // ]),
                             ],
                           ),
                         ),
