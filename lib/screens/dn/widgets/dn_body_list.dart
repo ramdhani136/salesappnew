@@ -149,7 +149,11 @@ class DnBodyList extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "${data['workflow_state']}",
+                        data['docstatus'] == 0
+                            ? "Draft"
+                            : data['docstatus'] == 1
+                                ? "Submitted"
+                                : "Canceled",
                         style: TextStyle(
                             color: colorFontHeader,
                             fontWeight: FontWeight.bold,
