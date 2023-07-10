@@ -126,7 +126,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           throw response.body;
         }
 
-        add(ShowData(id: event.id));
+        add(ShowData(id: event.id, isLoading: true));
       }
     } catch (e) {
       Fluttertoast.showToast(
