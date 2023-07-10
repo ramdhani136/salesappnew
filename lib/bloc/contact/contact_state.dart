@@ -15,9 +15,9 @@ class ContactIsFailure extends ContactState {
   );
 }
 
-class ContactInput extends ContactState {
+class ContactIsLoaded extends ContactState {
   List data;
-  ContactInput({
+  ContactIsLoaded({
     required this.data,
   });
 }

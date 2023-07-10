@@ -248,7 +248,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   valid: true,
                                   type: Type.select,
                                   // getData: GetContact(),
-                                  data: stateContact is ContactInput
+                                  data: stateContact is ContactIsLoaded
                                       ? stateContact.data
                                       : [],
                                   onChange: (e) {
@@ -572,7 +572,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
                             enabledBorder: contactC.text == ""
-                                ? OutlineInputBorder(
+                                ? const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.red,
                                       width: 1,

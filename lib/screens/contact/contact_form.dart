@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
@@ -60,7 +63,7 @@ class _ContactFormState extends State<ContactForm> {
   Widget build(BuildContext context) {
     return Dialog(
       child: FractionallySizedBox(
-        widthFactor: 1.2,
+        widthFactor: 1.15,
         child: Container(
           width: Get.width * 0.95,
           height: 450,
@@ -169,10 +172,10 @@ class _ContactFormState extends State<ContactForm> {
                               ),
                             ),
                             suffixIcon: IconButton(
-                              onPressed: () {
-                                // contactC.getPhoneContact(context);
+                              onPressed: () async {
+                                await getPhoneContact(context);
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.contact_phone,
                                 color: Colors.grey,
                                 size: 20,
@@ -204,5 +207,130 @@ class _ContactFormState extends State<ContactForm> {
         ),
       ),
     );
+  }
+
+  getPhoneContact(context) async {
+    TextEditingController searchContactC = TextEditingController();
+    EasyLoading.show(status: 'loading...');
+    if (await FlutterContacts.requestPermission()) {
+      List<Contact> contacts = await FlutterContacts.getContacts(
+          withProperties: true, withPhoto: true);
+      List<Contact> resultContact = contacts;
+      EasyLoading.dismiss();
+      Widget setupAlertDialoadContainer() {
+        return SizedBox(
+            height: Get.width,
+            width: Get.width,
+            child: Column(
+              children: [
+                TextField(
+                  controller: searchContactC,
+                  onChanged: (changed) async {
+                    resultContact = contacts.where(
+                      (element) {
+                        final name = element.displayName.toLowerCase();
+                        final value = changed.toLowerCase();
+                        var allFilter = name.contains(value);
+                        return allFilter;
+                      },
+                    ).toList();
+                  },
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                    hintText: "Search",
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    suffixIcon: Visibility(
+                      visible: searchContactC.text != "",
+                      child: IconButton(
+                          onPressed: () {
+                            resultContact = contacts;
+                            searchContactC.text = "";
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.grey[400],
+                            size: 20,
+                          )),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Visibility(
+                  visible: resultContact.isEmpty,
+                  child: Expanded(
+                    child: Center(
+                      child: Text(
+                        'No result',
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: resultContact.isNotEmpty,
+                  child: Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: resultContact.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Uint8List? image = resultContact[index].photo;
+                        String num = (resultContact[index].phones.isNotEmpty)
+                            ? (resultContact[index].phones.first.number)
+                            : "--";
+                        return ListTile(
+                          onTap: () async {
+                            var cPhone =
+                                resultContact[index].phones.first.number;
+                            cPhone = cPhone.replaceAll("-", "");
+                            cPhone = cPhone.replaceAll(" ", "");
+                            cPhone = cPhone.replaceAll("+62", "0");
+
+                            // phone.value.text = cPhone;
+                            // name.value.text = resultContact[index].displayName;
+
+                            Get.back();
+                          },
+                          leading: (resultContact[index].photo == null)
+                              ? const CircleAvatar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 230, 229, 229),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: MemoryImage(image!)),
+                          title: Text(resultContact[index].displayName),
+                          subtitle: Text(num),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ));
+      }
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Contact List'),
+              content: setupAlertDialoadContainer(),
+            );
+          });
+    } else {
+      EasyLoading.dismiss();
+    }
   }
 }

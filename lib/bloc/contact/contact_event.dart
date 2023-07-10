@@ -12,4 +12,10 @@ class GetListInput extends ContactEvent {
   GetListInput({required this.customerId, this.isLoading = true});
 }
 
+class ContactInsertData extends ContactEvent {
+  Map<String, dynamic> data;
+  String customerId;
+  ContactInsertData({required this.data, required this.customerId});
+}
+
 class EventChangeData extends ContactEvent {}

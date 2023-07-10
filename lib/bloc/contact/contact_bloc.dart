@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -10,6 +10,7 @@ part 'contact_state.dart';
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
   ContactBloc() : super(ContactInitial()) {
     on<GetListInput>(_GetListInput);
+    on<ContactInsertData>(_InsertData);
   }
   Future<void> _GetListInput(
       GetListInput event, Emitter<ContactState> emit) async {
@@ -36,8 +37,26 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       if (result['status'] != 200) {
         throw result;
       }
-      emit(ContactInput(data: setData));
+      emit(ContactIsLoaded(data: setData));
     } catch (e) {
+      emit(ContactIsFailure(e.toString()));
+    }
+  }
+
+  Future<void> _InsertData(
+    ContactInsertData event,
+    Emitter<ContactState> emit,
+  ) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      Map<String, dynamic> result =
+          await FetchData(data: Data.contact).ADD(event.data);
+
+      print(result);
+
+      EasyLoading.dismiss();
+    } catch (e) {
+      EasyLoading.dismiss();
       emit(ContactIsFailure(e.toString()));
     }
   }

@@ -6,6 +6,7 @@ import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -21,6 +22,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
+  configLoading();
 }
 
 class MyApp extends StatelessWidget {
@@ -76,7 +78,25 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
+        builder: EasyLoading.init(),
       ),
     );
   }
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+  // ..customAnimation = CustomAnimation();
 }
