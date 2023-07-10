@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -207,7 +208,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   Future<void> _SetCheckOut(SetCheckOut event, Emitter<VisitState> emit) async {
     try {
-      emit(IsLoading());
+      // emit(IsLoading());
+      EasyLoading.show(status: 'loading...');
       dynamic data = await FetchData(data: Data.visit).UPDATEONE(
         event.id,
         {
@@ -220,11 +222,13 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (data['status'] != 200) {
         throw data['msg'];
       }
+      EasyLoading.dismiss();
 
       add(ShowData(id: event.id, isLoading: false));
     } catch (e) {
       emit(IsFailure(e.toString()));
       add(ShowData(id: event.id, isLoading: false));
+      EasyLoading.dismiss();
     }
   }
 
