@@ -14,8 +14,7 @@ class GetListInput extends ContactEvent {
 
 class ContactInsertData extends ContactEvent {
   Map<String, dynamic> data;
-  String customerId;
-  ContactInsertData({required this.data, required this.customerId});
+  ContactInsertData({required this.data});
 }
 
 class EventChangeData extends ContactEvent {}

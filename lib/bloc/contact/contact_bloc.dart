@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -52,10 +53,13 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       Map<String, dynamic> result =
           await FetchData(data: Data.contact).ADD(event.data);
 
-      print(result);
-
+      if (result['status'] != 200) {
+        throw result['msg'];
+      }
+      Get.back();
       EasyLoading.dismiss();
     } catch (e) {
+      print(e);
       EasyLoading.dismiss();
       emit(ContactIsFailure(e.toString()));
     }

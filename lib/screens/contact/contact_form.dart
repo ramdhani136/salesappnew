@@ -196,7 +196,19 @@ class _ContactFormState extends State<ContactForm> {
                       backgroundColor: const Color.fromARGB(255, 49, 49, 49),
                     ),
                     onPressed: () async {
-                      // await contactC.onsubmit(context);
+                      widget.contactBloc.add(
+                        ContactInsertData(
+                          data: {
+                            "name": picC.text,
+                            "phone": phonC.text,
+                            "customer": widget.visitState.data.customer!.id
+                          },
+                        ),
+                      );
+                      widget.contactBloc.add(
+                        GetListInput(
+                            customerId: widget.visitState.data.customer!.id),
+                      );
                     },
                     child: const Text("Save"),
                   ),
