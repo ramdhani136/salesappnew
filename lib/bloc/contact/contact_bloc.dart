@@ -59,7 +59,17 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       Get.back();
       EasyLoading.dismiss();
     } catch (e) {
-      print(e);
+      Get.defaultDialog(
+        // title: "Ups, someting wrong",
+
+        content: Text(
+          e.toString(),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+      );
       EasyLoading.dismiss();
       emit(ContactIsFailure(e.toString()));
     }
