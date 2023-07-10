@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +18,7 @@ class CustomField extends StatefulWidget {
   List? data;
   bool mandatory;
   bool loading;
+  Function? InsertAction;
 
   TextEditingController controller = TextEditingController();
 
@@ -27,6 +28,7 @@ class CustomField extends StatefulWidget {
     required this.type,
     this.disabled = false,
     this.onChange,
+    this.InsertAction,
     this.onReset,
     this.onTap,
     this.placeholder,
@@ -65,19 +67,41 @@ class _CustomFieldState extends State<CustomField> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "${widget.title}",
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(
-                    width: 2,
+                  Row(
+                    children: [
+                      Text(
+                        "${widget.title}",
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      Visibility(
+                        visible: widget.mandatory && !widget.disabled,
+                        child: Text(
+                          "*",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                   Visibility(
-                    visible: widget.mandatory,
-                    child: Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
+                    visible: widget.InsertAction != null && !widget.disabled,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 0),
+                      ),
+                      onPressed: () async {
+                        if (!widget.disabled && widget.InsertAction != null) {
+                          widget.InsertAction!();
+                        }
+                      },
+                      icon: const Icon(Icons.add, size: 16),
+                      label: const Text("New"),
                     ),
                   ),
                 ],
