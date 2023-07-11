@@ -26,3 +26,8 @@ class ContactFilterPhone extends ContactEvent {
   String filter;
   ContactFilterPhone({this.filter = ""});
 }
+
+class ContactSelectPhone extends ContactEvent {
+  Map<String, dynamic> data;
+  ContactSelectPhone({required this.data});
+}

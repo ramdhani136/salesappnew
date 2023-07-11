@@ -30,3 +30,8 @@ class ContactPhoneIsloaded extends ContactState {
     required this.data,
   });
 }
+
+class ContactSelectedPhone extends ContactState {
+  Map<String, dynamic> data;
+  ContactSelectedPhone({required this.data});
+}

@@ -17,6 +17,13 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     on<ContactInsertData>(_InsertData);
     on<ContactGetPhone>(_getByPhone);
     on<ContactFilterPhone>(_filterPhone);
+    on<ContactSelectPhone>(
+      (event, emit) {
+        emit(
+          ContactSelectedPhone(data: event.data),
+        );
+      },
+    );
   }
 
   Future<void> _filterPhone(

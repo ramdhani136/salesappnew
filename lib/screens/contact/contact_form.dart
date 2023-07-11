@@ -88,8 +88,12 @@ class _ContactFormState extends State<ContactForm> {
                 ),
                 const SizedBox(height: 20),
                 BlocBuilder<ContactBloc, ContactState>(
-                  bloc: widget.contactBloc,
+                  bloc: bloc,
                   builder: (context, state) {
+                    if (state is ContactSelectedPhone) {
+                      picC.text = state.data['pic'];
+                      phonC.text = state.data['phone'];
+                    }
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -253,14 +257,6 @@ class _ContactFormState extends State<ContactForm> {
                   controller: searchContactC,
                   onChanged: (changed) async {
                     bloc.add(ContactFilterPhone(filter: changed));
-                    // resultContact = contacts.where(
-                    //   (element) {
-                    //     final name = element.displayName.toLowerCase();
-                    //     final value = changed.toLowerCase();
-                    //     var allFilter = name.contains(value);
-                    //     return allFilter;
-                    //   },
-                    // ).toList();
                   },
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(
@@ -323,10 +319,15 @@ class _ContactFormState extends State<ContactForm> {
                             cPhone = cPhone.replaceAll(" ", "");
                             cPhone = cPhone.replaceAll("+62", "0");
 
-                            // phone.value.text = cPhone;
-                            // name.value.text = resultContact[index].displayName;
-
                             Get.back();
+                            bloc.add(
+                              ContactSelectPhone(
+                                data: {
+                                  'pic': resultContact[index].displayName,
+                                  'phone': cPhone
+                                },
+                              ),
+                            );
                           },
                           leading: (resultContact[index].photo == null)
                               ? const CircleAvatar(
