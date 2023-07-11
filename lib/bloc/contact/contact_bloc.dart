@@ -84,13 +84,17 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     Emitter<ContactState> emit,
   ) async {
     try {
-      EasyLoading.show(status: 'loading...');
-      List<Contact> contacts = await FlutterContacts.getContacts(
-        withProperties: true,
-        withPhoto: true,
-      );
+      if (await FlutterContacts.requestPermission()) {
+        emit(ContactIsLoading());
+        EasyLoading.show(status: 'loading...');
+        List<Contact> contacts = await FlutterContacts.getContacts(
+          withProperties: true,
+          withPhoto: true,
+        );
+        emit(ContactPhoneIsloaded(data: contacts));
 
-      EasyLoading.dismiss();
+        EasyLoading.dismiss();
+      }
     } catch (e) {
       Get.defaultDialog(
         // title: "Ups, someting wrong",

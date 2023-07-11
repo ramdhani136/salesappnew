@@ -59,6 +59,8 @@ class _ContactFormState extends State<ContactForm> {
     super.dispose();
   }
 
+  ContactBloc bloc = ContactBloc();
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -173,6 +175,7 @@ class _ContactFormState extends State<ContactForm> {
                             ),
                             suffixIcon: IconButton(
                               onPressed: () async {
+                                bloc.add(ContactGetPhone());
                                 await getPhoneContact(context);
                               },
                               icon: const Icon(
@@ -223,14 +226,26 @@ class _ContactFormState extends State<ContactForm> {
 
   getPhoneContact(context) async {
     TextEditingController searchContactC = TextEditingController();
-    EasyLoading.show(status: 'loading...');
-    if (await FlutterContacts.requestPermission()) {
-      List<Contact> contacts = await FlutterContacts.getContacts(
-          withProperties: true, withPhoto: true);
-      List<Contact> resultContact = contacts;
-      EasyLoading.dismiss();
-      Widget setupAlertDialoadContainer() {
-        return SizedBox(
+    // EasyLoading.show(status: 'loading...');
+    // if (await FlutterContacts.requestPermission()) {
+    // List<Contact> contacts = await FlutterContacts.getContacts(
+    //     withProperties: true, withPhoto: true);
+    // List<Contact> resultContact = contacts;
+    // EasyLoading.dismiss();
+    Widget setupAlertDialoadContainer() {
+      return BlocBuilder(
+        bloc: bloc,
+        builder: (context, state) {
+          List<Contact> contacts = [];
+
+          if (state is ContactPhoneIsloaded) {
+            contacts = state.data;
+          }
+
+          List<Contact> resultContact = contacts;
+
+          print(contacts);
+          return SizedBox(
             height: Get.width,
             width: Get.width,
             child: Column(
@@ -275,7 +290,8 @@ class _ContactFormState extends State<ContactForm> {
                 ),
                 const SizedBox(height: 10),
                 Visibility(
-                  visible: resultContact.isEmpty,
+                  visible:
+                      resultContact.isEmpty && state is ContactPhoneIsloaded,
                   child: Expanded(
                     child: Center(
                       child: Text(
@@ -288,7 +304,8 @@ class _ContactFormState extends State<ContactForm> {
                   ),
                 ),
                 Visibility(
-                  visible: resultContact.isNotEmpty,
+                  visible:
+                      resultContact.isNotEmpty && state is ContactPhoneIsloaded,
                   child: Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -330,19 +347,22 @@ class _ContactFormState extends State<ContactForm> {
                   ),
                 ),
               ],
-            ));
-      }
-
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Contact List'),
-              content: setupAlertDialoadContainer(),
-            );
-          });
-    } else {
-      EasyLoading.dismiss();
+            ),
+          );
+        },
+      );
     }
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Contact List'),
+            content: setupAlertDialoadContainer(),
+          );
+        });
+    // } else {
+    //   EasyLoading.dismiss();
+    // }
   }
 }
