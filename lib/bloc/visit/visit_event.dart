@@ -85,3 +85,5 @@ class SetCheckOut extends VisitEvent {
     required this.id,
   });
 }
+
+class VisitGetNaming extends VisitEvent {}

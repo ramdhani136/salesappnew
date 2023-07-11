@@ -20,6 +20,7 @@ enum Data {
   callsheetNote,
   users,
   config,
+  namingSeries,
 }
 
 class FetchData {
@@ -62,6 +63,9 @@ class FetchData {
         break;
       case Data.config:
         doc = "config";
+        break;
+      case Data.namingSeries:
+        doc = "namingseries";
         break;
       default:
     }

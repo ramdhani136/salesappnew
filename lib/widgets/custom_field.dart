@@ -186,10 +186,16 @@ class _CustomFieldState extends State<CustomField> {
               },
               itemBuilder: (context, suggestion) {
                 if (widget.data != null && widget.type == Type.select) {
-                  return ListTile(
-                    title: Text("${suggestion['title']}"),
-                    subtitle: Text('${suggestion['subTitle']}'),
-                  );
+                  if (suggestion['subTitle'] != null) {
+                    return ListTile(
+                      title: Text("${suggestion['title']}"),
+                      subtitle: Text('${suggestion['subTitle'] ?? ''}'),
+                    );
+                  } else {
+                    return ListTile(
+                      title: Text("${suggestion['title']}"),
+                    );
+                  }
                 }
                 return Container();
               },

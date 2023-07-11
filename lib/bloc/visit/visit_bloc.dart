@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -32,6 +33,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   String? checkOutAddress;
   int? tabActive;
   Uint8List? signature;
+  KeyValue? naming;
+  KeyValue? customer;
+  List? namingList;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
@@ -55,6 +59,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         ));
       },
     );
+    on<VisitGetNaming>(_getNaming);
   }
 
   Future<void> _PostData(InsertVisit event, Emitter<VisitState> emit) async {
@@ -339,6 +344,40 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           ),
         );
       }
+    } catch (e) {
+      emit(IsFailure(e.toString()));
+    }
+  }
+
+  Future<void> _getNaming(
+      VisitGetNaming event, Emitter<VisitState> emit) async {
+    try {
+      Map<String, dynamic> result =
+          await FetchData(data: Data.namingSeries).FINDALL(
+        filters: [
+          ["doc", "=", "visit"]
+        ],
+        fields: ["_id", "name"],
+      );
+
+      if (result['status'] != 200) {
+        throw result['msg'];
+      }
+
+      namingList = result['data'].map((item) {
+        return {
+          "value": item["_id"],
+          "title": item["name"],
+        };
+      }).toList();
+
+      if (result['data'].length == 1) {
+        naming = KeyValue(
+          name: result['data'][0]['name'],
+          value: result['data'][0]['_id'],
+        );
+      }
+      emit(VisitInitial());
     } catch (e) {
       emit(IsFailure(e.toString()));
     }

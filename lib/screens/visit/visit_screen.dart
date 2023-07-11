@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -46,28 +47,6 @@ class _VisitScreenState extends State<VisitScreen> {
     ),
   ];
 
-  void _showModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: 20), // Adjust the width as needed
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Content goes here'),
-              // Additional widgets
-            ],
-          ),
-          actions: <Widget>[
-            // Actions
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     TabBar MyTabBar = TabBar(
@@ -77,10 +56,11 @@ class _VisitScreenState extends State<VisitScreen> {
     );
 
     final PanelController _panelController = PanelController();
+    VisitBloc bloc = VisitBloc();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => VisitBloc(),
+          create: (context) => bloc,
         ),
       ],
       child: DefaultTabController(
@@ -111,7 +91,12 @@ class _VisitScreenState extends State<VisitScreen> {
                   // IconSearch(),
                   IconButton(
                     onPressed: () {
-                      _showModal(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) => VisitModalInsert(
+                          bloc: bloc,
+                        ),
+                      );
                     },
                     icon: const Icon(
                       Icons.add,
