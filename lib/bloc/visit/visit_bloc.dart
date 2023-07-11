@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
+import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
@@ -39,6 +40,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
+    on<VisitSetNaming>((event, emit) {
+      naming = event.data;
+      emit(IsLoading());
+      emit(VisitInitial());
+    });
     on<InsertVisit>(_PostData);
     on<ChangeSearch>((event, emit) async {
       search = event.search;
@@ -371,12 +377,12 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         };
       }).toList();
 
-      if (result['data'].length == 1) {
-        naming = KeyValue(
-          name: result['data'][0]['name'],
-          value: result['data'][0]['_id'],
-        );
-      }
+      // if (result['data'].length == 1) {
+      //   naming = KeyValue(
+      //     name: result['data'][0]['name'],
+      //     value: result['data'][0]['_id'],
+      //   );
+      // }
       emit(VisitInitial());
     } catch (e) {
       emit(IsFailure(e.toString()));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 
 class VisitModalInsert extends StatelessWidget {
@@ -42,6 +43,7 @@ class VisitModalInsert extends StatelessWidget {
                       context,
                       state,
                     ) {
+                      print(thisBloc.naming != null);
                       namingC.text = thisBloc.naming?.name ?? "";
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,20 +58,34 @@ class VisitModalInsert extends StatelessWidget {
                             //     ),
                             //   );
                             // },
+
                             placeholder: "Cth : VST2020MMDD",
                             mandatory: true,
                             // disabled: state.data.status != "0",
                             title: "Naming Series",
                             controller: namingC,
-                            valid: true,
+                            valid: thisBloc.naming != null,
                             type: Type.select,
                             data: thisBloc.namingList ?? [],
                             onChange: (e) {
-                              namingC.text = e['title'];
-                              print(e);
+                              // namingC.text = e['title'];
+                              // thisBloc.naming = KeyValue(
+                              //   name: e['title'],
+                              //   value: e['value'],
+                              // );
+                              thisBloc.add(
+                                VisitSetNaming(
+                                  data: KeyValue(
+                                    name: e['title'],
+                                    value: e['value'],
+                                  ),
+                                ),
+                              );
                             },
                             onReset: () {
-                              namingC.text = "";
+                              thisBloc.add(
+                                VisitSetNaming(),
+                              );
                             },
                           ),
                           // Text(
@@ -153,7 +169,9 @@ class VisitModalInsert extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 65, 170, 69),
                     ),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      print(thisBloc.naming);
+                    },
                     child: const Text("Next"),
                   ),
                 ),

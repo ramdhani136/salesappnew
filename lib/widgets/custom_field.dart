@@ -45,19 +45,9 @@ class CustomField extends StatefulWidget {
 }
 
 class _CustomFieldState extends State<CustomField> {
-  Color colorBorder = Color.fromARGB(255, 182, 182, 182);
-
-  void initState() {
-    super.initState();
-    if (!widget.valid) {
-      colorBorder = widget.controller.text != ""
-          ? Color.fromARGB(255, 182, 182, 182)
-          : Colors.red;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    print(widget.valid);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -124,7 +114,7 @@ class _CustomFieldState extends State<CustomField> {
               loadingBuilder: (context) {
                 return Visibility(
                     visible: widget.loading,
-                    child: Center(child: CircularProgressIndicator()));
+                    child: const Center(child: CircularProgressIndicator()));
               },
               textFieldConfiguration: TextFieldConfiguration(
                 style: TextStyle(
@@ -141,11 +131,6 @@ class _CustomFieldState extends State<CustomField> {
                           if (widget.onReset != null) {
                             widget.onReset!();
                           }
-                          setState(() {
-                            if (!widget.valid) {
-                              colorBorder = Colors.red;
-                            }
-                          });
                         }
                       },
                       icon: const Icon(
@@ -156,7 +141,11 @@ class _CustomFieldState extends State<CustomField> {
                   ),
 
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: colorBorder),
+                    borderSide: BorderSide(
+                      color: widget.valid
+                          ? const Color.fromARGB(255, 182, 182, 182)
+                          : Colors.red,
+                    ),
                   ),
                   // border: const OutlineInputBorder(),
                   hintText: widget.placeholder ?? "Search your data",
@@ -219,25 +208,12 @@ class _CustomFieldState extends State<CustomField> {
                 if (widget.onChange != null && !widget.disabled) {
                   widget.onChange!(value);
                 }
-
-                if (!widget.valid) {
-                  setState(() {
-                    if (value != "") {
-                      colorBorder = Color.fromARGB(255, 182, 182, 182);
-                    } else {
-                      colorBorder = Colors.red;
-                    }
-                  });
-                }
               },
               style: TextStyle(
                 color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
                 fontSize: 16,
               ),
               decoration: InputDecoration(
-                // disabledBorder: UnderlineInputBorder(
-                //   borderSide: BorderSide(color: Colors.grey),
-                // ),
                 suffixIcon: Visibility(
                   visible: !widget.disabled,
                   child: IconButton(
@@ -247,11 +223,6 @@ class _CustomFieldState extends State<CustomField> {
                         if (widget.onReset != null) {
                           widget.onReset!();
                         }
-                        setState(() {
-                          if (!widget.valid) {
-                            colorBorder = Colors.red;
-                          }
-                        });
                       }
                     },
                     icon: const Icon(
@@ -261,7 +232,11 @@ class _CustomFieldState extends State<CustomField> {
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: colorBorder),
+                  borderSide: BorderSide(
+                    color: widget.valid
+                        ? const Color.fromARGB(255, 182, 182, 182)
+                        : Colors.red,
+                  ),
                 ),
                 // border: const OutlineInputBorder(),
                 hintText: widget.placeholder ?? "Search your data",

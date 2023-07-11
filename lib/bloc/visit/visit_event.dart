@@ -87,3 +87,8 @@ class SetCheckOut extends VisitEvent {
 }
 
 class VisitGetNaming extends VisitEvent {}
+
+class VisitSetNaming extends VisitEvent {
+  KeyValue? data;
+  VisitSetNaming({this.data});
+}
