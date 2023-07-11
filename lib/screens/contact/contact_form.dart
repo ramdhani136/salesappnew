@@ -244,7 +244,6 @@ class _ContactFormState extends State<ContactForm> {
 
           List<Contact> resultContact = contacts;
 
-          print(contacts);
           return SizedBox(
             height: Get.width,
             width: Get.width,
@@ -253,14 +252,15 @@ class _ContactFormState extends State<ContactForm> {
                 TextField(
                   controller: searchContactC,
                   onChanged: (changed) async {
-                    resultContact = contacts.where(
-                      (element) {
-                        final name = element.displayName.toLowerCase();
-                        final value = changed.toLowerCase();
-                        var allFilter = name.contains(value);
-                        return allFilter;
-                      },
-                    ).toList();
+                    bloc.add(ContactFilterPhone(filter: changed));
+                    // resultContact = contacts.where(
+                    //   (element) {
+                    //     final name = element.displayName.toLowerCase();
+                    //     final value = changed.toLowerCase();
+                    //     var allFilter = name.contains(value);
+                    //     return allFilter;
+                    //   },
+                    // ).toList();
                   },
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(

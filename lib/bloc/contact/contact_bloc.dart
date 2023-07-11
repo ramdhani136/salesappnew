@@ -16,7 +16,31 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     on<GetListInput>(_GetListInput);
     on<ContactInsertData>(_InsertData);
     on<ContactGetPhone>(_getByPhone);
+    on<ContactFilterPhone>(_filterPhone);
   }
+
+  Future<void> _filterPhone(
+    ContactFilterPhone event,
+    Emitter<ContactState> emit,
+  ) async {
+    if (state is ContactPhoneIsloaded) {
+      ContactPhoneIsloaded phoneData = state as ContactPhoneIsloaded;
+
+      List<Contact> resultContact = phoneData.current.where(
+        (element) {
+          final name = element.displayName.toLowerCase();
+          final value = event.filter.toLowerCase();
+          var allFilter = name.contains(value);
+          return allFilter;
+        },
+      ).toList();
+
+      emit(
+        ContactPhoneIsloaded(current: phoneData.current, data: resultContact),
+      );
+    }
+  }
+
   Future<void> _GetListInput(
       GetListInput event, Emitter<ContactState> emit) async {
     try {
@@ -91,7 +115,10 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
           withProperties: true,
           withPhoto: true,
         );
-        emit(ContactPhoneIsloaded(data: contacts));
+        emit(ContactPhoneIsloaded(
+          data: contacts,
+          current: contacts,
+        ));
 
         EasyLoading.dismiss();
       }

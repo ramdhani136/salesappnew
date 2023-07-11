@@ -22,4 +22,7 @@ class ContactGetPhone extends ContactEvent {}
 
 class EventChangeData extends ContactEvent {}
 
-class ContactFilterPhone extends ContactEvent {}
+class ContactFilterPhone extends ContactEvent {
+  String filter;
+  ContactFilterPhone({this.filter = ""});
+}
