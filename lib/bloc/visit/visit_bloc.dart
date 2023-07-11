@@ -377,12 +377,12 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         };
       }).toList();
 
-      // if (result['data'].length == 1) {
-      //   naming = KeyValue(
-      //     name: result['data'][0]['name'],
-      //     value: result['data'][0]['_id'],
-      //   );
-      // }
+      if (result['data'].length == 1) {
+        naming = KeyValue(
+          name: result['data'][0]['name'],
+          value: result['data'][0]['_id'],
+        );
+      }
       emit(VisitInitial());
     } catch (e) {
       emit(IsFailure(e.toString()));
