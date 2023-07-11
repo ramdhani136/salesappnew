@@ -20,9 +20,6 @@ class ContactInsertData extends ContactEvent {
 
 class ContactGetPhone extends ContactEvent {}
 
-class EventChangeData extends ContactEvent {
-  String filter;
-  EventChangeData({
-    this.filter = "",
-  });
-}
+class EventChangeData extends ContactEvent {}
+
+class ContactFilterPhone extends ContactEvent {}
