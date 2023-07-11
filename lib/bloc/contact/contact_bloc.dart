@@ -12,6 +12,8 @@ part 'contact_event.dart';
 part 'contact_state.dart';
 
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
+  String pic = "";
+  String phone = "";
   ContactBloc() : super(ContactInitial()) {
     on<GetListInput>(_GetListInput);
     on<ContactInsertData>(_InsertData);
@@ -19,8 +21,11 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     on<ContactFilterPhone>(_filterPhone);
     on<ContactSelectPhone>(
       (event, emit) {
+        pic = event.data['pic'];
+        phone = event.data['phone'] ?? "";
+
         emit(
-          ContactSelectedPhone(data: event.data),
+          ContactInitial(),
         );
       },
     );

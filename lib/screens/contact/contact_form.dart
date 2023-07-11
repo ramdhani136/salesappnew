@@ -89,11 +89,9 @@ class _ContactFormState extends State<ContactForm> {
                 BlocBuilder<ContactBloc, ContactState>(
                   bloc: bloc,
                   builder: (context, state) {
-                    print(state);
-                    if (state is ContactSelectedPhone) {
-                      picC.text = state.data['pic'];
-                      phonC.text = state.data['phone'];
-                    }
+                    picC.text = bloc.pic;
+                    phonC.text = bloc.phone;
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -121,7 +119,6 @@ class _ContactFormState extends State<ContactForm> {
                         ),
                         const SizedBox(height: 10),
                         TextField(
-                          onChanged: (value) {},
                           controller: picC,
                           // enabled: (VisitC.status.value == "0" ||
                           //     VisitC.status.value == "1"),
@@ -132,14 +129,14 @@ class _ContactFormState extends State<ContactForm> {
                             hintText: "Cth : Ilham",
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: picC.text.isEmpty
-                                ? const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
-                                  )
-                                : null,
+                            // enabledBorder: picC.text.isEmpty
+                            //     ? const OutlineInputBorder(
+                            //         borderSide: BorderSide(
+                            //           color: Colors.red,
+                            //           width: 1,
+                            //         ),
+                            //       )
+                            //     : null,
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.blue,
@@ -164,14 +161,14 @@ class _ContactFormState extends State<ContactForm> {
                             hintText: "Contoh: 089637428874",
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: phonC.text.isEmpty
-                                ? const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
-                                  )
-                                : null,
+                            // enabledBorder: phonC.text.isEmpty
+                            //     ? const OutlineInputBorder(
+                            //         borderSide: BorderSide(
+                            //           color: Colors.red,
+                            //           width: 1,
+                            //         ),
+                            //       )
+                            //     : null,
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.blue,
@@ -231,12 +228,7 @@ class _ContactFormState extends State<ContactForm> {
 
   getPhoneContact(context) async {
     TextEditingController searchContactC = TextEditingController();
-    // EasyLoading.show(status: 'loading...');
-    // if (await FlutterContacts.requestPermission()) {
-    // List<Contact> contacts = await FlutterContacts.getContacts(
-    //     withProperties: true, withPhoto: true);
-    // List<Contact> resultContact = contacts;
-    // EasyLoading.dismiss();
+
     Widget setupAlertDialoadContainer() {
       return BlocBuilder(
         bloc: bloc,
