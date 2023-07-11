@@ -88,40 +88,9 @@ class VisitModalInsert extends StatelessWidget {
                               );
                             },
                           ),
-                          // Text(
-                          //   "Naming Series :",
-                          //   style: TextStyle(color: Colors.grey[700]),
-                          // ),
-                          // const SizedBox(height: 10),
-                          // TextField(
-                          //   // enabled: (VisitC.status.value == "0" ||
-                          //   //     VisitC.status.value == "1"),
-                          //   autocorrect: false,
-                          //   enableSuggestions: false,
-                          //   decoration: InputDecoration(
-                          //     hintStyle: TextStyle(color: Colors.grey[300]),
-                          //     hintText: "Cth : VST2020MMDD",
-                          //     contentPadding:
-                          //         const EdgeInsets.symmetric(horizontal: 10),
-                          //     // enabledBorder: picC.text.isEmpty
-                          //     //     ? const OutlineInputBorder(
-                          //     //         borderSide: BorderSide(
-                          //     //           color: Colors.red,
-                          //     //           width: 1,
-                          //     //         ),
-                          //     //       )
-                          //     //     : null,
-                          //     border: const OutlineInputBorder(
-                          //       borderSide: BorderSide(
-                          //         color: Colors.blue,
-                          //         width: 1.0,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           const SizedBox(height: 20),
                           Text(
-                            "Phone :",
+                            "Customer :",
                             style: TextStyle(color: Colors.grey[700]),
                           ),
                           const SizedBox(height: 10),

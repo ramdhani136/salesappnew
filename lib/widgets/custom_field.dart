@@ -47,7 +47,6 @@ class CustomField extends StatefulWidget {
 class _CustomFieldState extends State<CustomField> {
   @override
   Widget build(BuildContext context) {
-    print(widget.valid);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
