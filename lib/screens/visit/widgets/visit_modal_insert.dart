@@ -43,7 +43,6 @@ class VisitModalInsert extends StatelessWidget {
                       context,
                       state,
                     ) {
-                      print(thisBloc.naming != null);
                       namingC.text = thisBloc.naming?.name ?? "";
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
