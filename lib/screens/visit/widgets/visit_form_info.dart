@@ -57,8 +57,6 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
         }
 
         if (state is IsShowLoaded) {
-          print(state.data.img);
-
           customerC.text = state.data.customer!.name;
           groupC.text = state.data.customerGroup!.name;
           branchC.text = state.data.branch!.name;

@@ -21,3 +21,10 @@ class ContactIsLoaded extends ContactState {
     required this.data,
   });
 }
+
+class ContactPhoneIsloaded extends ContactState {
+  List<Contact> data;
+  ContactPhoneIsloaded({
+    required this.data,
+  });
+}

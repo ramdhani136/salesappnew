@@ -1,9 +1,12 @@
+// ignore_for_file: library_prefixes
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 
 part 'contact_event.dart';
 part 'contact_state.dart';
@@ -12,6 +15,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
   ContactBloc() : super(ContactInitial()) {
     on<GetListInput>(_GetListInput);
     on<ContactInsertData>(_InsertData);
+    on<ContactGetPhone>(_getByPhone);
   }
   Future<void> _GetListInput(
       GetListInput event, Emitter<ContactState> emit) async {
@@ -57,6 +61,35 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
         throw result['msg'];
       }
       Get.back();
+      EasyLoading.dismiss();
+    } catch (e) {
+      Get.defaultDialog(
+        // title: "Ups, someting wrong",
+
+        content: Text(
+          e.toString(),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+      );
+      EasyLoading.dismiss();
+      emit(ContactIsFailure(e.toString()));
+    }
+  }
+
+  Future<void> _getByPhone(
+    ContactGetPhone event,
+    Emitter<ContactState> emit,
+  ) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      List<Contact> contacts = await FlutterContacts.getContacts(
+        withProperties: true,
+        withPhoto: true,
+      );
+
       EasyLoading.dismiss();
     } catch (e) {
       Get.defaultDialog(

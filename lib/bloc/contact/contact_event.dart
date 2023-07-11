@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 
 part of 'contact_bloc.dart';
@@ -17,4 +18,11 @@ class ContactInsertData extends ContactEvent {
   ContactInsertData({required this.data});
 }
 
-class EventChangeData extends ContactEvent {}
+class ContactGetPhone extends ContactEvent {}
+
+class EventChangeData extends ContactEvent {
+  String filter;
+  EventChangeData({
+    this.filter = "",
+  });
+}
