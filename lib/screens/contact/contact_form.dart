@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
@@ -24,38 +23,38 @@ class ContactForm extends StatefulWidget {
 }
 
 class _ContactFormState extends State<ContactForm> {
-  late TextEditingController customerC;
-  late TextEditingController picC;
-  late TextEditingController phonC;
-  bool isPicEmpty = true;
-  bool isPoneEmpty = true;
+  TextEditingController customerC = TextEditingController();
+  TextEditingController picC = TextEditingController();
+  TextEditingController phonC = TextEditingController();
+  // bool isPicEmpty = true;
+  // bool isPoneEmpty = true;
 
-  @override
-  void initState() {
-    super.initState();
-    customerC =
-        TextEditingController(text: "${widget.visitState.data.customer?.name}");
-    picC = TextEditingController();
-    phonC = TextEditingController();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   customerC =
+  //       TextEditingController(text: "${widget.visitState.data.customer?.name}");
+  //   picC = TextEditingController();
+  //   phonC = TextEditingController();
 
-    picC.addListener(() {
-      setState(() {
-        isPicEmpty = picC.text.isEmpty;
-      });
-    });
+  //   picC.addListener(() {
+  //     setState(() {
+  //       isPicEmpty = picC.text.isEmpty;
+  //     });
+  //   });
 
-    phonC.addListener(() {
-      setState(() {
-        isPoneEmpty = phonC.text.isEmpty;
-      });
-    });
-  }
+  //   phonC.addListener(() {
+  //     setState(() {
+  //       isPoneEmpty = phonC.text.isEmpty;
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
-    customerC.dispose();
-    picC.dispose();
-    phonC.dispose();
+    // customerC.dispose();
+    // picC.dispose();
+    // phonC.dispose();
     super.dispose();
   }
 
@@ -90,6 +89,7 @@ class _ContactFormState extends State<ContactForm> {
                 BlocBuilder<ContactBloc, ContactState>(
                   bloc: bloc,
                   builder: (context, state) {
+                    print(state);
                     if (state is ContactSelectedPhone) {
                       picC.text = state.data['pic'];
                       phonC.text = state.data['phone'];
@@ -121,6 +121,7 @@ class _ContactFormState extends State<ContactForm> {
                         ),
                         const SizedBox(height: 10),
                         TextField(
+                          onChanged: (value) {},
                           controller: picC,
                           // enabled: (VisitC.status.value == "0" ||
                           //     VisitC.status.value == "1"),
@@ -131,7 +132,7 @@ class _ContactFormState extends State<ContactForm> {
                             hintText: "Cth : Ilham",
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: isPicEmpty
+                            enabledBorder: picC.text.isEmpty
                                 ? const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.red,
@@ -163,7 +164,7 @@ class _ContactFormState extends State<ContactForm> {
                             hintText: "Contoh: 089637428874",
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: isPoneEmpty
+                            enabledBorder: phonC.text.isEmpty
                                 ? const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.red,
