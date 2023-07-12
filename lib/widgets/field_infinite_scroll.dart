@@ -197,7 +197,7 @@ class _CustomerFormState extends State<CustomerList> {
       child: FractionallySizedBox(
         widthFactor: 1.15,
         child: Container(
-          width: Get.width * 0.95,
+          width: Get.width,
           height: Get.height,
           decoration: BoxDecoration(
             color: Colors.white,
