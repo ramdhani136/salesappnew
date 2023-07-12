@@ -33,18 +33,20 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         );
       }
 
-      Map<String, dynamic> getData = await FetchData(data: Data.visit).FINDALL(
-          page: event.getRefresh ? 1 : page,
-          filters: [
-            // [
-            //   "status",
-            //   "=",
-            //   "${event.status}",
-            // ]
-          ],
-          search: event.search);
+      Map<String, dynamic> getData =
+          await FetchData(data: Data.customergroup).FINDALL(
+              page: event.getRefresh ? 1 : page,
+              filters: [
+                // [
+                //   "status",
+                //   "=",
+                //   "${event.status}",
+                // ]
+              ],
+              search: event.search);
 
       if (getData['status'] == 200) {
+        print(getData['data']);
         page = getData['nextPage'];
         List<GroupModel> visitList = GroupModel.fromJsonList(getData['data']);
 
@@ -88,6 +90,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         );
       }
     } catch (e) {
+      print(e);
       emit(GroupIsFailure(e.toString()));
     }
   }
