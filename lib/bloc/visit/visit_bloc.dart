@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
-import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
