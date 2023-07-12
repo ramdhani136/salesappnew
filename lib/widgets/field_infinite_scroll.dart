@@ -249,6 +249,15 @@ class _FieldInfiniteModalState extends State<FieldInfiniteModal> {
                             visible: false,
                             child: Expanded(
                               child: Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.grey[300]),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: false,
+                            child: Expanded(
+                              child: Center(
                                 child: Text(
                                   "No data",
                                   style: TextStyle(
