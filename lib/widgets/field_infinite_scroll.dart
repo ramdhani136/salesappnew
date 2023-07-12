@@ -227,136 +227,32 @@ class _CustomerFormState extends State<CustomerList> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 BlocBuilder<ContactBloc, ContactState>(
                   bloc: bloc,
                   builder: (context, state) {
                     picC.text = bloc.pic;
                     phonC.text = bloc.phone;
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Customer :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: customerC,
-                          enabled: false,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Cth : CV Jaya Abadi",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "PIC :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: picC,
-                          // enabled: (VisitC.status.value == "0" ||
-                          //     VisitC.status.value == "1"),
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Cth : Ilham",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                            // enabledBorder: picC.text.isEmpty
-                            //     ? const OutlineInputBorder(
-                            //         borderSide: BorderSide(
-                            //           color: Colors.red,
-                            //           width: 1,
-                            //         ),
-                            //       )
-                            //     : null,
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "Phone :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: phonC,
-                          keyboardType: TextInputType.number,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Contoh: 089637428874",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                            // enabledBorder: phonC.text.isEmpty
-                            //     ? const OutlineInputBorder(
-                            //         borderSide: BorderSide(
-                            //           color: Colors.red,
-                            //           width: 1,
-                            //         ),
-                            //       )
-                            //     : null,
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue,
-                                width: 1.0,
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () async {
-                                bloc.add(ContactGetPhone());
-                              },
-                              icon: const Icon(
-                                Icons.contact_phone,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    return TextField(
+                      controller: customerC,
+                      enabled: false,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(color: Colors.grey[300]),
+                        hintText: "Cth : CV Jaya Abadi",
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                      ),
                     );
                   },
                 ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: Get.width,
-                  height: 46,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 65, 170, 69),
-                    ),
-                    onPressed: () async {
-                      // widget.contactBloc.add(
-                      //   ContactInsertData(
-                      //     data: {
-                      //       "name": picC.text,
-                      //       "phone": phonC.text,
-                      //       "customer": widget.visitState.data.customer!.id
-                      //     },
-                      //   ),
-                      // );
-                      // widget.contactBloc.add(
-                      //   GetListInput(
-                      //       customerId: widget.visitState.data.customer!.id),
-                      // );
-                    },
-                    child: const Text("Save"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: Container(
+                    child: Text("dd"),
                   ),
                 ),
               ],
