@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
-import 'package:salesappnew/screens/contact/contact_form.dart';
 
 class FieldInfiniteScroll extends StatelessWidget {
   String? placeholder;
@@ -95,7 +94,7 @@ class FieldInfiniteScroll extends StatelessWidget {
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) => CustomerList(),
+              builder: (context) => FieldInfiniteModal(),
             );
           },
           child: Container(
@@ -144,42 +143,19 @@ class FieldInfiniteScroll extends StatelessWidget {
   }
 }
 
-class CustomerList extends StatefulWidget {
-  const CustomerList({
+class FieldInfiniteModal extends StatefulWidget {
+  const FieldInfiniteModal({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<CustomerList> createState() => _CustomerFormState();
+  State<FieldInfiniteModal> createState() => _FieldInfiniteModalState();
 }
 
-class _CustomerFormState extends State<CustomerList> {
+class _FieldInfiniteModalState extends State<FieldInfiniteModal> {
   TextEditingController customerC = TextEditingController();
   TextEditingController picC = TextEditingController();
   TextEditingController phonC = TextEditingController();
-  // bool isPicEmpty = true;
-  // bool isPoneEmpty = true;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   customerC =
-  //       TextEditingController(text: "${widget.visitState.data.customer?.name}");
-  //   picC = TextEditingController();
-  //   phonC = TextEditingController();
-
-  //   picC.addListener(() {
-  //     setState(() {
-  //       isPicEmpty = picC.text.isEmpty;
-  //     });
-  //   });
-
-  //   phonC.addListener(() {
-  //     setState(() {
-  //       isPoneEmpty = phonC.text.isEmpty;
-  //     });
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -195,7 +171,7 @@ class _CustomerFormState extends State<CustomerList> {
   Widget build(BuildContext context) {
     return Dialog(
       child: FractionallySizedBox(
-        widthFactor: 1.15,
+        widthFactor: 1.2,
         child: Container(
           width: Get.width,
           height: Get.height,
@@ -258,8 +234,47 @@ class _CustomerFormState extends State<CustomerList> {
                   height: 10,
                 ),
                 Expanded(
-                  child: Container(
-                    child: Text("dd"),
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                        print("refresh");
+                      }
+                      return false;
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Visibility(
+                            visible: false,
+                            child: Expanded(
+                              child: Center(
+                                child: Text(
+                                  "No data",
+                                  style: TextStyle(
+                                    color: Colors.grey[300],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: true,
+                            child: Expanded(
+                              child: ListView.builder(
+                                itemCount: 100,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text("Ekatunggal Tunas Mandiri"),
+                                    subtitle: Text("Area 2"),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
