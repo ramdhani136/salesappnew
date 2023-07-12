@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/field_infinite/field_infinite_bloc.dart';
 import 'package:salesappnew/bloc/group/group_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/models/group_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:salesappnew/widgets/field_infinite_scroll.dart';
@@ -11,11 +13,14 @@ class VisitModalInsert extends StatelessWidget {
   VisitBloc bloc;
   VisitModalInsert({super.key, required this.bloc});
 
-  TextEditingController namingC = TextEditingController();
-  VisitBloc thisBloc = VisitBloc();
-  GroupBloc groupBloc = GroupBloc();
   @override
   Widget build(BuildContext context) {
+    VisitBloc thisBloc = VisitBloc();
+    GroupBloc groupBloc = GroupBloc();
+    FieldInfiniteBloc groupFieldBloc = FieldInfiniteBloc();
+    TextEditingController namingC = TextEditingController();
+    String groupId = "";
+
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.15,
@@ -53,6 +58,7 @@ class VisitModalInsert extends StatelessWidget {
                             state,
                           ) {
                             namingC.text = thisBloc.naming?.name ?? "";
+
                             return CustomField(
                               placeholder: "Cth : VST2020MMDD",
                               mandatory: true,
@@ -95,19 +101,22 @@ class VisitModalInsert extends StatelessWidget {
                               }).toList();
 
                               data = nestedData.expand((set) => set).toList();
-                            }
 
-                            TextEditingController groupC =
-                                TextEditingController();
+                              groupFieldBloc.add(
+                                FieldInfiniteSetData(data: data),
+                              );
+                            }
 
                             return FieldInfiniteScroll(
                               onTap: () {
                                 groupBloc.add(GroupGetData());
                               },
+                              onChange: (GroupModel e) {
+                                groupId = e.id.toString();
+                              },
                               title: "Group",
                               mandatory: true,
-                              controller: groupC,
-                              data: data,
+                              bloc: groupFieldBloc,
                             );
                           },
                         ),
