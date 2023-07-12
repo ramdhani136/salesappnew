@@ -235,7 +235,6 @@ class _CustomerFormState extends State<CustomerList> {
                     phonC.text = bloc.phone;
                     return TextField(
                       controller: customerC,
-                      enabled: false,
                       autocorrect: false,
                       enableSuggestions: false,
                       decoration: InputDecoration(
@@ -243,6 +242,14 @@ class _CustomerFormState extends State<CustomerList> {
                         hintText: "Cth : CV Jaya Abadi",
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue, // Warna border yang diinginkan
+                            width: 1.0, // Ketebalan border
+                          ),
+                          borderRadius: BorderRadius.circular(
+                              4), // Sudut melengkung pada border
+                        ),
                       ),
                     );
                   },
