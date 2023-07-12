@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FieldInfiniteScroll extends StatelessWidget {
   String? placeholder;
@@ -47,7 +48,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "${title}",
+                        "$title",
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(
@@ -55,7 +56,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                       ),
                       Visibility(
                         visible: mandatory && !disabled,
-                        child: Text(
+                        child: const Text(
                           "*",
                           style: TextStyle(color: Colors.red),
                         ),
@@ -87,50 +88,46 @@ class FieldInfiniteScroll extends StatelessWidget {
             ],
           ),
         ),
-        TextField(
-          controller: controller,
-          onChanged: (value) {
-            if (onChange != null && !disabled) {
-              onChange!(value);
-            }
-          },
-          style: TextStyle(
-            color: disabled ? Colors.grey[800] : Colors.grey[900],
-            fontSize: 16,
-          ),
-          decoration: InputDecoration(
-            suffixIcon: Visibility(
-              visible: !disabled,
-              child: IconButton(
-                onPressed: () async {
-                  if (!disabled) {
-                    controller.text = "";
-                    if (onReset != null) {
-                      onReset!();
-                    }
-                  }
-                },
-                icon: const Icon(
-                  Icons.close,
-                  size: 20,
-                ),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+        Container(
+            width: Get.width * 0.95,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
                 color: valid
                     ? const Color.fromARGB(255, 182, 182, 182)
                     : Colors.red,
+                width: 1.0,
               ),
             ),
-            // border: const OutlineInputBorder(),
-            hintText: placeholder ?? "Search your data",
-            hintStyle: TextStyle(color: Colors.grey[300]),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          ),
-          enabled: !disabled,
-        ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Administrator",
+                      style: TextStyle(
+                        color: disabled ? Colors.grey[800] : Colors.grey[900],
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.grey,
+                  ),
+                  iconSize: 20,
+                ),
+              ],
+            ))
       ],
     );
   }

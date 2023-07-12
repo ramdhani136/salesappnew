@@ -91,31 +91,6 @@ class VisitModalInsert extends StatelessWidget {
                               mandatory: true,
                               controller: groupC,
                             );
-                            // CustomField(
-                            //   placeholder: "Cth : Jabodetabek",
-                            //   // mandatory: true,
-                            //   // disabled: state.data.status != "0",
-                            //   title: "Group",
-                            //   controller: namingC,
-                            //   // valid: thisBloc.naming != null,
-                            //   type: Type.select,
-                            //   data: thisBloc.namingList ?? [],
-                            //   onChange: (e) {
-                            //     thisBloc.add(
-                            //       VisitSetNaming(
-                            //         data: KeyValue(
-                            //           name: e['title'],
-                            //           value: e['value'],
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            //   onReset: () {
-                            //     thisBloc.add(
-                            //       VisitSetNaming(),
-                            //     );
-                            //   },
-                            // );
                           },
                         ),
                         const SizedBox(height: 20),
