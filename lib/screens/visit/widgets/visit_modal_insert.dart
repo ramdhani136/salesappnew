@@ -82,14 +82,32 @@ class VisitModalInsert extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         BlocBuilder<GroupBloc, GroupState>(
-                          bloc: groupBloc..add(GroupGetData()),
+                          bloc: groupBloc,
                           builder: (context, state) {
+                            List<FieldInfiniteData> data = [];
+                            if (state is GroupIsLoaded) {
+                              List<Set<FieldInfiniteData>> nestedData =
+                                  state.data.map((item) {
+                                return {
+                                  FieldInfiniteData(
+                                      title: item.name!, value: item)
+                                };
+                              }).toList();
+
+                              data = nestedData.expand((set) => set).toList();
+                            }
+
                             TextEditingController groupC =
                                 TextEditingController();
+
                             return FieldInfiniteScroll(
+                              onTap: () {
+                                groupBloc.add(GroupGetData());
+                              },
                               title: "Group",
                               mandatory: true,
                               controller: groupC,
+                              data: data,
                             );
                           },
                         ),
@@ -144,7 +162,7 @@ class VisitModalInsert extends StatelessWidget {
                               const Color.fromARGB(255, 65, 170, 69),
                         ),
                         onPressed: () async {
-                          print(thisBloc.naming);
+                          // print(thisBloc.naming);
                         },
                         child: const Text("Next"),
                       ),

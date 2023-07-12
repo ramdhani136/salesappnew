@@ -46,7 +46,6 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
               search: event.search);
 
       if (getData['status'] == 200) {
-        print(getData['data']);
         page = getData['nextPage'];
         List<GroupModel> visitList = GroupModel.fromJsonList(getData['data']);
 

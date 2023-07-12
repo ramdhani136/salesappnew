@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 
 class FieldInfiniteScroll extends StatelessWidget {
@@ -14,27 +16,28 @@ class FieldInfiniteScroll extends StatelessWidget {
   Function? onReset;
   Future<List>? getData;
   Function? onTap;
-  List? data;
+  List<FieldInfiniteData> data;
   bool mandatory;
   bool loading;
   Function? InsertAction;
 
   TextEditingController controller = TextEditingController();
-  FieldInfiniteScroll(
-      {required this.controller,
-      this.disabled = false,
-      this.onChange,
-      this.InsertAction,
-      this.onReset,
-      this.onTap,
-      this.placeholder,
-      this.title,
-      this.valid = true,
-      this.getData,
-      this.data,
-      this.mandatory = false,
-      this.loading = false,
-      super.key});
+  FieldInfiniteScroll({
+    required this.controller,
+    this.disabled = false,
+    this.onChange,
+    this.InsertAction,
+    this.onReset,
+    this.onTap,
+    this.placeholder,
+    this.title,
+    this.valid = true,
+    this.getData,
+    required this.data,
+    this.mandatory = false,
+    this.loading = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +95,13 @@ class FieldInfiniteScroll extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
+            if (onTap != null) {
+              onTap!();
+            }
+
             showDialog(
               context: context,
-              builder: (context) => FieldInfiniteModal(),
+              builder: (context) => FieldInfiniteModal(data: data),
             );
           },
           child: Container(
@@ -143,32 +150,30 @@ class FieldInfiniteScroll extends StatelessWidget {
   }
 }
 
-class FieldInfiniteModal extends StatefulWidget {
-  const FieldInfiniteModal({
-    Key? key,
-  }) : super(key: key);
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
 
   @override
-  State<FieldInfiniteModal> createState() => _FieldInfiniteModalState();
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }
 
-class _FieldInfiniteModalState extends State<FieldInfiniteModal> {
+class FieldInfiniteModal extends StatelessWidget {
+  List<FieldInfiniteData> data;
+  FieldInfiniteModal({
+    required this.data,
+  });
+
   TextEditingController customerC = TextEditingController();
   TextEditingController picC = TextEditingController();
   TextEditingController phonC = TextEditingController();
-
-  @override
-  void dispose() {
-    // customerC.dispose();
-    // picC.dispose();
-    // phonC.dispose();
-    super.dispose();
-  }
 
   ContactBloc bloc = ContactBloc();
 
   @override
   Widget build(BuildContext context) {
+    // print(data);
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.2,
@@ -293,4 +298,11 @@ class _FieldInfiniteModalState extends State<FieldInfiniteModal> {
       ),
     );
   }
+}
+
+class FieldInfiniteData {
+  String title;
+  String? subTitle;
+  dynamic value;
+  FieldInfiniteData({required this.title, required this.value, this.subTitle});
 }
