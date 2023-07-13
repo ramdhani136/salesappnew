@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
 import 'package:salesappnew/bloc/field_infinite/field_infinite_bloc.dart';
 
 class FieldInfiniteScroll extends StatelessWidget {
@@ -14,7 +15,7 @@ class FieldInfiniteScroll extends StatelessWidget {
   String? title;
   String? titleModal;
   bool disabled;
-  Function? onSearch;
+  // Function? onSearch;
   Function? onChange;
   Function? onReset;
   Function? onTap;
@@ -23,6 +24,7 @@ class FieldInfiniteScroll extends StatelessWidget {
   FieldInfiniteBloc bloc;
   // List<FieldInfiniteData> data;
   String value;
+  FieldInfiniteOnSearch? onSearch;
 
   TextEditingController controller = TextEditingController();
   FieldInfiniteScroll({
@@ -183,8 +185,8 @@ class FieldInfiniteScroll extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            insetPadding:
-                EdgeInsets.all(0), // Menghapus padding inset bawaan dialog
+            insetPadding: const EdgeInsets.all(
+                0), // Menghapus padding inset bawaan dialog
             child: Container(
               width: Get.width - 50,
               padding:
@@ -193,22 +195,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "New Customer",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(),
-                  // Tambahkan widget lain sebagai konten modal
-                  // ...
+                  onSearch!.widget!,
                 ],
               ),
             ),
@@ -262,7 +249,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                             debounceTimer = Timer(
                               const Duration(milliseconds: 30),
                               () {
-                                onSearch!(e);
+                                onSearch!.action(e);
                               },
                             );
                           }
@@ -323,16 +310,23 @@ class FieldInfiniteScroll extends StatelessWidget {
                                         const SizedBox(
                                           height: 10,
                                         ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            _showCustomModal(context);
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color
-                                                    .fromARGB(255, 57, 156,
-                                                60), // Mengatur warna latar belakang
+                                        Visibility(
+                                          visible: onSearch?.widget != null,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (onSearch?.widget != null) {
+                                                _showCustomModal(context);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color
+                                                      .fromARGB(255, 57, 156,
+                                                  60), // Mengatur warna latar belakang
+                                            ),
+                                            child: Text(
+                                              onSearch?.label ?? "Create New",
+                                            ),
                                           ),
-                                          child: const Text("Create New"),
                                         )
                                       ],
                                     ),
@@ -391,4 +385,17 @@ class FieldInfiniteData {
   String? subTitle;
   dynamic value;
   FieldInfiniteData({required this.title, required this.value, this.subTitle});
+}
+
+class FieldInfiniteOnSearch {
+  Function action;
+  Widget? widget;
+  String? label;
+  String? titleWidget;
+  FieldInfiniteOnSearch({
+    required this.action,
+    this.label,
+    this.titleWidget,
+    this.widget,
+  });
 }

@@ -304,9 +304,13 @@ class VisitModalInsert extends StatelessWidget {
 
                                     return FieldInfiniteScroll(
                                       bloc: customerFieldBloc,
-                                      onSearch: (e) {
-                                        _onSearchTextChanged(e);
-                                      },
+                                      onSearch: FieldInfiniteOnSearch(
+                                        action: (e) {
+                                          _onSearchTextChanged(e);
+                                        },
+                                        widget: const Text("tes"),
+                                        // label: "Create Customer",
+                                      ),
                                       disabled: thisBloc.group == null,
                                       onTap: () {
                                         if (thisBloc.group != null) {
