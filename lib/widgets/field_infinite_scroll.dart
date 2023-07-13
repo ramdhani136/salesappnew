@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names, no_leading_underscores_for_local_identifiers
 // ignore_for_file: must_be_immutable
 import 'dart:async';
 
@@ -177,6 +177,46 @@ class FieldInfiniteScroll extends StatelessWidget {
 
   Widget FieldInfiniteModal() {
     Timer? debounceTimer;
+
+    void _showCustomModal(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding:
+                EdgeInsets.all(0), // Menghapus padding inset bawaan dialog
+            child: Container(
+              width: Get.width - 50,
+              padding:
+                  const EdgeInsets.all(25), // Mengambil lebar layar perangkat
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "New Customer",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(),
+                  // Tambahkan widget lain sebagai konten modal
+                  // ...
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.2,
@@ -284,7 +324,9 @@ class FieldInfiniteScroll extends StatelessWidget {
                                           height: 10,
                                         ),
                                         ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            _showCustomModal(context);
+                                          },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: const Color
                                                     .fromARGB(255, 57, 156,
