@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
 import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
@@ -18,6 +20,7 @@ import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -550,31 +553,6 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                             );
                                           },
                                         ),
-                                        // child: Image.network(
-                                        //   "${config.baseUri}public/customer/${state.data[index]['img']}",
-                                        //   key: ValueKey(DateTime.now()),
-                                        //   width: 100,
-                                        //   height: 100,
-                                        //   loadingBuilder: (BuildContext context,
-                                        //       Widget child,
-                                        //       ImageChunkEvent?
-                                        //           loadingProgress) {
-                                        //     if (loadingProgress == null) {
-                                        //       return child;
-                                        //     }
-                                        //     return CircularProgressIndicator(
-                                        //       value: loadingProgress
-                                        //                   .expectedTotalBytes !=
-                                        //               null
-                                        //           ? loadingProgress
-                                        //                   .cumulativeBytesLoaded /
-                                        //               loadingProgress
-                                        //                   .expectedTotalBytes!
-                                        //           : null,
-                                        //     );
-                                        //   },
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                       )
                                     : Icon(
                                         Icons.person,
@@ -589,13 +567,33 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                   ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
                                   : ""),
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return CheckInScreen(
-                                        customerId: state.data[index]['_id'],
-                                      );
-                                    },
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (context) {
+                                //       return CheckInScreen(
+                                //         customerId: state.data[index]['_id'],
+                                //       );
+                                //     },
+                                //   ),
+                                // );
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => VisitModalInsert(
+                                    bloc: VisitBloc()
+                                      ..add(
+                                        VisitSetForm(
+                                          customer: KeyValue(
+                                            name: state.data[index]['name'],
+                                            value: state.data[index]['_id'],
+                                          ),
+                                          group: KeyValue(
+                                            name: state.data[index]
+                                                ['customerGroup']['name'],
+                                            value: state.data[index]
+                                                ['customerGroup']['_id'],
+                                          ),
+                                        ),
+                                      ),
                                   ),
                                 );
                               },

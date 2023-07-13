@@ -118,6 +118,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         );
 
         Get.back();
+        Get.back();
         Navigator.pushReplacement(
           event.context,
           MaterialPageRoute(

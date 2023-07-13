@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +40,12 @@ class VisitModalInsert extends StatelessWidget {
                 VisitGetNaming(),
               ),
             builder: (context, state) {
+              if (bloc.customer != null && bloc.group != null) {
+                thisBloc.add(
+                  VisitSetForm(customer: bloc.customer, group: bloc.group),
+                );
+              }
+
               namingC.text = thisBloc.naming?.name ?? "";
 
               return ListView(
