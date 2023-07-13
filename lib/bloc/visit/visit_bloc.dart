@@ -1,7 +1,8 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -15,7 +16,9 @@ import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/visit_model.dart';
+import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_form.dart';
+import 'package:salesappnew/screens/visit/visit_screen.dart';
 // import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
@@ -97,13 +100,13 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   ) async {
     try {
       EasyLoading.show(status: 'loading...');
-
+      emit(IsLoadingPage());
       dynamic data = await FetchData(data: Data.visit).ADD(event.data);
       if ((data['status']) != 200) {
         throw data['msg'];
       }
 
-      if (event.context != null && event.visitBloc != null) {
+      if (event.visitBloc != null) {
         event.visitBloc!.add(
           GetData(
             getRefresh: true,
@@ -113,8 +116,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
                 : 1,
           ),
         );
+        Get.back();
+        Get.back();
         Navigator.pushReplacement(
-          event.context!,
+          event.context,
           MaterialPageRoute(
             builder: (context) => VisitForm(
               id: "${data['data']['_id']}",
@@ -126,6 +131,13 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       EasyLoading.dismiss();
     } catch (e) {
       EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
     }
   }
 

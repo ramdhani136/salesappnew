@@ -756,26 +756,57 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                     return Container(
                                       width: double.infinity,
                                       child: ElevatedButton(
-                                        onPressed: () {
-                                          Map<String, dynamic> data = {
-                                            "customer": widget.customerId,
-                                            "type": stateCust.insite!
-                                                ? "insite"
-                                                : "outsite",
-                                            "checkInLat": locationbloc
-                                                .cordinate!.latitude,
-                                            "checkInLng": locationbloc
-                                                .cordinate!.longitude,
-                                            "namingSeries":
-                                                "648036f14e83d40f98c441a3",
-                                          };
-                                          visitBloc.add(
-                                            InsertVisit(
-                                              data: data,
-                                              context: context,
-                                              visitBloc:
-                                                  widget.bloc ?? visitBloc,
-                                            ),
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text("Really?"),
+                                                content: const Text(
+                                                    "Create new visit?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text("No"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Map<String, dynamic>
+                                                          data = {
+                                                        "customer":
+                                                            widget.customerId,
+                                                        "type":
+                                                            stateCust.insite!
+                                                                ? "insite"
+                                                                : "outsite",
+                                                        "checkInLat":
+                                                            locationbloc
+                                                                .cordinate!
+                                                                .latitude,
+                                                        "checkInLng":
+                                                            locationbloc
+                                                                .cordinate!
+                                                                .longitude,
+                                                        "namingSeries":
+                                                            "648036f14e83d40f98c441a3",
+                                                      };
+                                                      visitBloc.add(
+                                                        InsertVisit(
+                                                          data: data,
+                                                          context: context,
+                                                          visitBloc:
+                                                              widget.bloc ??
+                                                                  visitBloc,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text("Yes"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           );
                                         },
                                         child: Text(

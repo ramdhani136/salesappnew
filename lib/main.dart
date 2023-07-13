@@ -7,6 +7,7 @@ import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:salesappnew/screens/visit/visit_screen.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override

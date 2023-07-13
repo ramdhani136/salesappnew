@@ -52,8 +52,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
       builder: (context, state) {
         VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
 
-        if (state is IsLoading) {
-          return const Center(child: CircularProgressIndicator());
+        if (state is IsFailure) {
+          Center(
+            child: Text(state.error),
+          );
         }
 
         if (state is IsShowLoaded) {
@@ -467,9 +469,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
             ),
           );
         }
-        return const Center(
-          child: Text("No data"),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

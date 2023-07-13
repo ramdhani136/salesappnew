@@ -58,19 +58,6 @@ class VisitBodyList extends StatelessWidget {
                 builder: (context) =>
                     VisitForm(id: "${data.id}", visitBloc: visitBloc)),
           );
-
-          // Navigator.of(context).push(
-          //   MaterialPageRoute<VisitForm>(
-          //     builder: (_) => MultiBlocProvider(
-          //       providers: [
-          //         BlocProvider.value(
-          //           value: BlocProvider.of<AuthBloc>(context),
-          //         ),
-          //       ],
-          //       child: VisitForm(id: "${data.id}", visitBloc: visitBloc),
-          //     ),
-          //   ),
-          // );
         },
         child: Stack(
           children: [
