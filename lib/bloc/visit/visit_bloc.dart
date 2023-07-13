@@ -68,8 +68,21 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (event.group) {
         group = null;
       }
-      emit(IsLoading());
-      emit(VisitInitial());
+      if (state is IsLoaded) {
+        IsLoaded current = search as IsLoaded;
+        emit(IsLoading());
+        emit(
+          IsLoaded(
+            hasMore: current.hasMore,
+            newData: current.data,
+            pageLoading: current.pageLoading,
+            total: current.total,
+          ),
+        );
+      } else {
+        emit(IsLoading());
+        emit(VisitInitial());
+      }
     });
     on<InsertVisit>(_PostData);
     on<ChangeSearch>((event, emit) async {

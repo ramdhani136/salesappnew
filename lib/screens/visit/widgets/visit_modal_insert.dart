@@ -40,10 +40,19 @@ class VisitModalInsert extends StatelessWidget {
                 VisitGetNaming(),
               ),
             builder: (context, state) {
-              if (bloc.customer != null && bloc.group != null) {
-                thisBloc.add(
-                  VisitSetForm(customer: bloc.customer, group: bloc.group),
-                );
+              if (thisBloc.customer == null) {
+                if (bloc.customer != null) {
+                  thisBloc.add(
+                    VisitSetForm(customer: bloc.customer),
+                  );
+                }
+              }
+              if (thisBloc.group == null) {
+                if (bloc.group != null) {
+                  thisBloc.add(
+                    VisitSetForm(group: bloc.group),
+                  );
+                }
               }
 
               namingC.text = thisBloc.naming?.name ?? "";
@@ -149,9 +158,20 @@ class VisitModalInsert extends StatelessWidget {
                                         customer: true,
                                       ),
                                     );
+                                    bloc.add(
+                                      VisitResetForm(
+                                        customer: true,
+                                      ),
+                                    );
                                   },
                                   onReset: () {
                                     thisBloc.add(
+                                      VisitResetForm(
+                                        group: true,
+                                        customer: true,
+                                      ),
+                                    );
+                                    bloc.add(
                                       VisitResetForm(
                                         group: true,
                                         customer: true,
