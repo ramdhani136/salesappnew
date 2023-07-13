@@ -125,7 +125,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Get.back();
                       },
                       child: Container(
                         width: 50,
@@ -468,7 +468,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                             actions: [
                                                                               TextButton(
                                                                                 onPressed: () {
-                                                                                  Navigator.pop(context);
+                                                                                  Get.back();
                                                                                 },
                                                                                 child: const Text("No"),
                                                                               ),
@@ -487,7 +487,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                                   locationbloc.add(GetLocationGps(
                                                                                     customerId: widget.customerId,
                                                                                   ));
-                                                                                  Navigator.pop(context);
+                                                                                  Get.back();
                                                                                 },
                                                                                 child: const Text("Yes"),
                                                                               ),

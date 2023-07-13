@@ -93,14 +93,16 @@ class FieldInfiniteScroll extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            if (onTap != null) {
-              onTap!();
-            }
+            if (!disabled) {
+              if (onTap != null) {
+                onTap!();
+              }
 
-            showDialog(
-              context: context,
-              builder: (context) => FieldInfiniteModal(),
-            );
+              showDialog(
+                context: context,
+                builder: (context) => FieldInfiniteModal(),
+              );
+            }
           },
           child: Container(
               width: Get.width * 0.95,
@@ -109,9 +111,11 @@ class FieldInfiniteScroll extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                  color: valid
-                      ? const Color.fromARGB(255, 182, 182, 182)
-                      : Colors.red,
+                  color: !disabled
+                      ? valid
+                          ? const Color.fromARGB(255, 182, 182, 182)
+                          : Colors.red
+                      : const Color.fromARGB(255, 182, 182, 182),
                   width: 1.0,
                 ),
               ),
@@ -136,17 +140,22 @@ class FieldInfiniteScroll extends StatelessWidget {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (onReset != null) {
-                        onReset!();
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.grey,
+                  Visibility(
+                    visible: !disabled,
+                    child: IconButton(
+                      onPressed: () {
+                        if (!disabled) {
+                          if (onReset != null) {
+                            onReset!();
+                          }
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.grey,
+                      ),
+                      iconSize: 20,
                     ),
-                    iconSize: 20,
                   ),
                 ],
               )),

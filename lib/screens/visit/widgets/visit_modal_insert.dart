@@ -163,91 +163,88 @@ class VisitModalInsert extends StatelessWidget {
                                 );
                               },
                             ),
-                            Visibility(
-                              visible: thisBloc.group != null,
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 20),
-                                  BlocBuilder<CustomerBloc, CustomerState>(
-                                    bloc: customerBloc
-                                      ..add(
-                                        GetAllCustomer(
-                                          refresh: true,
-                                          filters: [
-                                            [
-                                              "customerGroup",
-                                              "=",
-                                              thisBloc.group?.value ?? ""
-                                            ]
-                                          ],
-                                        ),
+                            Column(
+                              children: [
+                                const SizedBox(height: 20),
+                                BlocBuilder<CustomerBloc, CustomerState>(
+                                  bloc: customerBloc
+                                    ..add(
+                                      GetAllCustomer(
+                                        refresh: true,
+                                        filters: [
+                                          [
+                                            "customerGroup",
+                                            "=",
+                                            thisBloc.group?.value ?? ""
+                                          ]
+                                        ],
                                       ),
-                                    builder: (context, stateCust) {
-                                      List<FieldInfiniteData> data = [];
+                                    ),
+                                  builder: (context, stateCust) {
+                                    List<FieldInfiniteData> data = [];
 
-                                      if (stateCust is CustomerIsLoaded) {
-                                        List<Set<FieldInfiniteData>>
-                                            nestedData =
-                                            stateCust.data.map((item) {
-                                          return {
-                                            FieldInfiniteData(
-                                              title: item['name'],
-                                              value: item,
-                                            )
-                                          };
-                                        }).toList();
+                                    if (stateCust is CustomerIsLoaded) {
+                                      List<Set<FieldInfiniteData>> nestedData =
+                                          stateCust.data.map((item) {
+                                        return {
+                                          FieldInfiniteData(
+                                            title: item['name'],
+                                            value: item,
+                                          )
+                                        };
+                                      }).toList();
 
-                                        data = nestedData
-                                            .expand((set) => set)
-                                            .toList();
-                                      }
+                                      data = nestedData
+                                          .expand((set) => set)
+                                          .toList();
+                                    }
 
-                                      return FieldInfiniteScroll(
-                                        data: data,
-                                        onTap: () {
-                                          if (thisBloc.group != null) {
-                                            customerBloc.add(
-                                              GetAllCustomer(
-                                                refresh: true,
-                                                filters: [
-                                                  [
-                                                    "customerGroup",
-                                                    "=",
-                                                    thisBloc.group?.value ?? ""
-                                                  ]
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        onChange: (e) {
-                                          thisBloc.add(
-                                            VisitSetForm(
-                                              customer: KeyValue(
-                                                name: e['name'].toString(),
-                                                value: e['_id'],
-                                              ),
+                                    return FieldInfiniteScroll(
+                                      data: data,
+                                      disabled: thisBloc.group == null,
+                                      onTap: () {
+                                        if (thisBloc.group != null) {
+                                          customerBloc.add(
+                                            GetAllCustomer(
+                                              refresh: true,
+                                              filters: [
+                                                [
+                                                  "customerGroup",
+                                                  "=",
+                                                  thisBloc.group?.value ?? ""
+                                                ]
+                                              ],
                                             ),
                                           );
-                                        },
-                                        onReset: () {
-                                          thisBloc.add(
-                                            VisitResetForm(customer: true),
-                                          );
-                                        },
-                                        placeholder: "Select Customer",
-                                        value: thisBloc.customer?.name ?? "",
-                                        title: "Customer",
-                                        titleModal: "Customer List",
-                                        mandatory: true,
-                                        valid: thisBloc.customer?.name != null
-                                            ? true
-                                            : false,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
+                                        }
+                                      },
+                                      onChange: (e) {
+                                        thisBloc.add(
+                                          VisitSetForm(
+                                            customer: KeyValue(
+                                              name: e['name'].toString(),
+                                              value: e['_id'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onReset: () {
+                                        thisBloc.add(
+                                          VisitResetForm(customer: true),
+                                        );
+                                      },
+                                      placeholder: "Select Customer",
+                                      value: thisBloc.customer?.name ?? "",
+                                      title: "Customer",
+                                      titleModal: "Customer List",
+                                      mandatory: true,
+                                      valid: thisBloc.customer?.name != null
+                                          ? true
+                                          : false,
+                                    );
+                                  },
+                                ),
+                              ],
                             )
                           ],
                         ),
@@ -261,18 +258,22 @@ class VisitModalInsert extends StatelessWidget {
                                   const Color.fromARGB(255, 65, 170, 69),
                             ),
                             onPressed: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return CheckInScreen(
-                                      customerId: thisBloc.customer?.value,
-                                    );
-                                  },
-                                ),
-                              );
-                              print(thisBloc.naming?.name);
-                              print(thisBloc.group?.name);
-                              print(thisBloc.customer?.name);
+                              if (thisBloc.naming?.name != null &&
+                                  thisBloc.group?.name != null &&
+                                  thisBloc.customer?.name != null) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CheckInScreen(
+                                        customerId: thisBloc.customer?.value,
+                                      );
+                                    },
+                                  ),
+                                );
+                                print(thisBloc.naming?.name);
+                                print(thisBloc.group?.name);
+                                print(thisBloc.customer?.name);
+                              }
                             },
                             child: const Text(
                               "Check In",
