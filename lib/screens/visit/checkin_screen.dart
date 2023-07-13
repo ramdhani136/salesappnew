@@ -339,15 +339,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                       .bold,
                                                             ),
                                                           ),
-                                                          IconButton(
-                                                            onPressed: () {},
-                                                            icon: Icon(
-                                                              Icons.edit,
-                                                              size: 20,
-                                                              color: Colors
-                                                                  .amber[600],
-                                                            ),
-                                                          )
+                                                          // IconButton(
+                                                          //   onPressed: () {},
+                                                          //   icon: Icon(
+                                                          //     Icons.edit,
+                                                          //     size: 20,
+                                                          //     color: Colors
+                                                          //         .amber[600],
+                                                          //   ),
+                                                          // )
                                                         ],
                                                       ),
                                                       Visibility(
