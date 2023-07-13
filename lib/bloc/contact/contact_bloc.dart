@@ -77,6 +77,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       if (result['status'] != 200) {
         throw result;
       }
+      print(result['data'].length);
       emit(ContactIsLoaded(data: setData));
     } catch (e) {
       emit(ContactIsFailure(e.toString()));

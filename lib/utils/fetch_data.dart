@@ -100,7 +100,7 @@ class FetchData {
     String? search,
     String? params,
     int page = 1,
-    int limit = 10,
+    int limit = 0,
     String? nearby,
   }) async {
     try {
@@ -109,7 +109,7 @@ class FetchData {
 
       String uri =
           "${config.baseUri}$doc${params ?? ""}?page=$page${filters != null ? "&filters=$setFilter" : ""}${search != null ? "&search=$search" : ""}&limit=$limit${fields != null ? "&fields=$setFields" : ""}${nearby ?? ""}";
-
+      print(uri);
       final response = await http.get(
         Uri.parse(uri),
         headers: {
