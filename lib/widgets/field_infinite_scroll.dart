@@ -190,7 +190,7 @@ class FieldInfiniteScroll extends StatelessWidget {
             child: Container(
               width: Get.width - 50,
               padding:
-                  const EdgeInsets.all(25), // Mengambil lebar layar perangkat
+                  const EdgeInsets.all(20), // Mengambil lebar layar perangkat
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

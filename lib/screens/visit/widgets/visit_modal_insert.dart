@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,6 +77,75 @@ class VisitModalInsert extends StatelessWidget {
                 VisitGetNaming(),
               ),
             builder: (context, state) {
+              Widget FormCustomer() {
+                TextEditingController custC = TextEditingController();
+                TextEditingController branchC = TextEditingController();
+                TextEditingController GroupC = TextEditingController(
+                  text: thisBloc.group?.name ?? "",
+                );
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "New Customer",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomField(
+                      title: "Branch",
+                      controller: branchC,
+                      type: Type.select,
+                      data: [],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomField(
+                      title: "Group",
+                      controller: GroupC,
+                      type: Type.standard,
+                      disabled: true,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomField(
+                      title: "Name",
+                      controller: custC,
+                      type: Type.standard,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        print(custC.text);
+                        print(GroupC.text);
+                        print(branchC.text);
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 57, 156,
+                              60), // Mengatur warna latar belakang
+                        ),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                          const Size(double.infinity, 48),
+                        ), // Mengatur lebar penuh dan tinggi tetap
+                      ),
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    )
+                  ],
+                );
+              }
+
               if (thisBloc.customer == null) {
                 if (bloc.customer != null) {
                   thisBloc.add(
@@ -250,20 +319,7 @@ class VisitModalInsert extends StatelessWidget {
                               children: [
                                 const SizedBox(height: 20),
                                 BlocBuilder<CustomerBloc, CustomerState>(
-                                  bloc: customerBloc
-                                  // ..add(
-                                  //   GetAllCustomer(
-                                  //     refresh: false,
-                                  //     filters: [
-                                  //       [
-                                  //         "customerGroup",
-                                  //         "=",
-                                  //         thisBloc.group?.value ?? ""
-                                  //       ]
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  ,
+                                  bloc: customerBloc,
                                   builder: (context, stateCust) {
                                     List<FieldInfiniteData> data = [];
 
@@ -308,8 +364,7 @@ class VisitModalInsert extends StatelessWidget {
                                         action: (e) {
                                           _onSearchTextChanged(e);
                                         },
-                                        widget: const Text("tes"),
-                                        // label: "Create Customer",
+                                        widget: FormCustomer(),
                                       ),
                                       disabled: thisBloc.group == null,
                                       onTap: () {
