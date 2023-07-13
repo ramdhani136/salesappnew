@@ -314,7 +314,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 height: 200,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Color.fromARGB(255, 214, 214, 214),
+                                    color: const Color.fromARGB(
+                                        255, 214, 214, 214),
                                   ),
                                   color: Colors.white,
                                 ),
@@ -378,10 +379,11 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                       horizontal: 20, vertical: 8),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 52, 52, 52),
+                                      color:
+                                          const Color.fromARGB(255, 52, 52, 52),
                                       borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
-                                        color: Color.fromARGB(
+                                        color: const Color.fromARGB(
                                             255, 32, 32, 32), // Warna border
                                         width: 1.0, // Ketebalan border
                                       ),
@@ -421,7 +423,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                         ),
                                         child: Text(
                                           state.history[index].message,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
@@ -470,150 +472,6 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           );
         }
         return const Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-  Future<dynamic> _ModalContact() {
-    final TextEditingController visitC = TextEditingController();
-    final TextEditingController contactC = TextEditingController();
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Container(
-                width: Get.width * 0.95,
-                height: 450,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Form Contact",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 66, 66, 66),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Customer :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: contactC,
-                          enabled: false,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Cth : CV Jaya Abadi",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "PIC :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: contactC,
-                          // enabled: (VisitC.status.value == "0" ||
-                          //     VisitC.status.value == "1"),
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Cth : Ilham",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: contactC.text == ""
-                                ? OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "Phone :",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          controller: contactC,
-                          // enabled: (VisitC.status.value == "0" ||
-                          //     VisitC.status.value == "1"),
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[300]),
-                            hintText: "Cth : 089637428874",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
-                            enabledBorder: contactC.text == ""
-                                ? const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
-                                  )
-                                : null,
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                // contactC.getPhoneContact(context);
-                              },
-                              icon: const Icon(
-                                Icons.contact_phone,
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 49, 49, 49),
-                        ),
-                        onPressed: () async {
-                          // await contactC.onsubmit(context);
-                        },
-                        child: const Text("Save"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
       },
     );
   }

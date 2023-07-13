@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
 
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/utils/location_gps.dart';
-import 'package:http/http.dart' as http;
 
 part 'location_event.dart';
 part 'location_state.dart';
@@ -31,20 +29,20 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           .asUint8List();
     }
 
-    Future<Uint8List> getBytesFromUrl(String url, int width) async {
-      http.Response response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        Uint8List imageData = response.bodyBytes;
-        ui.Codec codec =
-            await ui.instantiateImageCodec(imageData, targetWidth: width);
-        ui.FrameInfo fi = await codec.getNextFrame();
-        return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-            .buffer
-            .asUint8List();
-      } else {
-        throw Exception('Failed to load image from $url');
-      }
-    }
+    // Future<Uint8List> getBytesFromUrl(String url, int width) async {
+    //   http.Response response = await http.get(Uri.parse(url));
+    //   if (response.statusCode == 200) {
+    //     Uint8List imageData = response.bodyBytes;
+    //     ui.Codec codec =
+    //         await ui.instantiateImageCodec(imageData, targetWidth: width);
+    //     ui.FrameInfo fi = await codec.getNextFrame();
+    //     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+    //         .buffer
+    //         .asUint8List();
+    //   } else {
+    //     throw Exception('Failed to load image from $url');
+    //   }
+    // }
 
     on<LocationEvent>((event, emit) async {
       if (event is GetLocationGps) {

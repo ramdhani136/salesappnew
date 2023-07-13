@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names
 // ignore_for_file: must_be_immutable
 import 'dart:async';
 
@@ -176,7 +176,7 @@ class FieldInfiniteScroll extends StatelessWidget {
   }
 
   Widget FieldInfiniteModal() {
-    Timer? _debounceTimer;
+    Timer? debounceTimer;
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.2,
@@ -218,8 +218,8 @@ class FieldInfiniteScroll extends StatelessWidget {
                       TextField(
                         onChanged: (e) {
                           if (onSearch != null) {
-                            _debounceTimer?.cancel();
-                            _debounceTimer = Timer(
+                            debounceTimer?.cancel();
+                            debounceTimer = Timer(
                               const Duration(milliseconds: 30),
                               () {
                                 onSearch!(e);
@@ -254,89 +254,83 @@ class FieldInfiniteScroll extends StatelessWidget {
                           onNotification: (ScrollNotification scrollInfo) {
                             if (scrollInfo.metrics.pixels ==
                                 scrollInfo.metrics.maxScrollExtent) {
-                              print("refresh");
+                              // print("refresh");
                             }
                             return false;
                           },
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Visibility(
-                                  visible: bloc.isLoading,
-                                  child: Expanded(child: Container()),
-                                ),
-                                Visibility(
-                                  visible: bloc.data.isEmpty && !bloc.isLoading,
-                                  child: Expanded(
-                                    child: Center(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Data not found",
-                                            style: TextStyle(
-                                              color: Colors.grey[400],
-                                            ),
+                          child: Column(
+                            children: [
+                              Visibility(
+                                visible: bloc.isLoading,
+                                child: Expanded(child: Container()),
+                              ),
+                              Visibility(
+                                visible: bloc.data.isEmpty && !bloc.isLoading,
+                                child: Expanded(
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Data not found",
+                                          style: TextStyle(
+                                            color: Colors.grey[400],
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color
+                                                    .fromARGB(255, 57, 156,
+                                                60), // Mengatur warna latar belakang
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                              primary: const Color.fromARGB(
-                                                  255,
-                                                  57,
-                                                  156,
-                                                  60), // Mengatur warna latar belakang
-                                            ),
-                                            child: const Text("Create New"),
-                                          )
-                                        ],
-                                      ),
+                                          child: const Text("Create New"),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ),
-                                Visibility(
-                                  visible: !bloc.isLoading,
-                                  child: Expanded(
-                                    child: ListView.builder(
-                                      itemCount: bloc.data.length,
-                                      itemBuilder: (context, index) {
-                                        if (bloc.data[index].subTitle != null) {
-                                          return ListTile(
-                                            onTap: () {
-                                              if (onChange != null) {
-                                                onChange!(
-                                                    bloc.data[index].value);
-                                              }
-                                              Get.back();
-                                            },
-                                            title: Text(bloc.data[index].title),
-                                            subtitle: Text(
-                                                bloc.data[index].subTitle!),
-                                          );
-                                        } else {
-                                          return ListTile(
-                                            onTap: () {
-                                              if (onChange != null) {
-                                                onChange!(
-                                                    bloc.data[index].value);
-                                              }
-                                              Get.back();
-                                            },
-                                            title: Text(bloc.data[index].title),
-                                          );
-                                        }
-                                      },
-                                    ),
+                              ),
+                              Visibility(
+                                visible: !bloc.isLoading,
+                                child: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: bloc.data.length,
+                                    itemBuilder: (context, index) {
+                                      if (bloc.data[index].subTitle != null) {
+                                        return ListTile(
+                                          onTap: () {
+                                            if (onChange != null) {
+                                              onChange!(bloc.data[index].value);
+                                            }
+                                            Get.back();
+                                          },
+                                          title: Text(bloc.data[index].title),
+                                          subtitle:
+                                              Text(bloc.data[index].subTitle!),
+                                        );
+                                      } else {
+                                        return ListTile(
+                                          onTap: () {
+                                            if (onChange != null) {
+                                              onChange!(bloc.data[index].value);
+                                            }
+                                            Get.back();
+                                          },
+                                          title: Text(bloc.data[index].title),
+                                        );
+                                      }
+                                    },
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

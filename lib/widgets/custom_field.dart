@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 enum Type { standard, select }
 
@@ -69,7 +68,7 @@ class _CustomFieldState extends State<CustomField> {
                       ),
                       Visibility(
                         visible: widget.mandatory && !widget.disabled,
-                        child: Text(
+                        child: const Text(
                           "*",
                           style: TextStyle(color: Colors.red),
                         ),

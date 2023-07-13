@@ -1,7 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:meta/meta.dart';
 import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
 import 'package:salesappnew/models/history_model.dart';

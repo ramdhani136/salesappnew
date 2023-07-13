@@ -45,7 +45,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
           widget.customerId,
         ),
       );
-    ;
 
     Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
@@ -133,12 +132,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color(0xFFE6212A),
-                          borderRadius: BorderRadius.all(
+                          color: const Color(0xFFE6212A),
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(10),
                           ),
                           border: Border.all(
-                            color: Color.fromARGB(255, 195, 16, 25),
+                            color: const Color.fromARGB(255, 195, 16, 25),
                             width: 1,
                           ),
                         ),
@@ -169,12 +168,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color(0xFFE6212A),
-                          borderRadius: BorderRadius.all(
+                          color: const Color(0xFFE6212A),
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(10),
                           ),
                           border: Border.all(
-                            color: Color.fromARGB(255, 195, 16, 25),
+                            color: const Color.fromARGB(255, 195, 16, 25),
                             width: 1,
                           ),
                         ),
@@ -230,508 +229,501 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           child: Column(
                             children: [
                               Expanded(
-                                child: Container(
-                                  child: ListView(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[100],
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 236, 231, 231),
-                                            width: 1,
-                                          ),
+                                child: ListView(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 236, 231, 231),
+                                          width: 1,
                                         ),
-                                        child: BlocBuilder<LocationBloc,
-                                            LocationState>(
-                                          bloc: locationbloc,
-                                          builder: (context, stateLoc) {
-                                            if (stateLoc is LocationLoading) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 10,
-                                                  height: 10,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 3,
-                                                    color: Colors.amber,
-                                                  ),
+                                      ),
+                                      child: BlocBuilder<LocationBloc,
+                                          LocationState>(
+                                        bloc: locationbloc,
+                                        builder: (context, stateLoc) {
+                                          if (stateLoc is LocationLoading) {
+                                            return const Center(
+                                              child: SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 3,
+                                                  color: Colors.amber,
                                                 ),
-                                              );
-                                            }
+                                              ),
+                                            );
+                                          }
 
-                                            return Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.gps_fixed_sharp,
-                                                  size: 16,
-                                                  color: Colors.grey[800],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Text(
-                                                      "${locationbloc.address}",
-                                                      style: TextStyle(
-                                                        color: Colors.grey[800],
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
+                                          return Row(
+                                            children: [
+                                              Icon(
+                                                Icons.gps_fixed_sharp,
+                                                size: 16,
+                                                color: Colors.grey[800],
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Text(
+                                                    "${locationbloc.address}",
+                                                    style: TextStyle(
+                                                      color: Colors.grey[800],
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              "VST202306XXXX",
-                                              style: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontStyle: FontStyle.italic,
                                               ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            "VST202306XXXX",
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontStyle: FontStyle.italic,
                                             ),
-                                            BlocBuilder<CustomerBloc,
-                                                CustomerState>(
-                                              bloc: customerBloc,
-                                              builder: (
-                                                context,
-                                                stateCustomer,
-                                              ) {
-                                                if (stateCustomer
-                                                    is CustomerIsLoading) {
-                                                  return const Center(
-                                                      child:
-                                                          CircularProgressIndicator());
-                                                }
+                                          ),
+                                          BlocBuilder<CustomerBloc,
+                                              CustomerState>(
+                                            bloc: customerBloc,
+                                            builder: (
+                                              context,
+                                              stateCustomer,
+                                            ) {
+                                              if (stateCustomer
+                                                  is CustomerIsLoading) {
+                                                return const Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                              }
 
-                                                if (stateCustomer
-                                                    is CustomerShowLoaded) {
-                                                  return Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
+                                              if (stateCustomer
+                                                  is CustomerShowLoaded) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "${stateCustomer.data.name}",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        // IconButton(
+                                                        //   onPressed: () {},
+                                                        //   icon: Icon(
+                                                        //     Icons.edit,
+                                                        //     size: 20,
+                                                        //     color: Colors
+                                                        //         .amber[600],
+                                                        //   ),
+                                                        // )
+                                                      ],
+                                                    ),
+                                                    Visibility(
+                                                      visible: stateCustomer
+                                                              .data.address !=
+                                                          null,
+                                                      child: Column(
                                                         children: [
                                                           Text(
-                                                            "${stateCustomer.data.name}",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                            stateCustomer.data
+                                                                    .address ??
+                                                                "",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: Colors
+                                                                  .grey[700],
                                                             ),
                                                           ),
-                                                          // IconButton(
-                                                          //   onPressed: () {},
-                                                          //   icon: Icon(
-                                                          //     Icons.edit,
-                                                          //     size: 20,
-                                                          //     color: Colors
-                                                          //         .amber[600],
-                                                          //   ),
-                                                          // )
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
                                                         ],
                                                       ),
-                                                      Visibility(
-                                                        visible: stateCustomer
-                                                                .data.address !=
-                                                            null,
-                                                        child: Column(
-                                                          children: [
-                                                            Text(
-                                                              stateCustomer.data
-                                                                      .address ??
-                                                                  "",
-                                                              style: TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors
-                                                                    .grey[700],
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      BlocBuilder<LocationBloc,
-                                                          LocationState>(
-                                                        bloc: locationbloc,
-                                                        builder: (context,
-                                                            stateLoc) {
-                                                          if (stateLoc
-                                                              is LocationLoaded) {
-                                                            return Row(
-                                                              children: [
-                                                                Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical: 4,
-                                                                  ),
-                                                                  decoration:
-                                                                      BoxDecoration(
+                                                    ),
+                                                    BlocBuilder<LocationBloc,
+                                                        LocationState>(
+                                                      bloc: locationbloc,
+                                                      builder:
+                                                          (context, stateLoc) {
+                                                        if (stateLoc
+                                                            is LocationLoaded) {
+                                                          return Row(
+                                                            children: [
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 4,
+                                                                ),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  // color: const Color.fromARGB(
+                                                                  //     255, 255, 198, 27),
+                                                                  color: stateLoc
+                                                                          .insite!
+                                                                      ? const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          160,
+                                                                          0)
+                                                                      : Colors.red[
+                                                                          400],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                  border: Border
+                                                                      .all(
                                                                     // color: const Color.fromARGB(
-                                                                    //     255, 255, 198, 27),
+                                                                    //     255, 225, 170, 5),
                                                                     color: stateLoc
                                                                             .insite!
                                                                         ? const Color.fromARGB(
                                                                             255,
+                                                                            237,
+                                                                            151,
+                                                                            2)
+                                                                        : const Color.fromARGB(
                                                                             255,
-                                                                            160,
-                                                                            0)
-                                                                        : Colors
-                                                                            .red[400],
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      // color: const Color.fromARGB(
-                                                                      //     255, 225, 170, 5),
-                                                                      color: stateLoc
-                                                                              .insite!
-                                                                          ? const Color.fromARGB(
-                                                                              255,
-                                                                              237,
-                                                                              151,
-                                                                              2)
-                                                                          : const Color.fromARGB(
-                                                                              255,
-                                                                              218,
-                                                                              50,
-                                                                              38),
-                                                                      width: 1,
-                                                                    ),
-                                                                  ),
-                                                                  child: Text(
-                                                                    stateLoc.insite!
-                                                                        ? "Insite"
-                                                                        : "Outsite",
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          13,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
+                                                                            218,
+                                                                            50,
+                                                                            38),
+                                                                    width: 1,
                                                                   ),
                                                                 ),
-                                                                const SizedBox(
-                                                                  width: 5,
+                                                                child: Text(
+                                                                  stateLoc.insite!
+                                                                      ? "Insite"
+                                                                      : "Outsite",
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
                                                                 ),
-                                                                Visibility(
-                                                                  visible: stateCustomer
-                                                                          .data
-                                                                          .location
-                                                                          ?.coordinates ==
-                                                                      null,
-                                                                  child:
-                                                                      InkWell(
-                                                                    onTap:
-                                                                        () async {
-                                                                      await showDialog(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            title:
-                                                                                const Text("Really?"),
-                                                                            content:
-                                                                                Text("You want to set this cordinate for ${stateCustomer.data.name}?"),
-                                                                            actions: [
-                                                                              TextButton(
-                                                                                onPressed: () {
-                                                                                  Get.back();
-                                                                                },
-                                                                                child: const Text("No"),
-                                                                              ),
-                                                                              TextButton(
-                                                                                onPressed: () async {
-                                                                                  customerBloc.add(
-                                                                                    UpdateCustomer(
-                                                                                      id: widget.customerId,
-                                                                                      data: {
-                                                                                        'lat': locationbloc.cordinate?.latitude,
-                                                                                        'lng': locationbloc.cordinate?.longitude,
-                                                                                        'address': locationbloc.address,
-                                                                                      },
-                                                                                    ),
-                                                                                  );
-                                                                                  locationbloc.add(GetLocationGps(
-                                                                                    customerId: widget.customerId,
-                                                                                  ));
-                                                                                  Get.back();
-                                                                                },
-                                                                                child: const Text("Yes"),
-                                                                              ),
-                                                                            ],
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .symmetric(
-                                                                        horizontal:
-                                                                            8,
-                                                                        vertical:
-                                                                            4,
-                                                                      ),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            55,
-                                                                            55,
-                                                                            55),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(8),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color: const Color.fromARGB(
-                                                                              255,
-                                                                              51,
-                                                                              51,
-                                                                              51),
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          const Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            "Set Cordinate",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 13,
-                                                                              fontWeight: FontWeight.w500,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Visibility(
+                                                                visible: stateCustomer
+                                                                        .data
+                                                                        .location
+                                                                        ?.coordinates ==
+                                                                    null,
+                                                                child: InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    await showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          title:
+                                                                              const Text("Really?"),
+                                                                          content:
+                                                                              Text("You want to set this cordinate for ${stateCustomer.data.name}?"),
+                                                                          actions: [
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                Get.back();
+                                                                              },
+                                                                              child: const Text("No"),
                                                                             ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                3,
-                                                                          ),
-                                                                          Icon(
-                                                                            Icons.gps_fixed_rounded,
+                                                                            TextButton(
+                                                                              onPressed: () async {
+                                                                                customerBloc.add(
+                                                                                  UpdateCustomer(
+                                                                                    id: widget.customerId,
+                                                                                    data: {
+                                                                                      'lat': locationbloc.cordinate?.latitude,
+                                                                                      'lng': locationbloc.cordinate?.longitude,
+                                                                                      'address': locationbloc.address,
+                                                                                    },
+                                                                                  ),
+                                                                                );
+                                                                                locationbloc.add(GetLocationGps(
+                                                                                  customerId: widget.customerId,
+                                                                                ));
+                                                                                Get.back();
+                                                                              },
+                                                                              child: const Text("Yes"),
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          8,
+                                                                      vertical:
+                                                                          4,
+                                                                    ),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          55,
+                                                                          55,
+                                                                          55),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              8),
+                                                                      border:
+                                                                          Border
+                                                                              .all(
+                                                                        color: const Color.fromARGB(
+                                                                            255,
+                                                                            51,
+                                                                            51,
+                                                                            51),
+                                                                        width:
+                                                                            1,
+                                                                      ),
+                                                                    ),
+                                                                    child:
+                                                                        const Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          "Set Cordinate",
+                                                                          style:
+                                                                              TextStyle(
                                                                             color:
                                                                                 Colors.white,
-                                                                            size:
-                                                                                10,
+                                                                            fontSize:
+                                                                                13,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              3,
+                                                                        ),
+                                                                        Icon(
+                                                                          Icons
+                                                                              .gps_fixed_rounded,
+                                                                          color:
+                                                                              Colors.white,
+                                                                          size:
+                                                                              10,
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ],
-                                                            );
-                                                          }
-                                                          return Column(
-                                                            children: [
-                                                              const SizedBox(
-                                                                height: 10,
                                                               ),
-                                                              SizedBox(
-                                                                width: 20,
-                                                                height: 20,
-                                                                child: Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        300],
-                                                                  ),
-                                                                ),
-                                                              )
                                                             ],
                                                           );
-                                                        },
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                                return Container();
-                                              },
-                                            ),
-                                            BlocBuilder<CustomerBloc,
-                                                CustomerState>(
-                                              bloc: customerBloc,
-                                              builder: (context, stateCust) {
-                                                if (stateCust
-                                                    is CustomerShowLoaded) {
-                                                  return Align(
-                                                    alignment: Alignment.center,
-                                                    child: Stack(
-                                                      alignment: Alignment
-                                                          .bottomCenter,
-                                                      children: [
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 15),
-                                                          width:
-                                                              Get.width * 0.9,
-                                                          height:
-                                                              Get.width / 1.85,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            color: Colors.white,
-                                                            border: Border.all(
-                                                              color: const Color
-                                                                      .fromARGB(
-                                                                  255,
-                                                                  232,
-                                                                  231,
-                                                                  231),
+                                                        }
+                                                        return Column(
+                                                          children: [
+                                                            const SizedBox(
+                                                              height: 10,
                                                             ),
-                                                          ),
-                                                          child: stateCust.data
-                                                                      .img ==
-                                                                  null
-                                                              ? const Center(
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .hide_image_outlined,
-                                                                    color: Color(
-                                                                        0xFFE0E0E0),
-                                                                    size: 100,
-                                                                  ),
-                                                                )
-                                                              : ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                  child:
-                                                                      FadeInImage(
-                                                                    fit: BoxFit
-                                                                        .fitHeight,
-                                                                    fadeInCurve:
-                                                                        Curves
-                                                                            .easeInExpo,
-                                                                    fadeOutCurve:
-                                                                        Curves
-                                                                            .easeOutExpo,
-                                                                    placeholder:
-                                                                        const AssetImage(
-                                                                            'assets/images/loading.gif'),
-                                                                    image:
-                                                                        NetworkImage(
-                                                                      "${Config().baseUri}public/customer/${stateCust.data.img}",
-                                                                    ),
-                                                                    imageErrorBuilder:
-                                                                        (_, __,
-                                                                            ___) {
-                                                                      return Image
-                                                                          .asset(
-                                                                        'assets/images/noimage.jpg',
-                                                                      );
-                                                                    },
-                                                                  ),
+                                                            SizedBox(
+                                                              width: 20,
+                                                              height: 20,
+                                                              child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      300],
                                                                 ),
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 15),
-                                                          width:
-                                                              Get.width * 0.9,
-                                                          height: 35,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(5),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          5),
-                                                            ),
-                                                            color: Colors.black
-                                                                .withOpacity(
-                                                                    0.4),
-                                                          ),
-                                                          child: IconButton(
-                                                            onPressed:
-                                                                () async {
-                                                              customerBloc.add(
-                                                                ChangeImageCustomer(
-                                                                  id: widget
-                                                                      .customerId,
-                                                                ),
-                                                              );
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.camera_alt,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 22,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
                                                     ),
-                                                  );
-                                                }
-                                                return Container();
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                  ],
+                                                );
+                                              }
+                                              return Container();
+                                            },
+                                          ),
+                                          BlocBuilder<CustomerBloc,
+                                              CustomerState>(
+                                            bloc: customerBloc,
+                                            builder: (context, stateCust) {
+                                              if (stateCust
+                                                  is CustomerShowLoaded) {
+                                                return Align(
+                                                  alignment: Alignment.center,
+                                                  child: Stack(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    children: [
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 15),
+                                                        width: Get.width * 0.9,
+                                                        height:
+                                                            Get.width / 1.85,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color: const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                232,
+                                                                231,
+                                                                231),
+                                                          ),
+                                                        ),
+                                                        child:
+                                                            stateCust.data
+                                                                        .img ==
+                                                                    null
+                                                                ? const Center(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .hide_image_outlined,
+                                                                      color: Color(
+                                                                          0xFFE0E0E0),
+                                                                      size: 100,
+                                                                    ),
+                                                                  )
+                                                                : ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(5),
+                                                                    child:
+                                                                        FadeInImage(
+                                                                      fit: BoxFit
+                                                                          .fitHeight,
+                                                                      fadeInCurve:
+                                                                          Curves
+                                                                              .easeInExpo,
+                                                                      fadeOutCurve:
+                                                                          Curves
+                                                                              .easeOutExpo,
+                                                                      placeholder:
+                                                                          const AssetImage(
+                                                                              'assets/images/loading.gif'),
+                                                                      image:
+                                                                          NetworkImage(
+                                                                        "${Config().baseUri}public/customer/${stateCust.data.img}",
+                                                                      ),
+                                                                      imageErrorBuilder: (_,
+                                                                          __,
+                                                                          ___) {
+                                                                        return Image
+                                                                            .asset(
+                                                                          'assets/images/noimage.jpg',
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                      ),
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            vertical: 15),
+                                                        width: Get.width * 0.9,
+                                                        height: 35,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    5),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    5),
+                                                          ),
+                                                          color: Colors.black
+                                                              .withOpacity(0.4),
+                                                        ),
+                                                        child: IconButton(
+                                                          onPressed: () async {
+                                                            customerBloc.add(
+                                                              ChangeImageCustomer(
+                                                                id: widget
+                                                                    .customerId,
+                                                              ),
+                                                            );
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons.camera_alt,
+                                                            color: Colors.white,
+                                                            size: 22,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              }
+                                              return Container();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                               BlocBuilder<LocationBloc, LocationState>(
                                 bloc: locationbloc,
                                 builder: (context, stateCust) {
                                   if (stateCust is LocationLoaded) {
-                                    return Container(
+                                    return SizedBox(
                                       width: double.infinity,
                                       child: ElevatedButton(
                                         onPressed: () async {
@@ -787,25 +779,25 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                             },
                                           );
                                         },
-                                        child: Text(
-                                          'Check In',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                          ),
-                                        ),
                                         style: ElevatedButton.styleFrom(
-                                          primary:
-                                              Color.fromARGB(255, 33, 143, 36),
-                                          padding: EdgeInsets.symmetric(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 33, 143, 36),
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 16, vertical: 10),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            side: BorderSide(
+                                            side: const BorderSide(
                                                 color: Color.fromARGB(
                                                     255, 30, 134, 33),
                                                 width: 1),
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          'Check In',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
                                           ),
                                         ),
                                       ),

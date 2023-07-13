@@ -12,12 +12,10 @@ import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
 import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
-// import 'package:salesappnew/utils/location_gps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
-import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
@@ -58,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -407,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class LocationAroundYou extends StatefulWidget {
-  LocationAroundYou({
+  const LocationAroundYou({
     super.key,
     required this.locationbloc,
   });

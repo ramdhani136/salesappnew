@@ -1,10 +1,9 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 

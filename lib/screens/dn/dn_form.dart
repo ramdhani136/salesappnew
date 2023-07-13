@@ -410,9 +410,7 @@ class DNFormScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Text(
-                  state is DnIsFailure
-                      ? (state as DnIsFailure).error
-                      : "No Data",
+                  state is DnIsFailure ? state.error : "No Data",
                   style: const TextStyle(
                     color: Colors.grey,
                   ),

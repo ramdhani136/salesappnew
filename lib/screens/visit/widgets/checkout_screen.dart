@@ -105,19 +105,19 @@ class CheckOutScreen extends StatelessWidget {
                         );
                         // Aksi saat tombol ditekan
                       },
-                      child: Text(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 33, 143, 36),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 13),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
                         'Check Out',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 33, 143, 36),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                     ),

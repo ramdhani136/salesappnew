@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -35,7 +37,7 @@ class FormVisitNoteNew extends StatelessWidget {
         builder: (context, state) {
           if (state is VisitNoteIsFailure) {}
 
-          if (noteId != null && visitId != null && state is VisitnoteInitial) {
+          if (noteId != null && state is VisitnoteInitial) {
             vBloc.add(
               ShowVisitNote(id: "$noteId"),
             );
@@ -73,13 +75,11 @@ class FormVisitNoteNew extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         BackButtonCustom(onBack: () {
-                          if (visitId != null) {
-                            bloc.add(
-                              GetVisitNote(
-                                visitId: visitId,
-                              ),
-                            );
-                          }
+                          bloc.add(
+                            GetVisitNote(
+                              visitId: visitId,
+                            ),
+                          );
                         }),
                         const Row(
                           children: [
@@ -150,7 +150,7 @@ class FormVisitNoteNew extends StatelessWidget {
                         ),
                         Container(
                           width: Get.width,
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 10,
                             right: 10,
                             top: 10,
@@ -162,11 +162,9 @@ class FormVisitNoteNew extends StatelessWidget {
                           child: Wrap(
                             children: tags.map((e) {
                               return ElevatedButton.icon(
-                                onPressed: () {
-                                  print(e['_id']);
-                                },
+                                onPressed: () {},
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.green[
+                                  backgroundColor: Colors.green[
                                       800], // Warna latar belakang tombol
                                 ),
                                 icon: const Icon(
@@ -205,7 +203,7 @@ class FormVisitNoteNew extends StatelessWidget {
                                   "title": titleC.text,
                                   "notes": noteC.text,
                                   "visitId": visitId,
-                                  "tags": ["648035669c2e5446ae9218f3"],
+                                  "tags": const ["648035669c2e5446ae9218f3"],
                                 },
                               ));
                             }

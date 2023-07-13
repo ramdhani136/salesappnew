@@ -161,7 +161,7 @@ class VisitFormResult extends StatelessWidget {
                                           IntrinsicHeight(
                                             child: Container(
                                               width: Get.width,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius: BorderRadius.only(
                                                   bottomLeft:
@@ -183,7 +183,7 @@ class VisitFormResult extends StatelessWidget {
                                                   children: [
                                                     Text(
                                                       state.data[index].title,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -194,7 +194,7 @@ class VisitFormResult extends StatelessWidget {
                                                     ),
                                                     Text(
                                                       state.data[index].notes,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 15.5,
                                                       ),
                                                     ),
@@ -216,7 +216,7 @@ class VisitFormResult extends StatelessWidget {
                                                         color: Colors.grey,
                                                       ),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 10,
                                                     ),
                                                     Container(
@@ -237,8 +237,8 @@ class VisitFormResult extends StatelessWidget {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            EdgeInsets.only(
-                                                                top: 10),
+                                                            const EdgeInsets
+                                                                .only(top: 10),
                                                         child: Wrap(
                                                           children: [
                                                             Padding(
@@ -249,12 +249,12 @@ class VisitFormResult extends StatelessWidget {
                                                                 bottom: 5,
                                                               ),
                                                               child: Container(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            6.0,
-                                                                        vertical:
-                                                                            4.0),
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        6.0,
+                                                                    vertical:
+                                                                        4.0),
                                                                 decoration:
                                                                     BoxDecoration(
                                                                   color: Colors
@@ -265,7 +265,8 @@ class VisitFormResult extends StatelessWidget {
                                                                           .circular(
                                                                               4.0),
                                                                 ),
-                                                                child: Text(
+                                                                child:
+                                                                    const Text(
                                                                   'Price',
                                                                   style:
                                                                       TextStyle(
@@ -315,7 +316,7 @@ class VisitFormResult extends StatelessWidget {
                     ),
                     Visibility(
                       visible: state.IsloadingPage,
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.only(bottom: 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,

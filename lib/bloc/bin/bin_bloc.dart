@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/models/bin_model.dart';

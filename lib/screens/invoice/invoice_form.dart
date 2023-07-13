@@ -422,10 +422,8 @@ class InvoiceFormScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Text(
-                  state is InvoiceFailure
-                      ? (state as InvoiceFailure).error
-                      : "No Data",
-                  style: TextStyle(
+                  state is InvoiceFailure ? state.error : "No Data",
+                  style: const TextStyle(
                     color: Colors.grey,
                   ),
                   textAlign:

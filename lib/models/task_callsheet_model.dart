@@ -28,12 +28,12 @@ class TaskCallsheetModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.id;
-    data['from'] = this.from;
-    data['name'] = this.name;
-    data['title'] = this.title;
-    data['notes'] = this.notes;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = id;
+    data['from'] = from;
+    data['name'] = name;
+    data['title'] = title;
+    data['notes'] = notes;
     return data;
   }
 }

@@ -338,10 +338,8 @@ class ItemFormScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Text(
-                  state is ItemIsFailure
-                      ? (state as ItemIsFailure).error
-                      : "No Data",
-                  style: TextStyle(
+                  state is ItemIsFailure ? state.error : "No Data",
+                  style: const TextStyle(
                     color: Colors.grey,
                   ),
                   textAlign:

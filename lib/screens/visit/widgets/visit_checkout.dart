@@ -18,7 +18,7 @@ class VisitCheckOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Completer<GoogleMapController> _controller =
+    Completer<GoogleMapController> controller0 =
         Completer<GoogleMapController>();
 
     return BlocProvider(
@@ -96,7 +96,7 @@ class VisitCheckOut extends StatelessWidget {
                               tilt: 59.440717697143555,
                               zoom: 18.151926040649414),
                           onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
+                            controller0.complete(controller);
                           },
                           circles: <Circle>{
                             Circle(
@@ -127,12 +127,13 @@ class VisitCheckOut extends StatelessWidget {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFE6212A),
-                                    borderRadius: BorderRadius.all(
+                                    color: const Color(0xFFE6212A),
+                                    borderRadius: const BorderRadius.all(
                                       Radius.circular(10),
                                     ),
                                     border: Border.all(
-                                      color: Color.fromARGB(255, 195, 16, 25),
+                                      color: const Color.fromARGB(
+                                          255, 195, 16, 25),
                                       width: 1,
                                     ),
                                   ),
@@ -145,7 +146,7 @@ class VisitCheckOut extends StatelessWidget {
                               GestureDetector(
                                 onTap: () async {
                                   final GoogleMapController controller =
-                                      await _controller.future;
+                                      await controller0.future;
                                   controller.animateCamera(
                                     CameraUpdate.newCameraPosition(
                                       CameraPosition(
@@ -163,12 +164,13 @@ class VisitCheckOut extends StatelessWidget {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFE6212A),
-                                    borderRadius: BorderRadius.all(
+                                    color: const Color(0xFFE6212A),
+                                    borderRadius: const BorderRadius.all(
                                       Radius.circular(10),
                                     ),
                                     border: Border.all(
-                                      color: Color.fromARGB(255, 195, 16, 25),
+                                      color: const Color.fromARGB(
+                                          255, 195, 16, 25),
                                       width: 1,
                                     ),
                                   ),

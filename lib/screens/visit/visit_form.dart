@@ -119,11 +119,11 @@ class VisitForm extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Error Update'),
+                          title: const Text('Error Update'),
                           content: Text(state.error),
                           actions: [
                             TextButton(
-                              child: Text('OK'),
+                              child: const Text('OK'),
                               onPressed: () {
                                 // Tindakan yang ingin Anda lakukan saat tombol OK ditekan
                                 Navigator.of(context).pop(); // Menutup dialog
@@ -138,7 +138,7 @@ class VisitForm extends StatelessWidget {
                 child: BlocBuilder<VisitBloc, VisitState>(
                   builder: (context, state) {
                     if (state is IsLoading) {
-                      return Text(
+                      return const Text(
                         "Loading...",
                         style: TextStyle(
                           fontSize: 16,
@@ -151,7 +151,6 @@ class VisitForm extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           BackButtonCustom(onBack: () {
-                            print("coba");
                             visitBloc.add(GetData(
                               status: visitBloc.tabActive ?? 1,
                               getRefresh: true,

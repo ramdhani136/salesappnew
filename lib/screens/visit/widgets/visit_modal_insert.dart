@@ -1,7 +1,5 @@
 // ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -366,7 +364,7 @@ class VisitModalInsert extends StatelessWidget {
                                       thisBloc.group?.name != null &&
                                       thisBloc.customer?.name != null)
                                   ? const Color.fromARGB(255, 65, 170, 69)
-                                  : Color.fromARGB(255, 92, 214, 96),
+                                  : const Color.fromARGB(255, 92, 214, 96),
                             ),
                             onPressed: () async {
                               if (thisBloc.naming?.name != null &&
@@ -382,9 +380,6 @@ class VisitModalInsert extends StatelessWidget {
                                     },
                                   ),
                                 );
-                                print(thisBloc.naming?.name);
-                                print(thisBloc.group?.name);
-                                print(thisBloc.customer?.name);
                               }
                             },
                             child: const Text(

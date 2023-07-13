@@ -47,28 +47,6 @@ class _InvoiceScreen extends State<InvoiceScreen> {
     ),
   ];
 
-  void _showModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: 20), // Adjust the width as needed
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Content goes here'),
-              // Additional widgets
-            ],
-          ),
-          actions: <Widget>[
-            // Actions
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     TabBar MyTabBar = TabBar(

@@ -420,10 +420,8 @@ class OrderFormScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Center(
                 child: Text(
-                  state is OrderIsFailure
-                      ? (state as OrderIsFailure).error
-                      : "No Data",
-                  style: TextStyle(
+                  state is OrderIsFailure ? state.error : "No Data",
+                  style: const TextStyle(
                     color: Colors.grey,
                   ),
                   textAlign:

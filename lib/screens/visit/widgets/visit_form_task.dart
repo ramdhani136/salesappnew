@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,7 @@ class VisitFormTask extends StatelessWidget {
   VisitFormTask({
     Key? key,
     required this.visitId,
-  }) : super(key: key) {}
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class VisitFormTask extends StatelessWidget {
                             "Penagihan konsumen ${state.data.customer!.erpId} Invoice no : ${item['name']} dengan total tagihan Rp.$outstandingAmount - jatuh tempo pada ${item['due_date']}"
                       };
                     }).toList();
-                    ;
+
                     List<TaskVisitModel> taskFromInv =
                         TaskVisitModel.fromJsonList(setData);
                     dataTask.addAll(taskFromInv);
@@ -186,7 +186,7 @@ class VisitFormTask extends StatelessWidget {
                                           IntrinsicHeight(
                                             child: Container(
                                               width: Get.width,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius: BorderRadius.only(
                                                   bottomLeft:
@@ -219,7 +219,7 @@ class VisitFormTask extends StatelessWidget {
                                                     ),
                                                     Text(
                                                       dataTask[index].notes,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 15,
                                                       ),
                                                     ),
