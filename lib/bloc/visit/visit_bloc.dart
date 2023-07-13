@@ -13,12 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
-import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/visit_model.dart';
-import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/visit_form.dart';
-import 'package:salesappnew/screens/visit/visit_screen.dart';
 // import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
@@ -69,7 +66,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         group = null;
       }
       if (state is IsLoaded) {
-        IsLoaded current = search as IsLoaded;
+        IsLoaded current = state as IsLoaded;
         emit(IsLoading());
         emit(
           IsLoaded(

@@ -1,9 +1,12 @@
-// ignore_for_file: unused_local_variable, must_be_immutable
+// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
+import 'package:salesappnew/bloc/field_infinite/field_infinite_bloc.dart';
 import 'package:salesappnew/bloc/group/group_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
@@ -19,10 +22,53 @@ class VisitModalInsert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Timer? _debounceTimer;
     VisitBloc thisBloc = VisitBloc();
     GroupBloc groupBloc = GroupBloc();
     CustomerBloc customerBloc = CustomerBloc();
     TextEditingController namingC = TextEditingController();
+    FieldInfiniteBloc groupFieldBloc = FieldInfiniteBloc();
+    FieldInfiniteBloc customerFieldBloc = FieldInfiniteBloc();
+
+    void _onSearchTextChanged(String searchText) {
+      if (thisBloc.group != null) {
+        customerBloc.add(CustomerChangeSearch(searchText));
+        _debounceTimer?.cancel();
+        _debounceTimer = Timer(
+          const Duration(milliseconds: 30),
+          () {
+            customerBloc.add(
+              GetAllCustomer(
+                refresh: true,
+                search: searchText,
+                filters: [
+                  ["customerGroup", "=", thisBloc.group!.value]
+                ],
+              ),
+            );
+          },
+        );
+      }
+    }
+
+    // void _onSearchGroup(String searchText) {
+    //   customerBloc.add(CustomerChangeSearch(searchText));
+    //   _debounceTimer?.cancel();
+    //   _debounceTimer = Timer(
+    //     const Duration(milliseconds: 30),
+    //     () {
+    //       customerBloc.add(
+    //         GetAllCustomer(
+    //           refresh: true,
+    //           search: searchText,
+    //           filters: [
+    //             ["customerGroup", "=", thisBloc.group!.value]
+    //           ],
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
 
     return Dialog(
       child: FractionallySizedBox(
@@ -126,6 +172,10 @@ class VisitModalInsert extends StatelessWidget {
                                   data =
                                       nestedData.expand((set) => set).toList();
 
+                                  groupFieldBloc.add(
+                                    FieldInfiniteSetData(data: data),
+                                  );
+
                                   if (data.length == 1) {
                                     thisBloc.add(
                                       VisitSetForm(
@@ -138,8 +188,14 @@ class VisitModalInsert extends StatelessWidget {
                                   }
                                 }
 
+                                if (stateGroup is GroupIsFailure) {
+                                  groupFieldBloc.add(
+                                    FieldInfiniteSetData(data: const []),
+                                  );
+                                }
+
                                 return FieldInfiniteScroll(
-                                  data: data,
+                                  bloc: groupFieldBloc,
                                   onTap: () {
                                     groupBloc
                                         .add(GroupGetData(getRefresh: true));
@@ -223,10 +279,22 @@ class VisitModalInsert extends StatelessWidget {
                                       data = nestedData
                                           .expand((set) => set)
                                           .toList();
+
+                                      customerFieldBloc.add(
+                                        FieldInfiniteSetData(data: data),
+                                      );
+                                    }
+                                    if (stateCust is CustomerIsFailure) {
+                                      customerFieldBloc.add(
+                                        FieldInfiniteSetData(data: const []),
+                                      );
                                     }
 
                                     return FieldInfiniteScroll(
-                                      data: data,
+                                      bloc: customerFieldBloc,
+                                      onSearch: (e) {
+                                        _onSearchTextChanged(e);
+                                      },
                                       disabled: thisBloc.group == null,
                                       onTap: () {
                                         if (thisBloc.group != null) {

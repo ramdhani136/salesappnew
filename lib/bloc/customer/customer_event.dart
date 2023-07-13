@@ -15,11 +15,19 @@ class GetAllCustomer extends CustomerEvent {
   bool refresh;
   Nearby? nearby;
   List<List<String>>? filters;
+  String? search;
   GetAllCustomer({
     this.refresh = true,
     this.nearby,
     this.filters,
+    this.search,
   });
+}
+
+class CustomerChangeSearch extends CustomerEvent {
+  String search = "";
+
+  CustomerChangeSearch(this.search);
 }
 
 class UpdateCustomer extends CustomerEvent {

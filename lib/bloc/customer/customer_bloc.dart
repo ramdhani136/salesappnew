@@ -15,11 +15,16 @@ part 'customer_event.dart';
 part 'customer_state.dart';
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
+  int page = 1;
+  String search = "";
   CustomerBloc() : super(CustomerInitial()) {
     on<ShowCustomer>(_ShowCustomer);
     on<GetAllCustomer>(_GetAllData);
     on<UpdateCustomer>(_UpdateData);
     on<ChangeImageCustomer>(_ChangeImage);
+    on<CustomerChangeSearch>((event, emit) async {
+      search = event.search;
+    });
   }
 
   Future<void> _GetAllData(
@@ -27,7 +32,6 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     Emitter<CustomerState> emit,
   ) async {
     try {
-      int page = 1;
       if (state is CustomerIsLoaded && !event.refresh) {
         CustomerIsLoaded current = state as CustomerIsLoaded;
         page = current.page;
@@ -44,14 +48,16 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
       if (event.nearby != null) {
         result = await FetchData(data: Data.customer).FINDALL(
-          page: page,
+          page: event.refresh ? 1 : page,
           nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},0]",
           filters: event.filters,
+          search: event.search,
         );
       } else {
         result = await FetchData(data: Data.customer).FINDALL(
-          page: page,
+          page: event.refresh ? 1 : page,
           filters: event.filters,
+          search: event.search,
         );
       }
 
