@@ -631,35 +631,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                   null
                                                               ? const Center(
                                                                   child: Icon(
-                                                                  Icons
-                                                                      .hide_image_outlined,
-                                                                  color: Color(
-                                                                      0xFFE0E0E0),
-                                                                  size: 100,
-                                                                ))
-                                                              // : VisitC.respImage
-                                                              //             ?.path !=
-                                                              //         null
-                                                              //     ? ClipRRect(
-                                                              //         borderRadius:
-                                                              //             BorderRadius
-                                                              //                 .circular(
-                                                              //                     5),
-                                                              //         child: Image(
-                                                              //           fit: BoxFit
-                                                              //               .fitHeight,
-                                                              //           width: double
-                                                              //               .infinity,
-                                                              //           height: double
-                                                              //               .infinity,
-                                                              //           image:
-                                                              //               FileImage(
-                                                              //             File(VisitC
-                                                              //                 .respImage!
-                                                              //                 .path),
-                                                              //           ),
-                                                              //         ),
-                                                              //       )
+                                                                    Icons
+                                                                        .hide_image_outlined,
+                                                                    color: Color(
+                                                                        0xFFE0E0E0),
+                                                                    size: 100,
+                                                                  ),
+                                                                )
                                                               : ClipRRect(
                                                                   borderRadius:
                                                                       BorderRadius
