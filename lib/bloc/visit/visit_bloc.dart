@@ -430,6 +430,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   Future<void> _getNaming(
       VisitGetNaming event, Emitter<VisitState> emit) async {
     try {
+      EasyLoading.show(status: 'loading...');
       Map<String, dynamic> result =
           await FetchData(data: Data.namingSeries).FINDALL(
         filters: [
@@ -456,8 +457,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         );
       }
       emit(VisitInitial());
+      EasyLoading.dismiss();
     } catch (e) {
       emit(IsFailure(e.toString()));
+      EasyLoading.dismiss();
     }
   }
 }

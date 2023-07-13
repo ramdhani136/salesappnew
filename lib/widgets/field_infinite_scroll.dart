@@ -261,19 +261,38 @@ class FieldInfiniteScroll extends StatelessWidget {
                           child: Container(
                             child: Column(
                               children: [
-                                // Visibility(
-                                //   visible: bloc.isLoading,
-                                //   child: Expanded(child: Container()),
-                                // ),
                                 Visibility(
-                                  visible: bloc.data.isEmpty,
+                                  visible: bloc.isLoading,
+                                  child: Expanded(child: Container()),
+                                ),
+                                Visibility(
+                                  visible: bloc.data.isEmpty && !bloc.isLoading,
                                   child: Expanded(
                                     child: Center(
-                                      child: Text(
-                                        "No data",
-                                        style: TextStyle(
-                                          color: Colors.grey[300],
-                                        ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "No data",
+                                            style: TextStyle(
+                                              color: Colors.grey[400],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              primary: const Color(
+                                                  0xFFE6212A), // Mengatur warna latar belakang
+                                            ),
+                                            child: const Text("Create New"),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
