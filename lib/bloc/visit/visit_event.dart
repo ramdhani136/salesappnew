@@ -76,7 +76,9 @@ class ClearSignature extends VisitEvent {
 
 class InsertVisit extends VisitEvent {
   Map<String, dynamic> data;
-  InsertVisit({required this.data});
+  BuildContext? context;
+  VisitBloc? visitBloc;
+  InsertVisit({required this.data, this.context, this.visitBloc});
 }
 
 class SetCheckOut extends VisitEvent {

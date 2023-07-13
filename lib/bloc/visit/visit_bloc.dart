@@ -15,7 +15,8 @@ import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/visit_model.dart';
-import 'package:salesappnew/repositories/auth_repository.dart';
+import 'package:salesappnew/screens/visit/visit_form.dart';
+// import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/utils/local_data.dart';
@@ -28,7 +29,7 @@ part 'visit_state.dart';
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
   String search = "";
-  AuthBloc authBloc = AuthBloc(AuthRepository());
+  // AuthBloc authBloc = AuthBloc(AuthRepository());
   Position? checkOutCordinates;
   String? checkOutAddress;
   int? tabActive;
@@ -90,15 +91,41 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     on<VisitGetNaming>(_getNaming);
   }
 
-  Future<void> _PostData(InsertVisit event, Emitter<VisitState> emit) async {
+  Future<void> _PostData(
+    InsertVisit event,
+    Emitter<VisitState> emit,
+  ) async {
     try {
+      EasyLoading.show(status: 'loading...');
+
       dynamic data = await FetchData(data: Data.visit).ADD(event.data);
       if ((data['status']) != 200) {
         throw data['msg'];
       }
-      print(data);
+
+      if (event.context != null && event.visitBloc != null) {
+        event.visitBloc!.add(
+          GetData(
+            getRefresh: true,
+            search: event.visitBloc!.search,
+            status: event.visitBloc!.tabActive != null
+                ? event.visitBloc!.tabActive!
+                : 1,
+          ),
+        );
+        Navigator.pushReplacement(
+          event.context!,
+          MaterialPageRoute(
+            builder: (context) => VisitForm(
+              id: "${data['data']['_id']}",
+              visitBloc: event.visitBloc!,
+            ),
+          ),
+        );
+      }
+      EasyLoading.dismiss();
     } catch (e) {
-      print(e);
+      EasyLoading.dismiss();
     }
   }
 

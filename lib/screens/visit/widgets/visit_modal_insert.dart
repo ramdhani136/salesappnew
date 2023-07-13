@@ -269,6 +269,7 @@ class VisitModalInsert extends StatelessWidget {
                                     builder: (context) {
                                       return CheckInScreen(
                                         customerId: thisBloc.customer?.value,
+                                        bloc: bloc,
                                       );
                                     },
                                   ),

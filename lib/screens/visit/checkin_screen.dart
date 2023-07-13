@@ -14,9 +14,11 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CheckInScreen extends StatefulWidget {
   String customerId;
+  VisitBloc? bloc;
   CheckInScreen({
     super.key,
     required this.customerId,
+    this.bloc,
   });
 
   @override
@@ -770,6 +772,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                           visitBloc.add(
                                             InsertVisit(
                                               data: data,
+                                              context: context,
+                                              visitBloc:
+                                                  widget.bloc ?? visitBloc,
                                             ),
                                           );
                                         },
