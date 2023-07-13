@@ -254,8 +254,11 @@ class VisitModalInsert extends StatelessWidget {
                           height: 46,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 65, 170, 69),
+                              backgroundColor: (thisBloc.naming?.name != null &&
+                                      thisBloc.group?.name != null &&
+                                      thisBloc.customer?.name != null)
+                                  ? const Color.fromARGB(255, 65, 170, 69)
+                                  : Color.fromARGB(255, 92, 214, 96),
                             ),
                             onPressed: () async {
                               if (thisBloc.naming?.name != null &&
