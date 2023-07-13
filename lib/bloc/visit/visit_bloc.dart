@@ -116,7 +116,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
                 : 1,
           ),
         );
-        Get.back();
+
         Get.back();
         Navigator.pushReplacement(
           event.context,
