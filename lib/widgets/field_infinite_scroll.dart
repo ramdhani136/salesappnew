@@ -276,7 +276,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "No data",
+                                            "Data not found",
                                             style: TextStyle(
                                               color: Colors.grey[400],
                                             ),
@@ -287,8 +287,11 @@ class FieldInfiniteScroll extends StatelessWidget {
                                           ElevatedButton(
                                             onPressed: () {},
                                             style: ElevatedButton.styleFrom(
-                                              primary: const Color(
-                                                  0xFFE6212A), // Mengatur warna latar belakang
+                                              primary: const Color.fromARGB(
+                                                  255,
+                                                  57,
+                                                  156,
+                                                  60), // Mengatur warna latar belakang
                                             ),
                                             child: const Text("Create New"),
                                           )
