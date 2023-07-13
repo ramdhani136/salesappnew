@@ -8,7 +8,7 @@ class GroupGetData extends GroupEvent {
   bool getRefresh;
   String search;
   GroupGetData({
-    this.getRefresh = false,
+    this.getRefresh = true,
     this.search = "",
   });
 }

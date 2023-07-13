@@ -20,7 +20,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
   Future<void> _GetAllData(GroupGetData event, Emitter<GroupState> emit) async {
     try {
-      if (state is! GroupIsLoaded || event.getRefresh) {
+      if (event.getRefresh) {
         emit(GroupIsLoading());
         EasyLoading.show(status: 'loading...');
       } else {

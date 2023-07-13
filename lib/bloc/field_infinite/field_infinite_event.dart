@@ -8,3 +8,8 @@ class FieldInfiniteSetData extends FieldInfiniteEvent {
 
   FieldInfiniteSetData({this.data});
 }
+
+class FieldInfiniteSetLoading extends FieldInfiniteEvent {
+  bool loading;
+  FieldInfiniteSetLoading({required this.loading});
+}

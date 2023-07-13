@@ -40,8 +40,10 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
           CustomerIsLoaded(data: current.data, IsloadingPage: true),
         );
       } else {
-        EasyLoading.show(status: 'loading...');
-        // emit(CustomerIsLoading());
+        if (event.refresh) {
+          EasyLoading.show(status: 'loading...');
+          emit(CustomerIsLoading());
+        }
       }
 
       late Map<String, dynamic> result;

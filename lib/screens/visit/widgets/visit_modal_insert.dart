@@ -22,7 +22,6 @@ class VisitModalInsert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer? _debounceTimer;
     VisitBloc thisBloc = VisitBloc();
     GroupBloc groupBloc = GroupBloc();
     CustomerBloc customerBloc = CustomerBloc();
@@ -33,20 +32,14 @@ class VisitModalInsert extends StatelessWidget {
     void _onSearchTextChanged(String searchText) {
       if (thisBloc.group != null) {
         customerBloc.add(CustomerChangeSearch(searchText));
-        _debounceTimer?.cancel();
-        _debounceTimer = Timer(
-          const Duration(milliseconds: 30),
-          () {
-            customerBloc.add(
-              GetAllCustomer(
-                refresh: true,
-                search: searchText,
-                filters: [
-                  ["customerGroup", "=", thisBloc.group!.value]
-                ],
-              ),
-            );
-          },
+        customerBloc.add(
+          GetAllCustomer(
+            refresh: true,
+            search: searchText,
+            filters: [
+              ["customerGroup", "=", thisBloc.group!.value]
+            ],
+          ),
         );
       }
     }
@@ -156,7 +149,7 @@ class VisitModalInsert extends StatelessWidget {
                             BlocBuilder<GroupBloc, GroupState>(
                               bloc: groupBloc
                                 ..add(
-                                  GroupGetData(getRefresh: true),
+                                  GroupGetData(getRefresh: false),
                                 ),
                               builder: (context, stateGroup) {
                                 List<FieldInfiniteData> data = [];
@@ -191,6 +184,16 @@ class VisitModalInsert extends StatelessWidget {
                                 if (stateGroup is GroupIsFailure) {
                                   groupFieldBloc.add(
                                     FieldInfiniteSetData(data: const []),
+                                  );
+                                }
+
+                                if (stateGroup is GroupIsLoading) {
+                                  groupFieldBloc.add(
+                                    FieldInfiniteSetLoading(loading: true),
+                                  );
+                                } else {
+                                  groupFieldBloc.add(
+                                    FieldInfiniteSetLoading(loading: false),
                                   );
                                 }
 
@@ -250,18 +253,19 @@ class VisitModalInsert extends StatelessWidget {
                                 const SizedBox(height: 20),
                                 BlocBuilder<CustomerBloc, CustomerState>(
                                   bloc: customerBloc
-                                    ..add(
-                                      GetAllCustomer(
-                                        refresh: true,
-                                        filters: [
-                                          [
-                                            "customerGroup",
-                                            "=",
-                                            thisBloc.group?.value ?? ""
-                                          ]
-                                        ],
-                                      ),
-                                    ),
+                                  // ..add(
+                                  //   GetAllCustomer(
+                                  //     refresh: false,
+                                  //     filters: [
+                                  //       [
+                                  //         "customerGroup",
+                                  //         "=",
+                                  //         thisBloc.group?.value ?? ""
+                                  //       ]
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  ,
                                   builder: (context, stateCust) {
                                     List<FieldInfiniteData> data = [];
 
@@ -287,6 +291,16 @@ class VisitModalInsert extends StatelessWidget {
                                     if (stateCust is CustomerIsFailure) {
                                       customerFieldBloc.add(
                                         FieldInfiniteSetData(data: const []),
+                                      );
+                                    }
+
+                                    if (stateCust is CustomerIsLoading) {
+                                      customerFieldBloc.add(
+                                        FieldInfiniteSetLoading(loading: true),
+                                      );
+                                    } else {
+                                      customerFieldBloc.add(
+                                        FieldInfiniteSetLoading(loading: false),
                                       );
                                     }
 

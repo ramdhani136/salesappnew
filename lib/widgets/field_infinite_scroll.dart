@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors
 // ignore_for_file: must_be_immutable
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,6 @@ class FieldInfiniteScroll extends StatelessWidget {
   Function? onReset;
   Function? onTap;
   bool mandatory;
-  bool loading;
   Function? InsertAction;
   FieldInfiniteBloc bloc;
   // List<FieldInfiniteData> data;
@@ -39,7 +40,6 @@ class FieldInfiniteScroll extends StatelessWidget {
     this.titleModal,
     this.valid = true,
     this.mandatory = false,
-    this.loading = false,
     super.key,
   });
 
@@ -176,6 +176,7 @@ class FieldInfiniteScroll extends StatelessWidget {
   }
 
   Widget FieldInfiniteModal() {
+    Timer? _debounceTimer;
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.2,
@@ -217,7 +218,13 @@ class FieldInfiniteScroll extends StatelessWidget {
                       TextField(
                         onChanged: (e) {
                           if (onSearch != null) {
-                            onSearch!(e);
+                            _debounceTimer?.cancel();
+                            _debounceTimer = Timer(
+                              const Duration(milliseconds: 30),
+                              () {
+                                onSearch!(e);
+                              },
+                            );
                           }
                         },
                         autocorrect: false,
@@ -254,15 +261,10 @@ class FieldInfiniteScroll extends StatelessWidget {
                           child: Container(
                             child: Column(
                               children: [
-                                Visibility(
-                                  visible: loading,
-                                  child: Expanded(
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                          color: Colors.grey[300]),
-                                    ),
-                                  ),
-                                ),
+                                // Visibility(
+                                //   visible: bloc.isLoading,
+                                //   child: Expanded(child: Container()),
+                                // ),
                                 Visibility(
                                   visible: bloc.data.isEmpty,
                                   child: Expanded(
@@ -277,7 +279,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                                   ),
                                 ),
                                 Visibility(
-                                  visible: true,
+                                  visible: !bloc.isLoading,
                                   child: Expanded(
                                     child: ListView.builder(
                                       itemCount: bloc.data.length,

@@ -7,6 +7,7 @@ part 'field_infinite_state.dart';
 
 class FieldInfiniteBloc extends Bloc<FieldInfiniteEvent, FieldInfiniteState> {
   List<FieldInfiniteData> data = [];
+  bool isLoading = false;
 
   FieldInfiniteBloc() : super(FieldInfiniteInitial()) {
     on<FieldInfiniteSetData>((event, emit) {
@@ -16,5 +17,13 @@ class FieldInfiniteBloc extends Bloc<FieldInfiniteEvent, FieldInfiniteState> {
 
       emit(FieldInfiniteInitial());
     });
+    on<FieldInfiniteSetLoading>(
+      (event, emit) {
+        isLoading = event.loading;
+        emit(
+          FieldInfiniteInitial(),
+        );
+      },
+    );
   }
 }

@@ -202,10 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     RunFUnction: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<VisitScreen>(
-                          builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<AuthBloc>(context),
-                            child: const VisitScreen(),
-                          ),
+                          builder: (_) => const VisitScreen(),
                         ),
                       );
                     },
