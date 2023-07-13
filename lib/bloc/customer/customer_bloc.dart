@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
@@ -35,7 +36,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
           CustomerIsLoaded(data: current.data, IsloadingPage: true),
         );
       } else {
-        emit(CustomerIsLoading());
+        EasyLoading.show(status: 'loading...');
+        // emit(CustomerIsLoading());
       }
 
       late Map<String, dynamic> result;
@@ -44,10 +46,12 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         result = await FetchData(data: Data.customer).FINDALL(
           page: page,
           nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},0]",
+          filters: event.filters,
         );
       } else {
         result = await FetchData(data: Data.customer).FINDALL(
           page: page,
+          filters: event.filters,
         );
       }
 
@@ -76,7 +80,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
           IsloadingPage: false,
         ),
       );
+      EasyLoading.dismiss();
     } catch (e) {
+      EasyLoading.dismiss();
       emit(
         CustomerIsFailure(
           e.toString(),

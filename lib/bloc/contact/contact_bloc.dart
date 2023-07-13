@@ -97,6 +97,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
         throw result['msg'];
       }
       Get.back();
+
       EasyLoading.dismiss();
     } catch (e) {
       Get.defaultDialog(

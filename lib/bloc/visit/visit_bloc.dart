@@ -35,12 +35,35 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   Uint8List? signature;
   KeyValue? naming;
   KeyValue? customer;
+  KeyValue? group;
   List? namingList;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
-    on<VisitSetNaming>((event, emit) {
-      naming = event.data;
+    on<VisitSetForm>((event, emit) {
+      if (event.naming != null) {
+        naming = event.naming;
+      }
+      if (event.customer != null) {
+        customer = event.customer;
+      }
+      if (event.group != null) {
+        group = event.group;
+      }
+      emit(IsLoading());
+      emit(VisitInitial());
+    });
+    on<VisitResetForm>((event, emit) {
+      if (event.naming) {
+        naming = null;
+      }
+      if (event.customer) {
+        customer = null;
+      }
+
+      if (event.group) {
+        group = null;
+      }
       emit(IsLoading());
       emit(VisitInitial());
     });

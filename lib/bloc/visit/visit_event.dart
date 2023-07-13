@@ -88,7 +88,23 @@ class SetCheckOut extends VisitEvent {
 
 class VisitGetNaming extends VisitEvent {}
 
-class VisitSetNaming extends VisitEvent {
+class VisitSetForm extends VisitEvent {
   KeyValue? data;
-  VisitSetNaming({this.data});
+  KeyValue? naming;
+  KeyValue? group;
+  KeyValue? customer;
+  VisitSetForm({this.data, this.naming, this.group, this.customer});
+}
+
+class VisitResetForm extends VisitEvent {
+  bool data;
+  bool naming;
+  bool group;
+  bool customer;
+  VisitResetForm({
+    this.data = false,
+    this.naming = false,
+    this.group = false,
+    this.customer = false,
+  });
 }

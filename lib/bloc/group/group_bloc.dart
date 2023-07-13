@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:salesappnew/models/group_model.dart';
@@ -21,6 +22,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     try {
       if (state is! GroupIsLoaded || event.getRefresh) {
         emit(GroupIsLoading());
+        EasyLoading.show(status: 'loading...');
       } else {
         GroupIsLoaded current = state as GroupIsLoaded;
         emit(
@@ -88,8 +90,9 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
           ),
         );
       }
+      EasyLoading.dismiss();
     } catch (e) {
-      print(e);
+      EasyLoading.dismiss();
       emit(GroupIsFailure(e.toString()));
     }
   }

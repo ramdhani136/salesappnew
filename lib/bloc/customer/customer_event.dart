@@ -14,9 +14,11 @@ class ShowCustomer extends CustomerEvent {
 class GetAllCustomer extends CustomerEvent {
   bool refresh;
   Nearby? nearby;
+  List<List<String>>? filters;
   GetAllCustomer({
     this.refresh = true,
     this.nearby,
+    this.filters,
   });
 }
 
