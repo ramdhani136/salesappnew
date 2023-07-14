@@ -85,12 +85,12 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
               }).toList();
             }
 
-            // if (branchList.length == 1) {
-            //   branchC.text = branchList[0]['title'] ?? "";
-            //   branch = KeyValue(
-            //       name: branchList[0]['title'] ?? "",
-            //       value: branchList[0]['value'] ?? "");
-            // }
+            if (branchList.length == 1) {
+              branchC.text = branchList[0]['title'] ?? "";
+              branch = KeyValue(
+                  name: branchList[0]['title'] ?? "",
+                  value: branchList[0]['value'] ?? "");
+            }
 
             return CustomField(
               mandatory: true,
@@ -153,7 +153,7 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
                 ),
               );
               widget.bloc.add(GetAllCustomer(filters: [
-                ["customerGrop", "=", widget.group?.value ?? ""]
+                ["customerGroup", "=", widget.group?.value ?? ""]
               ]));
             }
           },
