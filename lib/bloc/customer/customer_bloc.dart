@@ -112,6 +112,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     Emitter<CustomerState> emit,
   ) async {
     try {
+      if (event.search != null) {
+        search = event.search!;
+      }
       if (state is CustomerIsLoaded && !event.refresh) {
         CustomerIsLoaded current = state as CustomerIsLoaded;
         page = current.page;

@@ -256,7 +256,6 @@ class VisitModalInsert extends StatelessWidget {
                                   builder: (context, stateCust) {
                                     List<FieldInfiniteData> data = [];
 
-                                    print(stateCust);
                                     if (stateCust is CustomerIsLoaded) {
                                       List<Set<FieldInfiniteData>> nestedData =
                                           stateCust.data.map((item) {

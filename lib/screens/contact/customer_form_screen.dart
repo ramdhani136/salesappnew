@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -32,11 +31,11 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
   @override
   void initState() {
     branch = null;
-    nameC = TextEditingController();
+    nameC = TextEditingController(text: widget.bloc.search);
     branchC = TextEditingController();
     groupC = TextEditingController(text: widget.group?.name ?? "");
     validBranch = false;
-    validName = false;
+    validName = true;
     nameC.addListener(() {
       setState(() {
         if (nameC.text != "") {
@@ -152,9 +151,14 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
                   },
                 ),
               );
-              widget.bloc.add(GetAllCustomer(filters: [
-                ["customerGroup", "=", widget.group?.value ?? ""]
-              ]));
+              widget.bloc.add(
+                GetAllCustomer(
+                  search: widget.bloc.search,
+                  filters: [
+                    ["customerGroup", "=", widget.group?.value ?? ""]
+                  ],
+                ),
+              );
             }
           },
           style: ButtonStyle(
