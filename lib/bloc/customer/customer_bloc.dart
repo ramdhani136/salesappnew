@@ -1,6 +1,8 @@
 // ignore_for_file: unused_local_variable, depend_on_referenced_packages, non_constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
@@ -24,6 +26,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   String search = "";
   CustomerBloc() : super(CustomerInitial()) {
     on<ShowCustomer>(_ShowCustomer);
+    on<CustomerInsert>(_InsertData);
     on<GetAllCustomer>(_GetAllData);
     on<UpdateCustomer>(_UpdateData);
     on<ChangeImageCustomer>(_ChangeImage);
@@ -69,6 +72,39 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         emit(CustomerInitial());
       }
     });
+  }
+
+  Future<void> _InsertData(
+    CustomerInsert event,
+    Emitter<CustomerState> emit,
+  ) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      Map<String, dynamic> result =
+          await FetchData(data: Data.customer).ADD(event.data);
+
+      if (result['status'] != 200) {
+        throw result['msg'];
+      }
+
+      Get.back();
+
+      EasyLoading.dismiss();
+    } catch (e) {
+      Get.defaultDialog(
+        // title: "Ups, someting wrong",
+
+        content: Text(
+          e.toString(),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+      );
+      EasyLoading.dismiss();
+      emit(CustomerIsFailure(e.toString()));
+    }
   }
 
   Future<void> _GetAllData(

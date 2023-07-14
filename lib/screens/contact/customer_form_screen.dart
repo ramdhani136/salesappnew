@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -142,9 +143,18 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
         ElevatedButton(
           onPressed: () {
             if (nameC.text.isNotEmpty && branchC.text.isNotEmpty) {
-              print(nameC.text);
-              print(branchC.text);
-              print(groupC.text);
+              widget.bloc.add(
+                CustomerInsert(
+                  data: {
+                    'name': nameC.text,
+                    'branch': branch!.value,
+                    'customerGroup': widget.group!.value!,
+                  },
+                ),
+              );
+              widget.bloc.add(GetAllCustomer(filters: [
+                ["customerGrop", "=", widget.group?.value ?? ""]
+              ]));
             }
           },
           style: ButtonStyle(

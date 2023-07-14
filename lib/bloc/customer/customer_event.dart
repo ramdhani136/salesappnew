@@ -76,3 +76,8 @@ class CustomerResetForm extends CustomerEvent {
     this.group = false,
   });
 }
+
+class CustomerInsert extends CustomerEvent {
+  Map<String, dynamic> data;
+  CustomerInsert({required this.data});
+}
