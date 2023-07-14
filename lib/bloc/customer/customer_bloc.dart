@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/customer_model.dart';

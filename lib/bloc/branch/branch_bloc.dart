@@ -4,7 +4,6 @@ import 'dart:core';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:meta/meta.dart';
 import 'package:salesappnew/repositories/branch_repository.dart';
 
 part 'branch_event.dart';
