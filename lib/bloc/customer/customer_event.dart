@@ -52,3 +52,27 @@ class Nearby {
   double lng;
   Nearby({required this.lat, required this.lng});
 }
+
+class CustomerSetForm extends CustomerEvent {
+  KeyValue? group;
+  KeyValue? name;
+  KeyValue? branch;
+
+  CustomerSetForm({
+    this.group,
+    this.name,
+    this.branch,
+  });
+}
+
+class CustomerResetForm extends CustomerEvent {
+  bool group;
+  bool name;
+  bool branch;
+
+  CustomerResetForm({
+    this.name = false,
+    this.branch = false,
+    this.group = false,
+  });
+}

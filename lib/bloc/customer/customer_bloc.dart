@@ -5,8 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/customer_model.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:path/path.dart';
 import 'package:salesappnew/utils/local_data.dart';
@@ -15,6 +17,9 @@ part 'customer_event.dart';
 part 'customer_state.dart';
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
+  KeyValue? branch;
+  KeyValue? group;
+  KeyValue? name;
   int page = 1;
   String search = "";
   CustomerBloc() : super(CustomerInitial()) {
@@ -24,6 +29,45 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<ChangeImageCustomer>(_ChangeImage);
     on<CustomerChangeSearch>((event, emit) async {
       search = event.search;
+    });
+    on<CustomerSetForm>((event, emit) {
+      if (event.name != null) {
+        name = event.name;
+      }
+      if (event.group != null) {
+        group = event.group;
+      }
+      if (event.branch != null) {
+        branch = event.branch;
+      }
+      emit(CustomerIsLoading());
+      emit(CustomerInitial());
+    });
+    on<CustomerResetForm>((event, emit) {
+      if (event.branch) {
+        branch = null;
+      }
+      if (event.name) {
+        name = null;
+      }
+
+      if (event.group) {
+        group = null;
+      }
+      if (state is CustomerIsLoaded) {
+        IsLoaded current = state as IsLoaded;
+        emit(CustomerIsLoading());
+        emit(
+          CustomerIsLoaded(
+            hasMore: current.hasMore,
+            data: current.data,
+            total: current.total,
+          ),
+        );
+      } else {
+        emit(CustomerIsLoading());
+        emit(CustomerInitial());
+      }
     });
   }
 

@@ -10,6 +10,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
 import 'package:salesappnew/models/group_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
+import 'package:salesappnew/screens/contact/customer_form_screen.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:salesappnew/widgets/field_infinite_scroll.dart';
@@ -17,6 +18,7 @@ import 'package:salesappnew/widgets/field_infinite_scroll.dart';
 class VisitModalInsert extends StatelessWidget {
   VisitBloc bloc;
   VisitModalInsert({super.key, required this.bloc});
+  CustomerBloc cbloc = CustomerBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -77,75 +79,6 @@ class VisitModalInsert extends StatelessWidget {
                 VisitGetNaming(),
               ),
             builder: (context, state) {
-              Widget FormCustomer() {
-                TextEditingController custC = TextEditingController();
-                TextEditingController branchC = TextEditingController();
-                TextEditingController GroupC = TextEditingController(
-                  text: thisBloc.group?.name ?? "",
-                );
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "New Customer",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomField(
-                      title: "Branch",
-                      controller: branchC,
-                      type: Type.select,
-                      data: [],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomField(
-                      title: "Group",
-                      controller: GroupC,
-                      type: Type.standard,
-                      disabled: true,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CustomField(
-                      title: "Name",
-                      controller: custC,
-                      type: Type.standard,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        print(custC.text);
-                        print(GroupC.text);
-                        print(branchC.text);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 57, 156,
-                              60), // Mengatur warna latar belakang
-                        ),
-                        minimumSize: MaterialStateProperty.all<Size>(
-                          const Size(double.infinity, 48),
-                        ), // Mengatur lebar penuh dan tinggi tetap
-                      ),
-                      child: const Text(
-                        "Save",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    )
-                  ],
-                );
-              }
-
               if (thisBloc.customer == null) {
                 if (bloc.customer != null) {
                   thisBloc.add(
@@ -364,7 +297,10 @@ class VisitModalInsert extends StatelessWidget {
                                         action: (e) {
                                           _onSearchTextChanged(e);
                                         },
-                                        widget: FormCustomer(),
+                                        widget: CustomerFormScreen(
+                                          bloc: customerBloc,
+                                          group: thisBloc.group,
+                                        ),
                                       ),
                                       disabled: thisBloc.group == null,
                                       onTap: () {
