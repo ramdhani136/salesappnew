@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -24,10 +25,12 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
   late TextEditingController groupC;
   late bool validBranch;
   late bool validName;
-  late KeyValue branch;
+  late KeyValue? branch;
+  final BranchBloc branchBloc = BranchBloc()..add(BranchGetAll());
+
   @override
   void initState() {
-    branch;
+    branch = null;
     nameC = TextEditingController();
     branchC = TextEditingController();
     groupC = TextEditingController(text: widget.group?.name ?? "");
@@ -42,6 +45,7 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
         }
       });
     });
+
     super.initState();
   }
 
@@ -67,13 +71,50 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
         const SizedBox(
           height: 20,
         ),
-        CustomField(
-          mandatory: true,
-          valid: true,
-          title: "Branch",
-          controller: branchC,
-          type: Type.select,
-          data: [],
+        BlocBuilder<BranchBloc, BranchState>(
+          bloc: branchBloc,
+          builder: (context, state) {
+            List branchList = [];
+            if (state is BranchIsLoaded) {
+              branchList = state.data.map((item) {
+                return {
+                  "value": item["_id"],
+                  "title": item["name"],
+                };
+              }).toList();
+            }
+
+            // if (branchList.length == 1) {
+            //   branchC.text = branchList[0]['title'] ?? "";
+            //   branch = KeyValue(
+            //       name: branchList[0]['title'] ?? "",
+            //       value: branchList[0]['value'] ?? "");
+            // }
+
+            return CustomField(
+              mandatory: true,
+              valid: branch != null,
+              title: "Branch",
+              controller: branchC,
+              type: Type.select,
+              data: branchList,
+              onChange: (e) {
+                setState(() {
+                  branchC.text = e['title'] ?? "";
+                  branch = KeyValue(
+                    name: e['title'] ?? "",
+                    value: e['value'] ?? "",
+                  );
+                });
+              },
+              onReset: () {
+                setState(() {
+                  branch = null;
+                  branchC.text = "";
+                });
+              },
+            );
+          },
         ),
         const SizedBox(
           height: 10,
@@ -99,15 +140,27 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
           height: 20,
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (nameC.text.isNotEmpty && branchC.text.isNotEmpty) {
+              print(nameC.text);
+              print(branchC.text);
+              print(groupC.text);
+            }
+          },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-              const Color.fromARGB(
-                  255, 57, 156, 60), // Mengatur warna latar belakang
-            ),
             minimumSize: MaterialStateProperty.all<Size>(
               const Size(double.infinity, 48),
-            ), // Mengatur lebar penuh dan tinggi tetap
+            ),
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled) ||
+                    nameC.text.isEmpty ||
+                    branchC.text.isEmpty) {
+                  return const Color.fromARGB(255, 92, 214, 96);
+                }
+                return const Color.fromARGB(255, 65, 170, 69);
+              },
+            ),
           ),
           child: const Text(
             "Save",
