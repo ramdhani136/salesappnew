@@ -10,11 +10,15 @@ part 'field_infinite_state.dart';
 class FieldInfiniteBloc extends Bloc<FieldInfiniteEvent, FieldInfiniteState> {
   List<FieldInfiniteData> data = [];
   bool isLoading = false;
+  bool hasMore = false;
 
   FieldInfiniteBloc() : super(FieldInfiniteInitial()) {
     on<FieldInfiniteSetData>((event, emit) {
       if (event.data != null) {
         data = event.data!;
+      }
+      if (event.hasMore != null) {
+        hasMore = event.hasMore!;
       }
 
       emit(FieldInfiniteInitial());

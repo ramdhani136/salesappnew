@@ -7,8 +7,9 @@ abstract class FieldInfiniteEvent {}
 
 class FieldInfiniteSetData extends FieldInfiniteEvent {
   List<FieldInfiniteData>? data;
+  bool? hasMore;
 
-  FieldInfiniteSetData({this.data});
+  FieldInfiniteSetData({this.data, this.hasMore});
 }
 
 class FieldInfiniteSetLoading extends FieldInfiniteEvent {

@@ -15,25 +15,24 @@ class FieldInfiniteScroll extends StatelessWidget {
   String? title;
   String? titleModal;
   bool disabled;
-  // Function? onSearch;
   Function? onChange;
+  Function? onScroll;
   Function? onReset;
   Function? onTap;
   bool mandatory;
   Function? InsertAction;
   FieldInfiniteBloc bloc;
-  // List<FieldInfiniteData> data;
   String value;
   FieldInfiniteOnSearch? onSearch;
-
-  TextEditingController controller = TextEditingController();
+  TextEditingController? controller;
   FieldInfiniteScroll({
     required this.value,
-    // required this.data,
     required this.bloc,
+    this.controller,
     this.disabled = false,
     this.onChange,
     this.InsertAction,
+    this.onScroll,
     this.onSearch,
     this.onReset,
     this.onTap,
@@ -254,6 +253,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                             );
                           }
                         },
+                        controller: controller ?? TextEditingController(),
                         autocorrect: false,
                         enableSuggestions: false,
                         decoration: InputDecoration(
@@ -280,8 +280,16 @@ class FieldInfiniteScroll extends StatelessWidget {
                         child: NotificationListener<ScrollNotification>(
                           onNotification: (ScrollNotification scrollInfo) {
                             if (scrollInfo.metrics.pixels ==
-                                scrollInfo.metrics.maxScrollExtent) {
-                              // print("refresh");
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                bloc.hasMore) {
+                              bloc.add(
+                                FieldInfiniteSetData(
+                                  hasMore: false,
+                                ),
+                              );
+                              if (onScroll != null) {
+                                onScroll!();
+                              }
                             }
                             return false;
                           },

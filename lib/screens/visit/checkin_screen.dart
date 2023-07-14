@@ -10,14 +10,17 @@ import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CheckInScreen extends StatefulWidget {
   String customerId;
+  KeyValue? naming;
   VisitBloc? bloc;
   CheckInScreen({
     super.key,
     required this.customerId,
+    required this.naming,
     this.bloc,
   });
 
@@ -160,7 +163,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                 ),
                                 bearing: 192.8334901395799,
                                 tilt: 59.440717697143555,
-                                zoom: 18.151926040649414),
+                                zoom: 20.151926040649414),
                           ),
                         );
                       },
@@ -299,7 +302,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                             height: 8,
                                           ),
                                           Text(
-                                            "VST202306XXXX",
+                                            "${widget.naming?.name}",
                                             style: TextStyle(
                                               color: Colors.grey[600],
                                               fontStyle: FontStyle.italic,
@@ -760,7 +763,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                 .cordinate!
                                                                 .longitude,
                                                         "namingSeries":
-                                                            "648036f14e83d40f98c441a3",
+                                                            "${widget.naming?.value}",
                                                       };
                                                       visitBloc.add(
                                                         InsertVisit(
@@ -894,7 +897,7 @@ GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
         ),
         bearing: 192.8334901395799,
         tilt: 59.440717697143555,
-        zoom: 18.151926040649414),
+        zoom: 20.151926040649414),
     onMapCreated: (GoogleMapController controller) {
       _controller.complete(controller);
     },

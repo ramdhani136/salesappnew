@@ -18,7 +18,6 @@ import 'package:salesappnew/widgets/field_infinite_scroll.dart';
 class VisitModalInsert extends StatelessWidget {
   VisitBloc bloc;
   VisitModalInsert({super.key, required this.bloc});
-  CustomerBloc cbloc = CustomerBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -200,8 +199,11 @@ class VisitModalInsert extends StatelessWidget {
                                 return FieldInfiniteScroll(
                                   bloc: groupFieldBloc,
                                   onTap: () {
-                                    groupBloc
-                                        .add(GroupGetData(getRefresh: true));
+                                    groupBloc.add(
+                                      GroupGetData(
+                                        getRefresh: true,
+                                      ),
+                                    );
                                   },
                                   onChange: (GroupModel e) {
                                     thisBloc.add(
@@ -272,7 +274,10 @@ class VisitModalInsert extends StatelessWidget {
                                           .toList();
 
                                       customerFieldBloc.add(
-                                        FieldInfiniteSetData(data: data),
+                                        FieldInfiniteSetData(
+                                          data: data,
+                                          hasMore: stateCust.hasMore,
+                                        ),
                                       );
                                     }
                                     if (stateCust is CustomerIsFailure) {
@@ -292,6 +297,24 @@ class VisitModalInsert extends StatelessWidget {
                                     }
 
                                     return FieldInfiniteScroll(
+                                      onScroll: () {
+                                        customerBloc.add(
+                                          GetAllCustomer(
+                                            refresh: false,
+                                            filters: [
+                                              [
+                                                "customerGroup",
+                                                "=",
+                                                thisBloc.group?.value ?? ""
+                                              ]
+                                            ],
+                                            search: customerBloc.search,
+                                          ),
+                                        );
+                                      },
+                                      controller: TextEditingController(
+                                        text: customerBloc.search,
+                                      ),
                                       bloc: customerFieldBloc,
                                       onSearch: FieldInfiniteOnSearch(
                                         action: (e) {
@@ -307,7 +330,6 @@ class VisitModalInsert extends StatelessWidget {
                                         if (thisBloc.group != null) {
                                           customerBloc.add(
                                             GetAllCustomer(
-                                              refresh: true,
                                               filters: [
                                                 [
                                                   "customerGroup",
@@ -315,6 +337,7 @@ class VisitModalInsert extends StatelessWidget {
                                                   thisBloc.group?.value ?? ""
                                                 ]
                                               ],
+                                              search: customerBloc.search,
                                             ),
                                           );
                                         }
@@ -337,7 +360,7 @@ class VisitModalInsert extends StatelessWidget {
                                       placeholder: "Select Customer",
                                       value: thisBloc.customer?.name ?? "",
                                       title: "Customer",
-                                      titleModal: "Customer List",
+                                      titleModal: "Customer List ",
                                       mandatory: true,
                                       valid: thisBloc.customer?.name != null
                                           ? true
@@ -371,6 +394,7 @@ class VisitModalInsert extends StatelessWidget {
                                       return CheckInScreen(
                                         customerId: thisBloc.customer?.value,
                                         bloc: bloc,
+                                        naming: thisBloc.naming,
                                       );
                                     },
                                   ),

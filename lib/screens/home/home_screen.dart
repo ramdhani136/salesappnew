@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    locationbloc.close(); // Menutup Bloc saat halaman ditutup
+    locationbloc.close();
     super.dispose();
   }
 
@@ -140,11 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         if (state is LocationLoaded) {
-                          locationbloc.add(
-                            GetRealtimeGps(
-                              duration: const Duration(minutes: 1),
-                            ),
-                          );
+                          // locationbloc.add(
+                          //   GetRealtimeGps(
+                          //     duration: const Duration(minutes: 1),
+                          //   ),
+                          // );
                           return Text(
                             locationbloc.address ?? "Gps Error!",
                             style: const TextStyle(

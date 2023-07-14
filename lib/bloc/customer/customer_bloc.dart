@@ -22,6 +22,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   KeyValue? group;
   KeyValue? name;
   int page = 1;
+
   String search = "";
   CustomerBloc() : super(CustomerInitial()) {
     on<ShowCustomer>(_ShowCustomer);
@@ -116,10 +117,17 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       }
       if (state is CustomerIsLoaded && !event.refresh) {
         CustomerIsLoaded current = state as CustomerIsLoaded;
+
         page = current.page;
         current.IsloadingPage = true;
         emit(
-          CustomerIsLoaded(data: current.data, IsloadingPage: true),
+          CustomerIsLoaded(
+            data: current.data,
+            IsloadingPage: true,
+            hasMore: current.hasMore,
+            page: current.page,
+            total: current.total,
+          ),
         );
       } else {
         if (event.refresh) {
@@ -132,16 +140,17 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
       if (event.nearby != null) {
         result = await FetchData(data: Data.customer).FINDALL(
-          page: event.refresh ? 1 : page,
-          nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},0]",
-          filters: event.filters,
-          search: event.search,
-        );
+            page: event.refresh ? 1 : page,
+            nearby: "&nearby=[${event.nearby!.lat},${event.nearby!.lng},0]",
+            filters: event.filters,
+            search: event.search,
+            limit: 10);
       } else {
         result = await FetchData(data: Data.customer).FINDALL(
           page: event.refresh ? 1 : page,
           filters: event.filters,
           search: event.search,
+          limit: 10,
         );
       }
 
