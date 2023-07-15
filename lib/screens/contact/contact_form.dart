@@ -120,6 +120,8 @@ class _ContactFormState extends State<ContactForm> {
                         const SizedBox(height: 10),
                         TextField(
                           controller: picC,
+                          autofocus: true,
+                          textInputAction: TextInputAction.next,
                           // enabled: (VisitC.status.value == "0" ||
                           //     VisitC.status.value == "1"),
                           autocorrect: false,
@@ -153,6 +155,7 @@ class _ContactFormState extends State<ContactForm> {
                         const SizedBox(height: 10),
                         TextField(
                           controller: phonC,
+                          textInputAction: TextInputAction.done,
                           keyboardType: TextInputType.number,
                           autocorrect: false,
                           enableSuggestions: false,
@@ -247,6 +250,7 @@ class _ContactFormState extends State<ContactForm> {
             child: Column(
               children: [
                 TextField(
+                  autofocus: true,
                   controller: searchContactC,
                   onChanged: (changed) async {
                     bloc.add(ContactFilterPhone(filter: changed));
