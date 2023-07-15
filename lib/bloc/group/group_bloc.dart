@@ -44,6 +44,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         page: event.getRefresh ? 1 : page,
         filters: event.filters ?? [],
         search: event.search,
+        limit: 10,
       );
 
       if (getData['status'] == 200) {
@@ -70,7 +71,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         Fluttertoast.showToast(
           msg: getData['msg'],
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.grey[800],
           textColor: Colors.white,
         );

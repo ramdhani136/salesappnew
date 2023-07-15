@@ -410,17 +410,17 @@ class FieldInfiniteScroll extends StatelessWidget {
                                         ),
                                         Visibility(
                                           visible: bloc.pageLoading,
-                                          child: Align(
+                                          child: const Align(
                                             alignment: Alignment.bottomCenter,
                                             child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 10),
+                                              padding:
+                                                  EdgeInsets.only(bottom: 10),
                                               child: SizedBox(
                                                 width: 10,
                                                 height: 10,
                                                 child:
                                                     CircularProgressIndicator(
-                                                  color: Colors.grey[300],
+                                                  color: Colors.amber,
                                                   strokeWidth: 2,
                                                 ),
                                               ),

@@ -145,7 +145,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
@@ -217,7 +217,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
@@ -252,7 +252,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.grey[800],
         textColor: Colors.white,
       );
@@ -403,7 +403,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         Fluttertoast.showToast(
           msg: getData['msg'],
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.grey[800],
           textColor: Colors.white,
         );
@@ -421,9 +421,23 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             pageLoading: false,
           ),
         );
+        Fluttertoast.showToast(
+          msg: getData['msg'].toString(),
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
       }
     } catch (e) {
       emit(IsFailure(e.toString()));
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
     }
   }
 
