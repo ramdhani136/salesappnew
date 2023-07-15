@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers, non_constant_identifier_names
+// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,10 @@ class VisitModalInsert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VisitBloc thisBloc = VisitBloc();
-    GroupBloc groupBloc = GroupBloc();
+    GroupBloc groupBloc = GroupBloc()
+      ..add(
+        GroupGetData(getRefresh: true),
+      );
     CustomerBloc customerBloc = CustomerBloc();
     TextEditingController namingC = TextEditingController();
     FieldInfiniteBloc groupFieldBloc = FieldInfiniteBloc();
@@ -41,6 +44,16 @@ class VisitModalInsert extends StatelessWidget {
           ),
         );
       }
+    }
+
+    void _GroupOnSearch(String searchText) {
+      groupBloc.add(GroupChangeSearch(searchText));
+      groupBloc.add(
+        GroupGetData(
+          getRefresh: true,
+          search: searchText,
+        ),
+      );
     }
 
     // void _onSearchGroup(String searchText) {
@@ -146,10 +159,7 @@ class VisitModalInsert extends StatelessWidget {
                               ],
                             ),
                             BlocBuilder<GroupBloc, GroupState>(
-                              bloc: groupBloc
-                                ..add(
-                                  GroupGetData(getRefresh: false),
-                                ),
+                              bloc: groupBloc,
                               builder: (context, stateGroup) {
                                 List<FieldInfiniteData> data = [];
                                 if (stateGroup is GroupIsLoaded) {
@@ -165,7 +175,11 @@ class VisitModalInsert extends StatelessWidget {
                                       nestedData.expand((set) => set).toList();
 
                                   groupFieldBloc.add(
-                                    FieldInfiniteSetData(data: data),
+                                    FieldInfiniteSetData(
+                                      data: data,
+                                      pageLoading: stateGroup.pageLoading,
+                                      hasMore: stateGroup.hasMore,
+                                    ),
                                   );
 
                                   if (data.length == 1) {
@@ -197,7 +211,34 @@ class VisitModalInsert extends StatelessWidget {
                                 }
 
                                 return FieldInfiniteScroll(
+                                  onScroll: () {
+                                    groupBloc.add(
+                                      GroupGetData(
+                                        getRefresh: false,
+                                        search: customerBloc.search,
+                                      ),
+                                    );
+                                  },
+                                  controller: TextEditingController(
+                                    text: groupBloc.search,
+                                  ),
                                   bloc: groupFieldBloc,
+                                  onSearch: FieldInfiniteOnSearch(
+                                    action: (e) {
+                                      _GroupOnSearch(e);
+                                    },
+                                    // widget: CustomerFormScreen(
+                                    //   bloc: customerBloc,
+                                    //   group: thisBloc.group,
+                                    // ),
+                                  ),
+                                  onRefresh: () {
+                                    groupBloc.add(
+                                      GroupGetData(
+                                        search: groupBloc.search,
+                                      ),
+                                    );
+                                  },
                                   onTap: () {
                                     groupBloc.add(
                                       GroupGetData(
@@ -236,6 +277,14 @@ class VisitModalInsert extends StatelessWidget {
                                       VisitResetForm(
                                         group: true,
                                         customer: true,
+                                      ),
+                                    );
+                                  },
+                                  onRefreshReset: () {
+                                    thisBloc.search = "";
+                                    groupBloc.add(
+                                      GroupGetData(
+                                        search: "",
                                       ),
                                     );
                                   },

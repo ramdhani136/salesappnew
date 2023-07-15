@@ -22,8 +22,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   KeyValue? group;
   KeyValue? name;
   int page = 1;
-
   String search = "";
+
   CustomerBloc() : super(CustomerInitial()) {
     on<ShowCustomer>(_ShowCustomer);
     on<CustomerInsert>(_InsertData);

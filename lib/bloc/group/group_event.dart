@@ -5,10 +5,18 @@ part of 'group_bloc.dart';
 abstract class GroupEvent {}
 
 class GroupGetData extends GroupEvent {
+  List<List<String>>? filters;
   bool getRefresh;
   String search;
   GroupGetData({
     this.getRefresh = true,
     this.search = "",
+    this.filters,
   });
+}
+
+class GroupChangeSearch extends GroupEvent {
+  String search = "";
+
+  GroupChangeSearch(this.search);
 }

@@ -15,10 +15,15 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   String search = "";
   GroupBloc() : super(GroupInitial()) {
     on<GroupGetData>(_GetAllData);
+    on<GroupChangeSearch>((event, emit) async {
+      search = event.search;
+    });
   }
 
   Future<void> _GetAllData(GroupGetData event, Emitter<GroupState> emit) async {
     try {
+      search = event.search;
+
       if (event.getRefresh) {
         emit(GroupIsLoading());
         EasyLoading.show(status: 'loading...');
@@ -36,15 +41,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
       Map<String, dynamic> getData =
           await FetchData(data: Data.customergroup).FINDALL(
-              page: event.getRefresh ? 1 : page,
-              filters: [
-                // [
-                //   "status",
-                //   "=",
-                //   "${event.status}",
-                // ]
-              ],
-              search: event.search);
+        page: event.getRefresh ? 1 : page,
+        filters: event.filters ?? [],
+        search: event.search,
+      );
 
       if (getData['status'] == 200) {
         page = getData['nextPage'];
