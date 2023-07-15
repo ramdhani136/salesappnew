@@ -246,7 +246,6 @@ class FieldInfiniteScroll extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       TextField(
-                        textCapitalization: TextCapitalization.words,
                         onChanged: (e) {
                           if (onSearch != null) {
                             debounceTimer?.cancel();

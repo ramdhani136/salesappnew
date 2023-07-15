@@ -153,7 +153,6 @@ class FormVisitNote extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
-                            textCapitalization: TextCapitalization.words,
                             enabled: status == "0",
                             controller: noteC,
                             keyboardType: TextInputType.multiline,
@@ -380,7 +379,6 @@ class ListVisitTags extends StatelessWidget {
           bloc: bloc,
           builder: (context, state) {
             return TextField(
-              textCapitalization: TextCapitalization.words,
               onChanged: (e) {
                 debounceTimer?.cancel();
                 debounceTimer = Timer(
