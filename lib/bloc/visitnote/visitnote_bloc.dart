@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/models/visitnotes_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -202,12 +203,15 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
         isLoading: false,
       ));
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: e.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.grey[800],
-        textColor: Colors.white,
+      Get.defaultDialog(
+        title: 'Error',
+        content: Text(e.toString()),
+
+        // textConfirm: 'OK',
+        // confirmTextColor: Colors.white,
+        // onConfirm: () {
+        //   Get.back();
+        // },
       );
       emit(
         VisitNoteIsFailure(

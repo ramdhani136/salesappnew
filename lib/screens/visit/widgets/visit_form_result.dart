@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
+import 'package:salesappnew/screens/visit/widgets/form_note.dart';
 
 class VisitFormResult extends StatelessWidget {
   String visitId;
@@ -109,18 +109,8 @@ class VisitFormResult extends StatelessWidget {
                                       );
                                     },
                                     onTap: () {
-                                      // FormVisitNote(
-                                      //   context: context,
-                                      //   bloc: BlocProvider.of<VisitnoteBloc>(
-                                      //     context,
-                                      //   ),
-                                      //   noteId: state.data[index].id,
-                                      //   visitId: visitId,
-                                      //   visitBloc:
-                                      //       BlocProvider.of<VisitBloc>(context),
-                                      // );
                                       Navigator.of(context).push(
-                                        MaterialPageRoute<FormVisitNoteNew>(
+                                        MaterialPageRoute<FormNote>(
                                           builder: (_) => MultiBlocProvider(
                                             providers: [
                                               BlocProvider.value(
@@ -133,7 +123,7 @@ class VisitFormResult extends StatelessWidget {
                                                         context),
                                               ),
                                             ],
-                                            child: FormVisitNoteNew(
+                                            child: FormNote(
                                               visitId: visitId,
                                               noteId: state.data[index].id,
                                             ),
@@ -358,7 +348,7 @@ class VisitFormResult extends StatelessWidget {
                     child: FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute<FormVisitNoteNew>(
+                          MaterialPageRoute<FormNote>(
                             builder: (_) => MultiBlocProvider(
                               providers: [
                                 BlocProvider.value(
@@ -369,7 +359,7 @@ class VisitFormResult extends StatelessWidget {
                                   value: BlocProvider.of<VisitBloc>(context),
                                 ),
                               ],
-                              child: FormVisitNoteNew(visitId: state.data.id!),
+                              child: FormNote(visitId: state.data.id!),
                             ),
                           ),
                         );
@@ -383,17 +373,6 @@ class VisitFormResult extends StatelessWidget {
               return Container();
             },
           ),
-        )
-
-        // return const Center(
-        //   child: Text(
-        //     "No data",
-        //     style: TextStyle(
-        //       color: Colors.grey,
-        //     ),
-        //   ),
-        // );
-
-        );
+        ));
   }
 }

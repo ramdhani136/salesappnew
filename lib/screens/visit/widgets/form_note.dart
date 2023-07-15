@@ -7,10 +7,10 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 
-class FormVisitNoteNew extends StatelessWidget {
+class FormNote extends StatelessWidget {
   String? noteId;
   String visitId;
-  FormVisitNoteNew({super.key, this.noteId, required this.visitId});
+  FormNote({super.key, this.noteId, required this.visitId});
 
   @override
   Widget build(BuildContext context) {
@@ -139,41 +139,64 @@ class FormVisitNoteNew extends StatelessWidget {
                                 color: Color.fromARGB(255, 23, 22, 22)),
                           ),
                         ),
-                        const Text(
-                          "Tags :",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Tags :",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Visibility(
+                              visible: status == "0",
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    const Color.fromARGB(255, 61, 153, 64),
+                                  ),
+                                ),
+                                child: const Text("Add"),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 5,
                         ),
-                        Container(
-                          width: Get.width,
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            right: 10,
-                            top: 10,
-                            bottom: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                          ),
-                          child: Wrap(
-                            children: tags.map((e) {
-                              return ElevatedButton.icon(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green[
-                                      800], // Warna latar belakang tombol
-                                ),
-                                icon: const Icon(
-                                  Icons.clear,
-                                  size: 16,
-                                ),
-                                label: Text(e['name']),
-                              );
-                            }).toList(),
+                        Visibility(
+                          visible: tags.isNotEmpty,
+                          child: Container(
+                            width: Get.width,
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              top: 10,
+                              bottom: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                            ),
+                            child: Wrap(
+                              children: tags.map(
+                                (e) {
+                                  return ElevatedButton.icon(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green[
+                                          800], // Warna latar belakang tombol
+                                    ),
+                                    icon: const Icon(
+                                      Icons.clear,
+                                      size: 16,
+                                    ),
+                                    label: Text(e['name']),
+                                  );
+                                },
+                              ).toList(),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -183,10 +206,12 @@ class FormVisitNoteNew extends StatelessWidget {
                     ),
                   ),
                   floatingActionButton: Visibility(
-                      visible: status == "0",
+                    visible: status == "0",
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
                       child: SizedBox(
-                        height: 250.0,
-                        width: 60.0,
+                        height: 70.0,
+                        width: 70.0,
                         child: FloatingActionButton(
                           onPressed: () {
                             if (noteId != null) {
@@ -211,7 +236,9 @@ class FormVisitNoteNew extends StatelessWidget {
                           backgroundColor: Colors.grey[850],
                           child: const Icon(Icons.save),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 );
               });
         },
