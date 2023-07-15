@@ -1,16 +1,19 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 
-class FormNote extends StatelessWidget {
+class FormVisitNote extends StatelessWidget {
   String? noteId;
   String visitId;
-  FormNote({super.key, this.noteId, required this.visitId});
+  FormVisitNote({super.key, this.noteId, required this.visitId});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +22,47 @@ class FormNote extends StatelessWidget {
     List tags = [];
     VisitnoteBloc bloc = BlocProvider.of<VisitnoteBloc>(context);
     VisitnoteBloc vBloc = VisitnoteBloc();
+
+    void _showListTags(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.all(
+                0), // Menghapus padding inset bawaan dialog
+            child: Container(
+              width: Get.width - 20,
+              height: Get.height - 50,
+              padding:
+                  const EdgeInsets.all(20), // Mengambil lebar layar perangkat
+              child: ListTags(),
+            ),
+          );
+        },
+      );
+    }
+
+    void formTags(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.all(
+                0), // Menghapus padding inset bawaan dialog
+            child: Container(
+              width: Get.width - 50,
+              padding:
+                  const EdgeInsets.all(20), // Mengambil lebar layar perangkat
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [],
+              ),
+            ),
+          );
+        },
+      );
+    }
 
     return WillPopScope(
       onWillPop: () async {
@@ -112,6 +156,7 @@ class FormNote extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          autofocus: true,
                           enabled: status == "0",
                           controller: titleC,
                           keyboardType: TextInputType.multiline,
@@ -120,6 +165,7 @@ class FormNote extends StatelessWidget {
                             // border: InputBorder.none,
                             hintText: 'Title',
                           ),
+                          textInputAction: TextInputAction.next,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold, //
                             color: Colors.black,
@@ -131,6 +177,7 @@ class FormNote extends StatelessWidget {
                             controller: noteC,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
+                            textInputAction: TextInputAction.done,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Notes Content',
@@ -145,13 +192,15 @@ class FormNote extends StatelessWidget {
                             const Text(
                               "Tags :",
                               style: TextStyle(
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             Visibility(
                               visible: status == "0",
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showListTags(context);
+                                },
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -243,6 +292,196 @@ class FormNote extends StatelessWidget {
               });
         },
       ),
+    );
+  }
+}
+
+class ListTags extends StatelessWidget {
+  const ListTags({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    TagsBloc bloc = TagsBloc()
+      ..add(
+        TagGetAll(),
+      );
+
+    TextEditingController searchC = TextEditingController();
+
+    Timer? debounceTimer;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              // titleModal ?? "",
+              "Tag List",
+              style: TextStyle(
+                color: Color.fromARGB(255, 66, 66, 66),
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.close),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        BlocBuilder<TagsBloc, TagsState>(
+          bloc: bloc,
+          builder: (context, state) {
+            return TextField(
+              onChanged: (e) {
+                debounceTimer?.cancel();
+                debounceTimer = Timer(
+                  const Duration(milliseconds: 40),
+                  () {
+                    bloc.add(TagChangeSearch(e));
+                    bloc.add(
+                      TagGetAll(search: e),
+                    );
+                  },
+                );
+              },
+              autofocus: true,
+              controller: searchC,
+              autocorrect: false,
+              enableSuggestions: false,
+              decoration: InputDecoration(
+                suffixIcon: Visibility(
+                  visible: bloc.search != "",
+                  child: IconButton(
+                    onPressed: () async {
+                      searchC.text = "";
+                      bloc.add(
+                        TagChangeSearch(""),
+                      );
+                      bloc.add(
+                        TagGetAll(),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                hintStyle: TextStyle(color: Colors.grey[300]),
+                hintText: "Search",
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.blue, // Warna border yang diinginkan
+                    width: 1.0, // Ketebalan border
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    4,
+                  ), // Sudut melengkung pada border
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent) {}
+              return false;
+            },
+            child: RefreshIndicator(
+              onRefresh: () async {},
+              child: BlocBuilder<TagsBloc, TagsState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  if (state is TagsIsLoaded) {
+                    return Stack(
+                      children: [
+                        ListView.builder(
+                            itemCount: state.data.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {
+                                  //
+                                },
+                                title: Text(state.data[index]['name']),
+                              );
+                            }),
+                        Visibility(
+                          visible: state.pageLoading,
+                          child: const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: CircularProgressIndicator(
+                                  color: Colors.amber,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  if (state is tagsIsFailure) {
+                    return Center(
+                      child: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              state.error,
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Visibility(
+                              visible: state.error == "Data Not found!",
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 57,
+                                      156, 60), // Mengatur warna latar belakang
+                                ),
+                                child: Text(
+                                  "Create New",
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

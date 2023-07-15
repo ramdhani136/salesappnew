@@ -56,25 +56,6 @@ class VisitModalInsert extends StatelessWidget {
       );
     }
 
-    // void _onSearchGroup(String searchText) {
-    //   customerBloc.add(CustomerChangeSearch(searchText));
-    //   _debounceTimer?.cancel();
-    //   _debounceTimer = Timer(
-    //     const Duration(milliseconds: 30),
-    //     () {
-    //       customerBloc.add(
-    //         GetAllCustomer(
-    //           refresh: true,
-    //           search: searchText,
-    //           filters: [
-    //             ["customerGroup", "=", thisBloc.group!.value]
-    //           ],
-    //         ),
-    //       );
-    //     },
-    //   );
-    // }
-
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.15,
