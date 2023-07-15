@@ -399,7 +399,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             pageLoading: false,
           ),
         );
-      } else if (getData['status'] == 403) {
+      } else if (getData['status'] == 403 || getData['status'] == 401) {
         Fluttertoast.showToast(
           msg: getData['msg'],
           toastLength: Toast.LENGTH_LONG,
@@ -420,13 +420,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             total: 0,
             pageLoading: false,
           ),
-        );
-        Fluttertoast.showToast(
-          msg: getData['msg'].toString(),
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.grey[800],
-          textColor: Colors.white,
         );
       }
     } catch (e) {
