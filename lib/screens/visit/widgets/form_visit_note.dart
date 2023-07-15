@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names
 
 import 'dart:async';
 
@@ -9,6 +9,7 @@ import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 
 class FormVisitNote extends StatelessWidget {
   String? noteId;
@@ -35,29 +36,7 @@ class FormVisitNote extends StatelessWidget {
               height: Get.height - 50,
               padding:
                   const EdgeInsets.all(20), // Mengambil lebar layar perangkat
-              child: ListTags(),
-            ),
-          );
-        },
-      );
-    }
-
-    void formTags(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            insetPadding: const EdgeInsets.all(
-                0), // Menghapus padding inset bawaan dialog
-            child: Container(
-              width: Get.width - 50,
-              padding:
-                  const EdgeInsets.all(20), // Mengambil lebar layar perangkat
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [],
-              ),
+              child: const ListVisitTags(),
             ),
           );
         },
@@ -156,6 +135,7 @@ class FormVisitNote extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          textCapitalization: TextCapitalization.words,
                           autofocus: true,
                           enabled: status == "0",
                           controller: titleC,
@@ -173,6 +153,7 @@ class FormVisitNote extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
+                            textCapitalization: TextCapitalization.words,
                             enabled: status == "0",
                             controller: noteC,
                             keyboardType: TextInputType.multiline,
@@ -296,8 +277,49 @@ class FormVisitNote extends StatelessWidget {
   }
 }
 
-class ListTags extends StatelessWidget {
-  const ListTags({
+class FormVisitTag extends StatelessWidget {
+  TagsBloc bloc = TagsBloc();
+  FormVisitTag({
+    super.key,
+    required this.bloc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController nameC = TextEditingController(text: bloc.search);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomField(
+          controller: nameC,
+          type: Type.standard,
+          title: "Name",
+          placeholder: "Tag name",
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(
+                  255, 57, 156, 60), // Mengatur warna latar belakang
+            ),
+            child: const Text(
+              "Save",
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ListVisitTags extends StatelessWidget {
+  const ListVisitTags({
     super.key,
   });
 
@@ -312,6 +334,24 @@ class ListTags extends StatelessWidget {
 
     Timer? debounceTimer;
 
+    void ShowformTags(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.all(
+                0), // Menghapus padding inset bawaan dialog
+            child: Container(
+              width: Get.width - 50,
+              padding:
+                  const EdgeInsets.all(20), // Mengambil lebar layar perangkat
+              child: FormVisitTag(bloc: bloc),
+            ),
+          );
+        },
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +360,6 @@ class ListTags extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              // titleModal ?? "",
               "Tag List",
               style: TextStyle(
                 color: Color.fromARGB(255, 66, 66, 66),
@@ -341,6 +380,7 @@ class ListTags extends StatelessWidget {
           bloc: bloc,
           builder: (context, state) {
             return TextField(
+              textCapitalization: TextCapitalization.words,
               onChanged: (e) {
                 debounceTimer?.cancel();
                 debounceTimer = Timer(
@@ -460,12 +500,14 @@ class ListTags extends StatelessWidget {
                             Visibility(
                               visible: state.error == "Data Not found!",
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ShowformTags(context);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(255, 57,
                                       156, 60), // Mengatur warna latar belakang
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "Create New",
                                 ),
                               ),

@@ -117,6 +117,7 @@ class _CustomFieldState extends State<CustomField> {
                     child: const Center(child: CircularProgressIndicator()));
               },
               textFieldConfiguration: TextFieldConfiguration(
+                textCapitalization: TextCapitalization.words,
                 style: TextStyle(
                   fontSize: 16, // Ubah ukuran font sesuai kebutuhan
                   color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
@@ -203,6 +204,7 @@ class _CustomFieldState extends State<CustomField> {
               if (!widget.disabled) {}
             },
             child: TextField(
+              textCapitalization: TextCapitalization.words,
               textInputAction: widget.textInputAction,
               controller: widget.controller,
               onChanged: (value) {
