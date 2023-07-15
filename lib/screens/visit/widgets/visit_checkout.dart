@@ -94,7 +94,7 @@ class VisitCheckOut extends StatelessWidget {
                               ),
                               bearing: 192.8334901395799,
                               tilt: 59.440717697143555,
-                              zoom: 18.151926040649414),
+                              zoom: 30.151926040649414),
                           onMapCreated: (GoogleMapController controller) {
                             controller0.complete(controller);
                           },
@@ -156,7 +156,7 @@ class VisitCheckOut extends StatelessWidget {
                                           ),
                                           bearing: 192.8334901395799,
                                           tilt: 59.440717697143555,
-                                          zoom: 18.151926040649414),
+                                          zoom: 30.151926040649414),
                                     ),
                                   );
                                 },
