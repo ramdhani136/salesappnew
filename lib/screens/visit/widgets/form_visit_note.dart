@@ -302,7 +302,11 @@ class FormVisitTag extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              bloc.add(
+                TagInsert(data: {"name": nameC.text}),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(
                   255, 57, 156, 60), // Mengatur warna latar belakang

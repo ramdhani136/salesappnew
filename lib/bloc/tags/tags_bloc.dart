@@ -1,7 +1,13 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/repositories/tags_repository.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 
 part 'tags_event.dart';
 part 'tags_state.dart';
@@ -14,6 +20,7 @@ class TagsBloc extends Bloc<TagsEvent, TagsState> {
       search = event.search;
     });
     on<TagGetAll>(_GetAllData);
+    on<TagInsert>(_InsertData);
   }
 
   Future<void> _GetAllData(
@@ -80,6 +87,28 @@ class TagsBloc extends Bloc<TagsEvent, TagsState> {
         tagsIsFailure(
           error: e.toString(),
         ),
+      );
+    }
+  }
+
+  Future<void> _InsertData(
+    TagInsert event,
+    Emitter<TagsState> emit,
+  ) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      emit(TagsIsLoading());
+      dynamic result = await FetchData(data: Data.tag).ADD(event.data);
+      if (result['status'] != 200) {
+        throw result['msg'];
+      }
+      Get.back();
+      add(TagGetAll(search: search));
+    } catch (e) {
+      EasyLoading.dismiss();
+      Get.defaultDialog(
+        title: 'Error',
+        content: Text(e.toString()),
       );
     }
   }
