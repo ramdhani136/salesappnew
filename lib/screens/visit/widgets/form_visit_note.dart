@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 
@@ -473,23 +474,41 @@ class ListVisitTags extends StatelessWidget {
               return false;
             },
             child: RefreshIndicator(
-              onRefresh: () async {},
+              onRefresh: () async {
+                bloc.add(
+                  TagGetAll(
+                    search: bloc.search,
+                  ),
+                );
+              },
               child: BlocBuilder<TagsBloc, TagsState>(
                 bloc: bloc,
                 builder: (context, state) {
                   if (state is TagsIsLoaded) {
                     return Stack(
                       children: [
-                        ListView.builder(
-                            itemCount: state.data.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  //
-                                },
-                                title: Text(state.data[index]['name']),
-                              );
-                            }),
+                        BlocBuilder<VisitnoteBloc, VisitnoteState>(
+                          bloc: vnotBloc,
+                          builder: (context, statevn) {
+                            return ListView.builder(
+                                itemCount: state.data.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      vnotBloc.add(
+                                        VisitNoteSetTags(
+                                          tag: KeyValue(
+                                            name: state.data[index]['name'],
+                                            value: state.data[index]['_id'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    title: Text(state.data[index]['name']),
+                                  );
+                                });
+                          },
+                        ),
                         Visibility(
                           visible: state.pageLoading,
                           child: const Align(

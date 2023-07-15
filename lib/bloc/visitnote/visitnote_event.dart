@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 
 part of 'visitnote_bloc.dart';
@@ -43,5 +44,12 @@ class InsertVisitNote extends VisitnoteEvent {
   Map<String, dynamic> data;
   InsertVisitNote({
     required this.data,
+  });
+}
+
+class VisitNoteSetTags extends VisitnoteEvent {
+  KeyValue tag;
+  VisitNoteSetTags({
+    required this.tag,
   });
 }

@@ -30,6 +30,11 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     on<InsertVisitNote>(
       (event, emit) => _InsertData(event, emit, state),
     );
+    on<VisitNoteSetTags>(
+      (event, emit) {
+        print(tags);
+      },
+    );
   }
 
   Future<void> _GetData(
