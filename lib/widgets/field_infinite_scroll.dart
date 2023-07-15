@@ -250,7 +250,7 @@ class FieldInfiniteScroll extends StatelessWidget {
                           if (onSearch != null) {
                             debounceTimer?.cancel();
                             debounceTimer = Timer(
-                              const Duration(milliseconds: 30),
+                              const Duration(seconds: 1),
                               () {
                                 onSearch!.action(e);
                               },
