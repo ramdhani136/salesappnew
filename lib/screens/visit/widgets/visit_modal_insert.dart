@@ -276,6 +276,7 @@ class VisitModalInsert extends StatelessWidget {
                                       customerFieldBloc.add(
                                         FieldInfiniteSetData(
                                           data: data,
+                                          pageLoading: stateCust.IsloadingPage,
                                           hasMore: stateCust.hasMore,
                                         ),
                                       );
@@ -326,6 +327,20 @@ class VisitModalInsert extends StatelessWidget {
                                         ),
                                       ),
                                       disabled: thisBloc.group == null,
+                                      onRefresh: () {
+                                        customerBloc.add(
+                                          GetAllCustomer(
+                                            filters: [
+                                              [
+                                                "customerGroup",
+                                                "=",
+                                                thisBloc.group?.value ?? ""
+                                              ]
+                                            ],
+                                            search: customerBloc.search,
+                                          ),
+                                        );
+                                      },
                                       onTap: () {
                                         if (thisBloc.group != null) {
                                           customerBloc.add(
@@ -355,6 +370,21 @@ class VisitModalInsert extends StatelessWidget {
                                       onReset: () {
                                         thisBloc.add(
                                           VisitResetForm(customer: true),
+                                        );
+                                      },
+                                      onRefreshReset: () {
+                                        thisBloc.search = "";
+                                        customerBloc.add(
+                                          GetAllCustomer(
+                                            filters: [
+                                              [
+                                                "customerGroup",
+                                                "=",
+                                                thisBloc.group?.value ?? ""
+                                              ]
+                                            ],
+                                            search: "",
+                                          ),
                                         );
                                       },
                                       placeholder: "Select Customer",

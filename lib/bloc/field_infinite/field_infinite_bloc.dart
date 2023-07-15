@@ -11,6 +11,7 @@ class FieldInfiniteBloc extends Bloc<FieldInfiniteEvent, FieldInfiniteState> {
   List<FieldInfiniteData> data = [];
   bool isLoading = false;
   bool hasMore = false;
+  bool pageLoading = false;
 
   FieldInfiniteBloc() : super(FieldInfiniteInitial()) {
     on<FieldInfiniteSetData>((event, emit) {
@@ -19,6 +20,9 @@ class FieldInfiniteBloc extends Bloc<FieldInfiniteEvent, FieldInfiniteState> {
       }
       if (event.hasMore != null) {
         hasMore = event.hasMore!;
+      }
+      if (event.pageLoading != null) {
+        pageLoading = event.pageLoading!;
       }
 
       emit(FieldInfiniteInitial());

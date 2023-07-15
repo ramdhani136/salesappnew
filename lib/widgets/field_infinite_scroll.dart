@@ -13,12 +13,14 @@ class FieldInfiniteScroll extends StatelessWidget {
   String? placeholderModal;
   bool valid;
   String? title;
+  Function? onRefreshReset;
   String? titleModal;
   bool disabled;
   Function? onChange;
   Function? onScroll;
   Function? onReset;
   Function? onTap;
+  Function? onRefresh;
   bool mandatory;
   Function? InsertAction;
   FieldInfiniteBloc bloc;
@@ -31,6 +33,8 @@ class FieldInfiniteScroll extends StatelessWidget {
     this.controller,
     this.disabled = false,
     this.onChange,
+    this.onRefresh,
+    this.onRefreshReset,
     this.InsertAction,
     this.onScroll,
     this.onSearch,
@@ -257,6 +261,25 @@ class FieldInfiniteScroll extends StatelessWidget {
                         autocorrect: false,
                         enableSuggestions: false,
                         decoration: InputDecoration(
+                          suffixIcon: Visibility(
+                            visible: !disabled,
+                            child: IconButton(
+                              onPressed: () async {
+                                if (!disabled) {
+                                  if (controller != null) {
+                                    controller!.text = "";
+                                    if (onRefreshReset != null) {
+                                      onRefreshReset!();
+                                    }
+                                  }
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                size: 20,
+                              ),
+                            ),
+                          ),
                           hintStyle: TextStyle(color: Colors.grey[300]),
                           hintText: placeholderModal ?? "Search",
                           contentPadding:
@@ -293,88 +316,123 @@ class FieldInfiniteScroll extends StatelessWidget {
                             }
                             return false;
                           },
-                          child: Column(
-                            children: [
-                              Visibility(
-                                visible: bloc.isLoading,
-                                child: Expanded(child: Container()),
-                              ),
-                              Visibility(
-                                visible: bloc.data.isEmpty && !bloc.isLoading,
-                                child: Expanded(
-                                  child: Center(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Data not found",
-                                          style: TextStyle(
-                                            color: Colors.grey[400],
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              if (onRefresh != null) {
+                                onRefresh!();
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Visibility(
+                                  visible: bloc.isLoading,
+                                  child: Expanded(child: Container()),
+                                ),
+                                Visibility(
+                                  visible: bloc.data.isEmpty && !bloc.isLoading,
+                                  child: Expanded(
+                                    child: Center(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Data not found",
+                                            style: TextStyle(
+                                              color: Colors.grey[400],
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Visibility(
+                                            visible: onSearch?.widget != null,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                if (onSearch?.widget != null) {
+                                                  _showCustomModal(context);
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color
+                                                        .fromARGB(255, 57, 156,
+                                                    60), // Mengatur warna latar belakang
+                                              ),
+                                              child: Text(
+                                                onSearch?.label ?? "Create New",
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: !bloc.isLoading,
+                                  child: Expanded(
+                                    child: Stack(
+                                      children: [
+                                        ListView.builder(
+                                          itemCount: bloc.data.length,
+                                          itemBuilder: (context, index) {
+                                            if (bloc.data[index].subTitle !=
+                                                null) {
+                                              return ListTile(
+                                                onTap: () {
+                                                  if (onChange != null) {
+                                                    onChange!(
+                                                        bloc.data[index].value);
+                                                  }
+                                                  Get.back();
+                                                },
+                                                title: Text(
+                                                    bloc.data[index].title),
+                                                subtitle: Text(
+                                                    bloc.data[index].subTitle!),
+                                              );
+                                            } else {
+                                              return ListTile(
+                                                onTap: () {
+                                                  if (onChange != null) {
+                                                    onChange!(
+                                                        bloc.data[index].value);
+                                                  }
+                                                  Get.back();
+                                                },
+                                                title: Text(
+                                                    bloc.data[index].title),
+                                              );
+                                            }
+                                          },
                                         ),
                                         Visibility(
-                                          visible: onSearch?.widget != null,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              if (onSearch?.widget != null) {
-                                                _showCustomModal(context);
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: const Color
-                                                      .fromARGB(255, 57, 156,
-                                                  60), // Mengatur warna latar belakang
-                                            ),
-                                            child: Text(
-                                              onSearch?.label ?? "Create New",
+                                          visible: bloc.pageLoading,
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.grey[300],
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
-                              ),
-                              Visibility(
-                                visible: !bloc.isLoading,
-                                child: Expanded(
-                                  child: ListView.builder(
-                                    itemCount: bloc.data.length,
-                                    itemBuilder: (context, index) {
-                                      if (bloc.data[index].subTitle != null) {
-                                        return ListTile(
-                                          onTap: () {
-                                            if (onChange != null) {
-                                              onChange!(bloc.data[index].value);
-                                            }
-                                            Get.back();
-                                          },
-                                          title: Text(bloc.data[index].title),
-                                          subtitle:
-                                              Text(bloc.data[index].subTitle!),
-                                        );
-                                      } else {
-                                        return ListTile(
-                                          onTap: () {
-                                            if (onChange != null) {
-                                              onChange!(bloc.data[index].value);
-                                            }
-                                            Get.back();
-                                          },
-                                          title: Text(bloc.data[index].title),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
