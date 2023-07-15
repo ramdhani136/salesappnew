@@ -112,6 +112,7 @@ class VisitModalInsert extends StatelessWidget {
                             Column(
                               children: [
                                 CustomField(
+                                  textInputAction: TextInputAction.next,
                                   placeholder: "Cth : VST2020MMDD",
                                   mandatory: true,
                                   // disabled: state.data.status != "0",

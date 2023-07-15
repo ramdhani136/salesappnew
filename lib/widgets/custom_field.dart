@@ -18,6 +18,7 @@ class CustomField extends StatefulWidget {
   bool mandatory;
   bool loading;
   Function? InsertAction;
+  TextInputAction? textInputAction;
 
   TextEditingController controller = TextEditingController();
 
@@ -25,6 +26,7 @@ class CustomField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.type,
+    this.textInputAction = TextInputAction.done,
     this.disabled = false,
     this.onChange,
     this.InsertAction,
@@ -119,6 +121,7 @@ class _CustomFieldState extends State<CustomField> {
                   fontSize: 16, // Ubah ukuran font sesuai kebutuhan
                   color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
                 ),
+                textInputAction: widget.textInputAction,
                 decoration: InputDecoration(
                   suffixIcon: Visibility(
                     visible: !widget.disabled,
@@ -200,6 +203,7 @@ class _CustomFieldState extends State<CustomField> {
               if (!widget.disabled) {}
             },
             child: TextField(
+              textInputAction: widget.textInputAction,
               controller: widget.controller,
               onChanged: (value) {
                 if (widget.onChange != null && !widget.disabled) {
