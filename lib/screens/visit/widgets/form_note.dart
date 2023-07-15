@@ -173,7 +173,7 @@ class FormNote extends StatelessWidget {
                             padding: const EdgeInsets.only(
                               left: 10,
                               right: 10,
-                              top: 10,
+                              top: 8,
                               bottom: 5,
                             ),
                             decoration: BoxDecoration(
@@ -185,8 +185,8 @@ class FormNote extends StatelessWidget {
                                   return ElevatedButton.icon(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green[
-                                          800], // Warna latar belakang tombol
+                                      backgroundColor: Colors.grey[800],
+                                      minimumSize: const Size(30, 32),
                                     ),
                                     icon: const Icon(
                                       Icons.clear,
@@ -208,10 +208,10 @@ class FormNote extends StatelessWidget {
                   floatingActionButton: Visibility(
                     visible: status == "0",
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
+                      padding: EdgeInsets.only(bottom: tags.isEmpty ? 80 : 150),
                       child: SizedBox(
-                        height: 70.0,
-                        width: 70.0,
+                        height: 65.0,
+                        width: 65.0,
                         child: FloatingActionButton(
                           onPressed: () {
                             if (noteId != null) {
