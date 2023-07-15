@@ -235,6 +235,7 @@ class FormVisitNote extends StatelessWidget {
                               color: Colors.grey[300],
                             ),
                             child: Wrap(
+                              spacing: 5,
                               children: vBloc.tags.map(
                                 (e) {
                                   return ElevatedButton.icon(
@@ -275,7 +276,10 @@ class FormVisitNote extends StatelessWidget {
                                 id: "$noteId",
                                 data: {
                                   "title": titleC.text,
-                                  "notes": noteC.text
+                                  "notes": noteC.text,
+                                  "tags": vBloc.tags
+                                      .map((item) => item.value)
+                                      .toList(),
                                 },
                               ));
                             } else {
@@ -284,7 +288,9 @@ class FormVisitNote extends StatelessWidget {
                                   "title": titleC.text,
                                   "notes": noteC.text,
                                   "visitId": visitId,
-                                  "tags": const ["648035669c2e5446ae9218f3"],
+                                  "tags": vBloc.tags
+                                      .map((item) => item.value)
+                                      .toList(),
                                 },
                               ));
                             }
@@ -331,7 +337,9 @@ class FormVisitTag extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               bloc.add(
-                TagInsert(data: {"name": nameC.text}),
+                TagInsert(data: {
+                  "name": nameC.text,
+                }),
               );
             },
             style: ElevatedButton.styleFrom(
@@ -503,6 +511,7 @@ class ListVisitTags extends StatelessWidget {
                                           ),
                                         ),
                                       );
+                                      Get.back();
                                     },
                                     title: Text(state.data[index]['name']),
                                   );

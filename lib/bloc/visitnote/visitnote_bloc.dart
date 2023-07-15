@@ -32,7 +32,10 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     );
     on<VisitNoteSetTags>(
       (event, emit) {
-        print(tags);
+        List<KeyValue> newTags = List<KeyValue>.from(tags);
+        newTags.add(event.tag);
+        tags = newTags;
+        emit(VisitnoteInitial());
       },
     );
   }
