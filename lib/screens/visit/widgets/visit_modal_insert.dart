@@ -243,6 +243,7 @@ class VisitModalInsert extends StatelessWidget {
                                     groupBloc.add(
                                       GroupGetData(
                                         getRefresh: true,
+                                        search: groupBloc.search,
                                       ),
                                     );
                                   },
