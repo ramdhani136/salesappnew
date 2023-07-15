@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/visitnotes_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -12,6 +13,7 @@ part 'visitnote_event.dart';
 part 'visitnote_state.dart';
 
 class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
+  List<KeyValue> tags = [];
   VisitnoteBloc() : super(VisitnoteInitial()) {
     on<GetVisitNote>(
       (event, emit) => _GetData(event, emit, state),
@@ -100,9 +102,14 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       if (result['status'] != 200) {
         throw result['msg'];
       }
+      List<dynamic> tagsData = result['data']['tags'];
+      tags = tagsData.map((item) {
+        return KeyValue(name: item['name'], value: item['value']);
+      }).toList();
 
       emit(VisitNoteShow(data: result['data']));
     } catch (e) {
+      print(e);
       emit(
         VisitNoteIsFailure(
           e.toString(),
@@ -126,6 +133,7 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       if (result['status'] != 200) {
         throw result['msg'];
       }
+
       Fluttertoast.showToast(
         msg: "Saved",
         toastLength: Toast.LENGTH_LONG,

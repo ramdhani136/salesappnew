@@ -20,7 +20,7 @@ class FormVisitNote extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController titleC = TextEditingController();
     final TextEditingController noteC = TextEditingController();
-    List tags = [];
+
     VisitnoteBloc bloc = BlocProvider.of<VisitnoteBloc>(context);
     VisitnoteBloc vBloc = VisitnoteBloc();
 
@@ -36,7 +36,7 @@ class FormVisitNote extends StatelessWidget {
               height: Get.height - 50,
               padding:
                   const EdgeInsets.all(20), // Mengambil lebar layar perangkat
-              child: const ListVisitTags(),
+              child: ListVisitTags(vnotBloc: vBloc),
             ),
           );
         },
@@ -75,7 +75,6 @@ class FormVisitNote extends StatelessWidget {
           }
 
           if (state is VisitNoteShow) {
-            tags = state.data['tags'];
             noteId ??= state.data['_id'];
             titleC.text = state.data['title'];
             noteC.text = state.data['notes'];
@@ -117,14 +116,40 @@ class FormVisitNote extends StatelessWidget {
                           ],
                         ),
                         Row(children: [
-                          // IconSearch(),
-                          IconButton(
-                            onPressed: () {},
+                          PopupMenuButton(
+                            padding: const EdgeInsets.all(0),
                             icon: const Icon(
                               Icons.attach_file_rounded,
                               color: Color.fromARGB(255, 121, 8, 14),
                             ),
+                            itemBuilder: (context) {
+                              List<Map<String, dynamic>> choose = [
+                                {'action': 'Attach File'},
+                                {'action': 'Take Photo'},
+                              ];
+                              return choose.map((item) {
+                                return PopupMenuItem(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      Get.back();
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Text(item['action']),
+                                    ),
+                                  ),
+                                );
+                              }).toList();
+                            },
                           ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: const Icon(
+                          //     Icons.attach_file_rounded,
+                          //     color: Color.fromARGB(255, 121, 8, 14),
+                          //   ),
+                          // ),
                         ])
                       ],
                     ),
@@ -196,7 +221,7 @@ class FormVisitNote extends StatelessWidget {
                           height: 5,
                         ),
                         Visibility(
-                          visible: tags.isNotEmpty,
+                          visible: vBloc.tags.isNotEmpty,
                           child: Container(
                             width: Get.width,
                             padding: const EdgeInsets.only(
@@ -209,7 +234,7 @@ class FormVisitNote extends StatelessWidget {
                               color: Colors.grey[300],
                             ),
                             child: Wrap(
-                              children: tags.map(
+                              children: vBloc.tags.map(
                                 (e) {
                                   return ElevatedButton.icon(
                                     onPressed: () {},
@@ -221,7 +246,7 @@ class FormVisitNote extends StatelessWidget {
                                       Icons.clear,
                                       size: 16,
                                     ),
-                                    label: Text(e['name']),
+                                    label: Text(e.name),
                                   );
                                 },
                               ).toList(),
@@ -237,7 +262,8 @@ class FormVisitNote extends StatelessWidget {
                   floatingActionButton: Visibility(
                     visible: status == "0",
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: tags.isEmpty ? 80 : 150),
+                      padding: EdgeInsets.only(
+                          bottom: vBloc.tags.isEmpty ? 80 : 150),
                       child: SizedBox(
                         height: 65.0,
                         width: 65.0,
@@ -322,8 +348,10 @@ class FormVisitTag extends StatelessWidget {
 }
 
 class ListVisitTags extends StatelessWidget {
-  const ListVisitTags({
+  VisitnoteBloc vnotBloc;
+  ListVisitTags({
     super.key,
+    required this.vnotBloc,
   });
 
   @override
