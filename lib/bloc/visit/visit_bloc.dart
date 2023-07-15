@@ -431,13 +431,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       }
     } catch (e) {
       emit(IsFailure(e.toString()));
-      Fluttertoast.showToast(
-        msg: e.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey[800],
-        textColor: Colors.white,
-      );
     }
   }
 
