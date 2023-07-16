@@ -1,0 +1,325 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:get/get.dart';
+import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
+import 'package:salesappnew/bloc/contact/contact_bloc.dart';
+
+class CallsheetContactForm extends StatefulWidget {
+  final ContactBloc contactBloc;
+  final CallsheetIsShowLoaded state;
+
+  const CallsheetContactForm({
+    Key? key,
+    required this.contactBloc,
+    required this.state,
+  }) : super(key: key);
+
+  @override
+  State<CallsheetContactForm> createState() => _CallsheetContactFormState();
+}
+
+class _CallsheetContactFormState extends State<CallsheetContactForm> {
+  TextEditingController customerC = TextEditingController();
+  TextEditingController picC = TextEditingController();
+  TextEditingController phonC = TextEditingController();
+
+  @override
+  void dispose() {
+    // customerC.dispose();
+    // picC.dispose();
+    // phonC.dispose();
+    super.dispose();
+  }
+
+  ContactBloc bloc = ContactBloc();
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: FractionallySizedBox(
+        widthFactor: 1.15,
+        child: Container(
+          width: Get.width * 0.95,
+          height: 450,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Form Contact",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 66, 66, 66),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                BlocBuilder<ContactBloc, ContactState>(
+                  bloc: bloc,
+                  builder: (context, state) {
+                    picC.text = bloc.pic;
+                    phonC.text = bloc.phone;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Customer :",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: customerC,
+                          enabled: false,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey[300]),
+                            hintText: "Cth : CV Jaya Abadi",
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "PIC :",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: picC,
+                          autofocus: true,
+                          textInputAction: TextInputAction.next,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey[300]),
+                            hintText: "Cth : Ilham",
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 10),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Phone :",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: phonC,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
+                          autocorrect: false,
+                          enableSuggestions: false,
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey[300]),
+                            hintText: "Contoh: 089637428874",
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 10),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 1.0,
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () async {
+                                bloc.add(ContactGetPhone());
+                                await getPhoneContact(context);
+                              },
+                              icon: const Icon(
+                                Icons.contact_phone,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: Get.width,
+                  height: 46,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 65, 170, 69),
+                    ),
+                    onPressed: () async {
+                      widget.contactBloc.add(
+                        ContactInsertData(
+                          data: {
+                            "name": picC.text,
+                            "phone": phonC.text,
+                            "customer": widget.state.data.customer!.id
+                          },
+                        ),
+                      );
+                      widget.contactBloc.add(
+                        GetListInput(
+                            customerId: widget.state.data.customer!.id!),
+                      );
+                    },
+                    child: const Text("Save"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  getPhoneContact(context) async {
+    TextEditingController searchContactC = TextEditingController();
+
+    Widget setupAlertDialoadContainer() {
+      return BlocBuilder(
+        bloc: bloc,
+        builder: (context, state) {
+          List<Contact> contacts = [];
+
+          if (state is ContactPhoneIsloaded) {
+            contacts = state.data;
+          }
+
+          List<Contact> resultContact = contacts;
+
+          return SizedBox(
+            height: Get.width,
+            width: Get.width,
+            child: Column(
+              children: [
+                TextField(
+                  autofocus: true,
+                  controller: searchContactC,
+                  onChanged: (changed) async {
+                    bloc.add(ContactFilterPhone(filter: changed));
+                  },
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                    hintText: "Search",
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    suffixIcon: Visibility(
+                      visible: searchContactC.text != "",
+                      child: IconButton(
+                          onPressed: () {
+                            resultContact = contacts;
+                            searchContactC.text = "";
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.grey[400],
+                            size: 20,
+                          )),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Visibility(
+                  visible:
+                      resultContact.isEmpty && state is ContactPhoneIsloaded,
+                  child: Expanded(
+                    child: Center(
+                      child: Text(
+                        'No result',
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible:
+                      resultContact.isNotEmpty && state is ContactPhoneIsloaded,
+                  child: Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: resultContact.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Uint8List? image = resultContact[index].photo;
+                        String num = (resultContact[index].phones.isNotEmpty)
+                            ? (resultContact[index].phones.first.number)
+                            : "--";
+                        return ListTile(
+                          onTap: () async {
+                            var cPhone =
+                                resultContact[index].phones.first.number;
+                            cPhone = cPhone.replaceAll("-", "");
+                            cPhone = cPhone.replaceAll(" ", "");
+                            cPhone = cPhone.replaceAll("+62", "0");
+
+                            Get.back();
+                            bloc.add(
+                              ContactSelectPhone(
+                                data: {
+                                  'pic': resultContact[index].displayName,
+                                  'phone': cPhone
+                                },
+                              ),
+                            );
+                          },
+                          leading: (resultContact[index].photo == null)
+                              ? const CircleAvatar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 230, 229, 229),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: MemoryImage(image!)),
+                          title: Text(resultContact[index].displayName),
+                          subtitle: Text(num),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Contact List'),
+            content: setupAlertDialoadContainer(),
+          );
+        });
+    // } else {
+    //   EasyLoading.dismiss();
+    // }
+  }
+}

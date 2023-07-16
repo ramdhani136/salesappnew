@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
@@ -12,8 +11,6 @@ import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/callsheet_model.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_form_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
-import 'package:http/http.dart' as http;
-import 'package:salesappnew/utils/local_data.dart';
 
 part 'callsheet_event.dart';
 part 'callsheet_state.dart';
@@ -89,15 +86,12 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       Map response =
           await FetchData(data: Data.callsheet).UPDATEONE(event.id, event.data);
 
-      print(response);
-
       if (response['status'] != 200) {
         throw response['msg'];
       }
 
       add(CallsheetShowData(id: event.id));
     } catch (e) {
-      print(e);
       emit(
         CallsheetIsFailure(
           e.toString(),
