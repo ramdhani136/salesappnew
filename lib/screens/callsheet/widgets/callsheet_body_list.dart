@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/models/callsheet_model.dart';
+import 'package:salesappnew/screens/callsheet/callsheet_form_screen.dart';
 import 'package:salesappnew/widgets/rating.dart';
 import 'package:intl/intl.dart';
 
@@ -50,25 +51,12 @@ class CallsheetBodyList extends StatelessWidget {
           );
         },
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) =>
-          //           VisitForm(id: "${data.id}", visitBloc: visitBloc)),
-          // );
-
-          // Navigator.of(context).push(
-          //   MaterialPageRoute<VisitForm>(
-          //     builder: (_) => MultiBlocProvider(
-          //       providers: [
-          //         BlocProvider.value(
-          //           value: BlocProvider.of<AuthBloc>(context),
-          //         ),
-          //       ],
-          //       child: VisitForm(id: "${data.id}", visitBloc: visitBloc),
-          //     ),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CallsheetForm(id: "${data.id}", bloc: bloc),
+            ),
+          );
         },
         child: Stack(
           children: [

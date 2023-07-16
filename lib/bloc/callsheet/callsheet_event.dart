@@ -60,6 +60,16 @@ class CallsheetSetForm extends CallsheetEvent {
   CallsheetSetForm({this.data, this.naming, this.group, this.customer});
 }
 
+class CallsheetUpdateData extends CallsheetEvent {
+  String id;
+  Map<String, dynamic> data;
+
+  CallsheetUpdateData({
+    required this.id,
+    required this.data,
+  });
+}
+
 class CallsheetResetForm extends CallsheetEvent {
   bool data;
   bool naming;

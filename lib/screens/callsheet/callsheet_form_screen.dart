@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
+import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_info.dart';
 
 import 'package:salesappnew/widgets/back_button_custom.dart';
 
@@ -236,10 +237,10 @@ class CallsheetForm extends StatelessWidget {
             ),
             body: TabBarView(
               children: [
+                const CallsheetFormInfo(),
                 Text("dd"),
                 Text("dd"),
-                Text("dd"),
-                // const VisitFormInfo(),
+
                 // VisitFormTask(visitId: id),
                 // VisitFormResult(visitId: id),
               ],
