@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_info.dart';
+import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_result.dart';
 import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_task.dart';
 
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -240,9 +241,7 @@ class CallsheetForm extends StatelessWidget {
               children: [
                 const CallsheetFormInfo(),
                 CallsheetFormTask(callsheetId: id),
-                Text("dd"),
-
-                // VisitFormResult(visitId: id),
+                CallsheetFormResult(callsheetId: id),
               ],
             ),
             // bottomNavigationBar: BlocProvider.value(
