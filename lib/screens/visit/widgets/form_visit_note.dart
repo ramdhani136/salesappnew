@@ -24,6 +24,8 @@ class FormVisitNote extends StatelessWidget {
 
     VisitnoteBloc bloc = BlocProvider.of<VisitnoteBloc>(context);
     VisitnoteBloc vBloc = VisitnoteBloc();
+    VisitnoteBloc vContentBloc = VisitnoteBloc();
+    VisitnoteBloc vTagsBloc = VisitnoteBloc();
 
     void _showListTags(BuildContext context) {
       showDialog(
@@ -37,7 +39,7 @@ class FormVisitNote extends StatelessWidget {
               height: Get.height - 50,
               padding:
                   const EdgeInsets.all(20), // Mengambil lebar layar perangkat
-              child: ListVisitTags(vnotBloc: vBloc),
+              child: ListVisitTags(vnotBloc: vTagsBloc),
             ),
           );
         },
@@ -59,8 +61,6 @@ class FormVisitNote extends StatelessWidget {
       child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
         bloc: vBloc,
         builder: (context, state) {
-          if (state is VisitNoteIsFailure) {}
-
           if (noteId != null && state is VisitnoteInitial) {
             vBloc.add(
               ShowVisitNote(id: "$noteId"),
@@ -171,7 +171,7 @@ class FormVisitNote extends StatelessWidget {
                                                   data: {
                                                     "title": titleC.text,
                                                     "notes": noteC.text,
-                                                    "tags": vBloc.tags
+                                                    "tags": vTagsBloc.tags
                                                         .map((item) =>
                                                             item.value)
                                                         .toList(),
@@ -217,113 +217,146 @@ class FormVisitNote extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextField(
-                          textCapitalization: TextCapitalization.words,
-                          autofocus: true,
-                          enabled: status == "0",
-                          controller: titleC,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                            // border: InputBorder.none,
-                            hintText: 'Title',
-                          ),
-                          textInputAction: TextInputAction.next,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold, //
-                            color: Colors.black,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextField(
-                            enabled: status == "0",
-                            controller: noteC,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            textInputAction: TextInputAction.done,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Notes Content',
-                            ),
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 23, 22, 22)),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Tags :",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Visibility(
-                              visible: status == "0",
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showListTags(context);
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color.fromARGB(255, 61, 153, 64),
+                        BlocBuilder<VisitnoteBloc, VisitnoteState>(
+                          bloc: vContentBloc,
+                          builder: (context, stateVisContent) {
+                            return Expanded(
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    textCapitalization:
+                                        TextCapitalization.words,
+                                    autofocus: true,
+                                    enabled: status == "0",
+                                    controller: titleC,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      // border: InputBorder.none,
+                                      hintText: 'Title',
+                                    ),
+                                    textInputAction: TextInputAction.next,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold, //
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                child: const Text("Add"),
+                                  Expanded(
+                                    child: TextField(
+                                      enabled: status == "0",
+                                      controller: noteC,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      textInputAction: TextInputAction.done,
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Notes Content',
+                                      ),
+                                      style: const TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 23, 22, 22)),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Visibility(
-                          visible: vBloc.tags.isNotEmpty,
-                          child: Container(
-                            width: Get.width,
-                            padding: const EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                              top: 8,
-                              bottom: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                            ),
-                            child: Wrap(
-                              spacing: 5,
-                              children: vBloc.tags.map(
-                                (e) {
-                                  return ElevatedButton.icon(
-                                    onPressed: () {
-                                      if (status == "0") {
-                                        vBloc.add(
-                                          VisitNoteRemoveTag(
-                                            tag: KeyValue(
-                                                name: e.name, value: e.value),
+                        BlocBuilder<VisitnoteBloc, VisitnoteState>(
+                            bloc: vTagsBloc,
+                            builder: (context, stateVisitTags) {
+                              if (noteId != null &&
+                                  stateVisitTags is VisitnoteInitial) {
+                                vTagsBloc.add(
+                                  ShowVisitNote(id: "$noteId"),
+                                );
+                              }
+
+                              return Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Tags :",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: status == "0",
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            _showListTags(context);
+                                          },
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(
+                                              const Color.fromARGB(
+                                                  255, 61, 153, 64),
+                                            ),
                                           ),
-                                        );
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.grey[800],
-                                      minimumSize: const Size(30, 32),
+                                          child: const Text("Add"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Visibility(
+                                    visible: vTagsBloc.tags.isNotEmpty,
+                                    child: Container(
+                                      width: Get.width,
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 8,
+                                        bottom: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                      ),
+                                      child: Wrap(
+                                        spacing: 5,
+                                        children: vTagsBloc.tags.map(
+                                          (e) {
+                                            return ElevatedButton.icon(
+                                              onPressed: () {
+                                                if (status == "0") {
+                                                  vTagsBloc.add(
+                                                    VisitNoteRemoveTag(
+                                                      tag: KeyValue(
+                                                          name: e.name,
+                                                          value: e.value),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.grey[800],
+                                                minimumSize: const Size(30, 32),
+                                              ),
+                                              icon: const Icon(
+                                                Icons.clear,
+                                                size: 16,
+                                              ),
+                                              label: Text(e.name),
+                                            );
+                                          },
+                                        ).toList(),
+                                      ),
                                     ),
-                                    icon: const Icon(
-                                      Icons.clear,
-                                      size: 16,
-                                    ),
-                                    label: Text(e.name),
-                                  );
-                                },
-                              ).toList(),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              );
+                            }),
                       ],
                     ),
                   ),
