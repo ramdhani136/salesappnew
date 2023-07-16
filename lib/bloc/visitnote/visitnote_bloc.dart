@@ -143,7 +143,6 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
 
       emit(VisitNoteShow(data: result['data']));
     } catch (e) {
-      print(e);
       emit(
         VisitNoteIsFailure(
           e.toString(),

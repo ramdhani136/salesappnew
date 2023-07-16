@@ -59,7 +59,6 @@ class FormVisitNote extends StatelessWidget {
       child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
         bloc: vBloc,
         builder: (context, state) {
-          print(state);
           if (state is VisitNoteIsFailure) {}
 
           if (noteId != null && state is VisitnoteInitial) {
