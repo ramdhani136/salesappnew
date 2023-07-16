@@ -147,34 +147,60 @@ class FormVisitNote extends StatelessWidget {
                           Visibility(
                             visible: status == "0",
                             child: IconButton(
-                              onPressed: () {
-                                if (noteId != null) {
-                                  vBloc.add(
-                                    UpdateVisitNote(
-                                      id: "$noteId",
-                                      data: {
-                                        "title": titleC.text,
-                                        "notes": noteC.text,
-                                        "tags": vBloc.tags
-                                            .map((item) => item.value)
-                                            .toList(),
-                                      },
-                                    ),
-                                  );
-                                } else {
-                                  vBloc.add(
-                                    InsertVisitNote(
-                                      data: {
-                                        "title": titleC.text,
-                                        "notes": noteC.text,
-                                        "visitId": visitId,
-                                        "tags": vBloc.tags
-                                            .map((item) => item.value)
-                                            .toList(),
-                                      },
-                                    ),
-                                  );
-                                }
+                              onPressed: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Really?"),
+                                      content: const Text(
+                                          "You want to save this data??"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("No"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            if (noteId != null) {
+                                              vBloc.add(
+                                                UpdateVisitNote(
+                                                  id: "$noteId",
+                                                  data: {
+                                                    "title": titleC.text,
+                                                    "notes": noteC.text,
+                                                    "tags": vBloc.tags
+                                                        .map((item) =>
+                                                            item.value)
+                                                        .toList(),
+                                                  },
+                                                ),
+                                              );
+                                            } else {
+                                              vBloc.add(
+                                                InsertVisitNote(
+                                                  data: {
+                                                    "title": titleC.text,
+                                                    "notes": noteC.text,
+                                                    "visitId": visitId,
+                                                    "tags": vBloc.tags
+                                                        .map((item) =>
+                                                            item.value)
+                                                        .toList(),
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Yes"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                               icon: const Icon(
                                 Icons.check,
