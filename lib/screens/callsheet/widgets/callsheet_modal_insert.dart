@@ -447,7 +447,19 @@ class CallsheetModalInsert extends StatelessWidget {
                             onPressed: () async {
                               if (thisBloc.naming?.name != null &&
                                   thisBloc.group?.name != null &&
-                                  thisBloc.customer?.name != null) {}
+                                  thisBloc.customer?.name != null) {
+                                bloc.add(
+                                  CallsheetInsert(
+                                    data: {
+                                      "namingSeries": thisBloc.naming!.value,
+                                      "customer": thisBloc.customer?.value,
+                                      "type": "in",
+                                    },
+                                    context: context,
+                                    bloc: bloc,
+                                  ),
+                                );
+                              }
                             },
                             child: const Text(
                               "Add",

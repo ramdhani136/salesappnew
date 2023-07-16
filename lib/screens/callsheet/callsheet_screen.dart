@@ -59,7 +59,7 @@ class _CallsheetScreenState extends State<CallsheetScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => CallsheetBloc(),
+          create: (context) => bloc,
         ),
       ],
       child: DefaultTabController(

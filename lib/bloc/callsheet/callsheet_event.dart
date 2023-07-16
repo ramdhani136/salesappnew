@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 
 part of 'callsheet_bloc.dart';
@@ -21,7 +22,13 @@ class CallsheetChangeWorkflow extends CallsheetEvent {
 
 class CallsheetInsert extends CallsheetEvent {
   Map<String, dynamic> data;
-  CallsheetInsert({required this.data});
+  BuildContext context;
+  CallsheetBloc? bloc;
+  CallsheetInsert({
+    required this.data,
+    required this.context,
+    this.bloc,
+  });
 }
 
 class CallsheetShowData extends CallsheetEvent {

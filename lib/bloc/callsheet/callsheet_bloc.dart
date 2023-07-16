@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
@@ -67,11 +68,57 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
     on<CallsheetDeleteOne>(_DeleteOne);
     on<CallsheetShowData>(_ShowData);
     on<CallsheetChangeWorkflow>(_ChangeWorkflow);
-    // on<CallsheetInsert>(_PostData);
+    on<CallsheetInsert>(_PostData);
     on<CallsheetChangeSearch>((event, emit) async {
       search = event.search;
     });
     on<CallsheetGetNaming>(_getNaming);
+  }
+
+  Future<void> _PostData(
+    CallsheetInsert event,
+    Emitter<CallsheetState> emit,
+  ) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      emit(CallsheetIsLoading());
+      dynamic data = await FetchData(data: Data.callsheet).ADD(event.data);
+      if ((data['status']) != 200) {
+        throw data['msg'];
+      }
+
+      if (event.bloc != null) {
+        event.bloc!.add(
+          CallsheetGetAllData(
+            getRefresh: true,
+            search: event.bloc!.search,
+            status: event.bloc!.tabActive != null ? event.bloc!.tabActive! : 1,
+          ),
+        );
+
+        Get.back();
+
+        // Navigator.pushReplacement(
+        //   event.context,
+        //   MaterialPageRoute(
+        //     builder: (context) => VisitForm(
+        //       id: "${data['data']['_id']}",
+        //       visitBloc: event.bloc!,
+        //     ),
+        //   ),
+        // );
+      }
+      EasyLoading.dismiss();
+    } catch (e) {
+      EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
+    }
   }
 
   Future<void> _ChangeWorkflow(
