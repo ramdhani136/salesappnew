@@ -230,12 +230,14 @@ class VisitFormResult extends StatelessWidget {
                                                             const EdgeInsets
                                                                 .only(top: 10),
                                                         child: Wrap(
-                                                          children: [
-                                                            Padding(
+                                                          children: state
+                                                              .data[index].tags
+                                                              .map((item) {
+                                                            return Padding(
                                                               padding:
                                                                   const EdgeInsets
                                                                       .only(
-                                                                right: 8,
+                                                                right: 5,
                                                                 bottom: 5,
                                                               ),
                                                               child: Container(
@@ -255,11 +257,10 @@ class VisitFormResult extends StatelessWidget {
                                                                           .circular(
                                                                               4.0),
                                                                 ),
-                                                                child:
-                                                                    const Text(
-                                                                  'Price',
+                                                                child: Text(
+                                                                  '${item['name']}',
                                                                   style:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -273,8 +274,8 @@ class VisitFormResult extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            );
+                                                          }).toList(),
                                                         ),
                                                       ),
                                                     ),

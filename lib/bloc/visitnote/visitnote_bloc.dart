@@ -33,9 +33,18 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     on<VisitNoteSetTags>(
       (event, emit) {
         List<KeyValue> newTags = List<KeyValue>.from(tags);
-        newTags.add(event.tag);
+        if (!newTags.any((element) => element.name == event.tag.name)) {
+          newTags.add(event.tag);
+        }
         tags = newTags;
-        emit(VisitnoteInitial());
+        if (state is VisitNoteShow) {
+          VisitNoteShow current = state as VisitNoteShow;
+          emit(
+            VisitNoteShow(data: current.data),
+          );
+        } else {
+          emit(VisitnoteInitial());
+        }
       },
     );
   }
@@ -112,7 +121,7 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
       }
       List<dynamic> tagsData = result['data']['tags'];
       tags = tagsData.map((item) {
-        return KeyValue(name: item['name'], value: item['value']);
+        return KeyValue(name: item['name'], value: item['_id']);
       }).toList();
 
       emit(VisitNoteShow(data: result['data']));

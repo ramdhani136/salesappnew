@@ -2,7 +2,7 @@ class VisitNoteModel {
   String id;
   String title;
   String visit;
-  // List<String> tags;
+  List<Map> tags;
   String notes;
   DateTime createdAt;
   DateTime updatedAt;
@@ -11,7 +11,7 @@ class VisitNoteModel {
     required this.id,
     required this.title,
     required this.visit,
-    // required this.tags,
+    required this.tags,
     required this.notes,
     required this.createdAt,
     required this.updatedAt,
@@ -22,7 +22,7 @@ class VisitNoteModel {
       id: json['_id'],
       title: json['title'],
       visit: json['visit'],
-      // tags: List<String>.from(json['tags']),
+      tags: List<Map>.from(json['tags']),
       notes: json['notes'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),

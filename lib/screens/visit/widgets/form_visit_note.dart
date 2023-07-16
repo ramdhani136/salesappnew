@@ -59,6 +59,7 @@ class FormVisitNote extends StatelessWidget {
       child: BlocBuilder<VisitnoteBloc, VisitnoteState>(
         bloc: vBloc,
         builder: (context, state) {
+          print(state);
           if (state is VisitNoteIsFailure) {}
 
           if (noteId != null && state is VisitnoteInitial) {
@@ -117,40 +118,71 @@ class FormVisitNote extends StatelessWidget {
                           ],
                         ),
                         Row(children: [
-                          PopupMenuButton(
-                            padding: const EdgeInsets.all(0),
-                            icon: const Icon(
-                              Icons.attach_file_rounded,
-                              color: Color.fromARGB(255, 121, 8, 14),
-                            ),
-                            itemBuilder: (context) {
-                              List<Map<String, dynamic>> choose = [
-                                {'action': 'Attach File'},
-                                {'action': 'Take Photo'},
-                              ];
-                              return choose.map((item) {
-                                return PopupMenuItem(
-                                  child: InkWell(
-                                    onTap: () async {
-                                      Get.back();
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Text(item['action']),
-                                    ),
-                                  ),
-                                );
-                              }).toList();
-                            },
-                          ),
-                          // IconButton(
-                          //   onPressed: () {},
+                          // PopupMenuButton(
+                          //   padding: const EdgeInsets.all(0),
                           //   icon: const Icon(
                           //     Icons.attach_file_rounded,
                           //     color: Color.fromARGB(255, 121, 8, 14),
                           //   ),
+                          //   itemBuilder: (context) {
+                          //     List<Map<String, dynamic>> choose = [
+                          //       {'action': 'Attach File'},
+                          //       {'action': 'Take Photo'},
+                          //     ];
+                          //     return choose.map((item) {
+                          //       return PopupMenuItem(
+                          //         child: InkWell(
+                          //           onTap: () async {
+                          //             Get.back();
+                          //           },
+                          //           child: Padding(
+                          //             padding: const EdgeInsets.symmetric(
+                          //                 horizontal: 10, vertical: 10),
+                          //             child: Text(item['action']),
+                          //           ),
+                          //         ),
+                          //       );
+                          //     }).toList();
+                          //   },
                           // ),
+                          Visibility(
+                            visible: status == "0",
+                            child: IconButton(
+                              onPressed: () {
+                                if (noteId != null) {
+                                  vBloc.add(
+                                    UpdateVisitNote(
+                                      id: "$noteId",
+                                      data: {
+                                        "title": titleC.text,
+                                        "notes": noteC.text,
+                                        "tags": vBloc.tags
+                                            .map((item) => item.value)
+                                            .toList(),
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  vBloc.add(
+                                    InsertVisitNote(
+                                      data: {
+                                        "title": titleC.text,
+                                        "notes": noteC.text,
+                                        "visitId": visitId,
+                                        "tags": vBloc.tags
+                                            .map((item) => item.value)
+                                            .toList(),
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.check,
+                                color: Color.fromARGB(255, 121, 8, 14),
+                              ),
+                            ),
+                          ),
                         ])
                       ],
                     ),
@@ -261,46 +293,50 @@ class FormVisitNote extends StatelessWidget {
                       ],
                     ),
                   ),
-                  floatingActionButton: Visibility(
-                    visible: status == "0",
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: vBloc.tags.isEmpty ? 80 : 150),
-                      child: SizedBox(
-                        height: 65.0,
-                        width: 65.0,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            if (noteId != null) {
-                              vBloc.add(UpdateVisitNote(
-                                id: "$noteId",
-                                data: {
-                                  "title": titleC.text,
-                                  "notes": noteC.text,
-                                  "tags": vBloc.tags
-                                      .map((item) => item.value)
-                                      .toList(),
-                                },
-                              ));
-                            } else {
-                              vBloc.add(InsertVisitNote(
-                                data: {
-                                  "title": titleC.text,
-                                  "notes": noteC.text,
-                                  "visitId": visitId,
-                                  "tags": vBloc.tags
-                                      .map((item) => item.value)
-                                      .toList(),
-                                },
-                              ));
-                            }
-                          },
-                          backgroundColor: Colors.grey[850],
-                          child: const Icon(Icons.save),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // floatingActionButton: Visibility(
+                  //   visible: status == "0",
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(
+                  //         bottom: vBloc.tags.isEmpty ? 80 : 150),
+                  //     child: SizedBox(
+                  //       height: 65.0,
+                  //       width: 65.0,
+                  //       child: FloatingActionButton(
+                  //         onPressed: () {
+                  //           if (noteId != null) {
+                  //             vBloc.add(
+                  //               UpdateVisitNote(
+                  //                 id: "$noteId",
+                  //                 data: {
+                  //                   "title": titleC.text,
+                  //                   "notes": noteC.text,
+                  //                   "tags": vBloc.tags
+                  //                       .map((item) => item.value)
+                  //                       .toList(),
+                  //                 },
+                  //               ),
+                  //             );
+                  //           } else {
+                  //             vBloc.add(
+                  //               InsertVisitNote(
+                  //                 data: {
+                  //                   "title": titleC.text,
+                  //                   "notes": noteC.text,
+                  //                   "visitId": visitId,
+                  //                   "tags": vBloc.tags
+                  //                       .map((item) => item.value)
+                  //                       .toList(),
+                  //                 },
+                  //               ),
+                  //             );
+                  //           }
+                  //         },
+                  //         backgroundColor: Colors.grey[850],
+                  //         child: const Icon(Icons.save),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 );
               });
         },
