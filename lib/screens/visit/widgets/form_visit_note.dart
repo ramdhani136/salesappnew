@@ -297,12 +297,14 @@ class FormVisitNote extends StatelessWidget {
                                 (e) {
                                   return ElevatedButton.icon(
                                     onPressed: () {
-                                      vBloc.add(
-                                        VisitNoteRemoveTag(
-                                          tag: KeyValue(
-                                              name: e.name, value: e.value),
-                                        ),
-                                      );
+                                      if (status == "0") {
+                                        vBloc.add(
+                                          VisitNoteRemoveTag(
+                                            tag: KeyValue(
+                                                name: e.name, value: e.value),
+                                          ),
+                                        );
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey[800],
