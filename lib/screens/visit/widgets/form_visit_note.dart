@@ -271,7 +271,14 @@ class FormVisitNote extends StatelessWidget {
                               children: vBloc.tags.map(
                                 (e) {
                                   return ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      vBloc.add(
+                                        VisitNoteRemoveTag(
+                                          tag: KeyValue(
+                                              name: e.name, value: e.value),
+                                        ),
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.grey[800],
                                       minimumSize: const Size(30, 32),
@@ -540,7 +547,7 @@ class ListVisitTags extends StatelessWidget {
                                   return ListTile(
                                     onTap: () {
                                       vnotBloc.add(
-                                        VisitNoteSetTags(
+                                        VisitNoteAddTag(
                                           tag: KeyValue(
                                             name: state.data[index]['name'],
                                             value: state.data[index]['_id'],

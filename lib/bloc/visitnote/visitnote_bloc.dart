@@ -13,6 +13,8 @@ part 'visitnote_event.dart';
 part 'visitnote_state.dart';
 
 class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
+  String name = "";
+  String notes = "";
   List<KeyValue> tags = [];
   VisitnoteBloc() : super(VisitnoteInitial()) {
     on<GetVisitNote>(
@@ -30,12 +32,27 @@ class VisitnoteBloc extends Bloc<VisitnoteEvent, VisitnoteState> {
     on<InsertVisitNote>(
       (event, emit) => _InsertData(event, emit, state),
     );
-    on<VisitNoteSetTags>(
+    on<VisitNoteAddTag>(
       (event, emit) {
         List<KeyValue> newTags = List<KeyValue>.from(tags);
         if (!newTags.any((element) => element.name == event.tag.name)) {
           newTags.add(event.tag);
         }
+        tags = newTags;
+        if (state is VisitNoteShow) {
+          VisitNoteShow current = state as VisitNoteShow;
+          emit(
+            VisitNoteShow(data: current.data),
+          );
+        } else {
+          emit(VisitnoteInitial());
+        }
+      },
+    );
+    on<VisitNoteRemoveTag>(
+      (event, emit) {
+        List<KeyValue> newTags = List<KeyValue>.from(tags);
+        newTags.removeWhere((element) => element.name == event.tag.name);
         tags = newTags;
         if (state is VisitNoteShow) {
           VisitNoteShow current = state as VisitNoteShow;

@@ -47,9 +47,16 @@ class InsertVisitNote extends VisitnoteEvent {
   });
 }
 
-class VisitNoteSetTags extends VisitnoteEvent {
+class VisitNoteAddTag extends VisitnoteEvent {
   KeyValue tag;
-  VisitNoteSetTags({
+  VisitNoteAddTag({
+    required this.tag,
+  });
+}
+
+class VisitNoteRemoveTag extends VisitnoteEvent {
+  KeyValue tag;
+  VisitNoteRemoveTag({
     required this.tag,
   });
 }
