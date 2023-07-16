@@ -156,7 +156,7 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       CallsheetChangeWorkflow event, Emitter<CallsheetState> emit) async {
     try {
       emit(CallsheetIsLoading());
-      dynamic data = await FetchData(data: Data.visit).UPDATEONE(
+      dynamic data = await FetchData(data: Data.callsheet).UPDATEONE(
         event.id,
         {"nextState": event.nextStateId},
       );

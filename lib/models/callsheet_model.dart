@@ -9,7 +9,7 @@ class CallsheetModel {
   String? id;
   String? name;
   String? type;
-  Branch? customer;
+  Customer? customer;
   Contact? contact;
   num? rate;
   Branch? createdBy;
@@ -42,8 +42,9 @@ class CallsheetModel {
         id: json["_id"],
         name: json["name"],
         type: json["type"],
-        customer:
-            json["customer"] == null ? null : Branch.fromJson(json["customer"]),
+        customer: json["customer"] == null
+            ? null
+            : Customer.fromJson(json["customer"]),
         contact:
             json["contact"] == null ? null : Contact.fromJson(json["contact"]),
         rate: json["rate"],
@@ -114,6 +115,30 @@ class Branch {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+      };
+}
+
+class Customer {
+  String? id;
+  String? name;
+  String? erpId;
+
+  Customer({
+    this.id,
+    this.name,
+    this.erpId,
+  });
+
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+        id: json["_id"],
+        name: json["name"],
+        erpId: json["erpId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "erpId": erpId,
       };
 }
 
