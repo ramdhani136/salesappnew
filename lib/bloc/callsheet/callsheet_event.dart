@@ -42,3 +42,26 @@ class CallsheetChangeSearch extends CallsheetEvent {
 
   CallsheetChangeSearch(this.search);
 }
+
+class CallsheetGetNaming extends CallsheetEvent {}
+
+class CallsheetSetForm extends CallsheetEvent {
+  KeyValue? data;
+  KeyValue? naming;
+  KeyValue? group;
+  KeyValue? customer;
+  CallsheetSetForm({this.data, this.naming, this.group, this.customer});
+}
+
+class CallsheetResetForm extends CallsheetEvent {
+  bool data;
+  bool naming;
+  bool group;
+  bool customer;
+  CallsheetResetForm({
+    this.data = false,
+    this.naming = false,
+    this.group = false,
+    this.customer = false,
+  });
+}

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
+import 'package:salesappnew/screens/callsheet/widgets/callsheet_modal_insert.dart';
 import 'package:salesappnew/screens/callsheet/widgets/callsheet_screen_body.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -16,6 +17,7 @@ class CallsheetScreen extends StatefulWidget {
 }
 
 class _CallsheetScreenState extends State<CallsheetScreen> {
+  CallsheetBloc bloc = CallsheetBloc();
   List<Tab> myTabs = <Tab>[
     const Tab(
       child: Text(
@@ -45,28 +47,6 @@ class _CallsheetScreenState extends State<CallsheetScreen> {
       ),
     ),
   ];
-
-  void _showModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: 20), // Adjust the width as needed
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Content goes here'),
-              // Additional widgets
-            ],
-          ),
-          actions: <Widget>[
-            // Actions
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +90,12 @@ class _CallsheetScreenState extends State<CallsheetScreen> {
                   // IconSearch(),
                   IconButton(
                     onPressed: () {
-                      _showModal(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) => CallsheetModalInsert(
+                          bloc: bloc,
+                        ),
+                      );
                     },
                     icon: const Icon(
                       Icons.add,

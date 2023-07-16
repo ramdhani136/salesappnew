@@ -29,7 +29,6 @@ part 'visit_state.dart';
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
   String search = "";
-  // AuthBloc authBloc = AuthBloc(AuthRepository());
   Position? checkOutCordinates;
   String? checkOutAddress;
   int? tabActive;

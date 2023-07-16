@@ -185,7 +185,7 @@ class FormVisitNote extends StatelessWidget {
                                                     "title": titleC.text,
                                                     "notes": noteC.text,
                                                     "visitId": visitId,
-                                                    "tags": vBloc.tags
+                                                    "tags": vTagsBloc.tags
                                                         .map((item) =>
                                                             item.value)
                                                         .toList(),

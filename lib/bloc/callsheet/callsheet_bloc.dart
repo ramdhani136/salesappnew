@@ -2,8 +2,10 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:salesappnew/models/action_model.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/callsheet_model.dart';
@@ -16,16 +18,60 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
   int page = 1;
   String search = "";
   int? tabActive;
+  KeyValue? naming;
+  KeyValue? customer;
+  KeyValue? group;
+  List? namingList;
   CallsheetBloc() : super(CallsheetInitial()) {
+    on<CallsheetSetForm>((event, emit) {
+      if (event.naming != null) {
+        naming = event.naming;
+      }
+      if (event.customer != null) {
+        customer = event.customer;
+      }
+      if (event.group != null) {
+        group = event.group;
+      }
+      emit(CallsheetIsLoading());
+      emit(CallsheetInitial());
+    });
+    on<CallsheetResetForm>((event, emit) {
+      if (event.naming) {
+        naming = null;
+      }
+      if (event.customer) {
+        customer = null;
+      }
+
+      if (event.group) {
+        group = null;
+      }
+      if (state is CallsheetIsLoaded) {
+        CallsheetIsLoaded current = state as CallsheetIsLoaded;
+        emit(CallsheetIsLoading());
+        emit(
+          CallsheetIsLoaded(
+            hasMore: current.hasMore,
+            newData: current.data,
+            pageLoading: current.pageLoading,
+            total: current.total,
+          ),
+        );
+      } else {
+        emit(CallsheetIsLoading());
+        emit(CallsheetInitial());
+      }
+    });
     on<CallsheetGetAllData>(_GetAllData);
     on<CallsheetDeleteOne>(_DeleteOne);
     on<CallsheetShowData>(_ShowData);
-
     on<CallsheetChangeWorkflow>(_ChangeWorkflow);
     // on<CallsheetInsert>(_PostData);
     on<CallsheetChangeSearch>((event, emit) async {
       search = event.search;
     });
+    on<CallsheetGetNaming>(_getNaming);
   }
 
   Future<void> _ChangeWorkflow(
@@ -173,6 +219,43 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       }
     } catch (e) {
       emit(CallsheetIsFailure(e.toString()));
+    }
+  }
+
+  Future<void> _getNaming(
+      CallsheetGetNaming event, Emitter<CallsheetState> emit) async {
+    try {
+      EasyLoading.show(status: 'loading...');
+      Map<String, dynamic> result =
+          await FetchData(data: Data.namingSeries).FINDALL(
+        filters: [
+          ["doc", "=", "callsheet"]
+        ],
+        fields: ["_id", "name"],
+      );
+
+      if (result['status'] != 200) {
+        throw result['msg'];
+      }
+
+      namingList = result['data'].map((item) {
+        return {
+          "value": item["_id"],
+          "title": item["name"],
+        };
+      }).toList();
+
+      if (result['data'].length == 1) {
+        naming = KeyValue(
+          name: result['data'][0]['name'],
+          value: result['data'][0]['_id'],
+        );
+      }
+      emit(CallsheetInitial());
+      EasyLoading.dismiss();
+    } catch (e) {
+      emit(CallsheetIsFailure(e.toString()));
+      EasyLoading.dismiss();
     }
   }
 }
