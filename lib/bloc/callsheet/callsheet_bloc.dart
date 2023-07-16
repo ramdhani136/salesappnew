@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/callsheet_model.dart';
+import 'package:salesappnew/screens/callsheet/callsheet_form_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
 part 'callsheet_event.dart';
@@ -96,17 +97,15 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
           ),
         );
 
-        Get.back();
-
-        // Navigator.pushReplacement(
-        //   event.context,
-        //   MaterialPageRoute(
-        //     builder: (context) => VisitForm(
-        //       id: "${data['data']['_id']}",
-        //       visitBloc: event.bloc!,
-        //     ),
-        //   ),
-        // );
+        Navigator.pushReplacement(
+          event.context,
+          MaterialPageRoute(
+            builder: (context) => CallsheetForm(
+              id: "${data['data']['_id']}",
+              bloc: event.bloc!,
+            ),
+          ),
+        );
       }
       EasyLoading.dismiss();
     } catch (e) {
