@@ -22,6 +22,7 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
   KeyValue? naming;
   KeyValue? customer;
   KeyValue? group;
+  String type = "in";
   List? namingList;
   CallsheetBloc() : super(CallsheetInitial()) {
     on<CallsheetSetForm>((event, emit) {
@@ -33,6 +34,9 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       }
       if (event.group != null) {
         group = event.group;
+      }
+      if (event.type != null) {
+        type = event.type!;
       }
       emit(CallsheetIsLoading());
       emit(CallsheetInitial());
@@ -81,7 +85,7 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
     Emitter<CallsheetState> emit,
   ) async {
     try {
-      emit(CallsheetIsLoading());
+      EasyLoading.show(status: 'loading...');
 
       Map response =
           await FetchData(data: Data.callsheet).UPDATEONE(event.id, event.data);
@@ -90,8 +94,23 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
         throw response['msg'];
       }
 
-      add(CallsheetShowData(id: event.id));
+      EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: "Saved",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
+
+      add(
+        CallsheetShowData(
+          id: event.id,
+          isLoading: false,
+        ),
+      );
     } catch (e) {
+      EasyLoading.dismiss();
       emit(
         CallsheetIsFailure(
           e.toString(),

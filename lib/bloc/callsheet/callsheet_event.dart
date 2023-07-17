@@ -57,7 +57,14 @@ class CallsheetSetForm extends CallsheetEvent {
   KeyValue? naming;
   KeyValue? group;
   KeyValue? customer;
-  CallsheetSetForm({this.data, this.naming, this.group, this.customer});
+  String? type;
+  CallsheetSetForm({
+    this.data,
+    this.naming,
+    this.group,
+    this.customer,
+    this.type,
+  });
 }
 
 class CallsheetUpdateData extends CallsheetEvent {

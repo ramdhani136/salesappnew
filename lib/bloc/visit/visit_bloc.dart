@@ -228,7 +228,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     Emitter<VisitState> emit,
   ) async {
     try {
-      emit(IsLoading());
+      // emit(IsLoading());
+      EasyLoading.show(status: 'loading...');
 
       var request = http.MultipartRequest(
         'PUT',
@@ -245,9 +246,19 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (response.statusCode != 200) {
         throw response.body;
       }
-
-      add(ShowData(id: event.id));
+      EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: "Saved",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
+      );
+      add(
+        ShowData(id: event.id, isLoading: false),
+      );
     } catch (e) {
+      EasyLoading.dismiss();
       emit(
         IsFailure(
           e.toString(),

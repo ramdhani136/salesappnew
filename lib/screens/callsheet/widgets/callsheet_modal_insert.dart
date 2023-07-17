@@ -58,8 +58,8 @@ class CallsheetModalInsert extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: 1.15,
         child: Container(
-          width: Get.width * 0.95,
-          height: 440,
+          width: Get.width * 0.98,
+          height: 500,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -138,6 +138,70 @@ class CallsheetModalInsert extends StatelessWidget {
                                 const SizedBox(height: 20),
                               ],
                             ),
+                            Text(
+                              "Type :",
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Radio(
+                                        activeColor: const Color(0xFFE6212A),
+                                        value: "in",
+                                        groupValue: thisBloc.type,
+                                        onChanged: (val) {
+                                          thisBloc.add(
+                                            CallsheetSetForm(
+                                              type: val,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      InkWell(
+                                          onTap: () {
+                                            thisBloc.add(
+                                              CallsheetSetForm(
+                                                type: "in",
+                                              ),
+                                            );
+                                          },
+                                          child: const Text("Incomming Call"))
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Radio(
+                                        activeColor: const Color(0xFFE6212A),
+                                        value: "out",
+                                        groupValue: thisBloc.type,
+                                        onChanged: (val) {
+                                          thisBloc.add(
+                                            CallsheetSetForm(
+                                              type: val,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      InkWell(
+                                          onTap: () {
+                                            thisBloc.add(
+                                              CallsheetSetForm(
+                                                type: "out",
+                                              ),
+                                            );
+                                          },
+                                          child: const Text("Outgoing Call"))
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 10),
                             BlocBuilder<GroupBloc, GroupState>(
                               bloc: groupBloc,
                               builder: (context, stateGroup) {
@@ -429,7 +493,7 @@ class CallsheetModalInsert extends StatelessWidget {
                                   },
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 30),
@@ -453,7 +517,7 @@ class CallsheetModalInsert extends StatelessWidget {
                                     data: {
                                       "namingSeries": thisBloc.naming!.value,
                                       "customer": thisBloc.customer?.value,
-                                      "type": "in",
+                                      "type": thisBloc.type,
                                     },
                                     context: context,
                                     bloc: bloc,

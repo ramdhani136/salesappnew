@@ -106,12 +106,63 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
                         const SizedBox(
                           height: 15,
                         ),
-                        CustomField(
-                          title: "Type",
-                          controller: typeC,
-                          type: Type.standard,
-                          disabled: true,
+                        Text(
+                          "Type :",
+                          style: TextStyle(color: Colors.grey[700]),
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Radio(
+                                    value: "in",
+                                    groupValue: state.data.type,
+                                    onChanged: (val) {
+                                      if (state.data.status == "0") {
+                                        bloc.add(
+                                          CallsheetUpdateData(
+                                            id: state.data.id!,
+                                            data: const {"type": "in"},
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  const Text("Incomming Call")
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Radio(
+                                    value: "out",
+                                    groupValue: state.data.type,
+                                    onChanged: (val) {
+                                      if (state.data.status == "0") {
+                                        bloc.add(
+                                          CallsheetUpdateData(
+                                            id: state.data.id!,
+                                            data: const {"type": "out"},
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  const Text("Outgoing Call")
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        // CustomField(
+                        //   title: "Type",
+                        //   controller: typeC,
+                        //   type: Type.standard,
+                        //   disabled: true,
+                        // ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -195,7 +246,7 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
                           height: 15,
                         ),
                         Visibility(
-                          visible: phoneC.text != "",
+                          visible: picC.text != "",
                           child: CustomField(
                             mandatory: true,
                             title: "Phone",
