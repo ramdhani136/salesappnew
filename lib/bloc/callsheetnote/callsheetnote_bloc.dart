@@ -88,8 +88,6 @@ class CallsheetnoteBloc extends Bloc<CallsheetnoteEvent, CallsheetnoteState> {
         page: _page,
       );
 
-      print(result);
-
       if (result['status'] != 200) {
         throw result['msg'];
       }
