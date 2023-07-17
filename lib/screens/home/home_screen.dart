@@ -222,11 +222,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: "Callsheet",
                     icon: Icons.phone,
                   ),
-                  HomeMenuList(
-                    RunFUnction: () {},
-                    title: "Memo",
-                    icon: Icons.info,
-                  ),
+                  // HomeMenuList(
+                  //   RunFUnction: () {},
+                  //   title: "Memo",
+                  //   icon: Icons.info,
+                  // ),
                   HomeMenuList(
                     RunFUnction: () {
                       Navigator.of(context).push(

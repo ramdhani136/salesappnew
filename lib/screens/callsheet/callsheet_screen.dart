@@ -124,7 +124,7 @@ class _CallsheetScreenState extends State<CallsheetScreen> {
               top: Radius.circular(18),
             ),
             parallaxEnabled: true,
-            maxHeight: Get.height / 2,
+            maxHeight: Get.height / 1.2,
             minHeight: 30,
             panel: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
