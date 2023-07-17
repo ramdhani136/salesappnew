@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
+import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
 
 class VisitFormTask extends StatelessWidget {
   String visitId;
@@ -117,6 +119,62 @@ class VisitFormTask extends StatelessWidget {
                             itemCount: dataTask.length,
                             itemBuilder: (context, index) {
                               return InkWell(
+                                onLongPress: () {
+                                  if (state.data.status == "0") {
+                                    Get.defaultDialog(
+                                      title: '',
+                                      content: const Text(
+                                          "Create notes for this task?"),
+                                      contentPadding: const EdgeInsets.all(16),
+                                      actions: [
+                                        TextButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.red[400]!),
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.white),
+                                          ),
+                                          onPressed: () {
+                                            Get.back();
+                                          },
+                                          child: const Text('No'),
+                                        ),
+                                        TextButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.green[400]!),
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.white),
+                                          ),
+                                          onPressed: () {
+                                            Get.back();
+                                            Get.to(
+                                              () => MultiBlocProvider(
+                                                providers: [
+                                                  BlocProvider.value(
+                                                    value: VisitnoteBloc(),
+                                                  ),
+                                                  BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                        VisitBloc>(context),
+                                                  ),
+                                                ],
+                                                child: FormVisitNote(
+                                                  visitId: state.data.id!,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: const Text('Yes'),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
                                 onTap: () {
                                   if (dataTask[index].from == "Sales Invoice") {
                                     Navigator.of(context).push(
