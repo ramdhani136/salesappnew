@@ -422,6 +422,7 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
   @override
   void dispose() {
     super.dispose();
+    widget.locationbloc.close();
     customerBloc.close();
   }
 

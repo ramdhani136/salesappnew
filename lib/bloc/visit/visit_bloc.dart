@@ -327,8 +327,19 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       add(ShowData(id: event.id, isLoading: false));
     } catch (e) {
-      emit(IsFailure(e.toString()));
-      add(ShowData(id: event.id, isLoading: false));
+      Get.defaultDialog(
+        title: 'Error Checkout',
+        content: Text(e.toString()),
+        contentPadding: const EdgeInsets.all(16),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
       EasyLoading.dismiss();
     }
   }
