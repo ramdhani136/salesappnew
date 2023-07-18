@@ -113,7 +113,7 @@ class VisitFormBill extends StatelessWidget {
                                       Get.defaultDialog(
                                         title: '',
                                         content: const Text(
-                                            "Create notes for this task?"),
+                                            "Create notes for this bill?"),
                                         contentPadding:
                                             const EdgeInsets.all(16),
                                         actions: [
