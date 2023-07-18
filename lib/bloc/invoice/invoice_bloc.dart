@@ -221,6 +221,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         } else {
           currentData = genData;
         }
+
+        if (currentData.isEmpty) {
+          throw "No data";
+        }
         EasyLoading.dismiss();
         emit(
           InvoiceLoadedOverdue(
@@ -233,6 +237,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         throw "This customer not sync with erp system";
       }
     } catch (e) {
+      print(e);
       if (state is InvoiceLoadedOverdue) {
         final updatedState = state.copyWith(pageLoading: false, hasMore: false);
         emit(updatedState);
