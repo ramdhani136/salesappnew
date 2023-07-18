@@ -2,7 +2,9 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/invoice_model.dart';
 
@@ -151,15 +153,15 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   Future<void> _GetOverDue(InvoiceGetOverDue event, Emitter<InvoiceState> emit,
       InvoiceState state) async {
     try {
-      int page = 1;
-
       if (event.customerId != "null") {
-        if (state is InvoiceLoadedOverdue) {
-          emit(InvoiceInfiniteLoading());
+        if (state is! InvoiceLoadedOverdue || event.getRefresh) {
+          EasyLoading.show(status: 'loading...');
+        }
+
+        if (state is InvoiceLoadedOverdue && !event.getRefresh) {
+          final updatedState = state.copyWith(pageLoading: true);
+          emit(updatedState);
           page = state.page;
-        } else {
-          emit(InvoiceLoading());
-          emit(InvoiceInfiniteLoading());
         }
 
         Map<String, dynamic> result = await FetchData(data: Data.erp).FINDALL(
@@ -176,6 +178,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
               "Overdue",
             ]
           ],
+          limit: 10,
           fields: [
             "name",
             "customer",
@@ -185,35 +188,71 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
             "outstanding_amount",
             "payment_terms_template"
           ],
-          page: page,
+          page: event.getRefresh ? 1 : page,
         );
 
         if ((result['status']) != 200) {
           throw result['msg'];
         }
 
+        List genData = result['data'].map((item) {
+          var currencyFormat = NumberFormat.currency(
+            locale: 'en_US',
+            symbol: '',
+          );
+
+          String outstandingAmount =
+              currencyFormat.format(item['outstanding_amount']);
+          return {
+            "_id": item['name'],
+            "from": "Sales Invoice",
+            "name": item['name'],
+            "title": "Tagihan konsumen",
+            "notes":
+                "Penagihan konsumen  ${item['customer']} Invoice no : ${item['name']} dengan total tagihan Rp.$outstandingAmount - jatuh tempo pada ${item['due_date']}"
+          };
+        }).toList();
+
+        List currentData = [];
+
+        if (state is InvoiceLoadedOverdue && !event.getRefresh) {
+          currentData = state.data;
+          currentData.addAll(genData);
+        } else {
+          currentData = genData;
+        }
+        EasyLoading.dismiss();
         emit(
           InvoiceLoadedOverdue(
-            data: result['data'],
+            data: currentData,
             hasMore: result['hasMore'],
             page: result['nextPage'],
           ),
         );
+      } else {
+        throw "This customer not sync with erp system";
       }
     } catch (e) {
       if (state is InvoiceLoadedOverdue) {
-        state.hasMore = false;
+        final updatedState = state.copyWith(pageLoading: false, hasMore: false);
+        emit(updatedState);
       }
-
-      Fluttertoast.showToast(
-        msg: "$e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey[800],
-        textColor: Colors.white,
-      );
-
-      emit(InvoiceFailure(e.toString()));
+      if (event.getRefresh) {
+        emit(
+          InvoiceFailure(
+            e.toString(),
+          ),
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "No more",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.grey[800],
+          textColor: Colors.white,
+        );
+      }
+      EasyLoading.dismiss();
     }
   }
 }

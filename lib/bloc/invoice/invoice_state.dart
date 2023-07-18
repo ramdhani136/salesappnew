@@ -15,12 +15,28 @@ class InvoiceLoadedOverdue extends InvoiceState {
   List data;
   bool hasMore;
   int page;
+  bool pageLoading;
 
   InvoiceLoadedOverdue({
     required this.data,
     this.hasMore = false,
     this.page = 1,
+    this.pageLoading = false,
   });
+
+  InvoiceLoadedOverdue copyWith({
+    List? data,
+    bool? hasMore,
+    int? page,
+    bool? pageLoading,
+  }) {
+    return InvoiceLoadedOverdue(
+      data: data ?? this.data,
+      hasMore: hasMore ?? this.hasMore,
+      page: page ?? this.page,
+      pageLoading: pageLoading ?? this.pageLoading,
+    );
+  }
 }
 
 class InvoiceShowIsLoaded extends InvoiceState {
