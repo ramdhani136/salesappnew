@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class Config {
-  final String _uri = "http://192.168.100.41:5000/";
+  final String _uri = "http://192.168.100.114:5000/";
 
   String get baseUri {
     return _uri;

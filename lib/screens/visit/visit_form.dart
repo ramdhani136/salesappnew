@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/screens/visit/widgets/visit_form_bill.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_info.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_task.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_form_result.dart';
@@ -45,7 +46,7 @@ class VisitForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.task,
+              Icons.description_rounded,
               color: Color.fromARGB(255, 72, 72, 72),
               size: 16,
             ),
@@ -67,7 +68,29 @@ class VisitForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.note,
+              Icons.currency_exchange_sharp,
+              color: Color.fromARGB(255, 72, 72, 72),
+              size: 16,
+            ),
+            SizedBox(
+              width: 2,
+            ),
+            Text(
+              "Bill",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color.fromARGB(255, 75, 75, 75),
+              ),
+            ),
+          ],
+        ),
+      ),
+      const Tab(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check_circle,
               color: Color.fromARGB(255, 72, 72, 72),
               size: 16,
             ),
@@ -239,6 +262,7 @@ class VisitForm extends StatelessWidget {
               children: [
                 const VisitFormInfo(),
                 VisitFormTask(visitId: id),
+                VisitFormBill(visitId: id),
                 VisitFormResult(visitId: id),
               ],
             ),
