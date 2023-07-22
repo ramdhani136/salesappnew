@@ -43,6 +43,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
     workflowC.dispose();
     picC.dispose();
     phoneC.dispose();
+    positionC.dispose();
+    dateC.dispose();
   }
 
   @override
