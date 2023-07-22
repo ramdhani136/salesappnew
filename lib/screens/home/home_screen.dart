@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -56,11 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Opacity(
+                  const Opacity(
                     opacity: 0.5,
                     child: Text(
                       "Semangat Pagi",
@@ -68,10 +69,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Text(
-                    "Ryan Hadi Dermawan",
-                    style: TextStyle(fontSize: 15),
-                  ),
+                  BlocBuilder<UserBloc, UserState>(
+                    bloc: UserBloc()..add(GetUserLogin()),
+                    builder: (context, state) {
+                      // print(state);
+
+                      if (state is UserLoading) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                          child: SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        );
+                      }
+
+                      if (state is UserLoginLoaded) {
+                        return Text(
+                          state.data.name!,
+                          style: const TextStyle(fontSize: 15),
+                        );
+                      }
+
+                      return Container();
+                    },
+                  )
                 ],
               ),
             ),
@@ -142,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (state is LocationLoaded) {
                           locationbloc.add(
                             GetRealtimeGps(
-                              duration: const Duration(minutes: 1),
+                              duration: const Duration(seconds: 30),
                             ),
                           );
                           return Text(

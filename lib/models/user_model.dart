@@ -1,36 +1,32 @@
 import 'dart:convert';
 
-UserModel userFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String userToJson(UserModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
-  String id;
-  String name;
-  String username;
-  String status;
-  String workflowState;
-  String? email;
-  String? img;
-  int? phone;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? id;
+  String? name;
+  String? username;
+  String? status;
+  String? workflowState;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? v;
   String? erpSite;
   String? erpToken;
 
   UserModel({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.status,
-    required this.workflowState,
-    required this.email,
-    required this.phone,
-    required this.img,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.erpSite,
-    required this.erpToken,
+    this.id,
+    this.name,
+    this.username,
+    this.status,
+    this.workflowState,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+    this.erpSite,
+    this.erpToken,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -39,11 +35,13 @@ class UserModel {
         username: json["username"],
         status: json["status"],
         workflowState: json["workflowState"],
-        img: json["img"],
-        phone: json["phone"],
-        email: json["email"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
         erpSite: json["ErpSite"],
         erpToken: json["ErpToken"],
       );
@@ -54,11 +52,9 @@ class UserModel {
         "username": username,
         "status": status,
         "workflowState": workflowState,
-        "img": img,
-        "phone": phone,
-        "email": email,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
         "ErpSite": erpSite,
         "ErpToken": erpToken,
       };
