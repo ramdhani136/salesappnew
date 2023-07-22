@@ -7,6 +7,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 
 class CallsheetContactForm extends StatefulWidget {
   final ContactBloc contactBloc;
@@ -26,12 +27,15 @@ class _CallsheetContactFormState extends State<CallsheetContactForm> {
   TextEditingController customerC = TextEditingController();
   TextEditingController picC = TextEditingController();
   TextEditingController phonC = TextEditingController();
+  TextEditingController postionC = TextEditingController();
+  String position = "";
 
   @override
   void dispose() {
-    // customerC.dispose();
-    // picC.dispose();
-    // phonC.dispose();
+    customerC.dispose();
+    picC.dispose();
+    phonC.dispose();
+    postionC.dispose();
     super.dispose();
   }
 
@@ -40,18 +44,18 @@ class _CallsheetContactFormState extends State<CallsheetContactForm> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: FractionallySizedBox(
-        widthFactor: 1.15,
-        child: Container(
-          width: Get.width * 0.95,
-          height: 450,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      insetPadding: const EdgeInsets.all(0),
+      child: Container(
+        width: Get.width - 30,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
@@ -115,6 +119,30 @@ class _CallsheetContactFormState extends State<CallsheetContactForm> {
                           ),
                         ),
                         const SizedBox(height: 20),
+                        CustomField(
+                          controller: postionC,
+                          title: "Position",
+                          type: Type.select,
+                          data: const [
+                            {"title": "Purchase Staff"},
+                            {"title": "Purchase SPV"},
+                            {"title": "Purchase Manager"},
+                            {"title": "Accounting Staff"},
+                            {"title": "Accounting SPV"},
+                            {"title": "Accounting Manager"},
+                            {"title": "Owner"},
+                            {"title": "Other"},
+                          ],
+                          onChange: (e) {
+                            postionC.text = e['title'];
+                            position = e['title'];
+                          },
+                          onReset: () {
+                            postionC.text = "";
+                            position = "";
+                          },
+                        ),
+                        const SizedBox(height: 20),
                         Text(
                           "Phone :",
                           style: TextStyle(color: Colors.grey[700]),
@@ -168,6 +196,7 @@ class _CallsheetContactFormState extends State<CallsheetContactForm> {
                           data: {
                             "name": picC.text,
                             "phone": phonC.text,
+                            "position": position,
                             "customer": widget.state.data.customer!.id
                           },
                         ),

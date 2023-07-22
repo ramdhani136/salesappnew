@@ -32,6 +32,10 @@ class _ContactFormState extends State<ContactForm> {
 
   @override
   void dispose() {
+    customerC.dispose();
+    picC.dispose();
+    phonC.dispose();
+    postionC.dispose();
     super.dispose();
   }
 
@@ -89,7 +93,7 @@ class _ContactFormState extends State<ContactForm> {
                                 const EdgeInsets.symmetric(horizontal: 10),
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 20),
                         Text(
                           "PIC :",
                           style: TextStyle(color: Colors.grey[700]),
@@ -124,7 +128,7 @@ class _ContactFormState extends State<ContactForm> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 20),
                         CustomField(
                           controller: postionC,
                           title: "Position",
