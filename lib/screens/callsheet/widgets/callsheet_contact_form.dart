@@ -46,7 +46,7 @@ class _CallsheetContactFormState extends State<CallsheetContactForm> {
     return Dialog(
       insetPadding: const EdgeInsets.all(0),
       child: Container(
-        width: Get.width - 30,
+        width: Get.width - 20,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

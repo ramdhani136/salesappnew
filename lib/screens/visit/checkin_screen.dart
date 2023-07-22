@@ -328,27 +328,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "${stateCustomer.data.name}",
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 22,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        // IconButton(
-                                                        //   onPressed: () {},
-                                                        //   icon: Icon(
-                                                        //     Icons.edit,
-                                                        //     size: 20,
-                                                        //     color: Colors
-                                                        //         .amber[600],
-                                                        //   ),
-                                                        // )
-                                                      ],
+                                                    Text(
+                                                      "${stateCustomer.data.name}",
+                                                      style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                     Visibility(
                                                       visible: stateCustomer

@@ -46,7 +46,7 @@ class _ContactFormState extends State<ContactForm> {
     return Dialog(
       insetPadding: const EdgeInsets.all(0), // Menghapus padding inset
       child: Container(
-        width: Get.width - 30,
+        width: Get.width - 20,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
