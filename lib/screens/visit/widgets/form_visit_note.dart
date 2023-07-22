@@ -247,7 +247,6 @@ class FormVisitNote extends StatelessWidget {
                                       controller: noteC,
                                       keyboardType: TextInputType.multiline,
                                       maxLines: null,
-                                      textInputAction: TextInputAction.done,
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'Notes Content',
