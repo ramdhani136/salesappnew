@@ -2,6 +2,7 @@
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/bloc/callsheetnote/callsheetnote_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
 import 'package:salesappnew/models/task_callsheet_model.dart';
 import 'package:salesappnew/screens/callsheet/widgets/form_callsheet_note.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 
 class CallsheetFormBill extends StatelessWidget {
   String id;
@@ -141,26 +143,137 @@ class CallsheetFormBill extends StatelessWidget {
                                                   MaterialStateProperty.all<
                                                       Color>(Colors.white),
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              EasyLoading.show(
+                                                  status: 'loading...');
                                               Get.back();
-                                              Get.to(
-                                                () => MultiBlocProvider(
-                                                  providers: [
-                                                    BlocProvider.value(
-                                                      value:
-                                                          CallsheetnoteBloc(),
-                                                    ),
-                                                    BlocProvider.value(
-                                                      value: BlocProvider.of<
-                                                              CallsheetBloc>(
-                                                          context),
-                                                    ),
+                                              try {
+                                                late String outstandingTags;
+                                                late String nameTag;
+                                                dynamic cekTags =
+                                                    await FetchData(
+                                                  data: Data.tag,
+                                                ).FINDALL(
+                                                  fields: ["_id", "name"],
+                                                  filters: [
+                                                    [
+                                                      "name",
+                                                      "=",
+                                                      "Outstanding"
+                                                    ],
                                                   ],
-                                                  child: FormCallsheetNote(
-                                                    callsheetId: state.data.id!,
+                                                );
+
+                                                if (cekTags['status'] != 200) {
+                                                  dynamic cekOSTags =
+                                                      await FetchData(
+                                                    data: Data.tag,
+                                                  ).ADD(
+                                                    {"name": "Outstanding"},
+                                                  );
+
+                                                  outstandingTags =
+                                                      cekOSTags['data']['_id'];
+                                                } else {
+                                                  outstandingTags =
+                                                      cekTags['data'][0]["_id"];
+                                                }
+
+                                                dynamic cekNameTag =
+                                                    await FetchData(
+                                                  data: Data.tag,
+                                                ).FINDALL(
+                                                  fields: ["_id", "name"],
+                                                  filters: [
+                                                    [
+                                                      "name",
+                                                      "=",
+                                                      taskFromInv[index].name
+                                                    ],
+                                                  ],
+                                                );
+
+                                                if (cekNameTag['status'] !=
+                                                    200) {
+                                                  dynamic createNameTag =
+                                                      await FetchData(
+                                                    data: Data.tag,
+                                                  ).ADD(
+                                                    {
+                                                      "name": taskFromInv[index]
+                                                          .name
+                                                    },
+                                                  );
+
+                                                  nameTag =
+                                                      createNameTag['data']
+                                                          ['_id'];
+                                                } else {
+                                                  nameTag = cekNameTag['data']
+                                                      [0]["_id"];
+                                                }
+
+                                                dynamic insertTask =
+                                                    await FetchData(
+                                                            data: Data
+                                                                .callsheetNote)
+                                                        .ADD(
+                                                  {
+                                                    "title":
+                                                        "Outstanding inv ${taskFromInv[index].name}",
+                                                    "callsheetId": id,
+                                                    "tags": [
+                                                      outstandingTags,
+                                                      nameTag,
+                                                    ],
+                                                    "notes": taskFromInv[index]
+                                                        .notes,
+                                                  },
+                                                );
+
+                                                if (insertTask['status'] !=
+                                                    200) {
+                                                  throw insertTask['msg'];
+                                                }
+
+                                                Get.to(
+                                                  () => MultiBlocProvider(
+                                                    providers: [
+                                                      BlocProvider.value(
+                                                        value:
+                                                            CallsheetnoteBloc(),
+                                                      ),
+                                                      BlocProvider.value(
+                                                        value: BlocProvider.of<
+                                                                CallsheetBloc>(
+                                                            context),
+                                                      ),
+                                                    ],
+                                                    child: FormCallsheetNote(
+                                                      callsheetId:
+                                                          state.data.id!,
+                                                      noteId: insertTask['data']
+                                                          ['_id'],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
+                                                );
+
+                                                EasyLoading.dismiss();
+                                              } catch (e) {
+                                                EasyLoading.dismiss();
+                                                Get.defaultDialog(
+                                                  content: Text(
+                                                    e.toString(),
+                                                  ),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    vertical: 10,
+                                                    horizontal: 20,
+                                                  ),
+                                                );
+                                                rethrow;
+                                              }
                                             },
                                             child: const Text('Yes'),
                                           ),

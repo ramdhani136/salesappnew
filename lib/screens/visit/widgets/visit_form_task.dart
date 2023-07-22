@@ -2,10 +2,12 @@
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 
 class VisitFormTask extends StatelessWidget {
   String visitId;
@@ -82,24 +84,106 @@ class VisitFormTask extends StatelessWidget {
                                         MaterialStateProperty.all<Color>(
                                             Colors.white),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    EasyLoading.show(status: 'loading...');
                                     Get.back();
-                                    Get.to(
-                                      () => MultiBlocProvider(
-                                        providers: [
-                                          BlocProvider.value(
-                                            value: VisitnoteBloc(),
-                                          ),
-                                          BlocProvider.value(
-                                            value: BlocProvider.of<VisitBloc>(
-                                                context),
-                                          ),
+
+                                    try {
+                                      late String typeTag;
+                                      late String nameTag;
+                                      dynamic cekTags = await FetchData(
+                                        data: Data.tag,
+                                      ).FINDALL(
+                                        fields: ["_id", "name"],
+                                        filters: [
+                                          ["name", "=", state.task[index].from],
                                         ],
-                                        child: FormVisitNote(
-                                          visitId: state.data.id!,
+                                      );
+
+                                      if (cekTags['status'] != 200) {
+                                        dynamic cekOSTags = await FetchData(
+                                          data: Data.tag,
+                                        ).ADD(
+                                          {"name": state.task[index].from},
+                                        );
+
+                                        typeTag = cekOSTags['data']['_id'];
+                                      } else {
+                                        typeTag = cekTags['data'][0]["_id"];
+                                      }
+
+                                      dynamic cekNameTag = await FetchData(
+                                        data: Data.tag,
+                                      ).FINDALL(
+                                        fields: ["_id", "name"],
+                                        filters: [
+                                          ["name", "=", state.task[index].name],
+                                        ],
+                                      );
+
+                                      if (cekNameTag['status'] != 200) {
+                                        dynamic createNameTag = await FetchData(
+                                          data: Data.tag,
+                                        ).ADD(
+                                          {"name": state.task[index].name},
+                                        );
+
+                                        nameTag = createNameTag['data']['_id'];
+                                      } else {
+                                        nameTag = cekNameTag['data'][0]["_id"];
+                                      }
+
+                                      dynamic insertTask =
+                                          await FetchData(data: Data.visitnote)
+                                              .ADD(
+                                        {
+                                          "title":
+                                              "${state.task[index].from} ${state.task[index].name}",
+                                          "visitId": visitId,
+                                          "tags": [
+                                            typeTag,
+                                            nameTag,
+                                          ],
+                                          "notes": state.task[index].notes,
+                                        },
+                                      );
+
+                                      if (insertTask['status'] != 200) {
+                                        throw insertTask['msg'];
+                                      }
+                                      Get.to(
+                                        () => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider.value(
+                                              value: VisitnoteBloc(),
+                                            ),
+                                            BlocProvider.value(
+                                              value: BlocProvider.of<VisitBloc>(
+                                                  context),
+                                            ),
+                                          ],
+                                          child: FormVisitNote(
+                                            visitId: state.data.id!,
+                                            noteId: insertTask['data']['_id'],
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+
+                                      EasyLoading.dismiss();
+                                    } catch (e) {
+                                      EasyLoading.dismiss();
+                                      Get.defaultDialog(
+                                        content: Text(
+                                          e.toString(),
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal: 20,
+                                        ),
+                                      );
+                                      rethrow;
+                                    }
                                   },
                                   child: const Text('Yes'),
                                 ),
