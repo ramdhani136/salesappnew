@@ -7,6 +7,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 
 class ContactForm extends StatefulWidget {
   final ContactBloc contactBloc;
@@ -26,35 +27,11 @@ class _ContactFormState extends State<ContactForm> {
   TextEditingController customerC = TextEditingController();
   TextEditingController picC = TextEditingController();
   TextEditingController phonC = TextEditingController();
-  // bool isPicEmpty = true;
-  // bool isPoneEmpty = true;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   customerC =
-  //       TextEditingController(text: "${widget.visitState.data.customer?.name}");
-  //   picC = TextEditingController();
-  //   phonC = TextEditingController();
-
-  //   picC.addListener(() {
-  //     setState(() {
-  //       isPicEmpty = picC.text.isEmpty;
-  //     });
-  //   });
-
-  //   phonC.addListener(() {
-  //     setState(() {
-  //       isPoneEmpty = phonC.text.isEmpty;
-  //     });
-  //   });
-  // }
+  TextEditingController postionC = TextEditingController();
+  String position = "";
 
   @override
   void dispose() {
-    // customerC.dispose();
-    // picC.dispose();
-    // phonC.dispose();
     super.dispose();
   }
 
@@ -63,18 +40,18 @@ class _ContactFormState extends State<ContactForm> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: FractionallySizedBox(
-        widthFactor: 1.15,
-        child: Container(
-          width: Get.width * 0.95,
-          height: 450,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      insetPadding: const EdgeInsets.all(0), // Menghapus padding inset
+      child: Container(
+        width: Get.width - 30,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
@@ -112,7 +89,7 @@ class _ContactFormState extends State<ContactForm> {
                                 const EdgeInsets.symmetric(horizontal: 10),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         Text(
                           "PIC :",
                           style: TextStyle(color: Colors.grey[700]),
@@ -147,6 +124,30 @@ class _ContactFormState extends State<ContactForm> {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 15),
+                        CustomField(
+                          controller: postionC,
+                          title: "Position",
+                          type: Type.select,
+                          data: const [
+                            {"title": "Purchase Staff"},
+                            {"title": "Purchase SPV"},
+                            {"title": "Purchase Manager"},
+                            {"title": "Accounting Staff"},
+                            {"title": "Accounting SPV"},
+                            {"title": "Accounting Manager"},
+                            {"title": "Owner"},
+                            {"title": "Other"},
+                          ],
+                          onChange: (e) {
+                            postionC.text = e['title'];
+                            position = e['title'];
+                          },
+                          onReset: () {
+                            postionC.text = "";
+                            position = "";
+                          },
+                        ),
                         const SizedBox(height: 20),
                         Text(
                           "Phone :",
@@ -162,8 +163,9 @@ class _ContactFormState extends State<ContactForm> {
                           decoration: InputDecoration(
                             hintStyle: TextStyle(color: Colors.grey[300]),
                             hintText: "Contoh: 089637428874",
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                             // enabledBorder: phonC.text.isEmpty
                             //     ? const OutlineInputBorder(
                             //         borderSide: BorderSide(
@@ -195,7 +197,7 @@ class _ContactFormState extends State<ContactForm> {
                     );
                   },
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: Get.width,
                   height: 46,
@@ -209,6 +211,7 @@ class _ContactFormState extends State<ContactForm> {
                           data: {
                             "name": picC.text,
                             "phone": phonC.text,
+                            "position": position,
                             "customer": widget.visitState.data.customer!.id
                           },
                         ),
