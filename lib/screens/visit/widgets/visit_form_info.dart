@@ -30,6 +30,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController picC = TextEditingController();
   TextEditingController phoneC = TextEditingController();
   TextEditingController dateC = TextEditingController();
+  TextEditingController positionC = TextEditingController();
 
   @override
   void dispose() {
@@ -67,6 +68,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           workflowC.text = state.data.workflowState!;
           picC.text =
               state.data.contact != null ? state.data.contact!.name : "";
+          positionC.text =
+              state.data.contact != null ? state.data.contact!.position : "";
           phoneC.text =
               state.data.contact != null ? "${state.data.contact!.phone}" : "";
           dateC.text = DateFormat.yMd().add_jm().format(
@@ -266,10 +269,24 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   onReset: () {
                                     picC.text = "";
                                     phoneC.text = "";
+                                    positionC.text = "";
                                   },
                                 ),
                               );
                             },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Visibility(
+                          visible: phoneC.text != "",
+                          child: CustomField(
+                            mandatory: true,
+                            title: "Position",
+                            controller: positionC,
+                            type: Type.standard,
+                            disabled: true,
                           ),
                         ),
                         const SizedBox(

@@ -173,22 +173,26 @@ class Contact {
   String id;
   String name;
   int phone;
+  String position;
 
   Contact({
     required this.id,
     required this.name,
     required this.phone,
+    required this.position,
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) => Contact(
         id: json["_id"],
         name: json["name"],
         phone: json["phone"],
+        position: json["position"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
         "phone": phone,
+        "position": position,
       };
 }
