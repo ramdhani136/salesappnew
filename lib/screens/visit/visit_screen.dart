@@ -7,6 +7,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
+import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitScreen extends StatefulWidget {
@@ -67,6 +68,7 @@ class _VisitScreenState extends State<VisitScreen> {
         initialIndex: 1,
         length: myTabs.length,
         child: Scaffold(
+          drawer: const DrawerWidget(),
           appBar: AppBar(
             elevation: 0,
             automaticallyImplyLeading: false,

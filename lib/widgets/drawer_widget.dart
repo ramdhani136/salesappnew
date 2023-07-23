@@ -50,13 +50,16 @@ class DrawerWidget extends StatelessWidget {
                     child: ListView(
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.back();
+                            Navigator.pushNamed(context, '/home');
+                          },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Icon(
                                 Icons.home,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -78,6 +81,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/visit');
                           },
                           child: Row(
@@ -85,7 +89,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.run_circle,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -107,6 +111,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/callsheet');
                           },
                           child: Row(
@@ -114,7 +119,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.call,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -136,6 +141,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/so');
                           },
                           child: Row(
@@ -143,7 +149,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.price_check_sharp,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -165,6 +171,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/invoice');
                           },
                           child: Row(
@@ -172,7 +179,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.currency_exchange_outlined,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -194,6 +201,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/dn');
                           },
                           child: Row(
@@ -201,7 +209,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.fire_truck,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
@@ -223,6 +231,7 @@ class DrawerWidget extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
+                            Get.back();
                             Navigator.pushNamed(context, '/item');
                           },
                           child: Row(
@@ -230,7 +239,7 @@ class DrawerWidget extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.interests,
-                                size: 20,
+                                size: 18,
                                 color: Colors.grey[800],
                               ),
                               const SizedBox(
