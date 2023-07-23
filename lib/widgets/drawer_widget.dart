@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
+import 'package:salesappnew/bloc/user/user_bloc.dart';
+import 'package:salesappnew/models/user_model.dart';
 import 'package:salesappnew/widgets/profile_picture.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -11,32 +13,59 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserBloc userBloc = UserBloc();
     return Drawer(
       child: Column(
         children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  bottom: BorderSide(
-                    color: Color.fromARGB(255, 239, 237, 237),
-                    width: 1,
+          BlocBuilder<UserBloc, UserState>(
+            bloc: userBloc..add(GetUserLogin()),
+            builder: (context, state) {
+              if (state is UserLoading) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
                   ),
-                ),
-              ),
-              width: Get.width,
-              height: 120,
-              child: ListView(
-                padding: const EdgeInsets.only(left: 15, top: 15),
-                children: const [
-                  SizedBox(height: 20),
-                  ProfilePicture(),
-                  SizedBox(height: 15),
-                ],
-              ),
-            ),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                );
+              }
+
+              if (state is UserLoginLoaded) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color.fromARGB(255, 239, 237, 237),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    width: Get.width,
+                    height: 120,
+                    child: ListView(
+                      padding: const EdgeInsets.only(left: 15, top: 15),
+                      children: [
+                        const SizedBox(height: 20),
+                        ProfilePicture(
+                          data: state.data,
+                        ),
+                        const SizedBox(height: 15),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return Container();
+            },
           ),
           Expanded(
             child: Container(

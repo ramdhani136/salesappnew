@@ -1,26 +1,18 @@
-// ignore_for_file: unused_local_variable, non_constant_identifier_names
-
-import 'dart:convert';
+// ignore_for_file: unused_local_variable, non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:salesappnew/models/user_model.dart';
 
 class ProfilePicture extends StatelessWidget {
-  const ProfilePicture({
-    Key? key,
-  }) : super(key: key);
+  UserModel data;
+  ProfilePicture({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
-    IsUser() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? user = prefs.getString('user');
-      final Map<String, dynamic> thisUser = jsonDecode(user!);
-      Map decodedMap = json.decode(user);
-      return decodedMap;
-    }
-
     return Row(
       children: [
         Stack(
@@ -101,14 +93,14 @@ class ProfilePicture extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Ilham Ramdhani",
+                    data.name!,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    "@Ramdhaniit",
+                    "@${data.username}",
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 15,
