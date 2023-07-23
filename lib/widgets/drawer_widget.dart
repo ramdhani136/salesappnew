@@ -53,7 +53,7 @@ class DrawerWidget extends StatelessWidget {
                     child: ListView(
                       padding: const EdgeInsets.only(left: 15, top: 15),
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 25),
                         ProfilePicture(
                           data: state.data,
                         ),

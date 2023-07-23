@@ -19,8 +19,8 @@ class ProfilePicture extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Container(
-              width: 70,
-              height: 70,
+              width: 65,
+              height: 65,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(60),
                 gradient: const LinearGradient(
@@ -40,8 +40,8 @@ class ProfilePicture extends StatelessWidget {
                   Get.back();
                 },
                 child: Container(
-                  width: 63,
-                  height: 63,
+                  width: 58,
+                  height: 58,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(""),
@@ -64,8 +64,8 @@ class ProfilePicture extends StatelessWidget {
                   Get.back();
                 },
                 child: Container(
-                  width: 63,
-                  height: 63,
+                  width: 58,
+                  height: 58,
                   decoration: BoxDecoration(
                     image: const DecorationImage(
                       image: AssetImage(
