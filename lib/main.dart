@@ -3,10 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
+import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
+import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/home_screen.dart';
+import 'package:salesappnew/screens/invoice/invoice_screen.dart';
+import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
 import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:salesappnew/screens/order/order_screen.dart';
+import 'package:salesappnew/screens/visit/visit_screen.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -39,6 +45,15 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: GetMaterialApp(
+        routes: {
+          '/visit': (context) => const VisitScreen(),
+          '/callsheet': (context) => const CallsheetScreen(),
+          '/home': (context) => const HomeScreen(),
+          '/dn': (context) => const DnScreen(),
+          '/invoice': (context) => const InvoiceScreen(),
+          '/so': (context) => const OrderScreen(),
+          '/item': (context) => const ItemScreen(),
+        },
         debugShowCheckedModeBanner: false,
         home: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {

@@ -237,7 +237,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         throw "This customer not sync with erp system";
       }
     } catch (e) {
-      print(e);
       if (state is InvoiceLoadedOverdue) {
         final updatedState = state.copyWith(pageLoading: false, hasMore: false);
         emit(updatedState);

@@ -10,16 +10,15 @@ import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
-import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
 import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
-import 'package:salesappnew/screens/visit/visit_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
+import 'package:salesappnew/widgets/drawer_widget.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -41,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         leading: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
           return IconButton(
@@ -49,8 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Color.fromARGB(255, 121, 8, 14),
               ),
               onPressed: () {
-                BlocProvider.of<AuthBloc>(context).add(OnLogout());
-                // context.read<AuthBloc>().add(OnLogout());
+                Scaffold.of(context).openDrawer();
+                // BlocProvider.of<AuthBloc>(context).add(OnLogout());
               });
         }),
         backgroundColor: const Color(0xFFE6212A),
@@ -227,11 +227,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HomeMenuList(
                     RunFUnction: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<VisitScreen>(
-                          builder: (_) => const VisitScreen(),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute<VisitScreen>(
+                      //     builder: (_) => const VisitScreen(),
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, '/visit');
                     },
                     title: "Visit",
                     primary: true,
@@ -239,14 +240,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   HomeMenuList(
                     RunFUnction: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<CallsheetScreen>(
-                          builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<AuthBloc>(context),
-                            child: const CallsheetScreen(),
-                          ),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/callsheet');
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute<CallsheetScreen>(
+                      //     builder: (_) => BlocProvider.value(
+                      //       value: BlocProvider.of<AuthBloc>(context),
+                      //       child: const CallsheetScreen(),
+                      //     ),
+                      //   ),
+                      // );
                     },
                     title: "Callsheet",
                     icon: Icons.phone,

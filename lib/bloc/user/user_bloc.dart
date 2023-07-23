@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_import, depend_on_referenced_packages
 
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:jwt_decode/jwt_decode.dart';
