@@ -50,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
-                // BlocProvider.of<AuthBloc>(context).add(OnLogout());
               });
         }),
         backgroundColor: const Color(0xFFE6212A),
