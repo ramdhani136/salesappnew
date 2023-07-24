@@ -89,7 +89,6 @@ class _UserSettingState extends State<UserSetting> {
                     controller: nameC,
                     type: Type.standard,
                     title: "Name",
-                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
@@ -98,7 +97,6 @@ class _UserSettingState extends State<UserSetting> {
                     controller: userNameC,
                     type: Type.standard,
                     title: "Username",
-                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
@@ -107,7 +105,6 @@ class _UserSettingState extends State<UserSetting> {
                     controller: emailC,
                     type: Type.standard,
                     title: "Email",
-                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
@@ -115,7 +112,6 @@ class _UserSettingState extends State<UserSetting> {
                   CustomField(
                     controller: phoneC,
                     type: Type.standard,
-                    textInputAction: TextInputAction.next,
                     title: "Phone",
                   ),
                   const SizedBox(
@@ -125,7 +121,6 @@ class _UserSettingState extends State<UserSetting> {
                     controller: passwordC,
                     type: Type.standard,
                     title: "Password",
-                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
