@@ -296,6 +296,7 @@ class _UserSettingState extends State<UserSetting> {
                             },
                           ),
                         );
+                        passwordC.text = "";
                       },
                       child: const Text("Yes"),
                     ),
