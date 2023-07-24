@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/user/user_bloc.dart';
-import 'package:salesappnew/models/user_model.dart';
 import 'package:salesappnew/widgets/profile_picture.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -54,8 +53,11 @@ class DrawerWidget extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 15, top: 15),
                       children: [
                         const SizedBox(height: 25),
-                        ProfilePicture(
-                          data: state.data,
+                        BlocProvider(
+                          create: (context) => userBloc,
+                          child: ProfilePicture(
+                            data: state.data,
+                          ),
                         ),
                         const SizedBox(height: 15),
                       ],

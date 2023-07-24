@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/user_model.dart';
+import 'package:salesappnew/screens/user/user_setting.dart';
 
 class ProfilePicture extends StatelessWidget {
   UserModel data;
@@ -114,6 +115,11 @@ class ProfilePicture extends StatelessWidget {
               IconButton(
                 onPressed: () async {
                   Get.back();
+                  Navigator.of(context).push(
+                    MaterialPageRoute<UserSetting>(
+                      builder: (_) => const UserSetting(),
+                    ),
+                  );
                 },
                 icon: Icon(
                   Icons.settings,
