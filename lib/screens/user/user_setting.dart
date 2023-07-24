@@ -101,6 +101,8 @@ class _UserSettingState extends State<UserSetting> {
                   userNameC.text = state.data.username!;
                   emailC.text = state.data.email ?? "";
                   phoneC.text = state.data.phone ?? "";
+                  erpSiteC.text = state.data.erpSite ?? "";
+                  erpTokenC.text = state.data.erpToken ?? "";
 
                   return ListView(
                     children: [
@@ -132,6 +134,22 @@ class _UserSettingState extends State<UserSetting> {
                         controller: phoneC,
                         type: Type.standard,
                         title: "Phone",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: erpSiteC,
+                        type: Type.standard,
+                        title: "Erp Uri",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: erpTokenC,
+                        type: Type.standard,
+                        title: "Erp Token",
                       ),
                       const SizedBox(
                         height: 20,
