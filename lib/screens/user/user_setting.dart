@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 
-class UserSetting extends StatelessWidget {
-  const UserSetting({super.key});
+class UserSetting extends StatefulWidget {
+  UserBloc bloc;
+  UserSetting({super.key, required this.bloc});
+
+  @override
+  State<UserSetting> createState() => _UserSettingState();
+}
+
+class _UserSettingState extends State<UserSetting> {
+  TextEditingController nameC = TextEditingController();
+  TextEditingController userNameC = TextEditingController();
+  TextEditingController emailC = TextEditingController();
+  TextEditingController phoneC = TextEditingController();
+  TextEditingController erpSiteC = TextEditingController();
+  TextEditingController erpTokenC = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
+
+  @override
+  void dispose() {
+    nameC.dispose();
+    userNameC.dispose();
+    emailC.dispose();
+    phoneC.dispose();
+    erpSiteC.dispose();
+    erpTokenC.dispose();
+    passwordC.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,36 +67,72 @@ class UserSetting extends StatelessWidget {
                     color: Color.fromARGB(255, 121, 8, 14),
                   ),
                 ),
-                // Visibility(
-                //   visible: state.workflow.isNotEmpty,
-                //   child: PopupMenuButton(
-                //     padding: const EdgeInsets.all(0),
-                //     icon: const Icon(
-                //       Icons.more_vert,
-                //       color: Color.fromARGB(255, 121, 8, 14),
-                //     ),
-                //     itemBuilder: (context) {
-                //       return state.workflow.map((item) {
-                //         return PopupMenuItem(
-                //           child: InkWell(
-                //             onTap: () async {
-                //               Get.back();
-                //             },
-                //             child: Padding(
-                //               padding: const EdgeInsets.symmetric(
-                //                   horizontal: 10, vertical: 10),
-                //               child: Text(item.action),
-                //             ),
-                //           ),
-                //         );
-                //       }).toList();
-                //     },
-                //   ),
-                // ),
               ],
             )
           ],
         ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: BlocBuilder(
+            bloc: widget.bloc,
+            builder: (context, state) {
+              if (state is UserLoginLoaded) {
+                nameC.text = state.data.name!;
+                userNameC.text = state.data.username!;
+                emailC.text = state.data.email ?? "";
+                phoneC.text = state.data.phone ?? "";
+              }
+              return ListView(
+                children: [
+                  CustomField(
+                    controller: nameC,
+                    type: Type.standard,
+                    title: "Name",
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomField(
+                    controller: userNameC,
+                    type: Type.standard,
+                    title: "Username",
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomField(
+                    controller: emailC,
+                    type: Type.standard,
+                    title: "Email",
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomField(
+                    controller: phoneC,
+                    type: Type.standard,
+                    textInputAction: TextInputAction.next,
+                    title: "Phone",
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomField(
+                    controller: passwordC,
+                    type: Type.standard,
+                    title: "Password",
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }

@@ -9,6 +9,8 @@ class UserModel {
   String? name;
   String? username;
   String? img;
+  String? email;
+  String? phone;
   String? status;
   String? workflowState;
   DateTime? createdAt;
@@ -20,8 +22,10 @@ class UserModel {
   UserModel({
     this.id,
     this.name,
+    this.email,
     this.username,
     this.status,
+    this.phone,
     this.workflowState,
     this.createdAt,
     this.updatedAt,
@@ -35,7 +39,9 @@ class UserModel {
         id: json["_id"],
         name: json["name"],
         username: json["username"],
+        phone: json["phone"],
         img: json["img"],
+        email: json["email"],
         status: json["status"],
         workflowState: json["workflowState"],
         createdAt: json["createdAt"] == null
@@ -53,6 +59,8 @@ class UserModel {
         "_id": id,
         "name": name,
         "img": img,
+        "email": email,
+        "phone": phone,
         "username": username,
         "status": status,
         "workflowState": workflowState,

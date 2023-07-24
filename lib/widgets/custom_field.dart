@@ -7,6 +7,7 @@ enum Type { standard, select }
 class CustomField extends StatefulWidget {
   String? placeholder;
   bool valid;
+  bool border;
   String? title;
   Type type;
   bool disabled;
@@ -32,6 +33,7 @@ class CustomField extends StatefulWidget {
     this.InsertAction,
     this.onReset,
     this.onTap,
+    this.border = true,
     this.placeholder,
     this.title,
     this.valid = true,
@@ -232,13 +234,13 @@ class _CustomFieldState extends State<CustomField> {
                     ),
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: widget.valid
-                        ? const Color.fromARGB(255, 182, 182, 182)
-                        : Colors.red,
-                  ),
-                ),
+                // enabledBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(
+                //     color: widget.valid
+                //         ? const Color.fromARGB(255, 182, 182, 182)
+                //         : Colors.red,
+                //   ),
+                // ),
                 // border: const OutlineInputBorder(),
                 hintText: widget.placeholder ?? "Search your data",
                 hintStyle: TextStyle(color: Colors.grey[300]),

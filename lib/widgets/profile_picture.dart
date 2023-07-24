@@ -1,7 +1,9 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/user_model.dart';
 import 'package:salesappnew/screens/user/user_setting.dart';
@@ -117,7 +119,8 @@ class ProfilePicture extends StatelessWidget {
                   Get.back();
                   Navigator.of(context).push(
                     MaterialPageRoute<UserSetting>(
-                      builder: (_) => const UserSetting(),
+                      builder: (_) =>
+                          UserSetting(bloc: BlocProvider.of<UserBloc>(context)),
                     ),
                   );
                 },
