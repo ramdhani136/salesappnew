@@ -190,6 +190,7 @@ class _UserSettingState extends State<UserSetting> {
                                 color: const Color.fromARGB(255, 232, 231, 231),
                               ),
                               image: state.data.img == "" &&
+                                          state.data.img == null &&
                                           widget.userBloc.img?.path == null ||
                                       widget.userBloc.img?.path == ""
                                   ? const DecorationImage(
@@ -207,7 +208,7 @@ class _UserSettingState extends State<UserSetting> {
                                         )
                                       : DecorationImage(
                                           image: NetworkImage(
-                                            "${Config().baseUri}images/users/${state.data.img!}",
+                                            "${Config().baseUri}images/users/${state.data.img}",
                                           ),
                                           fit: BoxFit.contain,
                                         ),
