@@ -8,7 +8,6 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/material.dart';
 import 'package:salesappnew/models/user_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:salesappnew/utils/local_data.dart';
 
 part 'user_event.dart';
@@ -46,7 +45,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (state is UserLoginLoaded) {
           final current = state as UserLoginLoaded;
           var image = await ImagePicker().pickImage(source: event.source);
-          print(image);
 
           img = image;
           emit(UserLoginLoaded(data: current.data));
