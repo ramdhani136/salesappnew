@@ -103,7 +103,9 @@ class _UserSettingState extends State<UserSetting> {
                   nameC.text = state.data.name!;
                   userNameC.text = state.data.username!;
                   emailC.text = state.data.email ?? "";
-                  phoneC.text = state.data.phone ?? "";
+                  phoneC.text = state.data.phone != null
+                      ? state.data.phone.toString()
+                      : "";
                   erpSiteC.text = state.data.erpSite ?? "";
                   erpTokenC.text = state.data.erpToken ?? "";
 
@@ -113,6 +115,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: nameC,
                         type: Type.standard,
                         title: "Name",
+                        disabled: true,
                       ),
                       const SizedBox(
                         height: 20,
@@ -121,6 +124,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: userNameC,
                         type: Type.standard,
                         title: "Username",
+                        disabled: true,
                       ),
                       const SizedBox(
                         height: 20,
@@ -130,6 +134,7 @@ class _UserSettingState extends State<UserSetting> {
                         type: Type.standard,
                         title: "Email",
                         placeholder: "Cth: it@ekatunggal.com",
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(
                         height: 20,
@@ -139,6 +144,7 @@ class _UserSettingState extends State<UserSetting> {
                         type: Type.standard,
                         title: "Phone",
                         placeholder: "Cth: 081283738823",
+                        keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(
                         height: 20,
@@ -166,6 +172,7 @@ class _UserSettingState extends State<UserSetting> {
                         type: Type.standard,
                         title: "Password",
                         placeholder: "",
+                        obscureText: true,
                       ),
                       const SizedBox(
                         height: 20,
@@ -275,6 +282,20 @@ class _UserSettingState extends State<UserSetting> {
                     TextButton(
                       onPressed: () async {
                         Get.back();
+                        widget.userBloc.add(
+                          UserSetUpdate(
+                            data: {
+                              "name": nameC.text,
+                              "username": userNameC.text,
+                              "email": emailC.text,
+                              "phone": phoneC.text,
+                              "ErpSite": erpSiteC.text,
+                              "ErpToken": erpTokenC.text,
+                              "password":
+                                  passwordC.text != "" ? passwordC.text : null,
+                            },
+                          ),
+                        );
                       },
                       child: const Text("Yes"),
                     ),

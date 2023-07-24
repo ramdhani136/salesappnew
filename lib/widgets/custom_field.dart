@@ -15,8 +15,10 @@ class CustomField extends StatefulWidget {
   Function? onReset;
   Future<List>? getData;
   Function? onTap;
+  TextInputType keyboardType;
   List? data;
   bool mandatory;
+  bool obscureText;
   bool loading;
   Function? InsertAction;
   TextInputAction? textInputAction;
@@ -27,8 +29,10 @@ class CustomField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.type,
+    this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
     this.disabled = false,
+    this.obscureText = false,
     this.onChange,
     this.InsertAction,
     this.onReset,
@@ -124,6 +128,8 @@ class _CustomFieldState extends State<CustomField> {
                   color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
                 ),
                 textInputAction: widget.textInputAction,
+                keyboardType: widget.keyboardType,
+                obscureText: widget.obscureText,
                 decoration: InputDecoration(
                   suffixIcon: Visibility(
                     visible: !widget.disabled,
@@ -206,6 +212,8 @@ class _CustomFieldState extends State<CustomField> {
             },
             child: TextField(
               textInputAction: widget.textInputAction,
+              keyboardType: widget.keyboardType,
+              obscureText: widget.obscureText,
               controller: widget.controller,
               onChanged: (value) {
                 if (widget.onChange != null && !widget.disabled) {

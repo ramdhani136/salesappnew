@@ -10,7 +10,7 @@ class UserModel {
   String? username;
   String? img;
   String? email;
-  String? phone;
+  num? phone;
   String? status;
   String? workflowState;
   DateTime? createdAt;

@@ -11,3 +11,8 @@ class UserSetImage extends UserEvent {
   ImageSource source;
   UserSetImage({required this.source});
 }
+
+class UserSetUpdate extends UserEvent {
+  Map<String, dynamic> data;
+  UserSetUpdate({required this.data});
+}
