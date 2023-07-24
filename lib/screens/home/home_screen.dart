@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
@@ -343,40 +342,58 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Container(
-                    width: Get.width - 40,
-                    height: (Get.width - 40) / 1.7,
-                    margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/promo.jpg'),
-                        fit: BoxFit.fitHeight,
-                      ),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Text(
+                    "No Data",
+                    style: TextStyle(
+                      color: Colors.grey[400],
                     ),
                   ),
-                  Container(
-                    width: Get.width - 40,
-                    height: (Get.width - 40) / 1.7,
-                    margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://suryapersinar.com/images/Article/News-202010/540025/pameran-spring-bed-spinno-sp-mattress-surabaya-08021607272.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     children: [
+            //       Container(
+            //         width: Get.width - 40,
+            //         height: (Get.width - 40) / 1.7,
+            //         margin: const EdgeInsets.only(right: 20),
+            //         decoration: BoxDecoration(
+            //           color: Colors.black,
+            //           borderRadius: BorderRadius.circular(10),
+            //           image: const DecorationImage(
+            //             image: AssetImage('assets/images/promo.jpg'),
+            //             fit: BoxFit.fitHeight,
+            //           ),
+            //         ),
+            //       ),
+            //       Container(
+            //         width: Get.width - 40,
+            //         height: (Get.width - 40) / 1.7,
+            //         margin: const EdgeInsets.only(right: 20),
+            //         decoration: BoxDecoration(
+            //           color: Colors.black,
+            //           borderRadius: BorderRadius.circular(10),
+            //           image: const DecorationImage(
+            //             image: NetworkImage(
+            //                 "https://suryapersinar.com/images/Article/News-202010/540025/pameran-spring-bed-spinno-sp-mattress-surabaya-08021607272.jpg"),
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),
@@ -500,8 +517,8 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                 child: Text(
                   state is CustomerIsFailure ? state.error : "",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: Colors.grey[400],
                   ),
                 ),
               ),
