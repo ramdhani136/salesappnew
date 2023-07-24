@@ -273,7 +273,9 @@ class _UserSettingState extends State<UserSetting> {
                       child: const Text("No"),
                     ),
                     TextButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Get.back();
+                      },
                       child: const Text("Yes"),
                     ),
                   ],
