@@ -126,6 +126,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: emailC,
                         type: Type.standard,
                         title: "Email",
+                        placeholder: "Cth: it@ekatunggal.com",
                       ),
                       const SizedBox(
                         height: 20,
@@ -134,6 +135,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: phoneC,
                         type: Type.standard,
                         title: "Phone",
+                        placeholder: "Cth: 081283738823",
                       ),
                       const SizedBox(
                         height: 20,
@@ -142,6 +144,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: erpSiteC,
                         type: Type.standard,
                         title: "Erp Uri",
+                        placeholder: "",
                       ),
                       const SizedBox(
                         height: 20,
@@ -150,6 +153,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: erpTokenC,
                         type: Type.standard,
                         title: "Erp Token",
+                        placeholder: "",
                       ),
                       const SizedBox(
                         height: 20,
@@ -158,6 +162,7 @@ class _UserSettingState extends State<UserSetting> {
                         controller: passwordC,
                         type: Type.standard,
                         title: "Password",
+                        placeholder: "",
                       ),
                       const SizedBox(
                         height: 20,
