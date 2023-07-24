@@ -133,7 +133,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
             add(GetUserLogin());
           } catch (e) {
-            print(e);
+            Get.defaultDialog(
+              title: 'Error',
+              content: Text(e.toString()),
+              contentPadding: const EdgeInsets.all(16),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
           }
         }
       },
