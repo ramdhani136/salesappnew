@@ -16,9 +16,10 @@ class UserSetting extends StatelessWidget {
           children: [
             BackButtonCustom(onBack: () {}),
             const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.person_pin, size: 18),
+                Icon(Icons.person_pin, size: 16),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 3),
                   child: Text(
