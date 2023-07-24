@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
+  XFile? img;
   UserBloc() : super(UserInitial()) {
     on<GetUserLogin>((event, emit) async {
       try {
