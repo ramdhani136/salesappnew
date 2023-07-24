@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -219,7 +220,9 @@ class _UserSettingState extends State<UserSetting> {
                               children: [
                                 IconButton(
                                   onPressed: () async {
-                                    // await profC.getImage(ImageSource.camera);
+                                    widget.userBloc.add(
+                                      UserSetImage(source: ImageSource.camera),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.camera_alt,
@@ -229,7 +232,9 @@ class _UserSettingState extends State<UserSetting> {
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    // await profC.getImage(ImageSource.gallery);
+                                    widget.userBloc.add(
+                                      UserSetImage(source: ImageSource.gallery),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.open_in_browser,
