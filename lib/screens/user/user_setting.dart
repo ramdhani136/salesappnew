@@ -97,7 +97,7 @@ class _UserSettingState extends State<UserSetting> {
               }
               return RefreshIndicator(
                 onRefresh: () async {
-                  widget.bloc.add(
+                  widget.userBloc.add(
                     GetUserLogin(),
                   );
                 },
