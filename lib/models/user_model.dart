@@ -8,6 +8,7 @@ class UserModel {
   String? id;
   String? name;
   String? username;
+  String? img;
   String? status;
   String? workflowState;
   DateTime? createdAt;
@@ -24,6 +25,7 @@ class UserModel {
     this.workflowState,
     this.createdAt,
     this.updatedAt,
+    this.img,
     this.v,
     this.erpSite,
     this.erpToken,
@@ -33,6 +35,7 @@ class UserModel {
         id: json["_id"],
         name: json["name"],
         username: json["username"],
+        img: json["img"],
         status: json["status"],
         workflowState: json["workflowState"],
         createdAt: json["createdAt"] == null
@@ -49,6 +52,7 @@ class UserModel {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+        "img": img,
         "username": username,
         "status": status,
         "workflowState": workflowState,

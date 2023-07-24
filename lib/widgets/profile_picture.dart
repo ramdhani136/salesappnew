@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/user_model.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -34,7 +35,7 @@ class ProfilePicture extends StatelessWidget {
               ),
             ),
             Visibility(
-              // visible: datanya["img"] != null && datanya["img"] != "",
+              visible: data.img != null,
               child: InkWell(
                 onTap: () {
                   Get.back();
@@ -44,7 +45,8 @@ class ProfilePicture extends StatelessWidget {
                   height: 58,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(""),
+                      image: NetworkImage(
+                          "${Config().baseUri}images/users/${data.img}"),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(60),
@@ -58,7 +60,7 @@ class ProfilePicture extends StatelessWidget {
               ),
             ),
             Visibility(
-              // visible: datanya["img"] == null || datanya["img"] == "",
+              visible: data.img == null,
               child: InkWell(
                 onTap: () {
                   Get.back();
