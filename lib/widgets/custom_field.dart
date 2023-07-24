@@ -234,13 +234,13 @@ class _CustomFieldState extends State<CustomField> {
                     ),
                   ),
                 ),
-                // enabledBorder: OutlineInputBorder(
-                //   borderSide: BorderSide(
-                //     color: widget.valid
-                //         ? const Color.fromARGB(255, 182, 182, 182)
-                //         : Colors.red,
-                //   ),
-                // ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: widget.valid
+                        ? const Color.fromARGB(255, 182, 182, 182)
+                        : Colors.red,
+                  ),
+                ),
                 // border: const OutlineInputBorder(),
                 hintText: widget.placeholder ?? "Search your data",
                 hintStyle: TextStyle(color: Colors.grey[300]),
