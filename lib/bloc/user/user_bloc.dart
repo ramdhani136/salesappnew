@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -42,13 +43,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     );
     on<UserSetImage>((event, emit) async {
       try {
-        var image = await ImagePicker().pickImage(source: event.source);
-        print(image);
+        if (state is UserLoginLoaded) {
+          final current = state as UserLoginLoaded;
+          var image = await ImagePicker().pickImage(source: event.source);
+          print(image);
 
-        // upImage.value = image;
-        // nowData['image'] = image;
-        // setIsChange();
+          img = image;
+          emit(UserLoginLoaded(data: current.data));
+        }
       } catch (e) {
+        Get.defaultDialog(
+          title: e.toString(),
+          content: Text(e.toString()),
+          contentPadding: const EdgeInsets.all(16),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
         rethrow;
       }
     });
