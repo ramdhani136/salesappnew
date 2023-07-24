@@ -249,6 +249,37 @@ class _UserSettingState extends State<UserSetting> {
               }),
         ),
       ),
+      floatingActionButton: SizedBox(
+        height: 100.0,
+        width: 70.0,
+        child: FloatingActionButton(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: const Text("Really?"),
+                  content: const Text("You want to save this data??"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: const Text("No"),
+                    ),
+                    TextButton(
+                      onPressed: () async {},
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          backgroundColor: const Color.fromARGB(255, 2, 1, 1),
+          child: const Icon(Icons.save),
+        ),
+      ),
     );
   }
 }
