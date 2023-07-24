@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/user/user_bloc.dart';
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 
@@ -76,149 +77,152 @@ class _UserSettingState extends State<UserSetting> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: BlocBuilder(
-            bloc: widget.userBloc..add(GetUserLogin()),
-            builder: (context, state) {
-              if (state is UserLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.grey[400],
-                  ),
-                );
-              }
-
-              if (state is UserLoginLoaded) {
-                nameC.text = state.data.name!;
-                userNameC.text = state.data.username!;
-                emailC.text = state.data.email ?? "";
-                phoneC.text = state.data.phone ?? "";
-              }
-              return RefreshIndicator(
-                onRefresh: () async {
-                  widget.userBloc.add(
-                    GetUserLogin(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          widget.userBloc.add(
+            GetUserLogin(),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: BlocBuilder(
+              bloc: widget.userBloc..add(GetUserLogin()),
+              builder: (context, state) {
+                if (state is UserLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.grey[400],
+                    ),
                   );
-                },
-                child: ListView(
-                  children: [
-                    CustomField(
-                      controller: nameC,
-                      type: Type.standard,
-                      title: "Name",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomField(
-                      controller: userNameC,
-                      type: Type.standard,
-                      title: "Username",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomField(
-                      controller: emailC,
-                      type: Type.standard,
-                      title: "Email",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomField(
-                      controller: phoneC,
-                      type: Type.standard,
-                      title: "Phone",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomField(
-                      controller: passwordC,
-                      type: Type.standard,
-                      title: "Password",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // Stack(
-                    //   alignment: Alignment.bottomCenter,
-                    //   children: [
-                    //     Container(
-                    //       width: double.infinity,
-                    //       height: 250,
-                    //       decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(5),
-                    //         color: Colors.grey[100],
-                    //         border: Border.all(
-                    //           color: const Color.fromARGB(255, 232, 231, 231),
-                    //         ),
-                    //         image: profC.imageUri.value == "" &&
-                    //                     widget.userBloc.img?.path == null ||
-                    //                 widget.userBloc.img?.path == ""
-                    //             ? const DecorationImage(
-                    //                 image: AssetImage(
-                    //                   "assets/images/ppicon.jpg",
-                    //                 ),
-                    //                 fit: BoxFit.contain,
-                    //               )
-                    //             : profC.upImage.value?.path != null
-                    //                 ? DecorationImage(
-                    //                     image: FileImage(
-                    //                       File("${widget.userBloc.img?.path}"),
-                    //                     ),
-                    //                   )
-                    //                 : DecorationImage(
-                    //                     image: NetworkImage(
-                    //                       profC.imageUri.value,
-                    //                     ),
-                    //                     fit: BoxFit.contain,
-                    //                   ),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       width: Get.width * 0.9,
-                    //       height: 35,
-                    //       decoration: BoxDecoration(
-                    //         borderRadius: const BorderRadius.only(
-                    //           bottomLeft: Radius.circular(5),
-                    //           bottomRight: Radius.circular(5),
-                    //         ),
-                    //         color: Colors.black.withOpacity(0.4),
-                    //       ),
-                    //       child: Row(
-                    //         children: [
-                    //           IconButton(
-                    //             onPressed: () async {
-                    //               // await profC.getImage(ImageSource.camera);
-                    //             },
-                    //             icon: const Icon(
-                    //               Icons.camera_alt,
-                    //               color: Colors.white,
-                    //               size: 22,
-                    //             ),
-                    //           ),
-                    //           IconButton(
-                    //             onPressed: () async {
-                    //               // await profC.getImage(ImageSource.gallery);
-                    //             },
-                    //             icon: const Icon(
-                    //               Icons.open_in_browser,
-                    //               color: Colors.white,
-                    //               size: 22,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
-                  ],
-                ),
-              );
-            }),
+                }
+
+                if (state is UserLoginLoaded) {
+                  nameC.text = state.data.name!;
+                  userNameC.text = state.data.username!;
+                  emailC.text = state.data.email ?? "";
+                  phoneC.text = state.data.phone ?? "";
+
+                  return ListView(
+                    children: [
+                      CustomField(
+                        controller: nameC,
+                        type: Type.standard,
+                        title: "Name",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: userNameC,
+                        type: Type.standard,
+                        title: "Username",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: emailC,
+                        type: Type.standard,
+                        title: "Email",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: phoneC,
+                        type: Type.standard,
+                        title: "Phone",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomField(
+                        controller: passwordC,
+                        type: Type.standard,
+                        title: "Password",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey[100],
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 232, 231, 231),
+                              ),
+                              image: state.data.img == "" &&
+                                          widget.userBloc.img?.path == null ||
+                                      widget.userBloc.img?.path == ""
+                                  ? const DecorationImage(
+                                      image: AssetImage(
+                                        "assets/icons/profile.png",
+                                      ),
+                                      fit: BoxFit.contain,
+                                    )
+                                  : widget.userBloc.img?.path != null
+                                      ? DecorationImage(
+                                          image: FileImage(
+                                            File(
+                                                "${widget.userBloc.img?.path}"),
+                                          ),
+                                        )
+                                      : DecorationImage(
+                                          image: NetworkImage(
+                                            "${Config().baseUri}images/users/${state.data.img!}",
+                                          ),
+                                          fit: BoxFit.contain,
+                                        ),
+                            ),
+                          ),
+                          Container(
+                            width: Get.width * 0.9,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(5),
+                                bottomRight: Radius.circular(5),
+                              ),
+                              color: Colors.black.withOpacity(0.4),
+                            ),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    // await profC.getImage(ImageSource.camera);
+                                  },
+                                  icon: const Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                    size: 22,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    // await profC.getImage(ImageSource.gallery);
+                                  },
+                                  icon: const Icon(
+                                    Icons.open_in_browser,
+                                    color: Colors.white,
+                                    size: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  );
+                }
+                return Container();
+              }),
+        ),
       ),
     );
   }
