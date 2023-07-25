@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
     return BlocProvider.value(
       value: authBloc,
       child: GetMaterialApp(
+        initialRoute: '/',
         routes: {
+          '/': (context) => const LoginScreen(),
           '/visit': (context) => const VisitScreen(),
           '/callsheet': (context) => const CallsheetScreen(),
           '/home': (context) => const HomeScreen(),
@@ -51,64 +53,65 @@ class MyApp extends StatelessWidget {
           '/item': (context) => const ItemScreen(),
         },
         debugShowCheckedModeBanner: false,
-        home: BlocListener<AuthBloc, AuthState>(
-          bloc: authBloc,
-          listener: (context, state) {
-            if (state is AuthUnauthenticated) {
-              Navigator.of(context).push(
-                MaterialPageRoute<LoginScreen>(
-                  builder: (_) => BlocProvider.value(
-                    value: authBloc,
-                    child: const LoginScreen(),
-                  ),
-                ),
-              );
+        // home: BlocListener<AuthBloc, AuthState>(
+        //   bloc: authBloc,
+        //   listener: (context, state) {
+        //     if (state is AuthUnauthenticated) {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute<LoginScreen>(
+        //           builder: (_) => BlocProvider.value(
+        //             value: authBloc,
+        //             child: const LoginScreen(),
+        //           ),
+        //         ),
+        //       );
 
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   MaterialPageRoute<LoginScreen>(
-              //     builder: (_) => BlocProvider.value(
-              //       value: authBloc,
-              //       child: const LoginScreen(),
-              //     ),
-              //   ),
-              //   (Route<dynamic> route) => false,
-              // );
-            }
-            if (state is AuthAuthenticated) {
-              Navigator.of(context).push(
-                MaterialPageRoute<LoginScreen>(
-                  builder: (_) => BlocProvider.value(
-                    value: authBloc,
-                    child: const HomeScreen(),
-                  ),
-                ),
-                // (Route<dynamic> route) => false,
-              );
-            }
-          },
-          child: BlocBuilder<AuthBloc, AuthState>(
-            bloc: authBloc,
-            builder: (context, state) {
-              if (state is AuthLoading) {
-                return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
+        // Navigator.of(context).pushAndRemoveUntil(
+        //   MaterialPageRoute<LoginScreen>(
+        //     builder: (_) => BlocProvider.value(
+        //       value: authBloc,
+        //       child: const LoginScreen(),
+        //     ),
+        //   ),
+        //   (Route<dynamic> route) => false,
+        // );
+        //     }
+        //     if (state is AuthAuthenticated) {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute<LoginScreen>(
+        //           builder: (_) => BlocProvider.value(
+        //             value: authBloc,
+        //             child: const HomeScreen(),
+        //           ),
+        //         ),
+        //         // (Route<dynamic> route) => false,
+        //       );
+        //     }
+        //   },
+        //   child: BlocBuilder<AuthBloc, AuthState>(
+        //     bloc: authBloc,
+        //     builder: (context, state) {
+        //       if (state is AuthLoading) {
+        //         return const Scaffold(
+        //           body: Center(
+        //             child: CircularProgressIndicator(),
+        //           ),
+        //         );
+        //       }
 
-              return Center(
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(
-                    color: Colors.grey[300],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+        //       return Center(
+        //         child: SizedBox(
+        //           width: 40,
+        //           height: 40,
+        //           child: CircularProgressIndicator(
+        //             color: Colors.grey[300],
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
+
         builder: EasyLoading.init(),
       ),
     );
