@@ -7,7 +7,7 @@ import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/screens/callsheet/widgets/callsheet_modal_insert.dart';
 import 'package:salesappnew/screens/callsheet/widgets/callsheet_screen_body.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
-import 'package:salesappnew/widgets/drawer_widget.dart';
+// import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CallsheetScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _CallsheetScreenState extends State<CallsheetScreen> {
         initialIndex: 1,
         length: myTabs.length,
         child: Scaffold(
-          drawer: const DrawerWidget(),
+          // drawer: const DrawerWidget(),
           appBar: AppBar(
             elevation: 0,
             automaticallyImplyLeading: false,

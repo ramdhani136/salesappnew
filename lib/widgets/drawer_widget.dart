@@ -334,7 +334,6 @@ class DrawerWidget extends StatelessWidget {
                         TextButton(
                           onPressed: () async {
                             BlocProvider.of<AuthBloc>(context).add(OnLogout());
-                            Navigator.pop(context);
                           },
                           child: const Text("Yes"),
                         ),

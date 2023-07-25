@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/screens/callsheet/callsheet_screen.dart';
@@ -9,8 +11,6 @@ import 'package:salesappnew/screens/home/home_screen.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/login_screen.dart';
-import 'dart:io';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:salesappnew/screens/visit/visit_screen.dart';
 
@@ -23,96 +23,82 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-Future<void> main() async {
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MyApp());
+  final authBloc = AuthBloc(AuthRepository());
+
+  runApp(MyApp(
+    authBloc: authBloc,
+  ));
   configLoading();
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  final AuthBloc authBloc;
 
-  AuthBloc authBloc = AuthBloc(AuthRepository())..add(AppStarted());
+  const MyApp({Key? key, required this.authBloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: authBloc,
+    return BlocProvider<AuthBloc>(
+      create: (context) => authBloc,
       child: GetMaterialApp(
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const LoginScreen(),
-          '/visit': (context) => const VisitScreen(),
-          '/callsheet': (context) => const CallsheetScreen(),
-          '/home': (context) => const HomeScreen(),
-          '/dn': (context) => const DnScreen(),
-          '/invoice': (context) => const InvoiceScreen(),
-          '/so': (context) => const OrderScreen(),
-          '/item': (context) => const ItemScreen(),
-        },
         debugShowCheckedModeBanner: false,
-        // home: BlocListener<AuthBloc, AuthState>(
-        //   bloc: authBloc,
-        //   listener: (context, state) {
-        //     if (state is AuthUnauthenticated) {
-        //       Navigator.of(context).push(
-        //         MaterialPageRoute<LoginScreen>(
-        //           builder: (_) => BlocProvider.value(
-        //             value: authBloc,
-        //             child: const LoginScreen(),
-        //           ),
-        //         ),
-        //       );
-
-        // Navigator.of(context).pushAndRemoveUntil(
-        //   MaterialPageRoute<LoginScreen>(
-        //     builder: (_) => BlocProvider.value(
-        //       value: authBloc,
-        //       child: const LoginScreen(),
-        //     ),
-        //   ),
-        //   (Route<dynamic> route) => false,
-        // );
-        //     }
-        //     if (state is AuthAuthenticated) {
-        //       Navigator.of(context).push(
-        //         MaterialPageRoute<LoginScreen>(
-        //           builder: (_) => BlocProvider.value(
-        //             value: authBloc,
-        //             child: const HomeScreen(),
-        //           ),
-        //         ),
-        //         // (Route<dynamic> route) => false,
-        //       );
-        //     }
-        //   },
-        //   child: BlocBuilder<AuthBloc, AuthState>(
-        //     bloc: authBloc,
-        //     builder: (context, state) {
-        //       if (state is AuthLoading) {
-        //         return const Scaffold(
-        //           body: Center(
-        //             child: CircularProgressIndicator(),
-        //           ),
-        //         );
-        //       }
-
-        //       return Center(
-        //         child: SizedBox(
-        //           width: 40,
-        //           height: 40,
-        //           child: CircularProgressIndicator(
-        //             color: Colors.grey[300],
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
-
         builder: EasyLoading.init(),
+        home: BlocBuilder<AuthBloc, AuthState>(
+          bloc: authBloc..add(AppStarted()),
+          builder: (context, state) {
+            if (state is AuthAuthenticated) {
+              return const HomeScreen();
+            }
+            if (state is AuthUnauthenticated) {
+              return const LoginScreen();
+            }
+            if (state is AuthLoading) {
+              return Center(
+                child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(color: Colors.grey[400]),
+                ),
+              );
+            }
+            return Container();
+          },
+        ),
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/visit': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const VisitScreen(),
+              ),
+          '/callsheet': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const CallsheetScreen(),
+              ),
+          '/home': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const HomeScreen(),
+              ),
+          '/dn': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const DnScreen(),
+              ),
+          '/invoice': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const InvoiceScreen(),
+              ),
+          '/so': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const OrderScreen(),
+              ),
+          '/item': (context) => BlocProvider.value(
+                value: authBloc,
+                child: const ItemScreen(),
+              ),
+        },
       ),
     );
   }
