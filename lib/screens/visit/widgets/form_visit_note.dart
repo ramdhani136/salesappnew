@@ -643,37 +643,35 @@ class ListVisitTags extends StatelessWidget {
 
                   if (state is tagsIsFailure) {
                     return Center(
-                      child: Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.error,
-                              style: TextStyle(
-                                color: Colors.grey[400],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            state.error,
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: state.error == "Data Not found!",
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ShowformTags(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromARGB(255, 57,
+                                    156, 60), // Mengatur warna latar belakang
+                              ),
+                              child: const Text(
+                                "Create New",
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Visibility(
-                              visible: state.error == "Data Not found!",
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  ShowformTags(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(255, 57,
-                                      156, 60), // Mengatur warna latar belakang
-                                ),
-                                child: const Text(
-                                  "Create New",
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   }
