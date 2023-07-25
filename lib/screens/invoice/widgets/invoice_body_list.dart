@@ -23,6 +23,12 @@ class InvoiceBodyList extends StatelessWidget {
       locale: 'id',
     );
 
+    double setPersen = double.parse(
+            "${100 - (data['outstanding_amount'] / (data['grand_total'] / 100))}") /
+        100;
+
+    double persen = double.parse(setPersen.toStringAsFixed(2));
+
     return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -108,9 +114,7 @@ class InvoiceBodyList extends StatelessWidget {
                           lineHeight: 20.0,
                           animationDuration: 2000,
                           width: Get.width * 0.80,
-                          percent: double.parse(
-                                  "${100 - (data['outstanding_amount'] / (data['grand_total'] / 100))}") /
-                              100,
+                          percent: persen,
                           backgroundColor: Colors.grey[300],
                           progressColor: 100 -
                                       (data['outstanding_amount'] /
