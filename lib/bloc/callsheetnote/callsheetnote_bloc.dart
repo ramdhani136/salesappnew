@@ -113,13 +113,13 @@ class CallsheetnoteBloc extends Bloc<CallsheetnoteEvent, CallsheetnoteState> {
         ),
       );
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: e.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey[800],
-        textColor: Colors.white,
-      );
+      // Fluttertoast.showToast(
+      //   msg: e.toString(),
+      //   toastLength: Toast.LENGTH_LONG,
+      //   gravity: ToastGravity.BOTTOM,
+      //   backgroundColor: Colors.grey[800],
+      //   textColor: Colors.white,
+      // );
       emit(
         CallsheetNoteIsFailure(
           e.toString(),
