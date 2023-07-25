@@ -189,8 +189,8 @@ class _UserSettingState extends State<UserSetting> {
                               border: Border.all(
                                 color: const Color.fromARGB(255, 232, 231, 231),
                               ),
-                              image: state.data.img == "" &&
-                                          state.data.img == null &&
+                              image: state.data.img == "" ||
+                                      state.data.img == null &&
                                           widget.userBloc.img?.path == null ||
                                       widget.userBloc.img?.path == ""
                                   ? const DecorationImage(

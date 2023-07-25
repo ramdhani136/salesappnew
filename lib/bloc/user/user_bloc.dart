@@ -39,10 +39,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
           UserModel user = UserModel.fromJson(getUser['data']);
 
+          print(user);
+
           id = user.id;
 
           emit(UserLoginLoaded(data: user));
         } catch (e) {
+          print(e);
           emit(UserFailure(e.toString()));
         }
       },
