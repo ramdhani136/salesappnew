@@ -27,23 +27,19 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(MyApp());
   configLoading();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  AuthBloc authBloc = AuthBloc(AuthRepository())..add(AppStarted());
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            AuthRepository(),
-          )..add(AppStarted()),
-        ),
-      ],
+    return BlocProvider.value(
+      value: authBloc,
       child: GetMaterialApp(
         routes: {
           '/visit': (context) => const VisitScreen(),
@@ -56,38 +52,42 @@ class MyApp extends StatelessWidget {
         },
         debugShowCheckedModeBanner: false,
         home: BlocListener<AuthBloc, AuthState>(
+          bloc: authBloc,
           listener: (context, state) {
             if (state is AuthUnauthenticated) {
               Navigator.of(context).push(
                 MaterialPageRoute<LoginScreen>(
                   builder: (_) => BlocProvider.value(
-                    value: BlocProvider.of<AuthBloc>(context),
+                    value: authBloc,
                     child: const LoginScreen(),
                   ),
                 ),
               );
-            }
-            if (state is AuthAuthenticated) {
-              // Navigator.of(context).push(
+
+              // Navigator.of(context).pushAndRemoveUntil(
               //   MaterialPageRoute<LoginScreen>(
               //     builder: (_) => BlocProvider.value(
-              //       value: BlocProvider.of<AuthBloc>(context),
-              //       child: const HomeScreen(),
+              //       value: authBloc,
+              //       child: const LoginScreen(),
               //     ),
               //   ),
+              //   (Route<dynamic> route) => false,
               // );
-              Navigator.of(context).pushAndRemoveUntil(
+            }
+            if (state is AuthAuthenticated) {
+              Navigator.of(context).push(
                 MaterialPageRoute<LoginScreen>(
                   builder: (_) => BlocProvider.value(
-                    value: BlocProvider.of<AuthBloc>(context),
+                    value: authBloc,
                     child: const HomeScreen(),
                   ),
                 ),
-                (Route<dynamic> route) => false,
+                // (Route<dynamic> route) => false,
               );
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
+            bloc: authBloc,
             builder: (context, state) {
               if (state is AuthLoading) {
                 return const Scaffold(
@@ -97,8 +97,15 @@ class MyApp extends StatelessWidget {
                 );
               }
 
-              // Tampilkan halaman kosong jika tidak ada kondisi yang cocok
-              return Container();
+              return Center(
+                child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    color: Colors.grey[300],
+                  ),
+                ),
+              );
             },
           ),
         ),
