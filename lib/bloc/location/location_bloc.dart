@@ -51,8 +51,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             emit(LocationLoading());
           }
           cordinate = await location.CheckLocation();
+
           if (cordinate != null) {
             address = await location.chekcAdress(cordinate!);
+
             final Uint8List markerIcon =
                 // await getBytesFromUrl(
                 //     'http://103.56.149.31:5500/images/users/Miana%20Siva.40.05.jpeg',
@@ -65,6 +67,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
                 await FetchData(data: Data.config).FINDALL();
 
             bool IsInsite = false;
+
             if (event.customerId != null && cordinate != null) {
               Map<String, dynamic> IsInsiteCustomer =
                   await FetchData(data: Data.customer).FINDALL(
@@ -85,13 +88,15 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               }
             }
 
-            emit(LocationLoaded(
-              IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
-              IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
-              distanceCheckIn: config['data']['visit']['checkInDistance'],
-              distanceCheckOut: config['data']['visit']['checkOutDistance'],
-              insite: IsInsite,
-            ));
+            emit(
+              LocationLoaded(
+                IconEtmMaps: BitmapDescriptor.fromBytes(markerIcon),
+                IconCustomerMaps: BitmapDescriptor.fromBytes(customerIcon),
+                distanceCheckIn: config['data']['visit']['checkInDistance'],
+                distanceCheckOut: config['data']['visit']['checkOutDistance'],
+                insite: IsInsite,
+              ),
+            );
           }
         } catch (e) {
           emit(LocationFailure(e.toString()));

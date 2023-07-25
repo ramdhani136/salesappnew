@@ -31,6 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final LocationBloc locationbloc = LocationBloc();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     locationbloc.close();
     super.dispose();
@@ -117,12 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   width: 10,
                 ),
-                // CircleAvatar(
-                //   backgroundColor: Colors.grey,
-                //   radius: 20,
-                //   backgroundImage: NetworkImage(
-                //       'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg'),
-                // ),
               ],
             )
           ],
@@ -169,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (state is LocationLoaded) {
                           locationbloc.add(
                             GetRealtimeGps(
-                              duration: const Duration(seconds: 30),
+                              duration: const Duration(seconds: 60),
                             ),
                           );
                           return Text(
@@ -468,9 +467,8 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
 
   @override
   void dispose() {
-    super.dispose();
-    widget.locationbloc.close();
     customerBloc.close();
+    super.dispose();
   }
 
   @override

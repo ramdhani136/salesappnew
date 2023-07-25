@@ -68,13 +68,22 @@ class MyApp extends StatelessWidget {
               );
             }
             if (state is AuthAuthenticated) {
-              Navigator.of(context).push(
+              // Navigator.of(context).push(
+              //   MaterialPageRoute<LoginScreen>(
+              //     builder: (_) => BlocProvider.value(
+              //       value: BlocProvider.of<AuthBloc>(context),
+              //       child: const HomeScreen(),
+              //     ),
+              //   ),
+              // );
+              Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute<LoginScreen>(
                   builder: (_) => BlocProvider.value(
                     value: BlocProvider.of<AuthBloc>(context),
                     child: const HomeScreen(),
                   ),
                 ),
+                (Route<dynamic> route) => false,
               );
             }
           },
