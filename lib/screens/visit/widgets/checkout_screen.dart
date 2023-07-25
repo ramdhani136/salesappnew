@@ -21,9 +21,6 @@ class CheckOutScreen extends StatelessWidget {
             );
           }
           if (state is IsShowLoaded) {
-            if (state.data.checkOut != null) {
-              Navigator.of(context).pop();
-            }
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.min,

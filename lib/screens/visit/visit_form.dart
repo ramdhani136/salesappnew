@@ -148,8 +148,7 @@ class VisitForm extends StatelessWidget {
                             TextButton(
                               child: const Text('OK'),
                               onPressed: () {
-                                // Tindakan yang ingin Anda lakukan saat tombol OK ditekan
-                                Navigator.of(context).pop(); // Menutup dialog
+                                Get.back();
                               },
                             ),
                           ],

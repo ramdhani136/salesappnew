@@ -125,7 +125,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
                 : 1,
           ),
         );
-
         Get.back();
         Get.back();
         Navigator.pushReplacement(
@@ -324,7 +323,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         throw data['msg'];
       }
       EasyLoading.dismiss();
-
+      Get.back();
       add(ShowData(id: event.id, isLoading: false));
     } catch (e) {
       Get.defaultDialog(
