@@ -181,8 +181,8 @@ class _UserSettingState extends State<UserSetting> {
                         alignment: Alignment.bottomCenter,
                         children: [
                           Container(
-                            width: double.infinity,
-                            height: 250,
+                            width: Get.width,
+                            height: Get.width / 1.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.grey[100],

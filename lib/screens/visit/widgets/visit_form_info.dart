@@ -330,7 +330,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                               ),
                               Container(
                                 width: Get.width,
-                                height: 200,
+                                height: Get.width / 1.7,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: const Color.fromARGB(
