@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:convert';
 
 Visitmodel visitmodelFromJson(String str) =>
@@ -44,27 +46,29 @@ class Visitmodel {
     this.img,
   });
 
-  factory Visitmodel.fromJson(Map<String, dynamic> json) => Visitmodel(
-        id: json["_id"],
-        name: json["name"],
-        img: json["img"],
-        type: json["type"],
-        customer: Customer.fromJson(json["customer"]),
-        contact:
-            json["contact"] != null ? Contact.fromJson(json["contact"]) : null,
-        checkIn: Check.fromJson(json["checkIn"]),
-        rate: json["rate"],
-        createdBy: Branch.fromJson(json["createdBy"]),
-        status: json["status"],
-        signature: json["signature"],
-        workflowState: json["workflowState"],
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        checkOut:
-            json["checkOut"] != null ? Check.fromJson(json["checkOut"]) : null,
-        customerGroup: Branch.fromJson(json["customerGroup"]),
-        branch: Branch.fromJson(json["branch"]),
-        schedulelist: List<dynamic>.from(json["schedulelist"].map((x) => x)),
-      );
+  factory Visitmodel.fromJson(Map<String, dynamic> json) {
+    return Visitmodel(
+      id: json["_id"],
+      name: json["name"],
+      img: json["img"] != null ? json["img"] : null,
+      type: json["type"],
+      customer: Customer.fromJson(json["customer"]),
+      contact:
+          json["contact"] != null ? Contact.fromJson(json["contact"]) : null,
+      checkIn: Check.fromJson(json["checkIn"]),
+      rate: json["rate"],
+      createdBy: Branch.fromJson(json["createdBy"]),
+      status: json["status"],
+      signature: json["signature"] != null ? json["signature"] : null,
+      workflowState: json["workflowState"],
+      updatedAt: DateTime.parse(json["updatedAt"]),
+      checkOut:
+          json["checkOut"] != null ? Check.fromJson(json["checkOut"]) : null,
+      customerGroup: Branch.fromJson(json["customerGroup"]),
+      branch: Branch.fromJson(json["branch"]),
+      schedulelist: List<dynamic>.from(json["schedulelist"].map((x) => x)),
+    );
+  }
 
   static List<Visitmodel> fromJsonList(List<dynamic> data) {
     try {

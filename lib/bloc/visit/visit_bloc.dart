@@ -179,7 +179,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     Emitter<VisitState> emit,
   ) async {
     final picker = ImagePicker();
+
     try {
+      emit(IsLoading());
+      // EasyLoading.show(status: 'loading...');
       final pickedFile = await picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         var request = http.MultipartRequest(
@@ -211,7 +214,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           id: event.id,
         ));
       }
+
+      // EasyLoading.dismiss();
     } catch (e) {
+      // EasyLoading.dismiss();
       Fluttertoast.showToast(
         msg: e.toString(),
         toastLength: Toast.LENGTH_LONG,
@@ -352,6 +358,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         id: event.id,
       );
 
+      if (data['status'] != 200) {
+        throw data['msg'];
+      }
+
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
@@ -359,10 +369,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       List<TaskVisitModel> task =
           TaskVisitModel.fromJsonList(data['data']['taskNotes']);
-
-      if ((data['status']) != 200) {
-        throw data['msg'];
-      }
 
       emit(IsShowLoaded(
         data: result,
@@ -407,6 +413,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       if (getData['status'] == 200) {
         _page = getData['nextPage'];
+
         List<Visitmodel> visitList = Visitmodel.fromJsonList(getData['data']);
 
         List<Visitmodel> currentData = [];
