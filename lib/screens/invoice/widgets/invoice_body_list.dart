@@ -107,7 +107,7 @@ class InvoiceBodyList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                         child: LinearPercentIndicator(
                           center: Text(
-                            "${100 - (data['outstanding_amount'] / (data['grand_total'] / 100))}%",
+                            "${persen * 100}%",
                             style: const TextStyle(color: Colors.white),
                           ),
                           animation: true,

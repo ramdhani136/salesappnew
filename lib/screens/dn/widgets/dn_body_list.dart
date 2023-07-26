@@ -23,6 +23,8 @@ class DnBodyList extends StatelessWidget {
       locale: 'id',
     );
 
+    double persen = double.parse(data['per_billed'].toStringAsFixed(2));
+
     return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -98,15 +100,14 @@ class DnBodyList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                           child: LinearPercentIndicator(
                             center: Text(
-                              "${data['per_billed']}%",
+                              "$persen%",
                               style: const TextStyle(color: Colors.white),
                             ),
                             animation: true,
                             lineHeight: 20.0,
                             animationDuration: 2000,
                             width: Get.width * 0.80,
-                            percent:
-                                double.parse("${data['per_billed']}") / 100,
+                            percent: persen / 100,
                             backgroundColor: Colors.grey[300],
                             progressColor: data['per_billed'] < 100
                                 ? Colors.amber

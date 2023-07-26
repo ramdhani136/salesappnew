@@ -23,6 +23,8 @@ class OrderBodyList extends StatelessWidget {
       locale: 'id',
     );
 
+    double persen = double.parse(data['per_delivered'].toStringAsFixed(2));
+
     return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -98,15 +100,14 @@ class OrderBodyList extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                           child: LinearPercentIndicator(
                             center: Text(
-                              "${data['per_delivered']}%",
+                              "$persen%",
                               style: const TextStyle(color: Colors.white),
                             ),
                             animation: true,
                             lineHeight: 20.0,
                             animationDuration: 2000,
                             width: Get.width * 0.80,
-                            percent:
-                                double.parse("${data['per_delivered']}") / 100,
+                            percent: persen / 100,
                             backgroundColor: Colors.grey[300],
                             progressColor: data['per_delivered'] < 100
                                 ? Colors.amber
