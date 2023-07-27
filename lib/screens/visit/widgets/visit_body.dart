@@ -39,6 +39,7 @@ class _VisitBodyState extends State<VisitBody> {
         status: widget.status,
         getRefresh: true,
         search: _textEditingController.text,
+        filters: visitBloc.filters,
       ));
     });
   }
@@ -58,6 +59,7 @@ class _VisitBodyState extends State<VisitBody> {
         status: widget.status,
         getRefresh: true,
         search: searchText,
+        filters: visitBloc.filters,
       ));
     });
   }
@@ -81,6 +83,7 @@ class _VisitBodyState extends State<VisitBody> {
             status: widget.status,
             getRefresh: true,
             search: _textEditingController.text,
+            filters: visitBloc.filters,
           ));
         }
         if (state is TokenExpired) {
@@ -101,6 +104,7 @@ class _VisitBodyState extends State<VisitBody> {
             status: widget.status,
             getRefresh: true,
             search: _textEditingController.text,
+            filters: visitBloc.filters,
           ));
         }
       },
@@ -169,6 +173,7 @@ class _VisitBodyState extends State<VisitBody> {
                         status: widget.status,
                         getRefresh: true,
                         search: _textEditingController.text,
+                        filters: visitBloc.filters,
                       ));
                     },
                     child: NotificationListener<ScrollNotification>(
@@ -181,6 +186,7 @@ class _VisitBodyState extends State<VisitBody> {
                           visitBloc.add(GetData(
                             status: visitBloc.tabActive ?? 1,
                             search: _textEditingController.text,
+                            filters: visitBloc.filters,
                           ));
                         }
                         return false;

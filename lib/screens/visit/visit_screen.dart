@@ -179,6 +179,15 @@ class VisitScreen extends StatelessWidget {
                             children: [
                               const SizedBox(height: 20),
                               CustomField(
+                                onReset: () {
+                                  bloc.add(
+                                    GetData(
+                                      getRefresh: true,
+                                      search: bloc.search,
+                                      status: bloc.tabActive!,
+                                    ),
+                                  );
+                                },
                                 controller: typeC,
                                 type: Type.select,
                                 data: const [
@@ -285,24 +294,6 @@ class VisitScreen extends StatelessWidget {
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.grey[300]),
                                   hintText: "Select Date",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Status :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select status",
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   border: const OutlineInputBorder(),

@@ -37,6 +37,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   KeyValue? customer;
   KeyValue? group;
   List? namingList;
+  List<List<String>>? filters;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
@@ -396,9 +397,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       if (event.filters != null) {
         isFilters.addAll(event.filters!);
+        filters = event.filters;
+      } else {
+        filters = null;
       }
 
-      print(isFilters);
       if (state is! IsLoaded || event.getRefresh) {
         emit(IsLoading());
       } else {
