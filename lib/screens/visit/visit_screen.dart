@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
-import 'package:salesappnew/widgets/custom_field.dart';
+import 'package:salesappnew/widgets/field_custom.dart';
 // import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -55,6 +56,7 @@ class VisitScreen extends StatelessWidget {
     final PanelController _panelController = PanelController();
     VisitBloc bloc = VisitBloc();
     TextEditingController typeC = TextEditingController();
+    TextEditingController branchC = TextEditingController();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -74,7 +76,7 @@ class VisitScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BackButtonCustom(),
-                Row(
+                const Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
                     Padding(
@@ -178,7 +180,7 @@ class VisitScreen extends StatelessWidget {
                           child: ListView(
                             children: [
                               const SizedBox(height: 20),
-                              CustomField(
+                              FieldCustom(
                                 onReset: () {
                                   bloc.add(
                                     GetData(
@@ -210,6 +212,24 @@ class VisitScreen extends StatelessWidget {
                                 },
                               ),
                               const SizedBox(height: 20),
+                              BlocBuilder<BranchBloc, BranchState>(
+                                  bloc: BranchBloc(),
+                                  builder: (context, stateBranch) {
+                                    return FieldCustom(
+                                      type: Type.select,
+                                      onReset: () {},
+                                      controller: branchC,
+                                      data: const [
+                                        {"title": "Insite", "value": "insite"},
+                                        {"title": "Outsite", "value": "outsite"}
+                                      ],
+                                      title: "Branch",
+                                      onChange: (e) {
+                                        branchC.text = e['title'];
+                                      },
+                                    );
+                                  }),
+                              const SizedBox(height: 20),
                               Text(
                                 "Group :",
                                 style: TextStyle(color: Colors.grey[700]),
@@ -222,24 +242,6 @@ class VisitScreen extends StatelessWidget {
                                 decoration: InputDecoration(
                                   hintStyle: TextStyle(color: Colors.grey[300]),
                                   hintText: "Select Group",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Branch :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select Branch",
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   border: const OutlineInputBorder(),
