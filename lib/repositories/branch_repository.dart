@@ -3,7 +3,7 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
-Future<Map<String, dynamic>> BranchRepositoryGetAll({
+Future<List> BranchRepositoryGetAll({
   List<String>? fields,
   List<List<String>>? filters,
   String? orderBy,
@@ -19,14 +19,15 @@ Future<Map<String, dynamic>> BranchRepositoryGetAll({
       page: page,
       filters: filters,
       fields: fields,
+      search: search,
     );
     if (response['status'] != 200) {
       throw response['msg'];
     }
     EasyLoading.dismiss();
-    return response;
+    return response['data'];
   } catch (e) {
     EasyLoading.dismiss();
-    return {};
+    rethrow;
   }
 }

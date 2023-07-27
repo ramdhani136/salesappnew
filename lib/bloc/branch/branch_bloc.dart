@@ -16,9 +16,9 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
 
   Future<void> _GetAll(BranchGetAll event, Emitter<BranchState> emit) async {
     try {
-      Map<String, dynamic> result = await BranchRepositoryGetAll();
+      List result = await BranchRepositoryGetAll();
       emit(
-        BranchIsLoaded(data: result['data']),
+        BranchIsLoaded(data: result),
       );
     } catch (e) {
       Fluttertoast.showToast(

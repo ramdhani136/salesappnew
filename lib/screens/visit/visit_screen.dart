@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/repositories/branch_repository.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -57,6 +58,8 @@ class VisitScreen extends StatelessWidget {
     VisitBloc bloc = VisitBloc();
     TextEditingController typeC = TextEditingController();
     TextEditingController branchC = TextEditingController();
+    BranchBloc branchBloc = BranchBloc();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -197,7 +200,7 @@ class VisitScreen extends StatelessWidget {
                                   {"title": "Outsite", "value": "outsite"}
                                 ],
                                 title: "Type",
-                                onChange: (e) {
+                                onSelect: (e) {
                                   typeC.text = e['title'];
                                   bloc.add(
                                     GetData(
@@ -213,19 +216,19 @@ class VisitScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 20),
                               BlocBuilder<BranchBloc, BranchState>(
-                                  bloc: BranchBloc(),
+                                  bloc: branchBloc,
                                   builder: (context, stateBranch) {
                                     return FieldCustom(
                                       type: Type.select,
-                                      onReset: () {},
                                       controller: branchC,
-                                      data: const [
-                                        {"title": "Insite", "value": "insite"},
-                                        {"title": "Outsite", "value": "outsite"}
-                                      ],
                                       title: "Branch",
-                                      onChange: (e) {
-                                        branchC.text = e['title'];
+                                      getData: (String search) async {
+                                        return await BranchRepositoryGetAll(
+                                          search: search,
+                                        );
+                                      },
+                                      onSelect: (e) {
+                                        branchC.text = e['name'];
                                       },
                                     );
                                   }),

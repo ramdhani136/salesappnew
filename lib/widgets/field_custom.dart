@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 
 enum Type { standard, select }
 
-class FieldCustom extends StatefulWidget {
+class FieldCustom extends StatelessWidget {
   String? placeholder;
   bool valid;
   bool border;
   String? title;
   Type type;
   bool disabled;
-  Function? onChange;
+  Function? onSelect;
   Function? onReset;
-  Future<List>? getData;
   Function? onTap;
   TextInputType keyboardType;
   List? data;
@@ -21,9 +20,9 @@ class FieldCustom extends StatefulWidget {
   bool obscureText;
   bool loading;
   Function? InsertAction;
+  TextEditingController controller;
   TextInputAction? textInputAction;
-
-  TextEditingController controller = TextEditingController();
+  Function(String search)? getData;
 
   FieldCustom({
     super.key,
@@ -33,7 +32,7 @@ class FieldCustom extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.disabled = false,
     this.obscureText = false,
-    this.onChange,
+    this.onSelect,
     this.InsertAction,
     this.onReset,
     this.onTap,
@@ -48,17 +47,12 @@ class FieldCustom extends StatefulWidget {
   });
 
   @override
-  State<FieldCustom> createState() => _CustomFieldState();
-}
-
-class _CustomFieldState extends State<FieldCustom> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Visibility(
-          visible: widget.title != null,
+          visible: title != null,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,14 +62,14 @@ class _CustomFieldState extends State<FieldCustom> {
                   Row(
                     children: [
                       Text(
-                        "${widget.title}",
+                        "$title",
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(
                         width: 2,
                       ),
                       Visibility(
-                        visible: widget.mandatory && !widget.disabled,
+                        visible: mandatory && !disabled,
                         child: const Text(
                           "*",
                           style: TextStyle(color: Colors.red),
@@ -84,7 +78,7 @@ class _CustomFieldState extends State<FieldCustom> {
                     ],
                   ),
                   Visibility(
-                    visible: widget.InsertAction != null && !widget.disabled,
+                    visible: InsertAction != null && !disabled,
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 49, 49, 49),
@@ -92,8 +86,8 @@ class _CustomFieldState extends State<FieldCustom> {
                             horizontal: 8, vertical: 0),
                       ),
                       onPressed: () async {
-                        if (!widget.disabled && widget.InsertAction != null) {
-                          widget.InsertAction!();
+                        if (!disabled && InsertAction != null) {
+                          InsertAction!();
                         }
                       },
                       icon: const Icon(Icons.add, size: 16),
@@ -109,36 +103,36 @@ class _CustomFieldState extends State<FieldCustom> {
           ),
         ),
         Visibility(
-          visible: widget.type == Type.select,
+          visible: type == Type.select,
           child: InkWell(
             onTap: () {
-              if (widget.onTap != null) {
-                widget.onTap!();
+              if (onTap != null) {
+                onTap!();
               }
             },
             child: TypeAheadField(
               loadingBuilder: (context) {
                 return Visibility(
-                    visible: widget.loading,
+                    visible: loading,
                     child: const Center(child: CircularProgressIndicator()));
               },
               textFieldConfiguration: TextFieldConfiguration(
                 style: TextStyle(
                   fontSize: 16, // Ubah ukuran font sesuai kebutuhan
-                  color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
+                  color: disabled ? Colors.grey[800] : Colors.grey[900],
                 ),
-                textInputAction: widget.textInputAction,
-                keyboardType: widget.keyboardType,
-                obscureText: widget.obscureText,
+                textInputAction: textInputAction,
+                keyboardType: keyboardType,
+                obscureText: obscureText,
                 decoration: InputDecoration(
                   suffixIcon: Visibility(
-                    visible: !widget.disabled,
+                    visible: !disabled,
                     child: IconButton(
                       onPressed: () async {
-                        if (!widget.disabled) {
-                          widget.controller.text = "";
-                          if (widget.onReset != null) {
-                            widget.onReset!();
+                        if (!disabled) {
+                          controller.text = "";
+                          if (onReset != null) {
+                            onReset!();
                           }
                         }
                       },
@@ -151,13 +145,13 @@ class _CustomFieldState extends State<FieldCustom> {
 
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.valid
+                      color: valid
                           ? const Color.fromARGB(255, 182, 182, 182)
                           : Colors.red,
                     ),
                   ),
                   // border: const OutlineInputBorder(),
-                  hintText: widget.placeholder ?? "Search your data",
+                  hintText: placeholder ?? "Search your data",
                   hintStyle: TextStyle(
                     color: Colors.grey[300],
                     fontSize: 16,
@@ -165,74 +159,57 @@ class _CustomFieldState extends State<FieldCustom> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
-                controller: widget.controller,
-                enabled: !widget.disabled,
+                controller: controller,
+                enabled: !disabled,
               ),
               suggestionsCallback: (pattern) async {
-                if (widget.data != null && widget.type == Type.select) {
-                  List filter = widget.data!
-                      .where(
-                        (item) => item['title']
-                            .toLowerCase()
-                            .contains(pattern.toLowerCase()),
-                      )
-                      .toList();
-                  return filter;
+                if (getData != null) {
+                  List data = await getData!(pattern);
+
+                  return data;
                 }
+
                 return [];
               },
               itemBuilder: (context, suggestion) {
-                if (widget.data != null && widget.type == Type.select) {
-                  if (suggestion['subTitle'] != null) {
-                    return ListTile(
-                      title: Text("${suggestion['title']}"),
-                      subtitle: Text('${suggestion['subTitle'] ?? ''}'),
-                    );
-                  } else {
-                    return ListTile(
-                      title: Text("${suggestion['title']}"),
-                    );
-                  }
-                }
-                return Container();
+                return ListTile(
+                  title: Text(
+                    "${suggestion['name']}",
+                  ),
+                );
               },
               onSuggestionSelected: (suggestion) {
-                if (widget.onChange != null) {
-                  widget.onChange!(suggestion);
+                if (onSelect != null) {
+                  onSelect!(suggestion);
                 }
               },
             ),
           ),
         ),
         Visibility(
-          visible: widget.type == Type.standard,
+          visible: type == Type.standard,
           child: InkWell(
             onTap: () {
-              if (!widget.disabled) {}
+              if (!disabled) {}
             },
             child: TextField(
-              textInputAction: widget.textInputAction,
-              keyboardType: widget.keyboardType,
-              obscureText: widget.obscureText,
-              controller: widget.controller,
-              onChanged: (value) {
-                if (widget.onChange != null && !widget.disabled) {
-                  widget.onChange!(value);
-                }
-              },
+              textInputAction: textInputAction,
+              keyboardType: keyboardType,
+              obscureText: obscureText,
+              controller: controller,
               style: TextStyle(
-                color: widget.disabled ? Colors.grey[800] : Colors.grey[900],
+                color: disabled ? Colors.grey[800] : Colors.grey[900],
                 fontSize: 16,
               ),
               decoration: InputDecoration(
                 suffixIcon: Visibility(
-                  visible: !widget.disabled,
+                  visible: disabled,
                   child: IconButton(
                     onPressed: () async {
-                      if (!widget.disabled) {
-                        widget.controller.text = "";
-                        if (widget.onReset != null) {
-                          widget.onReset!();
+                      if (!disabled) {
+                        controller.text = "";
+                        if (onReset != null) {
+                          onReset!();
                         }
                       }
                     },
@@ -244,18 +221,18 @@ class _CustomFieldState extends State<FieldCustom> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: widget.valid
+                    color: valid
                         ? const Color.fromARGB(255, 182, 182, 182)
                         : Colors.red,
                   ),
                 ),
                 // border: const OutlineInputBorder(),
-                hintText: widget.placeholder ?? "Search your data",
+                hintText: placeholder ?? "Search your data",
                 hintStyle: TextStyle(color: Colors.grey[300]),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               ),
-              enabled: !widget.disabled,
+              enabled: !disabled,
             ),
           ),
         ),
