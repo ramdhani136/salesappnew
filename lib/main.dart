@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/visit': (context) => BlocProvider.value(
                 value: authBloc,
-                child: const VisitScreen(),
+                child: VisitScreen(),
               ),
           '/callsheet': (context) => BlocProvider.value(
                 value: authBloc,

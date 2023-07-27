@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,17 +7,13 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
+import 'package:salesappnew/widgets/custom_field.dart';
 // import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class VisitScreen extends StatefulWidget {
-  const VisitScreen({super.key});
+class VisitScreen extends StatelessWidget {
+  VisitScreen({super.key});
 
-  @override
-  State<VisitScreen> createState() => _VisitScreenState();
-}
-
-class _VisitScreenState extends State<VisitScreen> {
   List<Tab> myTabs = <Tab>[
     const Tab(
       child: Text(
@@ -58,6 +54,7 @@ class _VisitScreenState extends State<VisitScreen> {
 
     final PanelController _panelController = PanelController();
     VisitBloc bloc = VisitBloc();
+    TextEditingController typeC = TextEditingController();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -77,7 +74,7 @@ class _VisitScreenState extends State<VisitScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BackButtonCustom(),
-                const Row(
+                Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
                     Padding(
@@ -181,22 +178,27 @@ class _VisitScreenState extends State<VisitScreen> {
                           child: ListView(
                             children: [
                               const SizedBox(height: 20),
-                              Text(
-                                "Type :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select Type",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
+                              CustomField(
+                                controller: typeC,
+                                type: Type.select,
+                                data: const [
+                                  {"title": "Insite", "value": "insite"},
+                                  {"title": "Outsite", "value": "outsite"}
+                                ],
+                                title: "Type",
+                                onChange: (e) {
+                                  typeC.text = e['title'];
+                                  bloc.add(
+                                    GetData(
+                                      filters: [
+                                        ["type", "=", e['value']]
+                                      ],
+                                      getRefresh: true,
+                                      search: bloc.search,
+                                      status: bloc.tabActive!,
+                                    ),
+                                  );
+                                },
                               ),
                               const SizedBox(height: 20),
                               Text(

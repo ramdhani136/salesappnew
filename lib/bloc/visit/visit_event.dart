@@ -10,8 +10,14 @@ class GetData extends VisitEvent {
   int status = 0;
   bool getRefresh = false;
   String? search;
+  List<List<String>>? filters;
 
-  GetData({this.status = 0, this.getRefresh = false, this.search});
+  GetData({
+    this.status = 0,
+    this.getRefresh = false,
+    this.search,
+    this.filters,
+  });
 }
 
 class ChangeSearch extends VisitEvent {

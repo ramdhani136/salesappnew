@@ -386,6 +386,19 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       signature = null;
       checkOutAddress = null;
       checkOutCordinates = null;
+      List<List<String>> isFilters = [
+        [
+          "status",
+          "=",
+          "${event.status}",
+        ]
+      ];
+
+      if (event.filters != null) {
+        isFilters.addAll(event.filters!);
+      }
+
+      print(isFilters);
       if (state is! IsLoaded || event.getRefresh) {
         emit(IsLoading());
       } else {
@@ -402,13 +415,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       Map<String, dynamic> getData = await FetchData(data: Data.visit).FINDALL(
           page: event.getRefresh ? 1 : _page,
-          filters: [
-            [
-              "status",
-              "=",
-              "${event.status}",
-            ]
-          ],
+          filters: isFilters,
           search: event.search);
 
       if (getData['status'] == 200) {
