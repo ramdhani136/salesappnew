@@ -183,22 +183,27 @@ class ItemModel {
             json["creation"] == null ? null : DateTime.parse(json["creation"]),
         modified:
             json["modified"] == null ? null : DateTime.parse(json["modified"]),
-        modifiedBy: json["modified_by"],
-        idx: json["idx"],
+        modifiedBy: json["modified_by"] != null ? json["modified_by"] : null,
+        idx: json["idx"] != null ? json["idx"] : null,
         docstatus: json["docstatus"],
         workflowState: json["workflow_state"],
         namingSeries: json["naming_series"],
         itemCode: json["item_code"],
         itemName: json["item_name"],
-        itemGroup: json["item_group"],
-        stocker: json["stocker"],
-        kategoriBarang: json["kategori_barang"],
-        keteranganBarang: json["keterangan_barang"],
-        subKategori: json["sub_kategori"],
-        isItemFromHub: json["is_item_from_hub"],
-        stockUom: json["stock_uom"],
-        jenisBarang: json["jenis_barang"],
-        klasifikasiBarang: json["klasifikasi_barang"],
+        itemGroup: json["item_group"] != null ? json["item_group"] : null,
+        stocker: json["stocker"] != null ? json["stocker"] : null,
+        kategoriBarang:
+            json["kategori_barang"] != null ? json["kategori_barang"] : null,
+        keteranganBarang: json["keterangan_barang"] != null
+            ? json["keterangan_barang"]
+            : null,
+        subKategori: json["sub_kategori"] != null ? json["sub_kategori"] : null,
+        isItemFromHub:
+            json["is_item_from_hub"] != null ? json["is_item_from_hub"] : null,
+        stockUom: json["stock_uom"] != null ? json["stock_uom"] : null,
+        jenisBarang: json["jenis_barang"] != null ? json["modified_by"] : null,
+        klasifikasiBarang:
+            json["klasifikasi_barang"] != null ? json["modified_by"] : null,
         disabled: json["disabled"],
         allowAlternativeItem: json["allow_alternative_item"],
         isStockItem: json["is_stock_item"],
