@@ -195,13 +195,15 @@ class VisitScreen extends StatelessWidget {
                                 },
                                 controller: typeC,
                                 type: Type.select,
-                                data: const [
-                                  {"title": "Insite", "value": "insite"},
-                                  {"title": "Outsite", "value": "outsite"}
-                                ],
+                                getData: (String search) {
+                                  return const [
+                                    {"name": "Insite", "value": "insite"},
+                                    {"name": "Outsite", "value": "outsite"}
+                                  ];
+                                },
                                 title: "Type",
                                 onSelect: (e) {
-                                  typeC.text = e['title'];
+                                  typeC.text = e['name'];
                                   bloc.add(
                                     GetData(
                                       filters: [
