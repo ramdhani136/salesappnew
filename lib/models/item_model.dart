@@ -2,6 +2,8 @@
 //
 //     final itemModel = itemModelFromJson(jsonString);
 
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:convert';
 
 ItemModel itemModelFromJson(String str) => ItemModel.fromJson(json.decode(str));
@@ -175,7 +177,7 @@ class ItemModel {
 
   factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
         name: json["name"],
-        image: json["image"],
+        image: json["image"] == null ? null : json["image"],
         owner: json["owner"],
         creation:
             json["creation"] == null ? null : DateTime.parse(json["creation"]),

@@ -106,7 +106,7 @@ class ItemFormScreen extends StatelessWidget {
                 children: [
                   BackButtonCustom(),
                   const Text(
-                    "Sales Order",
+                    "Item List",
                     style: TextStyle(fontSize: 16),
                   ),
                   IconButton(
