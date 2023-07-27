@@ -13,7 +13,7 @@ class FieldCustom extends StatelessWidget {
   bool disabled;
   Function? onSelect;
   Function? onReset;
-  Function? onTap;
+  String? suggestionTitle;
   TextInputType keyboardType;
   List? data;
   bool mandatory;
@@ -34,8 +34,8 @@ class FieldCustom extends StatelessWidget {
     this.obscureText = false,
     this.onSelect,
     this.InsertAction,
+    this.suggestionTitle,
     this.onReset,
-    this.onTap,
     this.border = true,
     this.placeholder,
     this.title,
@@ -105,11 +105,6 @@ class FieldCustom extends StatelessWidget {
         Visibility(
           visible: type == Type.select,
           child: InkWell(
-            onTap: () {
-              if (onTap != null) {
-                onTap!();
-              }
-            },
             child: TypeAheadField(
               loadingBuilder: (context) {
                 return Visibility(
@@ -174,7 +169,7 @@ class FieldCustom extends StatelessWidget {
               itemBuilder: (context, suggestion) {
                 return ListTile(
                   title: Text(
-                    "${suggestion['name']}",
+                    "${suggestionTitle != null ? suggestion[suggestionTitle] : suggestion['name']}",
                   ),
                 );
               },

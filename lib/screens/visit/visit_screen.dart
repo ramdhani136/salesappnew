@@ -1,11 +1,13 @@
-// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, must_be_immutable
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, must_be_immutable, deprecated_member_use, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:salesappnew/bloc/branch/branch_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/repositories/branch_repository.dart';
+import 'package:salesappnew/repositories/customer_group_repository.dart';
+import 'package:salesappnew/repositories/user_repository.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
@@ -58,7 +60,49 @@ class VisitScreen extends StatelessWidget {
     VisitBloc bloc = VisitBloc();
     TextEditingController typeC = TextEditingController();
     TextEditingController branchC = TextEditingController();
-    BranchBloc branchBloc = BranchBloc();
+    TextEditingController groupC = TextEditingController();
+    TextEditingController createdByC = TextEditingController();
+    TextEditingController rangeDateC = TextEditingController();
+
+    ChooseDateRangePicker() async {
+      DateTimeRange? picked = await showDateRangePicker(
+        context: context,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData(
+              primarySwatch: Colors.grey,
+              splashColor: Colors.black,
+              textTheme: const TextTheme(
+                subtitle1: TextStyle(color: Colors.black),
+                button: TextStyle(color: Colors.black),
+              ),
+              hintColor: Colors.black,
+              colorScheme: const ColorScheme.light(
+                  primary: Color(0xFFE6212A),
+                  onSecondary: Colors.black,
+                  onPrimary: Colors.white,
+                  surface: Colors.white,
+                  onSurface: Colors.black,
+                  secondary: Colors.black),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child ?? const Text(""),
+          );
+        },
+        firstDate: DateTime(DateTime.now().year - 20),
+        lastDate: DateTime.now(),
+        initialDateRange: DateTimeRange(
+          start: DateTime(DateTime.now().year, DateTime.now().month - 6,
+              DateTime.now().day),
+          end: DateTime.now(),
+        ),
+      );
+
+      if (picked != null) {
+        rangeDateC.text =
+            "${DateFormat("dd MMM yyyy").format(picked.start)} - ${DateFormat("dd MMM yyyy").format(picked.end).toString()} ";
+      }
+    }
 
     return MultiBlocProvider(
       providers: [
@@ -204,6 +248,7 @@ class VisitScreen extends StatelessWidget {
                                 title: "Type",
                                 onSelect: (e) {
                                   typeC.text = e['name'];
+
                                   bloc.add(
                                     GetData(
                                       filters: [
@@ -217,93 +262,87 @@ class VisitScreen extends StatelessWidget {
                                 },
                               ),
                               const SizedBox(height: 20),
-                              BlocBuilder<BranchBloc, BranchState>(
-                                  bloc: branchBloc,
-                                  builder: (context, stateBranch) {
-                                    return FieldCustom(
-                                      type: Type.select,
-                                      controller: branchC,
-                                      title: "Branch",
-                                      getData: (String search) async {
-                                        return await BranchRepositoryGetAll(
-                                          search: search,
-                                        );
-                                      },
-                                      onSelect: (e) {
-                                        branchC.text = e['name'];
-                                      },
-                                    );
-                                  }),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Group :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select Group",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
+                              FieldCustom(
+                                type: Type.select,
+                                controller: branchC,
+                                suggestionTitle: "name",
+                                title: "Branch",
+                                getData: (String search) async {
+                                  return await BranchRepositoryGetAll(
+                                    search: search,
+                                  );
+                                },
+                                onSelect: (e) {
+                                  branchC.text = e['name'];
+                                },
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                "Created By :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select User",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
+                              FieldCustom(
+                                type: Type.select,
+                                controller: groupC,
+                                suggestionTitle: "name",
+                                title: "Group",
+                                getData: (String search) async {
+                                  return await CustomerGroupRepositoryGetAll(
+                                    filters: [
+                                      [
+                                        "branch._id",
+                                        "=",
+                                        "64800fa2cc19aff39f62d64a"
+                                      ]
+                                    ],
+                                    search: search,
+                                  );
+                                },
+                                onSelect: (e) {
+                                  groupC.text = e['name'];
+                                },
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                "StarDate :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select Date",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
+                              FieldCustom(
+                                type: Type.select,
+                                controller: createdByC,
+                                suggestionTitle: "name",
+                                title: "CreatedBy",
+                                getData: (String search) async {
+                                  return await UserRepositoryGetAll(
+                                    search: search,
+                                  );
+                                },
+                                onSelect: (e) {
+                                  createdByC.text = e['name'];
+                                },
                               ),
                               const SizedBox(height: 20),
                               Text(
-                                "EndDate :",
+                                "Date :",
                                 style: TextStyle(color: Colors.grey[700]),
                               ),
                               const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select Date",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
+                              GestureDetector(
+                                onTap: () {
+                                  ChooseDateRangePicker();
+                                },
+                                child: TextField(
+                                  style: TextStyle(color: Colors.grey[900]),
+                                  controller: rangeDateC,
+                                  enabled: false,
+                                  autocorrect: false,
+                                  enableSuggestions: false,
+                                  decoration: InputDecoration(
+                                    hintStyle:
+                                        TextStyle(color: Colors.grey[300]),
+                                    hintText: "Select date",
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    border: const OutlineInputBorder(),
+                                    disabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 20),
