@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 class TaskVisitModel {
   String id;
   String from;
@@ -15,11 +17,11 @@ class TaskVisitModel {
 
   factory TaskVisitModel.fromJson(Map<String, dynamic> json) {
     return TaskVisitModel(
-      id: json['_id'],
-      from: json['from'],
-      name: json['name'],
-      title: json['title'],
-      notes: json['notes'],
+      id: json['_id'] == null ? null : json['_id'],
+      from: json['from'] == null ? null : json['from'],
+      name: json['name'] == null ? null : json['name'],
+      title: json['title'] == null ? null : json['title'],
+      notes: json['notes'] == null ? null : json['notes'],
     );
   }
 

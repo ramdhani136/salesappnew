@@ -366,10 +366,14 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
-      List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);
 
-      List<TaskVisitModel> task =
-          TaskVisitModel.fromJsonList(data['data']['taskNotes']);
+      List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);
+      List<TaskVisitModel> task;
+      if (data['data']['taskNotes'] != null) {
+        task = TaskVisitModel.fromJsonList(data['data']['taskNotes']);
+      } else {
+        task = [];
+      }
 
       emit(IsShowLoaded(
         data: result,

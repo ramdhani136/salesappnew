@@ -208,8 +208,12 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
       List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);
 
-      List<TaskCallsheetModel> task =
-          TaskCallsheetModel.fromJsonList(data['data']['taskNotes']);
+      List<TaskCallsheetModel> task;
+      if (data['data']['taskNotes'] != null) {
+        task = TaskCallsheetModel.fromJsonList(data['data']['taskNotes']);
+      } else {
+        task = [];
+      }
 
       if ((data['status']) != 200) {
         throw data['msg'];

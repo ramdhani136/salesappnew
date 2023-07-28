@@ -66,7 +66,9 @@ class Visitmodel {
           json["checkOut"] != null ? Check.fromJson(json["checkOut"]) : null,
       customerGroup: Branch.fromJson(json["customerGroup"]),
       branch: Branch.fromJson(json["branch"]),
-      schedulelist: List<dynamic>.from(json["schedulelist"].map((x) => x)),
+      schedulelist: json["schedulelist"] == null
+          ? null
+          : List<dynamic>.from(json["schedulelist"].map((x) => x)),
     );
   }
 
@@ -97,7 +99,9 @@ class Visitmodel {
         "checkOut": checkOut != null ? checkOut!.toJson() : null,
         "customerGroup": customerGroup!.toJson(),
         "branch": branch!.toJson(),
-        "schedulelist": List<dynamic>.from(schedulelist!.map((x) => x)),
+        "schedulelist": schedulelist != null
+            ? List<dynamic>.from(schedulelist!.map((x) => x))
+            : null,
       };
 }
 
