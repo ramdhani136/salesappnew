@@ -66,15 +66,15 @@ class _UserSettingState extends State<UserSetting> {
                 ),
               ],
             ),
-            Row(
+            const Row(
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.search,
-                    color: Color.fromARGB(255, 121, 8, 14),
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(
+                //     Icons.search,
+                //     color: Color.fromARGB(255, 121, 8, 14),
+                //   ),
+                // ),
               ],
             )
           ],
