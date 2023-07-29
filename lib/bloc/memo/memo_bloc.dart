@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -40,9 +40,11 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
       }
 
       Map<String, dynamic> result = await RepositoryGetAllMemo(
-          page: event.getRefresh ? 1 : page,
-          filters: isFilters,
-          search: event.search);
+        page: event.getRefresh ? 1 : page,
+        filters: isFilters,
+        search: event.search,
+        limit: event.limit ?? 0,
+      );
 
       page = result['nextPage'];
       List isData = result['data'];

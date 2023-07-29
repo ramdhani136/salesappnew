@@ -8,9 +8,11 @@ class MemoGetAllData extends MemoEvent {
   int? status;
   bool getRefresh;
   String? search;
+  int? limit;
   List<List<String>>? filters;
   MemoGetAllData({
     this.status,
+    this.limit,
     this.getRefresh = true,
     this.search,
     this.filters,

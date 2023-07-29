@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     locationbloc.close();
+
     super.dispose();
   }
 
@@ -360,7 +361,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               builder: (context, stateMemo) {
-                print(stateMemo);
                 if (stateMemo is MemoIsLoading) {
                   const Column(
                     children: [
@@ -406,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: stateMemo.data!.map((e) {
+                          children: stateMemo.data.map((e) {
                             return Container(
                               width: Get.width - 40,
                               height: (Get.width - 40) / 1.7,
