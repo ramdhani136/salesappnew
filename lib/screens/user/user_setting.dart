@@ -282,6 +282,7 @@ class _UserSettingState extends State<UserSetting> {
                     ),
                     TextButton(
                       onPressed: () async {
+                        print(erpTokenC.text);
                         Get.back();
                         widget.userBloc.add(
                           UserSetUpdate(
