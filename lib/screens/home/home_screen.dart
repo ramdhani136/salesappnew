@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/bloc/memo/memo_bloc.dart';
 import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
@@ -43,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MemoBloc memoBloc = MemoBloc();
+
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
@@ -317,82 +321,139 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Memo",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text(
-                  "See More",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                    color: Colors.grey,
+                IconButton(
+                  icon: const Icon(
+                    Icons.refresh,
+                    size: 20,
+                    color: Color.fromARGB(255, 114, 114, 114),
                   ),
+                  onPressed: () {
+                    memoBloc.add(
+                      MemoGetAllData(
+                        filters: const [
+                          ["display", "=", "dashboard"],
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Column(
-              children: [
-                const SizedBox(
-                  height: 20,
+            BlocBuilder<MemoBloc, MemoState>(
+              bloc: memoBloc
+                ..add(
+                  MemoGetAllData(
+                    filters: const [
+                      ["display", "=", "dashboard"],
+                    ],
+                  ),
                 ),
-                Center(
-                  child: Text(
-                    "No Data",
-                    style: TextStyle(
-                      color: Colors.grey[400],
+              builder: (context, stateMemo) {
+                print(stateMemo);
+                if (stateMemo is MemoIsLoading) {
+                  const Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(color: Colors.green),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  );
+                }
+
+                if (stateMemo is MemoIsFailure) {
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: Text(
+                          stateMemo.error,
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  );
+                }
+
+                if (stateMemo is MemoIsLoaded) {
+                  return Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: stateMemo.data!.map((e) {
+                            return Container(
+                              width: Get.width - 40,
+                              height: (Get.width - 40) / 1.7,
+                              margin: const EdgeInsets.only(right: 20),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Image.network(
+                                '${Config().baseUri}public/${e['img']}',
+                                fit: BoxFit.fitHeight,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // Widget yang akan ditampilkan ketika terjadi kesalahan
+                                  return Image.asset(
+                                    'assets/images/noimage.jpg',
+                                    fit: BoxFit.fitHeight,
+                                  );
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                return Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+                    Center(
+                      child: Text(
+                        "No Data",
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                );
+              },
             ),
-            // SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   child: Row(
-            //     children: [
-            //       Container(
-            //         width: Get.width - 40,
-            //         height: (Get.width - 40) / 1.7,
-            //         margin: const EdgeInsets.only(right: 20),
-            //         decoration: BoxDecoration(
-            //           color: Colors.black,
-            //           borderRadius: BorderRadius.circular(10),
-            //           image: const DecorationImage(
-            //             image: AssetImage('assets/images/promo.jpg'),
-            //             fit: BoxFit.fitHeight,
-            //           ),
-            //         ),
-            //       ),
-            //       Container(
-            //         width: Get.width - 40,
-            //         height: (Get.width - 40) / 1.7,
-            //         margin: const EdgeInsets.only(right: 20),
-            //         decoration: BoxDecoration(
-            //           color: Colors.black,
-            //           borderRadius: BorderRadius.circular(10),
-            //           image: const DecorationImage(
-            //             image: NetworkImage(
-            //                 "https://suryapersinar.com/images/Article/News-202010/540025/pameran-spring-bed-spinno-sp-mattress-surabaya-08021607272.jpg"),
-            //             fit: BoxFit.cover,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             const SizedBox(
               height: 20,
             ),
@@ -608,15 +669,6 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                   ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
                                   : ""),
                               onTap: () {
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) {
-                                //       return CheckInScreen(
-                                //         customerId: state.data[index]['_id'],
-                                //       );
-                                //     },
-                                //   ),
-                                // );
                                 showDialog(
                                   context: context,
                                   builder: (context) => VisitModalInsert(
