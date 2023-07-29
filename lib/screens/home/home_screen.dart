@@ -342,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     memoBloc.add(
                       MemoGetAllData(
-                        limit: 1,
+                        limit: 2,
                         filters: const [
                           ["display", "=", "dashboard"],
                         ],
@@ -356,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: memoBloc
                 ..add(
                   MemoGetAllData(
-                    limit: 1,
+                    limit: 2,
                     filters: const [
                       ["display", "=", "dashboard"],
                     ],
@@ -415,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             memoBloc.add(
                               MemoGetAllData(
                                 getRefresh: false,
-                                limit: 1,
+                                limit: 2,
                                 filters: const [
                                   ["display", "=", "dashboard"],
                                 ],
