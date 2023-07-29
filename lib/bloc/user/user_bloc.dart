@@ -115,7 +115,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               request.fields['ErpSite'] = event.data['ErpSite']!;
             }
             if (event.data['ErpToken'] != null) {
-              request.fields['ErpToken'] = event.data['erpToken'];
+              request.fields['ErpToken'] = event.data['ErpToken'];
             }
             if (event.data['password'] != null) {
               request.fields['password'] = event.data['password']!;
