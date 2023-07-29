@@ -56,6 +56,7 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
       } else {
         currentData = isData;
       }
+
       emit(
         MemoIsLoaded(
           data: currentData,

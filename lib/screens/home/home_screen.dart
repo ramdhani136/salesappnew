@@ -342,6 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     memoBloc.add(
                       MemoGetAllData(
+                        limit: 1,
                         filters: const [
                           ["display", "=", "dashboard"],
                         ],
@@ -355,6 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: memoBloc
                 ..add(
                   MemoGetAllData(
+                    limit: 1,
                     filters: const [
                       ["display", "=", "dashboard"],
                     ],
@@ -403,31 +405,51 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (stateMemo is MemoIsLoaded) {
                   return Column(
                     children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: stateMemo.data.map((e) {
-                            return Container(
-                              width: Get.width - 40,
-                              height: (Get.width - 40) / 1.7,
-                              margin: const EdgeInsets.only(right: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Image.network(
-                                '${Config().baseUri}public/${e['img']}',
-                                fit: BoxFit.fitHeight,
-                                errorBuilder: (context, error, stackTrace) {
-                                  // Widget yang akan ditampilkan ketika terjadi kesalahan
-                                  return Image.asset(
-                                    'assets/images/noimage.jpg',
-                                    fit: BoxFit.fitHeight,
-                                  );
-                                },
+                      NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent &&
+                              stateMemo.hasMore) {
+                            stateMemo.pageLoading = true;
+                            stateMemo.hasMore = false;
+                            memoBloc.add(
+                              MemoGetAllData(
+                                getRefresh: false,
+                                limit: 1,
+                                filters: const [
+                                  ["display", "=", "dashboard"],
+                                ],
                               ),
                             );
-                          }).toList(),
+                          }
+                          return false;
+                        },
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: stateMemo.data.map((e) {
+                              return Container(
+                                width: Get.width - 40,
+                                height: (Get.width - 40) / 1.7,
+                                margin: const EdgeInsets.only(right: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Image.network(
+                                  '${Config().baseUri}public/${e['img']}',
+                                  fit: BoxFit.fitHeight,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Widget yang akan ditampilkan ketika terjadi kesalahan
+                                    return Image.asset(
+                                      'assets/images/noimage.jpg',
+                                      fit: BoxFit.fitHeight,
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ],
