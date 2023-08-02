@@ -172,11 +172,34 @@ class VisitFormResult extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      " state.data[index].title",
+                                                      state.data[index].topic!
+                                                          .name
+                                                          .toString(),
                                                       style: const TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Visibility(
+                                                      visible: state.data[index]
+                                                              .task !=
+                                                          null,
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(
+                                                            state.data[index]
+                                                                .task
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 15.5,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                     const SizedBox(
@@ -258,8 +281,7 @@ class VisitFormResult extends StatelessWidget {
                                                                               4.0),
                                                                 ),
                                                                 child: Text(
-                                                                  // '${item['name']}',
-                                                                  "",
+                                                                  item.name!,
                                                                   style:
                                                                       const TextStyle(
                                                                     color: Colors
