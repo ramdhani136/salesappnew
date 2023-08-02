@@ -23,6 +23,7 @@ enum Data {
   namingSeries,
   branch,
   tag,
+  note,
 }
 
 class FetchData {
@@ -74,6 +75,9 @@ class FetchData {
         break;
       case Data.tag:
         doc = "tag";
+        break;
+      case Data.note:
+        doc = "notes";
         break;
       default:
     }
