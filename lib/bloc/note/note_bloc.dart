@@ -130,8 +130,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       if (event.isLoading) {
         emit(NoteIsLoading());
       }
-      dynamic result =
-          await FetchData(data: Data.visitnote).FINDONE(id: event.id);
+      dynamic result = await FetchData(data: Data.note).FINDONE(id: event.id);
       if (result['status'] != 200) {
         throw result['msg'];
       }
@@ -157,7 +156,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   ) async {
     try {
       // emit(VisitNoteIsLoading());
-      dynamic result = await FetchData(data: Data.visitnote).UPDATEONE(
+      dynamic result = await FetchData(data: Data.note).UPDATEONE(
         event.id,
         event.data,
       );
@@ -201,8 +200,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     try {
       emit(NoteIsLoading());
 
-      dynamic result =
-          await FetchData(data: Data.visitnote).DELETEONE(event.id);
+      dynamic result = await FetchData(data: Data.note).DELETEONE(event.id);
       if (result['status'] != 200) {
         throw result['msg'];
       }
@@ -223,7 +221,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   ) async {
     try {
       emit(NoteIsLoading());
-      dynamic result = await FetchData(data: Data.visitnote).ADD(
+      dynamic result = await FetchData(data: Data.note).ADD(
         event.data,
       );
 

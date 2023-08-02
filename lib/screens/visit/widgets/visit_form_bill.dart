@@ -9,7 +9,7 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
-import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
+// import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
 class VisitFormBill extends StatelessWidget {
@@ -236,24 +236,24 @@ class VisitFormBill extends StatelessWidget {
                                                   throw insertTask['msg'];
                                                 }
 
-                                                Get.to(
-                                                  () => MultiBlocProvider(
-                                                    providers: [
-                                                      BlocProvider.value(
-                                                        value: VisitnoteBloc(),
-                                                      ),
-                                                      BlocProvider.value(
-                                                        value: BlocProvider.of<
-                                                            VisitBloc>(context),
-                                                      ),
-                                                    ],
-                                                    child: FormVisitNote(
-                                                      visitId: state.data.id!,
-                                                      noteId: insertTask['data']
-                                                          ['_id'],
-                                                    ),
-                                                  ),
-                                                );
+                                                // Get.to(
+                                                //   () => MultiBlocProvider(
+                                                //     providers: [
+                                                //       BlocProvider.value(
+                                                //         value: VisitnoteBloc(),
+                                                //       ),
+                                                //       BlocProvider.value(
+                                                //         value: BlocProvider.of<
+                                                //             VisitBloc>(context),
+                                                //       ),
+                                                //     ],
+                                                //     child: FormVisitNote(
+                                                //       visitId: state.data.id!,
+                                                //       noteId: insertTask['data']
+                                                //           ['_id'],
+                                                //     ),
+                                                //   ),
+                                                // );
 
                                                 EasyLoading.dismiss();
                                               } catch (e) {

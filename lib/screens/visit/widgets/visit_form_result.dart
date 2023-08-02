@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
+import 'package:salesappnew/screens/visit/widgets/form_note.dart';
 
 class VisitFormResult extends StatelessWidget {
   String visitId;
@@ -109,7 +109,7 @@ class VisitFormResult extends StatelessWidget {
                                     },
                                     onTap: () {
                                       Navigator.of(context).push(
-                                        MaterialPageRoute<FormVisitNote>(
+                                        MaterialPageRoute<FormNote>(
                                           builder: (_) => MultiBlocProvider(
                                             providers: [
                                               BlocProvider.value(
@@ -123,7 +123,7 @@ class VisitFormResult extends StatelessWidget {
                                                         context),
                                               ),
                                             ],
-                                            child: FormVisitNote(
+                                            child: FormNote(
                                               visitId: visitId,
                                               noteId: state.data[index].id,
                                             ),
@@ -350,7 +350,7 @@ class VisitFormResult extends StatelessWidget {
                     child: FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute<FormVisitNote>(
+                          MaterialPageRoute<FormNote>(
                             builder: (_) => MultiBlocProvider(
                               providers: [
                                 BlocProvider.value(
@@ -360,7 +360,7 @@ class VisitFormResult extends StatelessWidget {
                                   value: BlocProvider.of<VisitBloc>(context),
                                 ),
                               ],
-                              child: FormVisitNote(visitId: state.data.id!),
+                              child: FormNote(visitId: state.data.id!),
                             ),
                           ),
                         );
