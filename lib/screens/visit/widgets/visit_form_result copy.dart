@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/bloc/visitnote/visitnote_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
 
@@ -15,27 +15,28 @@ class VisitFormResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => NoteBloc()
+        create: (context) => VisitnoteBloc()
           ..add(
-            NoteGetData(
-              docId: visitId,
+            GetVisitNote(
+              visitId: visitId,
             ),
           ),
         child: Scaffold(
-          body: BlocBuilder<NoteBloc, NoteState>(
+          body: BlocBuilder<VisitnoteBloc, VisitnoteState>(
             builder: (context, state) {
-              NoteBloc noteBloc = BlocProvider.of<NoteBloc>(context);
+              VisitnoteBloc visitNoteBloc =
+                  BlocProvider.of<VisitnoteBloc>(context);
 
-              if (state is NoteDeleteSuccess) {
-                noteBloc.add(NoteGetData(docId: visitId));
+              if (state is VisitNoteDeleteSuccess) {
+                visitNoteBloc.add(GetVisitNote(visitId: visitId));
               }
 
-              if (state is NoteIsLoading) {
+              if (state is VisitNoteIsLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              if (state is NoteIsLoaded) {
+              if (state is VisitNoteIsLoaded) {
                 return Stack(
                   children: [
                     RefreshIndicator(
@@ -45,9 +46,9 @@ class VisitFormResult extends StatelessWidget {
                                   scrollInfo.metrics.maxScrollExtent &&
                               state.hasMore) {
                             state.hasMore = false;
-                            noteBloc.add(
-                              NoteGetData(
-                                docId: visitId,
+                            visitNoteBloc.add(
+                              GetVisitNote(
+                                visitId: visitId,
                                 refresh: false,
                               ),
                             );
@@ -89,10 +90,10 @@ class VisitFormResult extends StatelessWidget {
                                               TextButton(
                                                 onPressed: () async {
                                                   try {
-                                                    noteBloc.add(
-                                                      NoteDeleteData(
-                                                        id: state.data[index].id
-                                                            .toString(),
+                                                    visitNoteBloc.add(
+                                                      DeleteVisitNote(
+                                                        id: state
+                                                            .data[index].id,
                                                       ),
                                                     );
                                                     Get.back();
@@ -113,9 +114,8 @@ class VisitFormResult extends StatelessWidget {
                                           builder: (_) => MultiBlocProvider(
                                             providers: [
                                               BlocProvider.value(
-                                                value:
-                                                    BlocProvider.of<NoteBloc>(
-                                                        context),
+                                                value: BlocProvider.of<
+                                                    VisitnoteBloc>(context),
                                               ),
                                               BlocProvider.value(
                                                 value:
@@ -172,7 +172,7 @@ class VisitFormResult extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      " state.data[index].title",
+                                                      state.data[index].title,
                                                       style: const TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
@@ -183,7 +183,7 @@ class VisitFormResult extends StatelessWidget {
                                                       height: 5,
                                                     ),
                                                     Text(
-                                                      state.data[index].result!,
+                                                      state.data[index].notes,
                                                       style: const TextStyle(
                                                         fontSize: 15.5,
                                                       ),
@@ -231,7 +231,7 @@ class VisitFormResult extends StatelessWidget {
                                                                 .only(top: 10),
                                                         child: Wrap(
                                                           children: state
-                                                              .data[index].tags!
+                                                              .data[index].tags
                                                               .map((item) {
                                                             return Padding(
                                                               padding:
@@ -258,8 +258,7 @@ class VisitFormResult extends StatelessWidget {
                                                                               4.0),
                                                                 ),
                                                                 child: Text(
-                                                                  // '${item['name']}',
-                                                                  "",
+                                                                  '${item['name']}',
                                                                   style:
                                                                       const TextStyle(
                                                                     color: Colors
@@ -299,9 +298,9 @@ class VisitFormResult extends StatelessWidget {
                         ),
                       ),
                       onRefresh: () async {
-                        noteBloc.add(
-                          NoteGetData(
-                            docId: visitId,
+                        visitNoteBloc.add(
+                          GetVisitNote(
+                            visitId: visitId,
                           ),
                         );
                       },
@@ -354,7 +353,8 @@ class VisitFormResult extends StatelessWidget {
                             builder: (_) => MultiBlocProvider(
                               providers: [
                                 BlocProvider.value(
-                                  value: BlocProvider.of<NoteBloc>(context),
+                                  value:
+                                      BlocProvider.of<VisitnoteBloc>(context),
                                 ),
                                 BlocProvider.value(
                                   value: BlocProvider.of<VisitBloc>(context),
