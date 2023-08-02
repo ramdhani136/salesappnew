@@ -14,13 +14,14 @@ import 'package:salesappnew/widgets/custom_field.dart';
 
 class FormNote extends StatelessWidget {
   String? noteId;
-  String visitId;
-  FormNote({super.key, this.noteId, required this.visitId});
+  String docId;
+  FormNote({super.key, this.noteId, required this.docId});
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController topicC = TextEditingController();
-    final TextEditingController noteC = TextEditingController();
+    final TextEditingController resultC = TextEditingController();
+    final TextEditingController taskC = TextEditingController();
 
     NoteBloc bloc = BlocProvider.of<NoteBloc>(context);
     NoteBloc vBloc = NoteBloc();
@@ -51,7 +52,7 @@ class FormNote extends StatelessWidget {
         if (noteId != null) {
           bloc.add(
             NoteGetData(
-              docId: visitId,
+              docId: docId,
             ),
           );
         }
@@ -76,9 +77,11 @@ class FormNote extends StatelessWidget {
           }
 
           if (state is NoteShowIsLoaded) {
-            noteId ??= state.data['_id'];
-            topicC.text = state.data['topic']['name'];
-            noteC.text = state.data['notes'];
+            print("nnnnn");
+            // noteId ??= state.data['_id'];
+            // topicC.text = state.data['topic']['name'];
+            // resultC.text = state.data['result'];
+            // taskC.text = state.data['task'];
           }
 
           return BlocBuilder(
@@ -100,7 +103,7 @@ class FormNote extends StatelessWidget {
                         BackButtonCustom(onBack: () {
                           bloc.add(
                             NoteGetData(
-                              docId: visitId,
+                              docId: docId,
                             ),
                           );
                         }),
@@ -170,7 +173,7 @@ class FormNote extends StatelessWidget {
                                                   id: "$noteId",
                                                   data: {
                                                     "topic": topicC.text,
-                                                    "notes": noteC.text,
+                                                    "notes": resultC.text,
                                                     "tags": vTagsBloc.tags
                                                         .map((item) =>
                                                             item.value)
@@ -183,8 +186,11 @@ class FormNote extends StatelessWidget {
                                                 NoteAddData(
                                                   data: {
                                                     "topic": topicC.text,
-                                                    "notes": noteC.text,
-                                                    "visitId": visitId,
+                                                    "notes": resultC.text,
+                                                    "doc": {
+                                                      "type": "visit",
+                                                      "_id": docId,
+                                                    },
                                                     "tags": vTagsBloc.tags
                                                         .map((item) =>
                                                             item.value)
@@ -241,28 +247,31 @@ class FormNote extends StatelessWidget {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  TextField(
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    autofocus: true,
-                                    enabled: status == "0",
-                                    controller: topicC,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration: const InputDecoration(
-                                      // border: InputBorder.none,
-                                      hintText: 'Task',
-                                    ),
-                                    textInputAction: TextInputAction.next,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold, //
-                                      color: Colors.black,
+                                  Visibility(
+                                    visible: taskC.text != "",
+                                    child: TextField(
+                                      textCapitalization:
+                                          TextCapitalization.words,
+                                      autofocus: true,
+                                      enabled: status == "0",
+                                      controller: taskC,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      decoration: const InputDecoration(
+                                        // border: InputBorder.none,
+                                        hintText: 'Task',
+                                      ),
+                                      textInputAction: TextInputAction.next,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold, //
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
                                   Expanded(
                                     child: TextField(
                                       enabled: status == "0",
-                                      controller: noteC,
+                                      controller: resultC,
                                       keyboardType: TextInputType.multiline,
                                       maxLines: null,
                                       decoration: const InputDecoration(

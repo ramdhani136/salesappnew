@@ -108,28 +108,29 @@ class VisitFormResult extends StatelessWidget {
                                       );
                                     },
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute<FormNote>(
-                                          builder: (_) => MultiBlocProvider(
-                                            providers: [
-                                              BlocProvider.value(
-                                                value:
-                                                    BlocProvider.of<NoteBloc>(
-                                                        context),
-                                              ),
-                                              BlocProvider.value(
-                                                value:
-                                                    BlocProvider.of<VisitBloc>(
-                                                        context),
-                                              ),
-                                            ],
-                                            child: FormNote(
-                                              visitId: visitId,
-                                              noteId: state.data[index].id,
-                                            ),
-                                          ),
-                                        ),
-                                      );
+                                      print("d");
+                                      // Navigator.of(context).push(
+                                      //   MaterialPageRoute<FormNote>(
+                                      //     builder: (_) => MultiBlocProvider(
+                                      //       providers: [
+                                      //         BlocProvider.value(
+                                      //           value:
+                                      //               BlocProvider.of<NoteBloc>(
+                                      //                   context),
+                                      //         ),
+                                      //         BlocProvider.value(
+                                      //           value:
+                                      //               BlocProvider.of<VisitBloc>(
+                                      //                   context),
+                                      //         ),
+                                      //       ],
+                                      //       child: FormNote(
+                                      //         docId: visitId,
+                                      //         noteId: state.data[index].id,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // );
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -382,7 +383,7 @@ class VisitFormResult extends StatelessWidget {
                                   value: BlocProvider.of<VisitBloc>(context),
                                 ),
                               ],
-                              child: FormNote(visitId: state.data.id!),
+                              child: FormNote(docId: state.data.id!),
                             ),
                           ),
                         );
