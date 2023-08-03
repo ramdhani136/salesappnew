@@ -252,8 +252,7 @@ class FormNote extends StatelessWidget {
                                   //   ),
                                   // ),
                                   FieldInfiniteScroll(
-                                    value:
-                                        "Menawarkan produk dan memberikan informasi mengenai promo terkini>",
+                                    value: topicC.text,
                                     bloc: topicInfiniteBloc,
                                     placeholder: "Select Topic",
                                     mandatory: true,
