@@ -5,12 +5,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/field_infinite/field_infinite_bloc.dart';
 import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
+import 'package:salesappnew/widgets/field_infinite_scroll.dart';
 
 class FormNote extends StatelessWidget {
   String? noteId;
@@ -27,6 +29,7 @@ class FormNote extends StatelessWidget {
     NoteBloc vBloc = NoteBloc();
     NoteBloc vContentBloc = NoteBloc();
     NoteBloc vTagsBloc = NoteBloc();
+    FieldInfiniteBloc topicInfiniteBloc = FieldInfiniteBloc();
 
     void _showListTags(BuildContext context) {
       showDialog(
@@ -77,11 +80,12 @@ class FormNote extends StatelessWidget {
           }
 
           if (state is NoteShowIsLoaded) {
-            print("nnnnn");
-            // noteId ??= state.data['_id'];
-            // topicC.text = state.data['topic']['name'];
-            // resultC.text = state.data['result'];
-            // taskC.text = state.data['task'];
+            noteId ??= state.data['_id'];
+            topicC.text = state.data['topic']['name'];
+            resultC.text = state.data['result'];
+            if (state.data['task'] != null) {
+              taskC.text = state.data['task'];
+            }
           }
 
           return BlocBuilder(
@@ -229,23 +233,31 @@ class FormNote extends StatelessWidget {
                             return Expanded(
                               child: Column(
                                 children: [
-                                  TextField(
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    autofocus: true,
-                                    enabled: status == "0",
-                                    controller: topicC,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration: const InputDecoration(
-                                      // border: InputBorder.none,
-                                      hintText: 'Topic',
-                                    ),
-                                    textInputAction: TextInputAction.next,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold, //
-                                      color: Colors.black,
-                                    ),
+                                  // TextField(
+                                  //   textCapitalization:
+                                  //       TextCapitalization.words,
+                                  //   autofocus: true,
+                                  //   enabled: status == "0",
+                                  //   controller: topicC,
+                                  //   keyboardType: TextInputType.multiline,
+                                  //   maxLines: null,
+                                  //   decoration: const InputDecoration(
+                                  //     // border: InputBorder.none,
+                                  //     hintText: 'Topic',
+                                  //   ),
+                                  //   textInputAction: TextInputAction.next,
+                                  //   style: const TextStyle(
+                                  //     fontWeight: FontWeight.bold, //
+                                  //     color: Colors.black,
+                                  //   ),
+                                  // ),
+                                  FieldInfiniteScroll(
+                                    value:
+                                        "Menawarkan produk dan memberikan informasi mengenai promo terkini>",
+                                    bloc: topicInfiniteBloc,
+                                    placeholder: "Select Topic",
+                                    mandatory: true,
+                                    valid: topicC.text != "",
                                   ),
                                   Visibility(
                                     visible: taskC.text != "",

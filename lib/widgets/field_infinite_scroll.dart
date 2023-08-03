@@ -134,45 +134,48 @@ class FieldInfiniteScroll extends StatelessWidget {
                         width: 1.0,
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              value == "" ? placeholder ?? value : value,
-                              style: TextStyle(
-                                color: value == ""
-                                    ? Colors.grey[300]
-                                    : disabled
-                                        ? Colors.grey[800]
-                                        : Colors.grey[900],
-                                fontSize: 16,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 8,
                               ),
-                            ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: !disabled,
-                          child: IconButton(
-                            onPressed: () {
-                              if (!disabled) {
-                                if (onReset != null) {
-                                  onReset!();
-                                }
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.grey,
-                            ),
-                            iconSize: 20,
+                              Text(
+                                value == "" ? placeholder ?? value : value,
+                                style: TextStyle(
+                                  color: value == ""
+                                      ? Colors.grey[300]
+                                      : disabled
+                                          ? Colors.grey[800]
+                                          : Colors.grey[900],
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Visibility(
+                            visible: !disabled,
+                            child: IconButton(
+                              onPressed: () {
+                                if (!disabled) {
+                                  if (onReset != null) {
+                                    onReset!();
+                                  }
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.grey,
+                              ),
+                              iconSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
                     )),
               )
             ],
