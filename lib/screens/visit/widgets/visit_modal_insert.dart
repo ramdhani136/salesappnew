@@ -39,7 +39,8 @@ class VisitModalInsert extends StatelessWidget {
             refresh: true,
             search: searchText,
             filters: [
-              ["customerGroup", "=", thisBloc.group!.value]
+              ["customerGroup", "=", thisBloc.group!.value],
+              const ["status", "=", "1"]
             ],
           ),
         );
@@ -339,7 +340,8 @@ class VisitModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: customerBloc.search,
                                           ),
@@ -367,7 +369,8 @@ class VisitModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: customerBloc.search,
                                           ),
@@ -382,7 +385,8 @@ class VisitModalInsert extends StatelessWidget {
                                                   "customerGroup",
                                                   "=",
                                                   thisBloc.group?.value ?? ""
-                                                ]
+                                                ],
+                                                const ["status", "=", "1"]
                                               ],
                                               search: customerBloc.search,
                                             ),
@@ -413,7 +417,8 @@ class VisitModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: "",
                                           ),

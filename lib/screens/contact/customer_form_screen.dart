@@ -148,6 +148,8 @@ class _CustomerFormScreenState extends State<CustomerFormScreen> {
                     'name': nameC.text,
                     'branch': branch!.value,
                     'customerGroup': widget.group!.value!,
+                    'status': "1",
+                    "workflowState": 'Submitted',
                   },
                 ),
               );
