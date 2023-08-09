@@ -22,7 +22,9 @@ class CallsheetModalInsert extends StatelessWidget {
     CallsheetBloc thisBloc = CallsheetBloc();
     GroupBloc groupBloc = GroupBloc()
       ..add(
-        GroupGetData(getRefresh: true),
+        GroupGetData(getRefresh: true, filters: const [
+          ["status", "=", "1"]
+        ]),
       );
     CustomerBloc customerBloc = CustomerBloc();
     TextEditingController namingC = TextEditingController();
@@ -47,10 +49,9 @@ class CallsheetModalInsert extends StatelessWidget {
     void _GroupOnSearch(String searchText) {
       groupBloc.add(GroupChangeSearch(searchText));
       groupBloc.add(
-        GroupGetData(
-          getRefresh: true,
-          search: searchText,
-        ),
+        GroupGetData(getRefresh: true, search: searchText, filters: const [
+          ["status", "=", "1"]
+        ]),
       );
     }
 
@@ -258,9 +259,11 @@ class CallsheetModalInsert extends StatelessWidget {
                                   onScroll: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        getRefresh: false,
-                                        search: customerBloc.search,
-                                      ),
+                                          getRefresh: false,
+                                          search: customerBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   controller: TextEditingController(
@@ -279,16 +282,20 @@ class CallsheetModalInsert extends StatelessWidget {
                                   onRefresh: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        search: groupBloc.search,
-                                      ),
+                                          search: groupBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   onTap: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        getRefresh: true,
-                                        search: groupBloc.search,
-                                      ),
+                                          getRefresh: true,
+                                          search: groupBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   onChange: (GroupModel e) {
@@ -328,9 +335,9 @@ class CallsheetModalInsert extends StatelessWidget {
                                   onRefreshReset: () {
                                     thisBloc.search = "";
                                     groupBloc.add(
-                                      GroupGetData(
-                                        search: "",
-                                      ),
+                                      GroupGetData(search: "", filters: const [
+                                        ["status", "=", "1"]
+                                      ]),
                                     );
                                   },
                                   placeholder: "Select Group",

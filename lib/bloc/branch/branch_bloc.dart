@@ -16,7 +16,9 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
 
   Future<void> _GetAll(BranchGetAll event, Emitter<BranchState> emit) async {
     try {
-      List result = await BranchRepositoryGetAll();
+      List result = await BranchRepositoryGetAll(filters: [
+        ["status", "=", "1"]
+      ]);
       emit(
         BranchIsLoaded(data: result),
       );

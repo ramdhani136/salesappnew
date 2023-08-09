@@ -24,7 +24,9 @@ class VisitModalInsert extends StatelessWidget {
     VisitBloc thisBloc = VisitBloc();
     GroupBloc groupBloc = GroupBloc()
       ..add(
-        GroupGetData(getRefresh: true),
+        GroupGetData(getRefresh: true, filters: const [
+          ["status", "=", "1"]
+        ]),
       );
     CustomerBloc customerBloc = CustomerBloc();
     TextEditingController namingC = TextEditingController();
@@ -50,10 +52,9 @@ class VisitModalInsert extends StatelessWidget {
     void _GroupOnSearch(String searchText) {
       groupBloc.add(GroupChangeSearch(searchText));
       groupBloc.add(
-        GroupGetData(
-          getRefresh: true,
-          search: searchText,
-        ),
+        GroupGetData(getRefresh: true, search: searchText, filters: const [
+          ["status", "=", "1"]
+        ]),
       );
     }
 
@@ -197,9 +198,11 @@ class VisitModalInsert extends StatelessWidget {
                                   onScroll: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        getRefresh: false,
-                                        search: customerBloc.search,
-                                      ),
+                                          getRefresh: false,
+                                          search: customerBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   controller: TextEditingController(
@@ -218,16 +221,20 @@ class VisitModalInsert extends StatelessWidget {
                                   onRefresh: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        search: groupBloc.search,
-                                      ),
+                                          search: groupBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   onTap: () {
                                     groupBloc.add(
                                       GroupGetData(
-                                        getRefresh: true,
-                                        search: groupBloc.search,
-                                      ),
+                                          getRefresh: true,
+                                          search: groupBloc.search,
+                                          filters: const [
+                                            ["status", "=", "1"]
+                                          ]),
                                     );
                                   },
                                   onChange: (GroupModel e) {
@@ -267,9 +274,9 @@ class VisitModalInsert extends StatelessWidget {
                                   onRefreshReset: () {
                                     thisBloc.search = "";
                                     groupBloc.add(
-                                      GroupGetData(
-                                        search: "",
-                                      ),
+                                      GroupGetData(search: "", filters: const [
+                                        ["status", "=", "1"]
+                                      ]),
                                     );
                                   },
                                   placeholder: "Select Group",
