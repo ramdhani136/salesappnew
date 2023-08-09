@@ -401,7 +401,8 @@ class CallsheetModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: customerBloc.search,
                                           ),
@@ -429,7 +430,8 @@ class CallsheetModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: customerBloc.search,
                                           ),
@@ -444,7 +446,8 @@ class CallsheetModalInsert extends StatelessWidget {
                                                   "customerGroup",
                                                   "=",
                                                   thisBloc.group?.value ?? ""
-                                                ]
+                                                ],
+                                                const ["status", "=", "1"]
                                               ],
                                               search: customerBloc.search,
                                             ),
@@ -475,7 +478,8 @@ class CallsheetModalInsert extends StatelessWidget {
                                                 "customerGroup",
                                                 "=",
                                                 thisBloc.group?.value ?? ""
-                                              ]
+                                              ],
+                                              const ["status", "=", "1"]
                                             ],
                                             search: "",
                                           ),
