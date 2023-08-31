@@ -566,6 +566,7 @@ class _ModalFieldState extends State<ModalField> {
         pageLoading = false;
       });
     } catch (e) {
+      print(e);
       setState(() {
         hasMore = false;
         pageLoading = false;
@@ -620,7 +621,7 @@ class _ModalFieldState extends State<ModalField> {
                             page = 1;
                             hasMore = false;
                           });
-                          getData(search: e);
+                          getData(search: e, refresh: true);
                         },
                       );
                     },
