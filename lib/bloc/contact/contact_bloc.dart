@@ -62,6 +62,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
         page: 1,
         filters: [
           ["customer", "=", event.customerId],
+          ["status", "=", "1"],
         ],
         fields: ["name", "phone"],
       );

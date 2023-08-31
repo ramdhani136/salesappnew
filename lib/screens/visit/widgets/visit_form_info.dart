@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
+import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
+import 'package:salesappnew/widgets/field_data_scroll.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class VisitFormInfo extends StatefulWidget {
@@ -201,27 +204,70 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         const SizedBox(
                           height: 15,
                         ),
+                        BlocProvider(
+                          create: (context) => BranchBloc()
+                            ..add(BranchGetAll(filters: const [
+                              ["status", "=", "1"]
+                            ])),
+                          child: BlocBuilder<BranchBloc, BranchState>(
+                            builder: (context, stateBranch) {
+                              // BranchBloc branchBloc =
+                              //     BlocProvider.of<BranchBloc>(context);
+                              return InkWell(
+                                child: CustomField(
+                                  mandatory: true,
+                                  disabled: state.data.status != "0",
+                                  title: "Branch",
+                                  controller: branchC,
+                                  valid: true,
+                                  type: Type.select,
+                                  data: stateBranch is BranchIsLoaded
+                                      ? stateBranch.data.map((item) {
+                                          return {
+                                            'title': item["name"],
+                                            'value': item["_id"],
+                                          };
+                                        }).toList()
+                                      : [],
+                                  onChange: (e) {
+                                    branchC.text = e['title'];
+                                    if (state.data.branch!.id != e['value']) {
+                                      customerC.text = "";
+                                      picC.text = "";
+                                      phoneC.text = "";
+                                      groupC.text = "";
+                                    }
+                                  },
+                                  onReset: () {},
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        FieldDataScroll(
+                          value: groupC.text,
+                          title: "Group",
+                          controller: groupC,
+                          titleModal: "Group List",
+                          onChange: (CustomerModel e) {
+                            print(e);
+                          },
+                        ),
+                        // CustomField(
+                        //   title: "Group",
+                        //   controller: groupC,
+                        //   type: Type.standard,
+                        //   disabled: true,
+                        // ),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         CustomField(
                           title: "Customer",
                           controller: customerC,
-                          type: Type.standard,
-                          disabled: true,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        CustomField(
-                          title: "Group",
-                          controller: groupC,
-                          type: Type.standard,
-                          disabled: true,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        CustomField(
-                          title: "Branch",
-                          controller: branchC,
                           type: Type.standard,
                           disabled: true,
                         ),
