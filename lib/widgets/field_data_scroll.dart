@@ -347,7 +347,10 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                         if (scrollInfo.metrics.pixels ==
                                 scrollInfo.metrics.maxScrollExtent &&
                             hasMore) {
-                          getData();
+                          setState(() {
+                            hasMore = false;
+                          });
+                          getData(refresh: false);
                         }
                         return false;
                       },
@@ -501,6 +504,19 @@ class _ModalFieldState extends State<ModalField> {
   bool hasMore = false;
   Timer? debounceTimer;
   TextEditingController controller = TextEditingController();
+  bool loading = false;
+  bool pageLoading = false;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void showCustomModal(BuildContext context) {
     showDialog(
@@ -538,19 +554,21 @@ class _ModalFieldState extends State<ModalField> {
 
       List<CustomerModel> currentData = [];
       if (refresh) {
+        currentData = isData;
+      } else {
         currentData = data;
         currentData.addAll(isData);
-      } else {
-        currentData = isData;
       }
       setState(() {
         data = currentData;
         page = response['nextPage'];
         hasMore = response['hasMore'];
+        pageLoading = false;
       });
     } catch (e) {
       setState(() {
         hasMore = false;
+        pageLoading = false;
       });
     }
   }
@@ -650,7 +668,11 @@ class _ModalFieldState extends State<ModalField> {
                         if (scrollInfo.metrics.pixels ==
                                 scrollInfo.metrics.maxScrollExtent &&
                             hasMore) {
-                          getData();
+                          setState(() {
+                            hasMore = false;
+                            pageLoading = true;
+                          });
+                          getData(refresh: false);
                         }
                         return false;
                       },
@@ -731,7 +753,7 @@ class _ModalFieldState extends State<ModalField> {
                                       },
                                     ),
                                     Visibility(
-                                      visible: false,
+                                      visible: pageLoading,
                                       child: const Align(
                                         alignment: Alignment.bottomCenter,
                                         child: Padding(
