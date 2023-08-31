@@ -481,7 +481,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Map<String, dynamic> result =
           await FetchData(data: Data.namingSeries).FINDALL(
         filters: [
-          ["doc", "=", "visit"]
+          ["doc", "=", "visit"],
+          ["status", "=", "1"],
         ],
         fields: ["_id", "name"],
       );

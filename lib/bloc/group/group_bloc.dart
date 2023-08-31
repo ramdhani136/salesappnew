@@ -39,10 +39,16 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         );
       }
 
+      List<List<String>> finalFIlter = [];
+
+      if (event.filters != null) {
+        finalFIlter.addAll(event.filters!);
+      }
+
       Map<String, dynamic> getData =
           await FetchData(data: Data.customergroup).FINDALL(
         page: event.getRefresh ? 1 : page,
-        filters: event.filters ?? [],
+        filters: finalFIlter,
         search: event.search,
         limit: 10,
       );

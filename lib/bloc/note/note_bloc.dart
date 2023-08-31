@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
