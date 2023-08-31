@@ -255,6 +255,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           onChange: (CustomerModel e) {
                             print(e);
                           },
+                          mandatory: true,
                         ),
                         // CustomField(
                         //   title: "Group",

@@ -29,12 +29,27 @@ class IsShowLoaded extends VisitState {
   List<HistoryModel> history;
   List<ActionModel> workflow;
   List<TaskVisitModel> task;
+
   IsShowLoaded({
     required this.data,
     required this.history,
     required this.workflow,
     required this.task,
   });
+
+  IsShowLoaded copyWith({
+    Visitmodel? data,
+    List<HistoryModel>? history,
+    List<ActionModel>? workflow,
+    List<TaskVisitModel>? task,
+  }) {
+    return IsShowLoaded(
+      data: data ?? this.data,
+      history: history ?? this.history,
+      workflow: workflow ?? this.workflow,
+      task: task ?? this.task,
+    );
+  }
 }
 
 class IsLoadingPage extends VisitState {}
