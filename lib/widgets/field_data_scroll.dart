@@ -14,6 +14,7 @@ class FieldDataScroll extends StatefulWidget {
   String? titleModal;
   bool disabled;
   Function? onChange;
+  Function? onSelected;
   Function? onScroll;
   Function? onReset;
   Function? onTap;
@@ -22,12 +23,11 @@ class FieldDataScroll extends StatefulWidget {
   Function? InsertAction;
   String value;
   FieldInfiniteOnSearch? onSearch;
-  TextEditingController? controller;
   FieldDataScroll({
     required this.value,
-    this.controller,
     this.disabled = false,
     this.onChange,
+    this.onSelected,
     this.onRefresh,
     this.onRefreshReset,
     this.InsertAction,
@@ -52,6 +52,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
   List<CustomerModel> data = [];
   bool hasMore = false;
   int page = 1;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -92,7 +93,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
       setState(() {
         hasMore = false;
       });
-      print(e);
     }
   }
 
@@ -298,7 +298,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                         );
                       }
                     },
-                    controller: widget.controller ?? TextEditingController(),
+                    controller: controller,
                     autocorrect: false,
                     enableSuggestions: false,
                     autofocus: true,
@@ -307,14 +307,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                         visible: !widget.disabled,
                         child: IconButton(
                           onPressed: () async {
-                            if (!widget.disabled) {
-                              if (widget.controller != null) {
-                                widget.controller!.text = "";
-                                if (widget.onRefreshReset != null) {
-                                  widget.onRefreshReset!();
-                                }
-                              }
-                            }
+                            if (!widget.disabled) {}
                           },
                           icon: const Icon(
                             Icons.close,
@@ -424,10 +417,10 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                                       itemBuilder: (context, index) {
                                         return ListTile(
                                             onTap: () {
-                                              if (widget.onChange != null) {
-                                                widget.controller!.text =
+                                              if (widget.onSelected != null) {
+                                                controller.text =
                                                     data[index].name!;
-                                                widget.onChange!(data[index]);
+                                                widget.onSelected!(data[index]);
                                               }
                                               Get.back();
                                             },

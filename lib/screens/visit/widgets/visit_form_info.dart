@@ -8,6 +8,7 @@ import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/customer_model.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -248,12 +249,26 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           height: 15,
                         ),
                         FieldDataScroll(
-                          value: groupC.text,
+                          valid: visitBloc.group?.value == null ||
+                                  visitBloc.group?.value == ""
+                              ? false
+                              : true,
+                          value: visitBloc.group?.name ?? "",
                           title: "Group",
-                          controller: groupC,
                           titleModal: "Group List",
-                          onChange: (CustomerModel e) {
-                            print(e);
+                          onSelected: (CustomerModel e) {
+                            visitBloc.add(
+                              VisitSetForm(
+                                group: KeyValue(name: e.name!, value: e.id),
+                              ),
+                            );
+                          },
+                          onReset: () => {
+                            visitBloc.add(
+                              VisitSetForm(
+                                group: KeyValue(name: "", value: ""),
+                              ),
+                            )
                           },
                           mandatory: true,
                         ),

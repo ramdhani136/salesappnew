@@ -51,8 +51,15 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (event.group != null) {
         group = event.group;
       }
-      emit(IsLoading());
-      emit(VisitInitial());
+
+      if (state is IsShowLoaded) {
+        IsShowLoaded current = state as IsShowLoaded;
+        final updatedState = current.copyWith();
+        emit(updatedState);
+      } else {
+        emit(IsLoading());
+        emit(VisitInitial());
+      }
     });
     on<VisitResetForm>((event, emit) {
       if (event.naming) {
