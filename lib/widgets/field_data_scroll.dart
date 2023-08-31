@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 // ignore_for_file: must_be_immutable
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -157,8 +159,8 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
               await getData();
               showDialog(
                 context: context,
-                builder: (context) => FieldInfiniteModal(
-                    customer: data, hasMore: hasMore, page: page),
+                builder: (context) =>
+                    ModalField(titleModal: widget.titleModal ?? ""),
               );
             }
           },
@@ -477,4 +479,287 @@ class FieldInfiniteOnSearch {
     this.titleWidget,
     this.widget,
   });
+}
+
+class ModalField extends StatefulWidget {
+  String titleModal;
+  bool disabled = false;
+  String placeholderModal = "";
+
+  ModalField({
+    Key? key,
+    required this.titleModal,
+  }) : super(key: key);
+
+  @override
+  State<ModalField> createState() => _ModalFieldState();
+}
+
+class _ModalFieldState extends State<ModalField> {
+  List<CustomerModel> data = [];
+  int page = 1;
+  bool hasMore = false;
+  Timer? debounceTimer;
+  TextEditingController controller = TextEditingController();
+
+  void showCustomModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.all(0),
+          child: Container(
+            width: Get.width - 50,
+            padding: const EdgeInsets.all(20),
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getData({bool refresh = true, String search = ""}) async {
+    try {
+      Map<String, dynamic> response =
+          await FetchData(data: Data.customer).FINDALL(
+        limit: 10,
+        filters: [
+          ["status", "=", "1"]
+        ],
+        page: page,
+        search: search,
+      );
+
+      List<CustomerModel> isData = CustomerModel.fromJsonList(response['data']);
+
+      List<CustomerModel> currentData = [];
+      if (refresh) {
+        currentData = data;
+        currentData.addAll(isData);
+      } else {
+        currentData = isData;
+      }
+      setState(() {
+        data = currentData;
+        page = response['nextPage'];
+        hasMore = response['hasMore'];
+      });
+    } catch (e) {
+      setState(() {
+        hasMore = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: FractionallySizedBox(
+        widthFactor: 1.2,
+        child: Container(
+          width: Get.width,
+          height: Get.height,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.titleModal,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 66, 66, 66),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    onChanged: (e) {
+                      debounceTimer?.cancel();
+                      debounceTimer = Timer(
+                        const Duration(milliseconds: 40),
+                        () {
+                          setState(() {
+                            page = 1;
+                            hasMore = false;
+                          });
+                          getData(search: e);
+                        },
+                      );
+                    },
+                    controller: controller,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      suffixIcon: Visibility(
+                        visible: !widget.disabled,
+                        child: IconButton(
+                          onPressed: () async {
+                            if (!widget.disabled) {
+                              controller.text = "";
+                              getData();
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      hintStyle: TextStyle(color: Colors.grey[300]),
+                      hintText: widget.placeholderModal,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.blue, // Warna border yang diinginkan
+                          width: 1.0, // Ketebalan border
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          4,
+                        ), // Sudut melengkung pada border
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent &&
+                            hasMore) {
+                          getData();
+                        }
+                        return false;
+                      },
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          // if (widget.onRefresh != null) {
+                          //   widget.onRefresh!();
+                          // }
+                        },
+                        child: Column(
+                          children: [
+                            Visibility(
+                              visible: false,
+                              child: Expanded(child: Container()),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: Expanded(
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Data not found",
+                                        style: TextStyle(
+                                          color: Colors.grey[400],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      // Visibility(
+                                      //   visible:
+                                      //       widget.onSearch?.widget != null,
+                                      //   child: ElevatedButton(
+                                      //     onPressed: () {
+                                      //       if (widget.onSearch?.widget !=
+                                      //           null) {
+                                      //         _showCustomModal(context);
+                                      //       }
+                                      //     },
+                                      //     style: ElevatedButton.styleFrom(
+                                      //       backgroundColor: const Color
+                                      //               .fromARGB(255, 57, 156,
+                                      //           60), // Mengatur warna latar belakang
+                                      //     ),
+                                      //     child: Text(
+                                      //       widget.onSearch?.label ??
+                                      //           "Create New",
+                                      //     ),
+                                      //   ),
+                                      // )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: true,
+                              child: Expanded(
+                                child: Stack(
+                                  children: [
+                                    ListView.builder(
+                                      itemCount: data.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                            onTap: () {
+                                              // if (widget.onSelected != null) {
+                                              //   controller.text =
+                                              //       data[index].name!;
+                                              //   widget.onSelected!(data[index]);
+                                              // }
+                                              // Get.back();
+                                            },
+                                            title: Text("${data[index].name}"));
+                                      },
+                                    ),
+                                    Visibility(
+                                      visible: false,
+                                      child: const Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(bottom: 10),
+                                          child: SizedBox(
+                                            width: 10,
+                                            height: 10,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.amber,
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        ),
+      ),
+    );
+  }
 }
