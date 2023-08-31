@@ -64,7 +64,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
     super.dispose();
   }
 
-  Future<void> getData({bool refresh = true}) async {
+  Future<void> getData({bool refresh = true, String search = ""}) async {
     try {
       Map<String, dynamic> response =
           await FetchData(data: Data.customer).FINDALL(
@@ -73,6 +73,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
           ["status", "=", "1"]
         ],
         page: page,
+        search: search,
       );
 
       List<CustomerModel> isData = CustomerModel.fromJsonList(response['data']);
@@ -288,15 +289,17 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                   const SizedBox(height: 10),
                   TextField(
                     onChanged: (e) {
-                      if (widget.onSearch != null) {
-                        debounceTimer?.cancel();
-                        debounceTimer = Timer(
-                          const Duration(milliseconds: 40),
-                          () {
-                            widget.onSearch!.action(e);
-                          },
-                        );
-                      }
+                      debounceTimer?.cancel();
+                      debounceTimer = Timer(
+                        const Duration(milliseconds: 40),
+                        () {
+                          setState(() {
+                            page = 1;
+                            hasMore = false;
+                          });
+                          getData(search: e);
+                        },
+                      );
                     },
                     controller: controller,
                     autocorrect: false,
@@ -307,7 +310,10 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                         visible: !widget.disabled,
                         child: IconButton(
                           onPressed: () async {
-                            if (!widget.disabled) {}
+                            if (!widget.disabled) {
+                              controller.text = "";
+                              getData();
+                            }
                           },
                           icon: const Icon(
                             Icons.close,
@@ -340,14 +346,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                                 scrollInfo.metrics.maxScrollExtent &&
                             hasMore) {
                           getData();
-                          // bloc.add(
-                          //   FieldInfiniteSetData(
-                          //     hasMore: false,
-                          //   ),
-                          // );
-                          // if (onScroll != null) {
-                          //   onScroll!();
-                          // }
                         }
                         return false;
                       },
