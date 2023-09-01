@@ -372,6 +372,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
+      group = KeyValue(
+          name: result.customerGroup!.name, value: result.customerGroup!.id);
+      customer =
+          KeyValue(name: result.customer!.name, value: result.customer!.id);
+
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
 
       List<HistoryModel> history = HistoryModel.fromJsonList(data['history']);

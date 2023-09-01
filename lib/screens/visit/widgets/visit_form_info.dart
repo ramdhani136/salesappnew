@@ -237,13 +237,27 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   onChange: (e) {
                                     branchC.text = e['title'];
                                     if (state.data.branch!.id != e['value']) {
-                                      customerC.text = "";
+                                      visitBloc.add(
+                                        VisitSetForm(
+                                          group: KeyValue(name: "", value: ""),
+                                          customer:
+                                              KeyValue(name: "", value: ""),
+                                        ),
+                                      );
                                       picC.text = "";
                                       phoneC.text = "";
-                                      groupC.text = "";
                                     }
                                   },
-                                  onReset: () {},
+                                  onReset: () {
+                                    visitBloc.add(
+                                      VisitSetForm(
+                                        group: KeyValue(name: "", value: ""),
+                                        customer: KeyValue(name: "", value: ""),
+                                      ),
+                                    );
+                                    picC.text = "";
+                                    phoneC.text = "";
+                                  },
                                 ),
                               );
                             },
