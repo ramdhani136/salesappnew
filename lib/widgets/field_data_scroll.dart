@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
 class FieldDataScroll extends StatefulWidget {
@@ -201,7 +200,7 @@ class ModalField extends StatefulWidget {
 }
 
 class _ModalFieldState extends State<ModalField> {
-  List<CustomerModel> data = [];
+  List<dynamic> data = [];
   int page = 1;
   bool hasMore = false;
   Timer? debounceTimer;
@@ -252,7 +251,7 @@ class _ModalFieldState extends State<ModalField> {
         });
       }
       Map<String, dynamic> response =
-          await FetchData(data: Data.customer).FINDALL(
+          await FetchData(data: Data.customergroup).FINDALL(
         limit: 10,
         filters: [
           ["status", "=", "1"]
@@ -264,15 +263,15 @@ class _ModalFieldState extends State<ModalField> {
       if (response['status'] != 200) {
         throw response['msg'];
       }
-      List<CustomerModel> isData = CustomerModel.fromJsonList(response['data']);
 
-      List<CustomerModel> currentData = [];
+      List<dynamic> currentData = [];
       if (refresh) {
-        currentData = isData;
+        currentData = response['data'];
       } else {
         currentData = data;
-        currentData.addAll(isData);
+        currentData.addAll(response['data']);
       }
+
       setState(() {
         data = currentData;
         page = response['nextPage'];
@@ -461,13 +460,14 @@ class _ModalFieldState extends State<ModalField> {
                                       itemCount: data.length,
                                       itemBuilder: (context, index) {
                                         return ListTile(
-                                            onTap: () {
-                                              controller.text =
-                                                  data[index].name!;
-                                              widget.onSelected(data[index]);
-                                              Get.back();
-                                            },
-                                            title: Text("${data[index].name}"));
+                                          onTap: () {
+                                            controller.text =
+                                                data[index]['name']!;
+                                            widget.onSelected(data[index]);
+                                            Get.back();
+                                          },
+                                          title: Text("${data[index]['name']}"),
+                                        );
                                       },
                                     ),
                                     Visibility(

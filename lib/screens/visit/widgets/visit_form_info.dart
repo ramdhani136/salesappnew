@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/branch/branch_bloc.dart';
@@ -256,10 +257,11 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           value: visitBloc.group?.name ?? "",
                           title: "Group",
                           titleModal: "Group List",
-                          onSelected: (CustomerModel e) {
+                          onSelected: (e) {
                             visitBloc.add(
                               VisitSetForm(
-                                group: KeyValue(name: e.name!, value: e.id),
+                                group:
+                                    KeyValue(name: e['name'], value: e['_id']),
                               ),
                             );
                           },
