@@ -306,7 +306,6 @@ class _ModalFieldState extends State<ModalField> {
       create: (context) => widget.bloc,
       child: BlocBuilder<FielddatascrollBloc, FielddatascrollState>(
         builder: (context, state) {
-          print(state);
           return Dialog(
             child: FractionallySizedBox(
               widthFactor: 1.2,
