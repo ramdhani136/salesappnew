@@ -12,6 +12,7 @@ import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -250,6 +251,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           height: 15,
                         ),
                         FieldDataScroll(
+                          endpoint: Data.customergroup,
                           valid: visitBloc.group?.value == null ||
                                   visitBloc.group?.value == ""
                               ? false
@@ -274,21 +276,41 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           },
                           mandatory: true,
                         ),
-                        // CustomField(
-                        //   title: "Group",
-                        //   controller: groupC,
-                        //   type: Type.standard,
-                        //   disabled: true,
-                        // ),
                         const SizedBox(
                           height: 15,
                         ),
-                        CustomField(
+                        FieldDataScroll(
+                          endpoint: Data.customer,
+                          valid: visitBloc.customer?.value == null ||
+                                  visitBloc.customer?.value == ""
+                              ? false
+                              : true,
+                          value: visitBloc.customer?.name ?? "",
                           title: "Customer",
-                          controller: customerC,
-                          type: Type.standard,
-                          disabled: true,
+                          titleModal: "Customer List",
+                          onSelected: (e) {
+                            visitBloc.add(
+                              VisitSetForm(
+                                customer:
+                                    KeyValue(name: e['name'], value: e['_id']),
+                              ),
+                            );
+                          },
+                          onReset: () => {
+                            visitBloc.add(
+                              VisitSetForm(
+                                customer: KeyValue(name: "", value: ""),
+                              ),
+                            )
+                          },
+                          mandatory: true,
                         ),
+                        // CustomField(
+                        //   title: "Customer",
+                        //   controller: customerC,
+                        //   type: Type.standard,
+                        //   disabled: true,
+                        // ),
                         const SizedBox(
                           height: 15,
                         ),

@@ -18,6 +18,7 @@ class FieldDataScroll extends StatefulWidget {
   bool mandatory;
   Function? InsertAction;
   String value;
+  Data endpoint;
 
   FieldDataScroll({
     required this.value,
@@ -31,6 +32,7 @@ class FieldDataScroll extends StatefulWidget {
     this.titleModal,
     this.valid = true,
     this.mandatory = false,
+    required this.endpoint,
     super.key,
   });
 
@@ -84,6 +86,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                 builder: (context) => ModalField(
                   titleModal: widget.titleModal ?? "",
                   onSelected: widget.onSelected,
+                  enpoint: widget.endpoint,
                 ),
               );
               if (widget.onTap != null) {
@@ -139,6 +142,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                             builder: (context) => ModalField(
                               titleModal: widget.titleModal ?? "",
                               onSelected: widget.onSelected,
+                              enpoint: widget.endpoint,
                             ),
                           );
                           if (widget.onReset != null) {
@@ -186,6 +190,7 @@ class ModalField extends StatefulWidget {
   bool disabled;
   String placeholderModal;
   Function onSelected;
+  Data enpoint;
 
   ModalField({
     Key? key,
@@ -193,6 +198,7 @@ class ModalField extends StatefulWidget {
     this.disabled = false,
     this.placeholderModal = "",
     required this.onSelected,
+    required this.enpoint,
   }) : super(key: key);
 
   @override
@@ -251,7 +257,7 @@ class _ModalFieldState extends State<ModalField> {
         });
       }
       Map<String, dynamic> response =
-          await FetchData(data: Data.customergroup).FINDALL(
+          await FetchData(data: widget.enpoint).FINDALL(
         limit: 10,
         filters: [
           ["status", "=", "1"]
