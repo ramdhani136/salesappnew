@@ -16,7 +16,7 @@ class FieldDataScroll extends StatefulWidget {
   String? titleModal;
   bool disabled;
   Function? onChange;
-  Function? onSelected;
+  Function onSelected;
   Function? onScroll;
   Function? onReset;
   Function? onTap;
@@ -29,7 +29,7 @@ class FieldDataScroll extends StatefulWidget {
     required this.value,
     this.disabled = false,
     this.onChange,
-    this.onSelected,
+    required this.onSelected,
     this.onRefresh,
     this.onRefreshReset,
     this.InsertAction,
@@ -159,8 +159,10 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
               await getData();
               showDialog(
                 context: context,
-                builder: (context) =>
-                    ModalField(titleModal: widget.titleModal ?? ""),
+                builder: (context) => ModalField(
+                  titleModal: widget.titleModal ?? "",
+                  onSelected: widget.onSelected,
+                ),
               );
             }
           },
@@ -205,8 +207,16 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                   Visibility(
                     visible: !widget.disabled,
                     child: IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (!widget.disabled) {
+                          await getData();
+                          showDialog(
+                            context: context,
+                            builder: (context) => ModalField(
+                              titleModal: widget.titleModal ?? "",
+                              onSelected: widget.onSelected,
+                            ),
+                          );
                           if (widget.onReset != null) {
                             widget.onReset!();
                           }
@@ -223,243 +233,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
               )),
         )
       ],
-    );
-  }
-
-  Widget FieldInfiniteModal(
-      {required List<CustomerModel> customer,
-      required int page,
-      required bool hasMore}) {
-    Timer? debounceTimer;
-
-    void _showCustomModal(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            insetPadding: const EdgeInsets.all(0),
-            child: Container(
-              width: Get.width - 50,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  widget.onSearch!.widget!,
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    return Dialog(
-      child: FractionallySizedBox(
-        widthFactor: 1.2,
-        child: Container(
-          width: Get.width,
-          height: Get.height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.titleModal ?? "",
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 66, 66, 66),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(Icons.close),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    onChanged: (e) {
-                      debounceTimer?.cancel();
-                      debounceTimer = Timer(
-                        const Duration(milliseconds: 40),
-                        () {
-                          setState(() {
-                            page = 1;
-                            hasMore = false;
-                          });
-                          getData(search: e);
-                        },
-                      );
-                    },
-                    controller: controller,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      suffixIcon: Visibility(
-                        visible: !widget.disabled,
-                        child: IconButton(
-                          onPressed: () async {
-                            if (!widget.disabled) {
-                              controller.text = "";
-                              getData();
-                            }
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      hintStyle: TextStyle(color: Colors.grey[300]),
-                      hintText: placeholderModal ?? "Search",
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.blue, // Warna border yang diinginkan
-                          width: 1.0, // Ketebalan border
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          4,
-                        ), // Sudut melengkung pada border
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: NotificationListener<ScrollNotification>(
-                      onNotification: (ScrollNotification scrollInfo) {
-                        if (scrollInfo.metrics.pixels ==
-                                scrollInfo.metrics.maxScrollExtent &&
-                            hasMore) {
-                          setState(() {
-                            hasMore = false;
-                          });
-                          getData(refresh: false);
-                        }
-                        return false;
-                      },
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          if (widget.onRefresh != null) {
-                            widget.onRefresh!();
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            Visibility(
-                              visible: false,
-                              child: Expanded(child: Container()),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: Expanded(
-                                child: Center(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Data not found",
-                                        style: TextStyle(
-                                          color: Colors.grey[400],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Visibility(
-                                        visible:
-                                            widget.onSearch?.widget != null,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            if (widget.onSearch?.widget !=
-                                                null) {
-                                              _showCustomModal(context);
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: const Color
-                                                    .fromARGB(255, 57, 156,
-                                                60), // Mengatur warna latar belakang
-                                          ),
-                                          child: Text(
-                                            widget.onSearch?.label ??
-                                                "Create New",
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: true,
-                              child: Expanded(
-                                child: Stack(
-                                  children: [
-                                    ListView.builder(
-                                      itemCount: data.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                            onTap: () {
-                                              if (widget.onSelected != null) {
-                                                controller.text =
-                                                    data[index].name!;
-                                                widget.onSelected!(data[index]);
-                                              }
-                                              Get.back();
-                                            },
-                                            title: Text("${data[index].name}"));
-                                      },
-                                    ),
-                                    Visibility(
-                                      visible: false,
-                                      child: const Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(bottom: 10),
-                                          child: SizedBox(
-                                            width: 10,
-                                            height: 10,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.amber,
-                                              strokeWidth: 2,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-        ),
-      ),
     );
   }
 }
@@ -486,12 +259,16 @@ class FieldInfiniteOnSearch {
 
 class ModalField extends StatefulWidget {
   String titleModal;
-  bool disabled = false;
-  String placeholderModal = "";
+  bool disabled;
+  String placeholderModal;
+  Function onSelected;
 
   ModalField({
     Key? key,
-    required this.titleModal,
+    this.titleModal = "",
+    this.disabled = false,
+    this.placeholderModal = "",
+    required this.onSelected,
   }) : super(key: key);
 
   @override
@@ -758,12 +535,10 @@ class _ModalFieldState extends State<ModalField> {
                                       itemBuilder: (context, index) {
                                         return ListTile(
                                             onTap: () {
-                                              // if (widget.onSelected != null) {
-                                              //   controller.text =
-                                              //       data[index].name!;
-                                              //   widget.onSelected!(data[index]);
-                                              // }
-                                              // Get.back();
+                                              controller.text =
+                                                  data[index].name!;
+                                              widget.onSelected(data[index]);
+                                              Get.back();
                                             },
                                             title: Text("${data[index].name}"));
                                       },
