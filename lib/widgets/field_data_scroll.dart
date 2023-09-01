@@ -74,7 +74,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
         filters: [
           ["status", "=", "1"]
         ],
-        page: page,
+        page: refresh ? 1 : page,
         search: search,
       );
 
@@ -506,6 +506,7 @@ class _ModalFieldState extends State<ModalField> {
   TextEditingController controller = TextEditingController();
   bool loading = false;
   bool pageLoading = false;
+  String search = "";
 
   @override
   void initState() {
@@ -538,8 +539,15 @@ class _ModalFieldState extends State<ModalField> {
     );
   }
 
-  Future<void> getData({bool refresh = true, String search = ""}) async {
+  Future<void> getData({bool refresh = true}) async {
     try {
+      if (refresh) {
+        setState(() {
+          page = 1;
+          hasMore = false;
+          loading = true;
+        });
+      }
       Map<String, dynamic> response =
           await FetchData(data: Data.customer).FINDALL(
         limit: 10,
@@ -550,6 +558,9 @@ class _ModalFieldState extends State<ModalField> {
         search: search,
       );
 
+      if (response['status'] != 200) {
+        throw response['msg'];
+      }
       List<CustomerModel> isData = CustomerModel.fromJsonList(response['data']);
 
       List<CustomerModel> currentData = [];
@@ -564,12 +575,18 @@ class _ModalFieldState extends State<ModalField> {
         page = response['nextPage'];
         hasMore = response['hasMore'];
         pageLoading = false;
+        loading = false;
       });
     } catch (e) {
-      print(e);
+      if (refresh) {
+        setState(() {
+          data = [];
+        });
+      }
       setState(() {
         hasMore = false;
         pageLoading = false;
+        loading = false;
       });
     }
   }
@@ -620,8 +637,9 @@ class _ModalFieldState extends State<ModalField> {
                           setState(() {
                             page = 1;
                             hasMore = false;
+                            search = e;
                           });
-                          getData(search: e, refresh: true);
+                          getData(refresh: true);
                         },
                       );
                     },
@@ -636,6 +654,9 @@ class _ModalFieldState extends State<ModalField> {
                           onPressed: () async {
                             if (!widget.disabled) {
                               controller.text = "";
+                              setState(() {
+                                search = "";
+                              });
                               getData();
                             }
                           },
@@ -679,18 +700,12 @@ class _ModalFieldState extends State<ModalField> {
                       },
                       child: RefreshIndicator(
                         onRefresh: () async {
-                          // if (widget.onRefresh != null) {
-                          //   widget.onRefresh!();
-                          // }
+                          getData(refresh: true);
                         },
                         child: Column(
                           children: [
                             Visibility(
-                              visible: false,
-                              child: Expanded(child: Container()),
-                            ),
-                            Visibility(
-                              visible: false,
+                              visible: data.isEmpty,
                               child: Expanded(
                                 child: Center(
                                   child: Column(
@@ -734,7 +749,7 @@ class _ModalFieldState extends State<ModalField> {
                               ),
                             ),
                             Visibility(
-                              visible: true,
+                              visible: data.isNotEmpty,
                               child: Expanded(
                                 child: Stack(
                                   children: [
