@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
+import 'package:salesappnew/bloc/customer/customer_bloc.dart';
+import 'package:salesappnew/bloc/fielddatascroll/fielddatascroll_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
-import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
+import 'package:salesappnew/screens/contact/customer_form_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -37,7 +38,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController phoneC = TextEditingController();
   TextEditingController dateC = TextEditingController();
   TextEditingController positionC = TextEditingController();
-
+  FielddatascrollBloc groupFieldBloc = FielddatascrollBloc();
+  FielddatascrollBloc customerFieldBloc = FielddatascrollBloc();
   @override
   void dispose() {
     super.dispose();
@@ -251,6 +253,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           height: 15,
                         ),
                         FieldDataScroll(
+                          bloc: groupFieldBloc,
                           endpoint: Data.customergroup,
                           valid: visitBloc.group?.value == null ||
                                   visitBloc.group?.value == ""
@@ -279,31 +282,38 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         const SizedBox(
                           height: 15,
                         ),
-                        FieldDataScroll(
-                          endpoint: Data.customer,
-                          valid: visitBloc.customer?.value == null ||
-                                  visitBloc.customer?.value == ""
-                              ? false
-                              : true,
-                          value: visitBloc.customer?.name ?? "",
-                          title: "Customer",
-                          titleModal: "Customer List",
-                          onSelected: (e) {
-                            visitBloc.add(
-                              VisitSetForm(
-                                customer:
-                                    KeyValue(name: e['name'], value: e['_id']),
-                              ),
-                            );
-                          },
-                          onReset: () => {
-                            visitBloc.add(
-                              VisitSetForm(
-                                customer: KeyValue(name: "", value: ""),
-                              ),
-                            )
-                          },
-                          mandatory: true,
+                        Visibility(
+                          visible: visitBloc.group?.value != null &&
+                              visitBloc.group?.value != "",
+                          child: FieldDataScroll(
+                            bloc: customerFieldBloc,
+                            ComponentInsert: CustomerFormScreen(
+                                bloc: CustomerBloc(), group: visitBloc.group),
+                            endpoint: Data.customer,
+                            valid: visitBloc.customer?.value == null ||
+                                    visitBloc.customer?.value == ""
+                                ? false
+                                : true,
+                            value: visitBloc.customer?.name ?? "",
+                            title: "Customer",
+                            titleModal: "Customer List",
+                            onSelected: (e) {
+                              visitBloc.add(
+                                VisitSetForm(
+                                  customer: KeyValue(
+                                      name: e['name'], value: e['_id']),
+                                ),
+                              );
+                            },
+                            onReset: () => {
+                              visitBloc.add(
+                                VisitSetForm(
+                                  customer: KeyValue(name: "", value: ""),
+                                ),
+                              )
+                            },
+                            mandatory: true,
+                          ),
                         ),
                         // CustomField(
                         //   title: "Customer",
