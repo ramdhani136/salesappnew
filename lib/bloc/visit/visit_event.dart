@@ -101,7 +101,9 @@ class VisitSetForm extends VisitEvent {
   KeyValue? naming;
   KeyValue? group;
   KeyValue? customer;
-  VisitSetForm({this.data, this.naming, this.group, this.customer});
+  KeyValue? branch;
+  VisitSetForm(
+      {this.data, this.naming, this.group, this.customer, this.branch});
 }
 
 class VisitResetForm extends VisitEvent {
@@ -109,10 +111,12 @@ class VisitResetForm extends VisitEvent {
   bool naming;
   bool group;
   bool customer;
+  bool branch;
   VisitResetForm({
     this.data = false,
     this.naming = false,
     this.group = false,
     this.customer = false,
+    this.branch = false,
   });
 }

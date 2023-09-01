@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:salesappnew/bloc/branch/branch_bloc.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/fielddatascroll/fielddatascroll_bloc.dart';
@@ -40,6 +39,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController positionC = TextEditingController();
   FielddatascrollBloc groupFieldBloc = FielddatascrollBloc();
   FielddatascrollBloc customerFieldBloc = FielddatascrollBloc();
+  FielddatascrollBloc branchFieldBloc = FielddatascrollBloc();
   @override
   void dispose() {
     super.dispose();
@@ -209,59 +209,35 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         const SizedBox(
                           height: 15,
                         ),
-                        BlocProvider(
-                          create: (context) => BranchBloc()
-                            ..add(BranchGetAll(filters: const [
-                              ["status", "=", "1"]
-                            ])),
-                          child: BlocBuilder<BranchBloc, BranchState>(
-                            builder: (context, stateBranch) {
-                              // BranchBloc branchBloc =
-                              //     BlocProvider.of<BranchBloc>(context);
-                              return InkWell(
-                                child: CustomField(
-                                  mandatory: true,
-                                  disabled: state.data.status != "0",
-                                  title: "Branch",
-                                  controller: branchC,
-                                  valid: true,
-                                  type: Type.select,
-                                  data: stateBranch is BranchIsLoaded
-                                      ? stateBranch.data.map((item) {
-                                          return {
-                                            'title': item["name"],
-                                            'value': item["_id"],
-                                          };
-                                        }).toList()
-                                      : [],
-                                  onChange: (e) {
-                                    branchC.text = e['title'];
-                                    if (state.data.branch!.id != e['value']) {
-                                      visitBloc.add(
-                                        VisitSetForm(
-                                          group: KeyValue(name: "", value: ""),
-                                          customer:
-                                              KeyValue(name: "", value: ""),
-                                        ),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                    }
-                                  },
-                                  onReset: () {
-                                    visitBloc.add(
-                                      VisitSetForm(
-                                        group: KeyValue(name: "", value: ""),
-                                        customer: KeyValue(name: "", value: ""),
-                                      ),
-                                    );
-                                    picC.text = "";
-                                    phoneC.text = "";
-                                  },
-                                ),
-                              );
-                            },
-                          ),
+                        FieldDataScroll(
+                          bloc: branchFieldBloc,
+                          endpoint: Data.branch,
+                          valid: visitBloc.branch?.value == null ||
+                                  visitBloc.branch?.value == ""
+                              ? false
+                              : true,
+                          value: visitBloc.branch?.name ?? "",
+                          title: "Branch",
+                          titleModal: "Branch List",
+                          onSelected: (e) {
+                            visitBloc.add(
+                              VisitSetForm(
+                                branch:
+                                    KeyValue(name: e['name'], value: e['_id']),
+                              ),
+                            );
+                          },
+                          onReset: () {
+                            visitBloc.add(
+                              VisitResetForm(
+                                branch: true,
+                                customer: true,
+                                group: true,
+                              ),
+                            );
+                            picC.text = "";
+                            phoneC.text = "";
+                          },
                         ),
                         const SizedBox(
                           height: 15,
@@ -284,12 +260,15 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                               ),
                             );
                           },
-                          onReset: () => {
+                          onReset: () {
                             visitBloc.add(
-                              VisitSetForm(
-                                group: KeyValue(name: "", value: ""),
+                              VisitResetForm(
+                                customer: true,
+                                group: true,
                               ),
-                            )
+                            );
+                            picC.text = "";
+                            phoneC.text = "";
                           },
                           mandatory: true,
                         ),
@@ -319,12 +298,14 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 ),
                               );
                             },
-                            onReset: () => {
+                            onReset: () {
                               visitBloc.add(
-                                VisitSetForm(
-                                  customer: KeyValue(name: "", value: ""),
+                                VisitResetForm(
+                                  customer: true,
                                 ),
-                              )
+                              );
+                              picC.text = "";
+                              phoneC.text = "";
                             },
                             mandatory: true,
                           ),

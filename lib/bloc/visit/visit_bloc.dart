@@ -35,6 +35,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   Uint8List? signature;
   KeyValue? naming;
   KeyValue? customer;
+  KeyValue? branch;
   KeyValue? group;
   List? namingList;
   List<List<String>>? filters;
@@ -50,6 +51,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       }
       if (event.group != null) {
         group = event.group;
+      }
+      if (event.branch != null) {
+        branch = event.branch;
       }
 
       if (state is IsShowLoaded) {
@@ -72,6 +76,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       if (event.group) {
         group = null;
       }
+      if (event.branch) {
+        branch = null;
+      }
       if (state is IsLoaded) {
         IsLoaded current = state as IsLoaded;
         emit(IsLoading());
@@ -83,6 +90,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
             total: current.total,
           ),
         );
+      } else if (state is IsShowLoaded) {
+        IsShowLoaded current = state as IsShowLoaded;
+        final updatedState = current.copyWith();
+        emit(updatedState);
       } else {
         emit(IsLoading());
         emit(VisitInitial());
@@ -372,7 +383,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
-      group = KeyValue(
+      branch = KeyValue(name: result.branch!.name, value: result.branch!.id);
+      customer = group = KeyValue(
           name: result.customerGroup!.name, value: result.customerGroup!.id);
       customer =
           KeyValue(name: result.customer!.name, value: result.customer!.id);
