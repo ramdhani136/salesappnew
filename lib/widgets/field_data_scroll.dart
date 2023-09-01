@@ -258,7 +258,7 @@ class _ModalFieldState extends State<ModalField> {
       }
       Map<String, dynamic> response =
           await FetchData(data: widget.enpoint).FINDALL(
-        limit: 10,
+        limit: 20,
         filters: [
           ["status", "=", "1"]
         ],
