@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 // ignore_for_file: must_be_immutable
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:salesappnew/models/customer_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -12,29 +11,20 @@ class FieldDataScroll extends StatefulWidget {
   String? placeholder;
   bool valid;
   String? title;
-  Function? onRefreshReset;
   String? titleModal;
   bool disabled;
-  Function? onChange;
   Function onSelected;
-  Function? onScroll;
   Function? onReset;
   Function? onTap;
-  Function? onRefresh;
   bool mandatory;
   Function? InsertAction;
   String value;
-  FieldInfiniteOnSearch? onSearch;
+
   FieldDataScroll({
     required this.value,
     this.disabled = false,
-    this.onChange,
     required this.onSelected,
-    this.onRefresh,
-    this.onRefreshReset,
     this.InsertAction,
-    this.onScroll,
-    this.onSearch,
     this.onReset,
     this.onTap,
     this.placeholder,
@@ -50,55 +40,6 @@ class FieldDataScroll extends StatefulWidget {
 }
 
 class _FieldDataScrollState extends State<FieldDataScroll> {
-  String? placeholderModal;
-  List<CustomerModel> data = [];
-  bool hasMore = false;
-  int page = 1;
-  TextEditingController controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  Future<void> getData({bool refresh = true, String search = ""}) async {
-    try {
-      Map<String, dynamic> response =
-          await FetchData(data: Data.customer).FINDALL(
-        limit: 10,
-        filters: [
-          ["status", "=", "1"]
-        ],
-        page: refresh ? 1 : page,
-        search: search,
-      );
-
-      List<CustomerModel> isData = CustomerModel.fromJsonList(response['data']);
-
-      List<CustomerModel> currentData = [];
-      if (refresh) {
-        currentData = data;
-        currentData.addAll(isData);
-      } else {
-        currentData = isData;
-      }
-      setState(() {
-        data = currentData;
-        page = response['nextPage'];
-        hasMore = response['hasMore'];
-      });
-    } catch (e) {
-      setState(() {
-        hasMore = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -128,23 +69,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                       ),
                     ],
                   ),
-                  Visibility(
-                    visible: widget.InsertAction != null && !widget.disabled,
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 49, 49, 49),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 0),
-                      ),
-                      onPressed: () async {
-                        if (!widget.disabled && widget.InsertAction != null) {
-                          widget.InsertAction!();
-                        }
-                      },
-                      icon: const Icon(Icons.add, size: 16),
-                      label: const Text("New"),
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(
@@ -156,7 +80,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
         InkWell(
           onTap: () async {
             if (!widget.disabled) {
-              await getData();
               showDialog(
                 context: context,
                 builder: (context) => ModalField(
@@ -164,6 +87,9 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                   onSelected: widget.onSelected,
                 ),
               );
+              if (widget.onTap != null) {
+                widget.onTap!();
+              }
             }
           },
           child: Container(
@@ -209,7 +135,6 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                     child: IconButton(
                       onPressed: () async {
                         if (!widget.disabled) {
-                          await getData();
                           showDialog(
                             context: context,
                             builder: (context) => ModalField(
@@ -281,7 +206,7 @@ class _ModalFieldState extends State<ModalField> {
   bool hasMore = false;
   Timer? debounceTimer;
   TextEditingController controller = TextEditingController();
-  bool loading = false;
+  bool loading = true;
   bool pageLoading = false;
   String search = "";
 
@@ -319,6 +244,7 @@ class _ModalFieldState extends State<ModalField> {
   Future<void> getData({bool refresh = true}) async {
     try {
       if (refresh) {
+        await EasyLoading.show(status: 'loading...');
         setState(() {
           page = 1;
           hasMore = false;
@@ -366,6 +292,7 @@ class _ModalFieldState extends State<ModalField> {
         loading = false;
       });
     }
+    EasyLoading.dismiss();
   }
 
   @override
@@ -482,7 +409,7 @@ class _ModalFieldState extends State<ModalField> {
                         child: Column(
                           children: [
                             Visibility(
-                              visible: data.isEmpty,
+                              visible: data.isEmpty && !loading,
                               child: Expanded(
                                 child: Center(
                                   child: Column(
@@ -526,7 +453,7 @@ class _ModalFieldState extends State<ModalField> {
                               ),
                             ),
                             Visibility(
-                              visible: data.isNotEmpty,
+                              visible: data.isNotEmpty && !loading,
                               child: Expanded(
                                 child: Stack(
                                   children: [
