@@ -9,6 +9,7 @@ import 'package:salesappnew/bloc/fielddatascroll/fielddatascroll_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
+import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
 import 'package:salesappnew/screens/contact/customer_form_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
@@ -280,8 +281,11 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                               visitBloc.group?.value != "",
                           child: FieldDataScroll(
                             bloc: customerFieldBloc,
-                            ComponentInsert: CustomerFormScreen(
-                                bloc: CustomerBloc(), group: visitBloc.group),
+                            ComponentInsert: CustomerFormWidget(
+                              branch: visitBloc.branch,
+                              group: visitBloc.group,
+                              name: "tes",
+                            ),
                             endpoint: Data.customer,
                             valid: visitBloc.customer?.value == null ||
                                     visitBloc.customer?.value == ""
