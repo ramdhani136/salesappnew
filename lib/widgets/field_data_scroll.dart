@@ -117,18 +117,25 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
           },
           child: Container(
               width: Get.width * 0.95,
-              height: 46,
+              height: widget.disabled ? 50 : 46,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(
-                  color: !widget.disabled
-                      ? widget.valid
-                          ? const Color.fromARGB(255, 182, 182, 182)
-                          : Colors.red
-                      : const Color.fromARGB(255, 182, 182, 182),
-                  width: 1.0,
-                ),
+                color: widget.disabled ? Colors.transparent : Colors.white,
+                border: widget.disabled
+                    ? const Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Color.fromARGB(255, 193, 193, 193),
+                        ),
+                        // borderRadius: BorderRadius.circular(4),
+                      )
+                    : Border.all(
+                        color: !widget.disabled
+                            ? widget.valid
+                                ? const Color.fromARGB(255, 182, 182, 182)
+                                : Colors.red
+                            : const Color.fromARGB(255, 182, 182, 182),
+                        width: 1.0,
+                      ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

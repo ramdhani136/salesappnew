@@ -302,13 +302,23 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         ShowData(id: event.id, isLoading: false),
       );
     } catch (e) {
+      Map error = json.decode("$e");
+
       EasyLoading.dismiss();
-      emit(
-        IsFailure(
-          e.toString(),
-        ),
+      Fluttertoast.showToast(
+        msg: error['msg'].toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[800],
+        textColor: Colors.white,
       );
-      add(ShowData(id: event.id));
+      // EasyLoading.dismiss();
+      // emit(
+      //   IsFailure(
+      //     e.toString(),
+      //   ),
+      // );
+      // add(ShowData(id: event.id));
       // Fluttertoast.showToast(
       //   msg: e.toString(),
       //   toastLength: Toast.LENGTH_LONG,
