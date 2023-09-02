@@ -437,6 +437,7 @@ class _ModalFieldState extends State<ModalField> {
                                             widget.ComponentInsert != null,
                                         child: ElevatedButton(
                                           onPressed: () {
+                                            Get.back();
                                             showCustomModal(context);
                                           },
                                           style: ElevatedButton.styleFrom(
