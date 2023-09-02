@@ -1,10 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_key_in_widget_constructors, non_constant_identifier_names, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 // ignore_for_file: must_be_immutable
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+
 import 'package:salesappnew/utils/fetch_data.dart';
+
+class Endpoint {
+  Data data;
+  int? page;
+  int? limit;
+  List<List<String>>? filters;
+  Endpoint({
+    required this.data,
+    this.page,
+    this.limit,
+    this.filters,
+  });
+}
 
 class FieldDataScroll extends StatefulWidget {
   String? placeholder;
@@ -19,7 +34,7 @@ class FieldDataScroll extends StatefulWidget {
   bool mandatory;
   Function? InsertAction;
   String value;
-  Data endpoint;
+  Endpoint endpoint;
   Widget? ComponentInsert;
 
   FieldDataScroll({
@@ -178,7 +193,7 @@ class ModalField extends StatefulWidget {
   bool disabled;
   String placeholderModal;
   Function onSelected;
-  Data enpoint;
+  Endpoint enpoint;
   Widget? ComponentInsert;
   final void Function(String e)? onChange;
 
@@ -254,12 +269,17 @@ class _ModalFieldState extends State<ModalField> {
           loading = true;
         });
       }
+      List<List<String>> finalFilter = [
+        ["status", "=", "1"]
+      ];
+
+      if (widget.enpoint.filters != null) {
+        finalFilter.addAll(widget.enpoint.filters!);
+      }
       Map<String, dynamic> response =
-          await FetchData(data: widget.enpoint).FINDALL(
+          await FetchData(data: widget.enpoint.data).FINDALL(
         limit: 20,
-        filters: [
-          ["status", "=", "1"]
-        ],
+        filters: finalFilter,
         page: page,
         search: search,
       );

@@ -77,7 +77,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
               return Column(
                 children: [
                   FieldDataScroll(
-                    endpoint: Data.branch,
+                    endpoint: Endpoint(data: Data.branch),
                     valid:
                         bloc.branch?.value == null || bloc.branch?.value == ""
                             ? false
@@ -102,7 +102,18 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                     height: 15,
                   ),
                   FieldDataScroll(
-                    endpoint: Data.customergroup,
+                    endpoint: Endpoint(
+                      data: Data.customergroup,
+                      filters: [
+                        [
+                          "branch._id",
+                          "=",
+                          bloc.branch?.value != null && bloc.branch?.value != ""
+                              ? bloc.branch!.value
+                              : "",
+                        ]
+                      ],
+                    ),
                     valid: bloc.group?.value == null || bloc.group?.value == ""
                         ? false
                         : true,

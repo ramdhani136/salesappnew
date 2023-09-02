@@ -214,7 +214,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             return Column(
                               children: [
                                 FieldDataScroll(
-                                  endpoint: Data.branch,
+                                  endpoint: Endpoint(data: Data.branch),
                                   valid: bloc.branch?.value == null ||
                                           bloc.branch?.value == ""
                                       ? false
@@ -246,7 +246,19 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   height: 15,
                                 ),
                                 FieldDataScroll(
-                                  endpoint: Data.customergroup,
+                                  endpoint: Endpoint(
+                                    data: Data.customergroup,
+                                    filters: [
+                                      [
+                                        "branch._id",
+                                        "=",
+                                        bloc.branch?.value != null &&
+                                                bloc.branch?.value != ""
+                                            ? bloc.branch!.value
+                                            : "",
+                                      ]
+                                    ],
+                                  ),
                                   valid: bloc.group?.value == null ||
                                           bloc.group?.value == ""
                                       ? false
@@ -303,7 +315,19 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                         );
                                       },
                                     ),
-                                    endpoint: Data.customer,
+                                    endpoint: Endpoint(
+                                      data: Data.customer,
+                                      filters: [
+                                        [
+                                          "customerGroup",
+                                          "=",
+                                          bloc.group?.value != null &&
+                                                  bloc.group?.value != ""
+                                              ? bloc.group!.value
+                                              : "",
+                                        ]
+                                      ],
+                                    ),
                                     valid: bloc.customer?.value == null ||
                                             bloc.customer?.value == ""
                                         ? false
