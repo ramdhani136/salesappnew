@@ -284,7 +284,24 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                     ComponentInsert: CustomerFormWidget(
                                       branch: bloc.branch,
                                       group: bloc.group,
-                                      onSuccess: () => print("dd"),
+                                      onSuccess: (e) {
+                                        bloc.add(
+                                          VisitSetForm(
+                                            customer: KeyValue(
+                                              name: e['name'],
+                                              value: e['_id'],
+                                            ),
+                                            group: KeyValue(
+                                              name: e['customerGroup']['name'],
+                                              value: e['customerGroup']['_id'],
+                                            ),
+                                            branch: KeyValue(
+                                              name: e['branch']['name'],
+                                              value: e['branch']['_id'],
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                     endpoint: Data.customer,
                                     valid: bloc.customer?.value == null ||

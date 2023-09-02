@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable, invalid_use_of_visible_for_testing_member
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/fielddatascroll/fielddatascroll_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -12,7 +13,7 @@ class CustomerFormWidget extends StatefulWidget {
   KeyValue? branch;
   KeyValue? group;
   String? name;
-  final void Function() onSuccess;
+  final void Function(dynamic e) onSuccess;
   CustomerFormWidget({
     this.branch,
     this.group,
@@ -29,8 +30,6 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
   FielddatascrollBloc branchFieldBloc = FielddatascrollBloc();
   FielddatascrollBloc groupFieldBloc = FielddatascrollBloc();
   TextEditingController nameC = TextEditingController();
-  KeyValue? branch;
-  KeyValue? group;
   CustomerBloc bloc = CustomerBloc();
 
   @override
@@ -71,6 +70,10 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
           BlocBuilder<CustomerBloc, CustomerState>(
             bloc: bloc,
             builder: (context, state) {
+              if (state is CustomerSavedSuccess) {
+                widget.onSuccess(state.data);
+                Get.back();
+              }
               return Column(
                 children: [
                   FieldDataScroll(
@@ -135,9 +138,10 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                     onPressed: () {
                       bloc.add(
                         CustomerInsert(
+                          callBackValue: true,
                           data: {
-                            "branch": branch?.value,
-                            "customerGroup": group?.value,
+                            "branch": bloc.branch?.value,
+                            "customerGroup": bloc.group?.value,
                             "name": nameC.text,
                             "status": "1",
                             "workflowState": "Submitted"

@@ -35,3 +35,10 @@ class CustomerShowLoaded extends CustomerState {
     required this.data,
   });
 }
+
+class CustomerSavedSuccess extends CustomerState {
+  Map<String, dynamic> data;
+  CustomerSavedSuccess({
+    required this.data,
+  });
+}

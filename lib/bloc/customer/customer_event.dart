@@ -78,6 +78,7 @@ class CustomerResetForm extends CustomerEvent {
 }
 
 class CustomerInsert extends CustomerEvent {
+  bool callBackValue;
   Map<String, dynamic> data;
-  CustomerInsert({required this.data});
+  CustomerInsert({required this.data, this.callBackValue = false});
 }

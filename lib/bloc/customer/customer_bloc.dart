@@ -87,8 +87,11 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         throw result['msg'];
       }
 
-      Get.back();
-
+      if (!event.callBackValue) {
+        Get.back();
+      } else {
+        emit(CustomerSavedSuccess(data: result['data']));
+      }
       EasyLoading.dismiss();
     } catch (e) {
       Get.defaultDialog(
