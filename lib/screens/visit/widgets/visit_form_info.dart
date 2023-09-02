@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
@@ -209,7 +210,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         ),
                         BlocBuilder<VisitBloc, VisitState>(
                           bloc: bloc,
-                          builder: (context, state) {
+                          builder: (context, stateVisit) {
                             return Column(
                               children: [
                                 FieldDataScroll(
@@ -240,6 +241,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                     picC.text = "";
                                     phoneC.text = "";
                                   },
+                                  disabled: state.data.status != "0" ||
+                                      state.data.checkOut != null,
                                 ),
                                 const SizedBox(
                                   height: 15,
@@ -284,6 +287,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                     phoneC.text = "";
                                   },
                                   mandatory: true,
+                                  disabled: state.data.status != "0" ||
+                                      state.data.checkOut != null,
                                 ),
                                 const SizedBox(
                                   height: 15,
@@ -352,14 +357,63 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                       phoneC.text = "";
                                     },
                                     mandatory: true,
+                                    disabled: state.data.status != "0" ||
+                                        state.data.checkOut != null,
                                   ),
                                 ),
-                                // CustomField(
-                                //   title: "Customer",
-                                //   controller: customerC,
-                                //   type: Type.standard,
-                                //   disabled: true,
-                                // ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Visibility(
+                                  visible: bloc.customer?.value != null &&
+                                      bloc.customer?.value != "",
+                                  child: FieldDataScroll(
+                                    ComponentInsert: ContactForm(
+                                      contactBloc: ContactBloc(),
+                                      visitState: state,
+                                    ),
+                                    endpoint: Endpoint(
+                                      data: Data.contact,
+                                      filters: [
+                                        [
+                                          "customer",
+                                          "=",
+                                          bloc.customer?.value != null &&
+                                                  bloc.customer?.value != ""
+                                              ? bloc.customer!.value
+                                              : "",
+                                        ]
+                                      ],
+                                    ),
+                                    valid: bloc.contact?.value == null ||
+                                            bloc.contact?.value == ""
+                                        ? false
+                                        : true,
+                                    value: bloc.contact?.name ?? "",
+                                    title: "Contact",
+                                    titleModal: "Contact List",
+                                    onSelected: (e) {
+                                      bloc.add(
+                                        VisitSetForm(
+                                          contact: KeyValue(
+                                              name: e['name'], value: e['_id']),
+                                        ),
+                                      );
+                                    },
+                                    onReset: () {
+                                      bloc.add(
+                                        VisitResetForm(
+                                          contact: true,
+                                        ),
+                                      );
+                                      picC.text = "";
+                                      phoneC.text = "";
+                                    },
+                                    mandatory: true,
+                                    disabled: state.data.status != "0" ||
+                                        state.data.checkOut != null,
+                                  ),
+                                ),
                                 const SizedBox(
                                   height: 15,
                                 ),
@@ -421,7 +475,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           height: 15,
                         ),
                         Visibility(
-                          visible: phoneC.text != "",
+                          visible: picC.text != "",
                           child: CustomField(
                             mandatory: true,
                             title: "Position",
@@ -434,7 +488,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           height: 15,
                         ),
                         Visibility(
-                          visible: phoneC.text != "",
+                          visible: picC.text != "",
                           child: CustomField(
                             mandatory: true,
                             title: "Phone",
@@ -607,19 +661,84 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     child: SizedBox(
                       height: 140.0,
                       width: 60.0,
-                      child: FloatingActionButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<CheckOutScreen>(
-                              builder: (_) => BlocProvider.value(
-                                value: BlocProvider.of<VisitBloc>(context),
-                                child: const CheckOutScreen(),
-                              ),
-                            ),
+                      child: BlocBuilder<VisitBloc, VisitState>(
+                        bloc: bloc,
+                        builder: (context, stateNew) {
+                          bool isChange = false;
+                          if ((visitBloc.branch?.value != bloc.branch?.value) ||
+                              (visitBloc.group?.value != bloc.group?.value) ||
+                              (visitBloc.customer?.value !=
+                                  bloc.customer?.value)) {
+                            isChange = true;
+                          } else {
+                            isChange = false;
+                          }
+
+                          return FloatingActionButton(
+                            onPressed: () {
+                              if (isChange) {
+                                if (bloc.branch?.value == null ||
+                                    bloc.branch?.value == "") {
+                                  Fluttertoast.showToast(
+                                    msg: "Branch wajib diisi!",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.grey[800],
+                                    textColor: Colors.white,
+                                  );
+                                  return;
+                                }
+                                if (bloc.group?.value == null ||
+                                    bloc.group?.value == "") {
+                                  Fluttertoast.showToast(
+                                    msg: "Group wajib diisi!",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.grey[800],
+                                    textColor: Colors.white,
+                                  );
+                                  return;
+                                }
+                                if (bloc.customer?.value == null ||
+                                    bloc.customer?.value == "") {
+                                  Fluttertoast.showToast(
+                                    msg: "Customer wajib diisi!",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.grey[800],
+                                    textColor: Colors.white,
+                                  );
+                                  return;
+                                }
+
+                                visitBloc.add(
+                                  VisitUpdateData(
+                                    id: state.data.id!,
+                                    data: {
+                                      "customer": bloc.customer?.value,
+                                      "customerGroup": bloc.group?.value,
+                                      "branch": bloc.branch?.value,
+                                    },
+                                  ),
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<CheckOutScreen>(
+                                    builder: (_) => BlocProvider.value(
+                                      value:
+                                          BlocProvider.of<VisitBloc>(context),
+                                      child: const CheckOutScreen(),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            backgroundColor: Colors.grey[850],
+                            child: isChange
+                                ? const Icon(Icons.save_outlined)
+                                : const Icon(Icons.done_outlined),
                           );
                         },
-                        backgroundColor: Colors.grey[850],
-                        child: const Icon(Icons.done_outlined),
                       ),
                     ),
                   );

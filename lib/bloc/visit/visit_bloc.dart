@@ -37,6 +37,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   KeyValue? customer;
   KeyValue? branch;
   KeyValue? group;
+  KeyValue? contact;
   List? namingList;
   List<List<String>>? filters;
 
@@ -54,6 +55,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       }
       if (event.branch != null) {
         branch = event.branch;
+      }
+      if (event.contact != null) {
+        contact = event.contact;
       }
 
       if (state is IsShowLoaded) {
@@ -78,6 +82,9 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       }
       if (event.branch) {
         branch = null;
+      }
+      if (event.contact) {
+        contact = null;
       }
       if (state is IsLoaded) {
         IsLoaded current = state as IsLoaded;
@@ -260,7 +267,20 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         Uri.parse("${Config().baseUri}visit/${event.id}"),
       );
 
-      request.fields["contact"] = event.data['contact'];
+      if (event.data['branch'] != null) {
+        request.fields["branch"] = event.data['branch'];
+      }
+      if (event.data['customerGroup'] != null) {
+        request.fields["customerGroup"] = event.data['customerGroup'];
+      }
+      if (event.data['customer'] != null) {
+        request.fields["customer"] = event.data['customer'];
+      }
+
+      if (event.data['contact'] != null) {
+        request.fields["contact"] = event.data['contact'];
+      }
+
       request.headers['authorization'] =
           'Bearer ${await LocalData().getToken()}';
       http.Response response = await http.Response.fromStream(
