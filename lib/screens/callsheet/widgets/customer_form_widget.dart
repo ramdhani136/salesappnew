@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
-import 'package:salesappnew/bloc/fielddatascroll/fielddatascroll_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -27,8 +26,6 @@ class CustomerFormWidget extends StatefulWidget {
 }
 
 class _CustomerFormWidgetState extends State<CustomerFormWidget> {
-  FielddatascrollBloc branchFieldBloc = FielddatascrollBloc();
-  FielddatascrollBloc groupFieldBloc = FielddatascrollBloc();
   TextEditingController nameC = TextEditingController();
   CustomerBloc bloc = CustomerBloc();
 
