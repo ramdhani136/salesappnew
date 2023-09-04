@@ -254,7 +254,7 @@ class _ModalFieldState extends State<ModalField> {
           return Dialog(
             insetPadding: const EdgeInsets.all(0),
             child: Container(
-              width: Get.width - 50,
+              width: Get.width - 30,
               padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
