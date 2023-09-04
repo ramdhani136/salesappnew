@@ -137,57 +137,60 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                         width: 1.0,
                       ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        widget.value == ""
-                            ? widget.placeholder ?? widget.value
-                            : widget.value,
-                        style: TextStyle(
-                          color: widget.value == ""
-                              ? Colors.grey[300]
-                              : widget.disabled
-                                  ? Colors.grey[800]
-                                  : Colors.grey[900],
-                          fontSize: 16,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 8,
                         ),
-                      ),
-                    ],
-                  ),
-                  Visibility(
-                    visible: !widget.disabled,
-                    child: IconButton(
-                      onPressed: () async {
-                        if (!widget.disabled) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => ModalField(
-                              titleModal: widget.titleModal ?? "",
-                              onSelected: widget.onSelected,
-                              enpoint: widget.endpoint,
-                              onChange: widget.onChange,
-                              ComponentInsert: widget.ComponentInsert,
-                            ),
-                          );
-                          if (widget.onReset != null) {
-                            widget.onReset!();
-                          }
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                      ),
-                      iconSize: 20,
+                        Text(
+                          widget.value == ""
+                              ? widget.placeholder ?? widget.value
+                              : widget.value,
+                          style: TextStyle(
+                            color: widget.value == ""
+                                ? Colors.grey[300]
+                                : widget.disabled
+                                    ? Colors.grey[800]
+                                    : Colors.grey[900],
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    Visibility(
+                      visible: !widget.disabled && widget.valid,
+                      child: IconButton(
+                        onPressed: () async {
+                          if (!widget.disabled) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => ModalField(
+                                titleModal: widget.titleModal ?? "",
+                                onSelected: widget.onSelected,
+                                enpoint: widget.endpoint,
+                                onChange: widget.onChange,
+                                ComponentInsert: widget.ComponentInsert,
+                              ),
+                            );
+                            if (widget.onReset != null) {
+                              widget.onReset!();
+                            }
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                        ),
+                        iconSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               )),
         )
       ],
