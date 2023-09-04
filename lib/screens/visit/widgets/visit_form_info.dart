@@ -258,205 +258,226 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 const SizedBox(
                                   height: 15,
                                 ),
-                                FieldDataScroll(
-                                  endpoint: Endpoint(
-                                    data: Data.customergroup,
-                                    filters: [
-                                      [
-                                        "branch._id",
-                                        "=",
-                                        bloc.branch?.value != null &&
-                                                bloc.branch?.value != ""
-                                            ? bloc.branch!.value
-                                            : "",
-                                      ]
+                                Visibility(
+                                  visible: bloc.branch?.value != null &&
+                                      bloc.branch?.value != "",
+                                  child: Column(
+                                    children: [
+                                      FieldDataScroll(
+                                        endpoint: Endpoint(
+                                          data: Data.customergroup,
+                                          filters: [
+                                            [
+                                              "branch._id",
+                                              "=",
+                                              bloc.branch?.value != null &&
+                                                      bloc.branch?.value != ""
+                                                  ? bloc.branch!.value
+                                                  : "",
+                                            ]
+                                          ],
+                                        ),
+                                        valid: bloc.group?.value == null ||
+                                                bloc.group?.value == ""
+                                            ? false
+                                            : true,
+                                        value: bloc.group?.name ?? "",
+                                        title: "Group",
+                                        titleModal: "Group List",
+                                        onSelected: (e) {
+                                          bloc.add(
+                                            VisitSetForm(
+                                              group: KeyValue(
+                                                  name: e['name'],
+                                                  value: e['_id']),
+                                            ),
+                                          );
+
+                                          bloc.add(
+                                            VisitResetForm(
+                                              customer: true,
+                                              contact: true,
+                                            ),
+                                          );
+                                          picC.text = "";
+                                          phoneC.text = "";
+                                        },
+                                        onReset: () {
+                                          bloc.add(
+                                            VisitResetForm(
+                                                customer: true,
+                                                group: true,
+                                                contact: true),
+                                          );
+                                          picC.text = "";
+                                          phoneC.text = "";
+                                        },
+                                        mandatory: true,
+                                        disabled: state.data.status != "0" ||
+                                            state.data.checkOut != null,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
                                     ],
                                   ),
-                                  valid: bloc.group?.value == null ||
-                                          bloc.group?.value == ""
-                                      ? false
-                                      : true,
-                                  value: bloc.group?.name ?? "",
-                                  title: "Group",
-                                  titleModal: "Group List",
-                                  onSelected: (e) {
-                                    bloc.add(
-                                      VisitSetForm(
-                                        group: KeyValue(
-                                            name: e['name'], value: e['_id']),
-                                      ),
-                                    );
-
-                                    bloc.add(
-                                      VisitResetForm(
-                                        customer: true,
-                                        contact: true,
-                                      ),
-                                    );
-                                    picC.text = "";
-                                    phoneC.text = "";
-                                  },
-                                  onReset: () {
-                                    bloc.add(
-                                      VisitResetForm(
-                                          customer: true,
-                                          group: true,
-                                          contact: true),
-                                    );
-                                    picC.text = "";
-                                    phoneC.text = "";
-                                  },
-                                  mandatory: true,
-                                  disabled: state.data.status != "0" ||
-                                      state.data.checkOut != null,
-                                ),
-                                const SizedBox(
-                                  height: 15,
                                 ),
                                 Visibility(
                                   visible: bloc.group?.value != null &&
                                       bloc.group?.value != "",
-                                  child: FieldDataScroll(
-                                    ComponentInsert: CustomerFormWidget(
-                                      branch: bloc.branch,
-                                      group: bloc.group,
-                                      onSuccess: (e) {
-                                        bloc.add(
-                                          VisitSetForm(
-                                            customer: KeyValue(
-                                              name: e['name'],
-                                              value: e['_id'],
-                                            ),
-                                            group: KeyValue(
-                                              name: e['customerGroup']['name'],
-                                              value: e['customerGroup']['_id'],
-                                            ),
-                                            branch: KeyValue(
-                                              name: e['branch']['name'],
-                                              value: e['branch']['_id'],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    endpoint: Endpoint(
-                                      data: Data.customer,
-                                      filters: [
-                                        [
-                                          "customerGroup",
-                                          "=",
-                                          bloc.group?.value != null &&
-                                                  bloc.group?.value != ""
-                                              ? bloc.group!.value
-                                              : "",
-                                        ]
-                                      ],
-                                    ),
-                                    valid: bloc.customer?.value == null ||
-                                            bloc.customer?.value == ""
-                                        ? false
-                                        : true,
-                                    value: bloc.customer?.name ?? "",
-                                    title: "Customer",
-                                    titleModal: "Customer List",
-                                    onSelected: (e) {
-                                      bloc.add(
-                                        VisitSetForm(
-                                          customer: KeyValue(
-                                              name: e['name'], value: e['_id']),
+                                  child: Column(
+                                    children: [
+                                      FieldDataScroll(
+                                        ComponentInsert: CustomerFormWidget(
+                                          branch: bloc.branch,
+                                          group: bloc.group,
+                                          onSuccess: (e) {
+                                            bloc.add(
+                                              VisitSetForm(
+                                                customer: KeyValue(
+                                                  name: e['name'],
+                                                  value: e['_id'],
+                                                ),
+                                                group: KeyValue(
+                                                  name: e['customerGroup']
+                                                      ['name'],
+                                                  value: e['customerGroup']
+                                                      ['_id'],
+                                                ),
+                                                branch: KeyValue(
+                                                  name: e['branch']['name'],
+                                                  value: e['branch']['_id'],
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                      bloc.add(
-                                        VisitResetForm(
-                                          contact: true,
+                                        endpoint: Endpoint(
+                                          data: Data.customer,
+                                          filters: [
+                                            [
+                                              "customerGroup",
+                                              "=",
+                                              bloc.group?.value != null &&
+                                                      bloc.group?.value != ""
+                                                  ? bloc.group!.value
+                                                  : "",
+                                            ]
+                                          ],
                                         ),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        VisitResetForm(
-                                            customer: true, contact: true),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                    },
-                                    mandatory: true,
-                                    disabled: state.data.status != "0" ||
-                                        state.data.checkOut != null,
+                                        valid: bloc.customer?.value == null ||
+                                                bloc.customer?.value == ""
+                                            ? false
+                                            : true,
+                                        value: bloc.customer?.name ?? "",
+                                        title: "Customer",
+                                        titleModal: "Customer List",
+                                        onSelected: (e) {
+                                          bloc.add(
+                                            VisitSetForm(
+                                              customer: KeyValue(
+                                                  name: e['name'],
+                                                  value: e['_id']),
+                                            ),
+                                          );
+                                          bloc.add(
+                                            VisitResetForm(
+                                              contact: true,
+                                            ),
+                                          );
+                                          picC.text = "";
+                                          phoneC.text = "";
+                                        },
+                                        onReset: () {
+                                          bloc.add(
+                                            VisitResetForm(
+                                                customer: true, contact: true),
+                                          );
+                                          picC.text = "";
+                                          phoneC.text = "";
+                                        },
+                                        mandatory: true,
+                                        disabled: state.data.status != "0" ||
+                                            state.data.checkOut != null,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
                                 ),
                                 Visibility(
                                   visible: bloc.customer?.value != null &&
                                       bloc.customer?.value != "",
-                                  child: FieldDataScroll(
-                                    ComponentInsert: ContactFormScreen(
-                                      onSave: (dynamic e) {
-                                        bloc.add(
-                                          VisitSetForm(
-                                            contact: KeyValue(
-                                              name: e['name'],
-                                              value: e['_id'],
-                                            ),
-                                          ),
-                                        );
+                                  child: Column(
+                                    children: [
+                                      FieldDataScroll(
+                                        ComponentInsert: ContactFormScreen(
+                                          onSave: (dynamic e) {
+                                            bloc.add(
+                                              VisitSetForm(
+                                                contact: KeyValue(
+                                                  name: e['name'],
+                                                  value: e['_id'],
+                                                ),
+                                              ),
+                                            );
 
-                                        positionC.text = e['position'];
-                                        phoneC.text = e['phone'].toString();
-                                      },
-                                      contactBloc: ContactBloc(),
-                                      customer: bloc.customer,
-                                    ),
-                                    endpoint: Endpoint(
-                                      data: Data.contact,
-                                      filters: [
-                                        [
-                                          "customer",
-                                          "=",
-                                          bloc.customer?.value != null &&
-                                                  bloc.customer?.value != ""
-                                              ? bloc.customer!.value
-                                              : "",
-                                        ]
-                                      ],
-                                    ),
-                                    valid: bloc.contact?.value == null ||
-                                            bloc.contact?.value == ""
-                                        ? false
-                                        : true,
-                                    value: bloc.contact?.name ?? "",
-                                    title: "Contact",
-                                    titleModal: "Contact List",
-                                    onSelected: (e) {
-                                      bloc.add(
-                                        VisitSetForm(
-                                          contact: KeyValue(
-                                              name: e['name'], value: e['_id']),
+                                            positionC.text = e['position'];
+                                            phoneC.text = e['phone'].toString();
+                                          },
+                                          contactBloc: ContactBloc(),
+                                          customer: bloc.customer,
                                         ),
-                                      );
-                                      positionC.text = e['position'];
-                                      phoneC.text = e['phone'].toString();
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        VisitResetForm(
-                                          contact: true,
+                                        endpoint: Endpoint(
+                                          data: Data.contact,
+                                          filters: [
+                                            [
+                                              "customer",
+                                              "=",
+                                              bloc.customer?.value != null &&
+                                                      bloc.customer?.value != ""
+                                                  ? bloc.customer!.value
+                                                  : "",
+                                            ]
+                                          ],
                                         ),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                    },
-                                    mandatory: true,
-                                    disabled: state.data.status != "0" ||
-                                        state.data.checkOut != null,
+                                        valid: bloc.contact?.value == null ||
+                                                bloc.contact?.value == ""
+                                            ? false
+                                            : true,
+                                        value: bloc.contact?.name ?? "",
+                                        title: "Contact",
+                                        titleModal: "Contact List",
+                                        onSelected: (e) {
+                                          bloc.add(
+                                            VisitSetForm(
+                                              contact: KeyValue(
+                                                  name: e['name'],
+                                                  value: e['_id']),
+                                            ),
+                                          );
+                                          positionC.text = e['position'];
+                                          phoneC.text = e['phone'].toString();
+                                        },
+                                        onReset: () {
+                                          bloc.add(
+                                            VisitResetForm(
+                                              contact: true,
+                                            ),
+                                          );
+                                          picC.text = "";
+                                          phoneC.text = "";
+                                        },
+                                        mandatory: true,
+                                        disabled: state.data.status != "0" ||
+                                            state.data.checkOut != null,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
                                 ),
                                 Visibility(
                                   visible: bloc.contact?.value != null &&
