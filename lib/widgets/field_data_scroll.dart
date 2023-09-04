@@ -142,25 +142,28 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          widget.value == ""
-                              ? widget.placeholder ?? widget.value
-                              : widget.value,
-                          style: TextStyle(
-                            color: widget.value == ""
-                                ? Colors.grey[300]
-                                : widget.disabled
-                                    ? Colors.grey[800]
-                                    : Colors.grey[900],
-                            fontSize: 16,
+                    Container(
+                      constraints: BoxConstraints(minWidth: Get.width - 81),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 8,
                           ),
-                        ),
-                      ],
+                          Text(
+                            widget.value == ""
+                                ? widget.placeholder ?? widget.value
+                                : widget.value,
+                            style: TextStyle(
+                              color: widget.value == ""
+                                  ? Colors.grey[300]
+                                  : widget.disabled
+                                      ? Colors.grey[800]
+                                      : Colors.grey[900],
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Visibility(
                       visible: !widget.disabled && widget.valid,
