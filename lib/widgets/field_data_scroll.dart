@@ -250,14 +250,16 @@ class _ModalFieldState extends State<ModalField> {
             child: Container(
               width: Get.width - 50,
               padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: widget.ComponentInsert != null
-                    ? [
-                        widget.ComponentInsert!,
-                      ]
-                    : [],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.ComponentInsert != null
+                      ? [
+                          widget.ComponentInsert!,
+                        ]
+                      : [],
+                ),
               ),
             ),
           );

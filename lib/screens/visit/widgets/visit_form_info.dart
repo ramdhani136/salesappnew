@@ -12,6 +12,7 @@ import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart';
 import 'package:salesappnew/screens/contact/contact_form.dart';
+import 'package:salesappnew/screens/contact/contact_form_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -368,7 +369,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   visible: bloc.customer?.value != null &&
                                       bloc.customer?.value != "",
                                   child: FieldDataScroll(
-                                    ComponentInsert: ContactForm(
+                                    ComponentInsert: ContactFormScreen(
                                       contactBloc: ContactBloc(),
                                       visitState: state,
                                     ),
@@ -421,59 +422,59 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             );
                           },
                         ),
-                        BlocProvider(
-                          create: (context) => ContactBloc()
-                            ..add(GetListInput(
-                              customerId: state.data.customer!.id,
-                            )),
-                          child: BlocBuilder<ContactBloc, ContactState>(
-                            builder: (context, stateContact) {
-                              ContactBloc contactBloc =
-                                  BlocProvider.of<ContactBloc>(context);
-                              return InkWell(
-                                child: CustomField(
-                                  InsertAction: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => ContactForm(
-                                        contactBloc: contactBloc,
-                                        visitState: state,
-                                      ),
-                                    );
-                                  },
-                                  mandatory: true,
-                                  disabled: state.data.status != "0",
-                                  title: "Pic",
-                                  controller: picC,
-                                  valid: true,
-                                  type: Type.select,
-                                  // getData: GetContact(),
-                                  data: stateContact is ContactIsLoaded
-                                      ? stateContact.data
-                                      : [],
-                                  onChange: (e) {
-                                    picC.text = e['title'];
-                                    phoneC.text = "${e['subTitle']}";
-                                    visitBloc.add(
-                                      VisitUpdateData(
-                                        id: state.data.id!,
-                                        data: {"contact": e['value']},
-                                      ),
-                                    );
-                                  },
-                                  onReset: () {
-                                    picC.text = "";
-                                    phoneC.text = "";
-                                    positionC.text = "";
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
+                        // BlocProvider(
+                        //   create: (context) => ContactBloc()
+                        //     ..add(GetListInput(
+                        //       customerId: state.data.customer!.id,
+                        //     )),
+                        //   child: BlocBuilder<ContactBloc, ContactState>(
+                        //     builder: (context, stateContact) {
+                        //       ContactBloc contactBloc =
+                        //           BlocProvider.of<ContactBloc>(context);
+                        //       return InkWell(
+                        //         child: CustomField(
+                        //           InsertAction: () {
+                        //             showDialog(
+                        //               context: context,
+                        //               builder: (context) => ContactForm(
+                        //                 contactBloc: contactBloc,
+                        //                 visitState: state,
+                        //               ),
+                        //             );
+                        //           },
+                        //           mandatory: true,
+                        //           disabled: state.data.status != "0",
+                        //           title: "Pic",
+                        //           controller: picC,
+                        //           valid: true,
+                        //           type: Type.select,
+                        //           // getData: GetContact(),
+                        //           data: stateContact is ContactIsLoaded
+                        //               ? stateContact.data
+                        //               : [],
+                        //           onChange: (e) {
+                        //             picC.text = e['title'];
+                        //             phoneC.text = "${e['subTitle']}";
+                        //             visitBloc.add(
+                        //               VisitUpdateData(
+                        //                 id: state.data.id!,
+                        //                 data: {"contact": e['value']},
+                        //               ),
+                        //             );
+                        //           },
+                        //           onReset: () {
+                        //             picC.text = "";
+                        //             phoneC.text = "";
+                        //             positionC.text = "";
+                        //           },
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 15,
+                        // ),
                         Visibility(
                           visible: picC.text != "",
                           child: CustomField(
