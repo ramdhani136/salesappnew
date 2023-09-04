@@ -394,23 +394,23 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   visible: bloc.customer?.value != null &&
                                       bloc.customer?.value != "",
                                   child: FieldDataScroll(
-                                    // ComponentInsert: ContactFormScreen(
-                                    //   onSave: (dynamic e) {
-                                    //     bloc.add(
-                                    //       VisitSetForm(
-                                    //         contact: KeyValue(
-                                    //           name: e['name'],
-                                    //           value: e['_id'],
-                                    //         ),
-                                    //       ),
-                                    //     );
+                                    ComponentInsert: ContactFormScreen(
+                                      onSave: (dynamic e) {
+                                        bloc.add(
+                                          VisitSetForm(
+                                            contact: KeyValue(
+                                              name: e['name'],
+                                              value: e['_id'],
+                                            ),
+                                          ),
+                                        );
 
-                                    //     positionC.text = e['position'];
-                                    //     phoneC.text = e['phone'].toString();
-                                    //   },
-                                    //   contactBloc: ContactBloc(),
-                                    //   customer: bloc.customer!,
-                                    // ),
+                                        positionC.text = e['position'];
+                                        phoneC.text = e['phone'].toString();
+                                      },
+                                      contactBloc: ContactBloc(),
+                                      customer: bloc.customer,
+                                    ),
                                     endpoint: Endpoint(
                                       data: Data.contact,
                                       filters: [

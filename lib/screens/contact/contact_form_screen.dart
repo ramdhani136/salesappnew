@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,14 +12,14 @@ import 'package:salesappnew/widgets/custom_field.dart';
 
 class ContactFormScreen extends StatefulWidget {
   final ContactBloc contactBloc;
-  final void Function(dynamic e) onSave;
-  KeyValue customer;
+  void Function(dynamic e) onSave;
+  KeyValue? customer;
 
   ContactFormScreen({
     Key? key,
     required this.contactBloc,
-    required this.customer,
     required this.onSave,
+    required this.customer,
   }) : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    customerC.text = widget.customer.name;
+    customerC.text = widget.customer?.name ?? "";
     return SizedBox(
       width: Get.width - 50,
       child: Column(
@@ -220,7 +220,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                       "name": picC.text,
                       "phone": phonC.text,
                       "position": position,
-                      "customer": widget.customer.value,
+                      "customer": widget.customer?.value,
                       "status": "1",
                       "workflowState": "Submitted"
                     },
