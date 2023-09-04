@@ -14,8 +14,9 @@ class GetListInput extends ContactEvent {
 }
 
 class ContactInsertData extends ContactEvent {
+  bool callBackValue;
   Map<String, dynamic> data;
-  ContactInsertData({required this.data});
+  ContactInsertData({required this.data, this.callBackValue = false});
 }
 
 class ContactGetPhone extends ContactEvent {}

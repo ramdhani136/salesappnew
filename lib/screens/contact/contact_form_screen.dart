@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
+
 import 'package:salesappnew/bloc/contact/contact_bloc.dart';
-import 'package:salesappnew/bloc/visit/visit_bloc.dart';
+import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 
 class ContactFormScreen extends StatefulWidget {
   final ContactBloc contactBloc;
-  final IsShowLoaded visitState;
+  final void Function(dynamic e) onSave;
+  KeyValue customer;
 
-  const ContactFormScreen({
+  ContactFormScreen({
     Key? key,
     required this.contactBloc,
-    required this.visitState,
+    required this.customer,
+    required this.onSave,
   }) : super(key: key);
 
   @override
@@ -43,6 +46,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    customerC.text = widget.customer.name;
     return SizedBox(
       width: Get.width - 50,
       child: Column(
@@ -61,6 +65,11 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
           BlocBuilder<ContactBloc, ContactState>(
             bloc: bloc,
             builder: (context, state) {
+              if (state is ContactSavedIsSuccess) {
+                widget.onSave(state.data);
+                Get.back();
+              }
+
               picC.text = bloc.pic;
               phonC.text = bloc.phone;
 
@@ -204,19 +213,22 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                 backgroundColor: const Color.fromARGB(255, 65, 170, 69),
               ),
               onPressed: () async {
-                widget.contactBloc.add(
+                bloc.add(
                   ContactInsertData(
+                    callBackValue: true,
                     data: {
                       "name": picC.text,
                       "phone": phonC.text,
                       "position": position,
-                      "customer": widget.visitState.data.customer!.id
+                      "customer": widget.customer.value,
+                      "status": "1",
+                      "workflowState": "Submitted"
                     },
                   ),
                 );
-                widget.contactBloc.add(
-                  GetListInput(customerId: widget.visitState.data.customer!.id),
-                );
+                // widget.contactBloc.add(
+                //   GetListInput(customerId: widget.customer.value),
+                // );
               },
               child: const Text("Save"),
             ),

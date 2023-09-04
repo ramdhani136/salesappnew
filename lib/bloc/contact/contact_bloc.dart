@@ -97,7 +97,12 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       if (result['status'] != 200) {
         throw result['msg'];
       }
-      Get.back();
+
+      if (!event.callBackValue) {
+        Get.back();
+      } else {
+        emit(ContactSavedIsSuccess(data: result['data']));
+      }
 
       EasyLoading.dismiss();
     } catch (e) {

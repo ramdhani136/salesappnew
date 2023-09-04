@@ -35,3 +35,8 @@ class ContactSelectedPhone extends ContactState {
   Map<String, dynamic> data;
   ContactSelectedPhone({required this.data});
 }
+
+class ContactSavedIsSuccess extends ContactState {
+  Map<String, dynamic> data;
+  ContactSavedIsSuccess({required this.data});
+}

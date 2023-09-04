@@ -11,7 +11,6 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart';
-import 'package:salesappnew/screens/contact/contact_form.dart';
 import 'package:salesappnew/screens/contact/contact_form_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
@@ -76,6 +75,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           bloc.branch = visitBloc.branch;
           bloc.group = visitBloc.group;
           bloc.customer = visitBloc.customer;
+          bloc.contact = visitBloc.contact;
           picC.text =
               state.data.contact != null ? state.data.contact!.name : "";
           positionC.text =
@@ -230,6 +230,15 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                             name: e['name'], value: e['_id']),
                                       ),
                                     );
+                                    bloc.add(
+                                      VisitResetForm(
+                                        customer: true,
+                                        group: true,
+                                        contact: true,
+                                      ),
+                                    );
+                                    picC.text = "";
+                                    phoneC.text = "";
                                   },
                                   onReset: () {
                                     bloc.add(
@@ -237,6 +246,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                         branch: true,
                                         customer: true,
                                         group: true,
+                                        contact: true,
                                       ),
                                     );
                                     picC.text = "";
@@ -276,13 +286,22 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                             name: e['name'], value: e['_id']),
                                       ),
                                     );
+
+                                    bloc.add(
+                                      VisitResetForm(
+                                        customer: true,
+                                        contact: true,
+                                      ),
+                                    );
+                                    picC.text = "";
+                                    phoneC.text = "";
                                   },
                                   onReset: () {
                                     bloc.add(
                                       VisitResetForm(
-                                        customer: true,
-                                        group: true,
-                                      ),
+                                          customer: true,
+                                          group: true,
+                                          contact: true),
                                     );
                                     picC.text = "";
                                     phoneC.text = "";
@@ -347,12 +366,18 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                               name: e['name'], value: e['_id']),
                                         ),
                                       );
+                                      bloc.add(
+                                        VisitResetForm(
+                                          contact: true,
+                                        ),
+                                      );
+                                      picC.text = "";
+                                      phoneC.text = "";
                                     },
                                     onReset: () {
                                       bloc.add(
                                         VisitResetForm(
-                                          customer: true,
-                                        ),
+                                            customer: true, contact: true),
                                       );
                                       picC.text = "";
                                       phoneC.text = "";
@@ -369,10 +394,23 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   visible: bloc.customer?.value != null &&
                                       bloc.customer?.value != "",
                                   child: FieldDataScroll(
-                                    ComponentInsert: ContactFormScreen(
-                                      contactBloc: ContactBloc(),
-                                      visitState: state,
-                                    ),
+                                    // ComponentInsert: ContactFormScreen(
+                                    //   onSave: (dynamic e) {
+                                    //     bloc.add(
+                                    //       VisitSetForm(
+                                    //         contact: KeyValue(
+                                    //           name: e['name'],
+                                    //           value: e['_id'],
+                                    //         ),
+                                    //       ),
+                                    //     );
+
+                                    //     positionC.text = e['position'];
+                                    //     phoneC.text = e['phone'].toString();
+                                    //   },
+                                    //   contactBloc: ContactBloc(),
+                                    //   customer: bloc.customer!,
+                                    // ),
                                     endpoint: Endpoint(
                                       data: Data.contact,
                                       filters: [
@@ -400,6 +438,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                               name: e['name'], value: e['_id']),
                                         ),
                                       );
+                                      positionC.text = e['position'];
+                                      phoneC.text = e['phone'].toString();
                                     },
                                     onReset: () {
                                       bloc.add(
@@ -418,88 +458,37 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 const SizedBox(
                                   height: 15,
                                 ),
+                                Visibility(
+                                  visible: bloc.contact?.value != null &&
+                                      bloc.contact?.value != "",
+                                  child: Column(
+                                    children: [
+                                      CustomField(
+                                        mandatory: true,
+                                        title: "Position",
+                                        controller: positionC,
+                                        type: Type.standard,
+                                        disabled: true,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomField(
+                                        mandatory: true,
+                                        title: "Phone",
+                                        controller: phoneC,
+                                        type: Type.standard,
+                                        disabled: true,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             );
                           },
-                        ),
-                        // BlocProvider(
-                        //   create: (context) => ContactBloc()
-                        //     ..add(GetListInput(
-                        //       customerId: state.data.customer!.id,
-                        //     )),
-                        //   child: BlocBuilder<ContactBloc, ContactState>(
-                        //     builder: (context, stateContact) {
-                        //       ContactBloc contactBloc =
-                        //           BlocProvider.of<ContactBloc>(context);
-                        //       return InkWell(
-                        //         child: CustomField(
-                        //           InsertAction: () {
-                        //             showDialog(
-                        //               context: context,
-                        //               builder: (context) => ContactForm(
-                        //                 contactBloc: contactBloc,
-                        //                 visitState: state,
-                        //               ),
-                        //             );
-                        //           },
-                        //           mandatory: true,
-                        //           disabled: state.data.status != "0",
-                        //           title: "Pic",
-                        //           controller: picC,
-                        //           valid: true,
-                        //           type: Type.select,
-                        //           // getData: GetContact(),
-                        //           data: stateContact is ContactIsLoaded
-                        //               ? stateContact.data
-                        //               : [],
-                        //           onChange: (e) {
-                        //             picC.text = e['title'];
-                        //             phoneC.text = "${e['subTitle']}";
-                        //             visitBloc.add(
-                        //               VisitUpdateData(
-                        //                 id: state.data.id!,
-                        //                 data: {"contact": e['value']},
-                        //               ),
-                        //             );
-                        //           },
-                        //           onReset: () {
-                        //             picC.text = "";
-                        //             phoneC.text = "";
-                        //             positionC.text = "";
-                        //           },
-                        //         ),
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 15,
-                        // ),
-                        Visibility(
-                          visible: picC.text != "",
-                          child: CustomField(
-                            mandatory: true,
-                            title: "Position",
-                            controller: positionC,
-                            type: Type.standard,
-                            disabled: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Visibility(
-                          visible: picC.text != "",
-                          child: CustomField(
-                            mandatory: true,
-                            title: "Phone",
-                            controller: phoneC,
-                            type: Type.standard,
-                            disabled: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
                         ),
                         CustomField(
                           title: "Status",
@@ -669,7 +658,9 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                           if ((visitBloc.branch?.value != bloc.branch?.value) ||
                               (visitBloc.group?.value != bloc.group?.value) ||
                               (visitBloc.customer?.value !=
-                                  bloc.customer?.value)) {
+                                  bloc.customer?.value) ||
+                              (visitBloc.contact?.value !=
+                                  bloc.contact?.value)) {
                             isChange = true;
                           } else {
                             isChange = false;
@@ -711,6 +702,17 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                   );
                                   return;
                                 }
+                                if (bloc.contact?.value == null ||
+                                    bloc.contact?.value == "") {
+                                  Fluttertoast.showToast(
+                                    msg: "Contact wajib diisi!",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.grey[800],
+                                    textColor: Colors.white,
+                                  );
+                                  return;
+                                }
 
                                 visitBloc.add(
                                   VisitUpdateData(
@@ -719,6 +721,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                       "customer": bloc.customer?.value,
                                       "customerGroup": bloc.group?.value,
                                       "branch": bloc.branch?.value,
+                                      "contact": bloc.contact?.value,
                                     },
                                   ),
                                 );

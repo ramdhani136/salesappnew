@@ -414,10 +414,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       Visitmodel result = Visitmodel.fromJson(data['data']);
 
       branch = KeyValue(name: result.branch!.name, value: result.branch!.id);
-      customer = group = KeyValue(
+      group = KeyValue(
           name: result.customerGroup!.name, value: result.customerGroup!.id);
       customer =
           KeyValue(name: result.customer!.name, value: result.customer!.id);
+      contact = KeyValue(name: result.contact!.name, value: result.contact!.id);
 
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
 
