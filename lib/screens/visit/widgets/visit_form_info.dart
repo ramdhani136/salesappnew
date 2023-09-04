@@ -215,6 +215,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                             return Column(
                               children: [
                                 FieldDataScroll(
+                                  mandatory: true,
                                   endpoint: Endpoint(data: Data.branch),
                                   valid: bloc.branch?.value == null ||
                                           bloc.branch?.value == ""
