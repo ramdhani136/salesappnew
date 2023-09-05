@@ -471,8 +471,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                           phoneC.text = "";
                                         },
                                         mandatory: true,
-                                        disabled: state.data.status != "0" ||
-                                            state.data.checkOut != null,
+                                        disabled: state.data.status != "0",
                                       ),
                                       const SizedBox(
                                         height: 15,
@@ -667,87 +666,26 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
             ),
             floatingActionButton: BlocBuilder<VisitBloc, VisitState>(
               builder: (context, state) {
-                if (state is IsShowLoaded) {
-                  return Visibility(
-                    visible: state.data.checkOut == null,
-                    child: SizedBox(
-                      height: 140.0,
-                      width: 60.0,
-                      child: BlocBuilder<VisitBloc, VisitState>(
-                        bloc: bloc,
-                        builder: (context, stateNew) {
-                          bool isChange = false;
-                          if ((visitBloc.branch?.value != bloc.branch?.value) ||
-                              (visitBloc.group?.value != bloc.group?.value) ||
-                              (visitBloc.customer?.value !=
-                                  bloc.customer?.value) ||
-                              (visitBloc.contact?.value !=
-                                  bloc.contact?.value)) {
-                            isChange = true;
-                          } else {
-                            isChange = false;
-                          }
-
-                          return FloatingActionButton(
-                            onPressed: () {
-                              if (isChange) {
-                                if (bloc.branch?.value == null ||
-                                    bloc.branch?.value == "") {
-                                  Fluttertoast.showToast(
-                                    msg: "Branch wajib diisi!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.grey[800],
-                                    textColor: Colors.white,
-                                  );
-                                  return;
-                                }
-                                if (bloc.group?.value == null ||
-                                    bloc.group?.value == "") {
-                                  Fluttertoast.showToast(
-                                    msg: "Group wajib diisi!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.grey[800],
-                                    textColor: Colors.white,
-                                  );
-                                  return;
-                                }
-                                if (bloc.customer?.value == null ||
-                                    bloc.customer?.value == "") {
-                                  Fluttertoast.showToast(
-                                    msg: "Customer wajib diisi!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.grey[800],
-                                    textColor: Colors.white,
-                                  );
-                                  return;
-                                }
-                                if (bloc.contact?.value == null ||
-                                    bloc.contact?.value == "") {
-                                  Fluttertoast.showToast(
-                                    msg: "Contact wajib diisi!",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.grey[800],
-                                    textColor: Colors.white,
-                                  );
-                                  return;
-                                }
-
-                                visitBloc.add(
-                                  VisitUpdateData(
-                                    id: state.data.id!,
-                                    data: {
-                                      "customer": bloc.customer?.value,
-                                      "customerGroup": bloc.group?.value,
-                                      "branch": bloc.branch?.value,
-                                      "contact": bloc.contact?.value,
-                                    },
-                                  ),
-                                );
-                              } else {
+                return BlocBuilder<VisitBloc, VisitState>(
+                  bloc: bloc,
+                  builder: (context, stateNew) {
+                    bool isChange = false;
+                    if ((visitBloc.branch?.value != bloc.branch?.value) ||
+                        (visitBloc.group?.value != bloc.group?.value) ||
+                        (visitBloc.customer?.value != bloc.customer?.value) ||
+                        (visitBloc.contact?.value != bloc.contact?.value)) {
+                      isChange = true;
+                    } else {
+                      isChange = false;
+                    }
+                    if (state is IsShowLoaded) {
+                      if (state.data.status == "0") {
+                        if (state.data.checkOut == null && !isChange) {
+                          return SizedBox(
+                            height: 140.0,
+                            width: 60.0,
+                            child: FloatingActionButton(
+                              onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute<CheckOutScreen>(
                                     builder: (_) => BlocProvider.value(
@@ -757,19 +695,106 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                     ),
                                   ),
                                 );
-                              }
-                            },
-                            backgroundColor: Colors.grey[850],
-                            child: isChange
-                                ? const Icon(Icons.save_outlined)
-                                : const Icon(Icons.done_outlined),
+                              },
+                              backgroundColor: Colors.grey[850],
+                              child: const Icon(Icons.done_outlined),
+                            ),
                           );
-                        },
-                      ),
-                    ),
-                  );
-                }
-                return Container();
+                        } else if (isChange) {
+                          return SizedBox(
+                            height: 140.0,
+                            width: 60.0,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                Get.defaultDialog(
+                                  title: "Are you sure to save?",
+                                  content: Container(),
+                                  textConfirm: "Confirm",
+                                  textCancel: "Cancel",
+                                  confirmTextColor: Colors.white,
+                                  onConfirm: () {
+                                    Get.back();
+                                    if (bloc.branch?.value == null ||
+                                        bloc.branch?.value == "") {
+                                      Fluttertoast.showToast(
+                                        msg: "Branch wajib diisi!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.grey[800],
+                                        textColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    if (bloc.group?.value == null ||
+                                        bloc.group?.value == "") {
+                                      Fluttertoast.showToast(
+                                        msg: "Group wajib diisi!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.grey[800],
+                                        textColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    if (bloc.customer?.value == null ||
+                                        bloc.customer?.value == "") {
+                                      Fluttertoast.showToast(
+                                        msg: "Customer wajib diisi!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.grey[800],
+                                        textColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    if (bloc.contact?.value == null ||
+                                        bloc.contact?.value == "") {
+                                      Fluttertoast.showToast(
+                                        msg: "Contact wajib diisi!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.grey[800],
+                                        textColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+
+                                    Map<String, dynamic> upData = {};
+
+                                    if (state.data.checkOut == null) {
+                                      upData = {
+                                        "customer": bloc.customer?.value,
+                                        "customerGroup": bloc.group?.value,
+                                        "branch": bloc.branch?.value,
+                                        "contact": bloc.contact?.value,
+                                      };
+                                    } else {
+                                      upData = {
+                                        "contact": bloc.contact?.value,
+                                      };
+                                    }
+
+                                    visitBloc.add(
+                                      VisitUpdateData(
+                                        id: state.data.id!,
+                                        data: upData,
+                                      ),
+                                    );
+                                  },
+                                  buttonColor: Colors.red,
+                                  cancelTextColor: Colors.red,
+                                );
+                              },
+                              backgroundColor: Colors.grey[850],
+                              child: const Icon(Icons.save_outlined),
+                            ),
+                          );
+                        }
+                      }
+                    }
+                    return Container();
+                  },
+                );
               },
             ),
           );

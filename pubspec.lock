@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dart_clip:
+    dependency: transitive
+    description:
+      name: dart_clip
+      sha256: "0b807e1a886ea0058d054a12ef5e9433739f9e1a4d1564ab6f71c38e977e9fa8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -198,6 +206,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  flutter_clip:
+    dependency: "direct main"
+    description:
+      name: flutter_clip
+      sha256: "6617fdfa4afc3d379ac5f5765938336ad815a875cd2e55b331ea43c42f699b71"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   flutter_contacts:
     dependency: "direct main"
     description:

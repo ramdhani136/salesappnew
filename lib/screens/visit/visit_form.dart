@@ -216,12 +216,25 @@ class VisitForm extends StatelessWidget {
                                         child: InkWell(
                                           onTap: () async {
                                             Get.back();
-                                            BlocProvider.of<VisitBloc>(context)
-                                                .add(
-                                              ChangeWorkflow(
-                                                  id: id,
-                                                  nextStateId:
-                                                      item.nextState.id),
+                                            Get.defaultDialog(
+                                              title: "Are you sure?",
+                                              content: Container(),
+                                              textConfirm: "Confirm",
+                                              textCancel: "Cancel",
+                                              confirmTextColor: Colors.white,
+                                              buttonColor: Colors.red,
+                                              cancelTextColor: Colors.red,
+                                              onConfirm: () {
+                                                BlocProvider.of<VisitBloc>(
+                                                        context)
+                                                    .add(
+                                                  ChangeWorkflow(
+                                                      id: id,
+                                                      nextStateId:
+                                                          item.nextState.id),
+                                                );
+                                                Get.back();
+                                              },
                                             );
                                           },
                                           child: Padding(
