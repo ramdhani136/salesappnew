@@ -477,7 +477,7 @@ class _ModalFieldState extends State<ModalField> {
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: const Color
-                                                    .fromARGB(255, 57, 156,
+                                                .fromARGB(255, 57, 156,
                                                 60), // Mengatur warna latar belakang
                                           ),
                                           child: const Text(
@@ -503,7 +503,7 @@ class _ModalFieldState extends State<ModalField> {
                                             controller.text =
                                                 data[index]['name']!;
                                             widget.onSelected(data[index]);
-                                            Get.back();
+                                            // Get.back();
                                           },
                                           title: Text("${data[index]['name']}"),
                                         );

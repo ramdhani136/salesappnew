@@ -20,7 +20,7 @@ class CheckInScreen extends StatefulWidget {
   CheckInScreen({
     super.key,
     required this.customerId,
-    required this.naming,
+    this.naming,
     this.bloc,
   });
 
@@ -51,6 +51,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
     Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
+
     return Scaffold(
         body: Column(
       children: [
@@ -298,14 +299,21 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            "${widget.naming?.name}",
-                                            style: TextStyle(
-                                              color: Colors.grey[600],
-                                              fontStyle: FontStyle.italic,
+                                          Visibility(
+                                            visible: widget.naming != null,
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  "${widget.naming?.name}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[600],
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           BlocBuilder<CustomerBloc,
@@ -334,6 +342,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                         fontSize: 20,
                                                         fontWeight:
                                                             FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Visibility(
+                                                      visible: stateCustomer
+                                                              .data.address ==
+                                                          null,
+                                                      child: SizedBox(
+                                                        height: 10,
                                                       ),
                                                     ),
                                                     Visibility(
@@ -381,7 +397,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                   color: stateLoc
                                                                           .insite!
                                                                       ? const Color
-                                                                              .fromARGB(
+                                                                          .fromARGB(
                                                                           255,
                                                                           255,
                                                                           160,
@@ -398,12 +414,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                     //     255, 225, 170, 5),
                                                                     color: stateLoc
                                                                             .insite!
-                                                                        ? const Color.fromARGB(
+                                                                        ? const Color
+                                                                            .fromARGB(
                                                                             255,
                                                                             237,
                                                                             151,
                                                                             2)
-                                                                        : const Color.fromARGB(
+                                                                        : const Color
+                                                                            .fromARGB(
                                                                             255,
                                                                             218,
                                                                             50,
@@ -494,7 +512,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                     decoration:
                                                                         BoxDecoration(
                                                                       color: const Color
-                                                                              .fromARGB(
+                                                                          .fromARGB(
                                                                           255,
                                                                           55,
                                                                           55,
@@ -505,7 +523,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                       border:
                                                                           Border
                                                                               .all(
-                                                                        color: const Color.fromARGB(
+                                                                        color: const Color
+                                                                            .fromARGB(
                                                                             255,
                                                                             51,
                                                                             51,
@@ -593,7 +612,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                     children: [
                                                       Container(
                                                         margin: const EdgeInsets
-                                                                .symmetric(
+                                                            .symmetric(
                                                             vertical: 15),
                                                         width: Get.width * 0.9,
                                                         height:
@@ -606,11 +625,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                           color: Colors.white,
                                                           border: Border.all(
                                                             color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                232,
-                                                                231,
-                                                                231),
+                                                                .fromARGB(255,
+                                                                232, 231, 231),
                                                           ),
                                                         ),
                                                         child:
@@ -660,7 +676,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                       ),
                                                       Container(
                                                         margin: const EdgeInsets
-                                                                .symmetric(
+                                                            .symmetric(
                                                             vertical: 15),
                                                         width: Get.width * 0.9,
                                                         height: 35,

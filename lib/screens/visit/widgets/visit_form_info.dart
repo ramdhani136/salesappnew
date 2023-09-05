@@ -12,6 +12,7 @@ import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart';
 import 'package:salesappnew/screens/contact/contact_form_screen.dart';
+import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/screens/visit/widgets/checkout_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
@@ -240,6 +241,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                     );
                                     picC.text = "";
                                     phoneC.text = "";
+                                    Get.back();
                                   },
                                   onReset: () {
                                     bloc.add(
@@ -302,6 +304,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                           );
                                           picC.text = "";
                                           phoneC.text = "";
+                                          Get.back();
                                         },
                                         onReset: () {
                                           bloc.add(
@@ -374,20 +377,30 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                         title: "Customer",
                                         titleModal: "Customer List",
                                         onSelected: (e) {
-                                          bloc.add(
-                                            VisitSetForm(
-                                              customer: KeyValue(
-                                                  name: e['name'],
-                                                  value: e['_id']),
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return CheckInScreen(
+                                                  customerId: e["_id"],
+                                                  bloc: bloc,
+                                                );
+                                              },
                                             ),
                                           );
-                                          bloc.add(
-                                            VisitResetForm(
-                                              contact: true,
-                                            ),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
+                                          // bloc.add(
+                                          //   VisitSetForm(
+                                          //     customer: KeyValue(
+                                          //         name: e['name'],
+                                          //         value: e['_id']),
+                                          //   ),
+                                          // );
+                                          // bloc.add(
+                                          //   VisitResetForm(
+                                          //     contact: true,
+                                          //   ),
+                                          // );
+                                          // picC.text = "";
+                                          // phoneC.text = "";
                                         },
                                         onReset: () {
                                           bloc.add(
@@ -460,6 +473,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                           );
                                           positionC.text = e['position'];
                                           phoneC.text = e['phone'].toString();
+                                          Get.back();
                                         },
                                         onReset: () {
                                           bloc.add(
