@@ -70,7 +70,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
         }
 
         if (state is IsShowLoaded) {
-          typeC.text = state.data.type!;
+          typeC.text = state.data.type == "insite" ? "In site" : "Out Site";
           nameC.text = state.data.name!;
           workflowC.text = state.data.workflowState!;
           bloc.branch = visitBloc.branch;
@@ -376,31 +376,40 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                         value: bloc.customer?.name ?? "",
                                         title: "Customer",
                                         titleModal: "Customer List",
-                                        onSelected: (e) {
+                                        onSelected: (cust) {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) {
                                                 return CheckInScreen(
-                                                  customerId: e["_id"],
+                                                  customerId: cust["_id"],
                                                   bloc: bloc,
+                                                  onCheckIn: (e) {
+                                                    print(e);
+                                                    typeC.text = e == "insite"
+                                                        ? "In Site"
+                                                        : "Out Site";
+                                                    bloc.add(
+                                                      VisitSetForm(
+                                                        customer: KeyValue(
+                                                            name: cust['name'],
+                                                            value: cust['_id']),
+                                                      ),
+                                                    );
+                                                    bloc.add(
+                                                      VisitResetForm(
+                                                        contact: true,
+                                                      ),
+                                                    );
+                                                    picC.text = "";
+                                                    phoneC.text = "";
+                                                    Get.back();
+                                                    Get.back();
+                                                    Get.back();
+                                                  },
                                                 );
                                               },
                                             ),
                                           );
-                                          // bloc.add(
-                                          //   VisitSetForm(
-                                          //     customer: KeyValue(
-                                          //         name: e['name'],
-                                          //         value: e['_id']),
-                                          //   ),
-                                          // );
-                                          // bloc.add(
-                                          //   VisitResetForm(
-                                          //     contact: true,
-                                          //   ),
-                                          // );
-                                          // picC.text = "";
-                                          // phoneC.text = "";
                                         },
                                         onReset: () {
                                           bloc.add(

@@ -17,11 +17,13 @@ class CheckInScreen extends StatefulWidget {
   String customerId;
   KeyValue? naming;
   VisitBloc? bloc;
+  final void Function(dynamic e)? onCheckIn;
   CheckInScreen({
     super.key,
     required this.customerId,
     this.naming,
     this.bloc,
+    this.onCheckIn,
   });
 
   @override
@@ -348,7 +350,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                       visible: stateCustomer
                                                               .data.address ==
                                                           null,
-                                                      child: SizedBox(
+                                                      child: const SizedBox(
                                                         height: 10,
                                                       ),
                                                     ),
@@ -737,8 +739,11 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                             builder: (BuildContext context) {
                                               return AlertDialog(
                                                 title: const Text("Really?"),
-                                                content: const Text(
-                                                    "Create new visit?"),
+                                                content: widget.naming != null
+                                                    ? const Text(
+                                                        "Create new visit?")
+                                                    : const Text(
+                                                        "Check in with this location?"),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
@@ -748,34 +753,47 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      Map<String, dynamic>
-                                                          data = {
-                                                        "customer":
-                                                            widget.customerId,
-                                                        "type":
-                                                            stateCust.insite!
-                                                                ? "insite"
-                                                                : "outsite",
-                                                        "checkInLat":
-                                                            locationbloc
-                                                                .cordinate!
-                                                                .latitude,
-                                                        "checkInLng":
-                                                            locationbloc
-                                                                .cordinate!
-                                                                .longitude,
-                                                        "namingSeries":
-                                                            "${widget.naming?.value}",
-                                                      };
-                                                      visitBloc.add(
-                                                        InsertVisit(
-                                                          data: data,
-                                                          context: context,
-                                                          visitBloc:
-                                                              widget.bloc ??
-                                                                  visitBloc,
-                                                        ),
-                                                      );
+                                                      if (widget.naming !=
+                                                          null) {
+                                                        Map<String, dynamic>
+                                                            data = {
+                                                          "customer":
+                                                              widget.customerId,
+                                                          "type":
+                                                              stateCust.insite!
+                                                                  ? "insite"
+                                                                  : "outsite",
+                                                          "checkInLat":
+                                                              locationbloc
+                                                                  .cordinate!
+                                                                  .latitude,
+                                                          "checkInLng":
+                                                              locationbloc
+                                                                  .cordinate!
+                                                                  .longitude,
+                                                          "namingSeries":
+                                                              "${widget.naming?.value}",
+                                                        };
+                                                        visitBloc.add(
+                                                          InsertVisit(
+                                                            data: data,
+                                                            context: context,
+                                                            visitBloc:
+                                                                widget.bloc ??
+                                                                    visitBloc,
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        if (widget.onCheckIn !=
+                                                            null) {
+                                                          String type =
+                                                              stateCust.insite!
+                                                                  ? "insite"
+                                                                  : "outsite";
+                                                          widget
+                                                              .onCheckIn!(type);
+                                                        }
+                                                      }
                                                     },
                                                     child: const Text("Yes"),
                                                   ),
