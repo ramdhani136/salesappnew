@@ -1,6 +1,7 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: invalid_use_of_visible_for_testing_member, unused_local_variable
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -76,7 +77,17 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
           bloc.branch = visitBloc.branch;
           bloc.group = visitBloc.group;
           bloc.customer = visitBloc.customer;
-          bloc.contact = visitBloc.contact;
+          bloc.pickedFile = null;
+          bloc.checkInLat = null;
+          bloc.checkInLng = null;
+          bloc.type = null;
+          if (state.data.contact != null) {
+            bloc.contact = KeyValue(
+              name: state.data.contact!.name,
+              value: state.data.contact?.id,
+            );
+          }
+          bloc.type = state.data.type;
           picC.text =
               state.data.contact != null ? state.data.contact!.name : "";
           positionC.text =
@@ -103,85 +114,118 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     ),
                     child: ListView(
                       children: [
-                        Visibility(
-                          visible: state.data.type == "outsite",
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 15),
-                                  width: Get.width * 0.9,
-                                  height: Get.width / 1.65,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: const Color.fromARGB(
-                                          255, 232, 231, 231),
-                                    ),
-                                  ),
-                                  child: state.data.img == null
-                                      ? const Center(
-                                          child: Icon(
-                                          Icons.hide_image_outlined,
-                                          color: Color(0xFFE0E0E0),
-                                          size: 100,
-                                        ))
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: FadeInImage(
-                                            fit: BoxFit.fitHeight,
-                                            fadeInCurve: Curves.easeInExpo,
-                                            fadeOutCurve: Curves.easeOutExpo,
-                                            placeholder: const AssetImage(
-                                                'assets/images/loading.gif'),
-                                            image: NetworkImage(
-                                              "${Config().baseUri}public/${state.data.img!}",
-                                            ),
-                                            imageErrorBuilder: (_, __, ___) {
-                                              return Image.asset(
-                                                'assets/images/noimage.jpg',
-                                              );
-                                            },
-                                          ),
+                        BlocBuilder<VisitBloc, VisitState>(
+                          bloc: bloc,
+                          builder: (context, stateNew) {
+                            return Visibility(
+                              visible: state.data.type == "outsite" ||
+                                  bloc.type == "outsite",
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                      width: Get.width * 0.9,
+                                      height: Get.width / 1.65,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 232, 231, 231),
                                         ),
+                                      ),
+                                      child: state.data.img == null &&
+                                              bloc.pickedFile == null &&
+                                              state.data.img == ""
+                                          ? const Center(
+                                              child: Icon(
+                                              Icons.hide_image_outlined,
+                                              color: Color(0xFFE0E0E0),
+                                              size: 100,
+                                            ))
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: bloc.pickedFile != null
+                                                  ? FadeInImage(
+                                                      fit: BoxFit.fitHeight,
+                                                      fadeInCurve:
+                                                          Curves.easeInExpo,
+                                                      fadeOutCurve:
+                                                          Curves.easeOutExpo,
+                                                      placeholder: const AssetImage(
+                                                          'assets/images/loading.gif'),
+                                                      image: FileImage(File(bloc
+                                                          .pickedFile!.path)),
+                                                    )
+                                                  : state.data.img != null &&
+                                                          state.data.img != ""
+                                                      ? FadeInImage(
+                                                          fit: BoxFit.fitHeight,
+                                                          fadeInCurve:
+                                                              Curves.easeInExpo,
+                                                          fadeOutCurve: Curves
+                                                              .easeOutExpo,
+                                                          placeholder:
+                                                              const AssetImage(
+                                                                  'assets/images/loading.gif'),
+                                                          image: NetworkImage(
+                                                            "${Config().baseUri}public/${state.data.img!}",
+                                                          ),
+                                                          imageErrorBuilder:
+                                                              (_, __, ___) {
+                                                            return Image.asset(
+                                                              'assets/images/noimage.jpg',
+                                                            );
+                                                          },
+                                                        )
+                                                      : const Center(
+                                                          child: Icon(
+                                                            Icons
+                                                                .hide_image_outlined,
+                                                            color: Color(
+                                                                0xFFE0E0E0),
+                                                            size: 100,
+                                                          ),
+                                                        ),
+                                            ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                      width: Get.width * 0.9,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(5),
+                                          bottomRight: Radius.circular(5),
+                                        ),
+                                        color: Colors.black.withOpacity(0.4),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          if (state.data.status == "0") {
+                                            bloc.add(
+                                              VisitChangeImage(),
+                                            );
+                                          }
+                                        },
+                                        icon: const Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.white,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 15),
-                                  width: Get.width * 0.9,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5),
-                                    ),
-                                    color: Colors.black.withOpacity(0.4),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () async {
-                                      if (state.data.status == "0") {
-                                        visitBloc.add(
-                                          VisitChangeImage(
-                                            id: state.data.id.toString(),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    icon: const Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.white,
-                                      size: 22,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         ),
                         CustomField(
                           title: "Name",
@@ -384,10 +428,16 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                                   customerId: cust["_id"],
                                                   bloc: bloc,
                                                   onCheckIn: (e) {
-                                                    print(e);
-                                                    typeC.text = e == "insite"
-                                                        ? "In Site"
-                                                        : "Out Site";
+                                                    bloc.checkInLat =
+                                                        e['checkInLat'];
+                                                    bloc.checkInLng =
+                                                        e['checkInLng'];
+                                                    bloc.type = e['type'];
+
+                                                    typeC.text =
+                                                        e["type"] == "insite"
+                                                            ? "In Site"
+                                                            : "Out Site";
                                                     bloc.add(
                                                       VisitSetForm(
                                                         customer: KeyValue(
@@ -696,11 +746,13 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                     if ((visitBloc.branch?.value != bloc.branch?.value) ||
                         (visitBloc.group?.value != bloc.group?.value) ||
                         (visitBloc.customer?.value != bloc.customer?.value) ||
+                        (visitBloc.pickedFile?.path != bloc.pickedFile?.path) ||
                         (visitBloc.contact?.value != bloc.contact?.value)) {
                       isChange = true;
                     } else {
                       isChange = false;
                     }
+
                     if (state is IsShowLoaded) {
                       if (state.data.status == "0") {
                         if (state.data.checkOut == null && !isChange) {
@@ -797,12 +849,30 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                       };
                                     }
 
+                                    if (bloc.checkInLat != null &&
+                                        bloc.checkInLng != null &&
+                                        bloc.type != null) {
+                                      upData.addAll(
+                                        {
+                                          "type": bloc.type,
+                                          "checkInLat": bloc.checkInLat,
+                                          "checkInLng": bloc.checkInLng,
+                                        },
+                                      );
+                                    }
+
+                                    if (bloc.pickedFile != null) {
+                                      visitBloc.pickedFile = bloc.pickedFile;
+                                    }
+
                                     visitBloc.add(
                                       VisitUpdateData(
                                         id: state.data.id!,
                                         data: upData,
                                       ),
                                     );
+
+                                    visitBloc.pickedFile = bloc.pickedFile;
                                   },
                                   buttonColor: Colors.red,
                                   cancelTextColor: Colors.red,

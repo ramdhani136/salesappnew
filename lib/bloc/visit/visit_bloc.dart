@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, use_build_context_synchronously
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, use_build_context_synchronously, await_only_futures
 
 import 'dart:convert';
 import 'dart:typed_data';
@@ -39,7 +39,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   KeyValue? group;
   KeyValue? contact;
   List? namingList;
+  double? checkInLat;
+  double? checkInLng;
+  String? type;
   List<List<String>>? filters;
+  XFile? pickedFile;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
@@ -207,41 +211,15 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     final picker = ImagePicker();
 
     try {
-      emit(IsLoading());
-      // EasyLoading.show(status: 'loading...');
-      final pickedFile = await picker.pickImage(source: ImageSource.camera);
-      if (pickedFile != null) {
-        var request = http.MultipartRequest(
-          'PUT',
-          Uri.parse("${Config().baseUri}visit/${event.id}"),
-        );
+      EasyLoading.show(status: 'loading...');
+      final img = await picker.pickImage(source: ImageSource.camera);
+      if (img != null) {
+        pickedFile = await img;
 
-        var stream = http.ByteStream(pickedFile.openRead())..cast();
-        var length = await pickedFile.length();
-        var multipartFile = http.MultipartFile(
-          'img',
-          stream,
-          length,
-          filename: basename(pickedFile.path),
-        );
-        request.files.add(multipartFile);
-
-        request.headers['authorization'] =
-            'Bearer ${await LocalData().getToken()}';
-        http.Response response = await http.Response.fromStream(
-          await request.send(),
-        );
-
-        if (response.statusCode != 200) {
-          throw response.body;
-        }
-
-        add(ShowData(
-          id: event.id,
-        ));
+        emit(VisitInitial());
       }
 
-      // EasyLoading.dismiss();
+      EasyLoading.dismiss();
     } catch (e) {
       // EasyLoading.dismiss();
       Fluttertoast.showToast(
@@ -267,6 +245,17 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         Uri.parse("${Config().baseUri}visit/${event.id}"),
       );
 
+      if (pickedFile != null) {
+        var stream = http.ByteStream(pickedFile!.openRead())..cast();
+        var length = await pickedFile!.length();
+        var multipartFile = http.MultipartFile(
+          'img',
+          stream,
+          length,
+          filename: basename(pickedFile!.path),
+        );
+        request.files.add(multipartFile);
+      }
       if (event.data['branch'] != null) {
         request.fields["branch"] = event.data['branch'];
       }
@@ -279,6 +268,15 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
       if (event.data['contact'] != null) {
         request.fields["contact"] = event.data['contact'];
+      }
+      if (event.data['type'] != null) {
+        request.fields["type"] = event.data['type'];
+      }
+      if (event.data['checkInLat'] != null) {
+        request.fields["checkInLat"] = event.data['checkInLat'].toString();
+      }
+      if (event.data['checkInLng'] != null) {
+        request.fields["checkInLng"] = event.data['checkInLng'].toString();
       }
 
       request.headers['authorization'] =
@@ -301,6 +299,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       add(
         ShowData(id: event.id, isLoading: false),
       );
+      pickedFile = null;
     } catch (e) {
       Map error = json.decode("$e");
 
@@ -418,7 +417,10 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
           name: result.customerGroup!.name, value: result.customerGroup!.id);
       customer =
           KeyValue(name: result.customer!.name, value: result.customer!.id);
-      contact = KeyValue(name: result.contact!.name, value: result.contact!.id);
+      if (result.contact != null) {
+        contact =
+            KeyValue(name: result.contact!.name, value: result.contact!.id);
+      }
 
       List<ActionModel> action = ActionModel.fromJsonList(data['workflow']);
 

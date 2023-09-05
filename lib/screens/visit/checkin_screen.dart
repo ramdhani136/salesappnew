@@ -786,12 +786,23 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                       } else {
                                                         if (widget.onCheckIn !=
                                                             null) {
-                                                          String type =
-                                                              stateCust.insite!
-                                                                  ? "insite"
-                                                                  : "outsite";
+                                                          Map<String, dynamic>
+                                                              data = {
+                                                            "checkInLat":
+                                                                locationbloc
+                                                                    .cordinate!
+                                                                    .latitude,
+                                                            "checkInLng":
+                                                                locationbloc
+                                                                    .cordinate!
+                                                                    .longitude,
+                                                            "type": stateCust
+                                                                    .insite!
+                                                                ? "insite"
+                                                                : "outsite",
+                                                          };
                                                           widget
-                                                              .onCheckIn!(type);
+                                                              .onCheckIn!(data);
                                                         }
                                                       }
                                                     },

@@ -65,13 +65,7 @@ class VisitUpdateData extends VisitEvent {
   });
 }
 
-class VisitChangeImage extends VisitEvent {
-  String id;
-
-  VisitChangeImage({
-    required this.id,
-  });
-}
+class VisitChangeImage extends VisitEvent {}
 
 class ClearSignature extends VisitEvent {
   String id;
