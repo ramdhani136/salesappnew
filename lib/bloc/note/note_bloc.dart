@@ -19,6 +19,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   List<KeyValue> tags = [];
   String activity = "";
   String feedback = "";
+  bool keyActive = false;
 
   NoteBloc() : super(NoteInitial()) {
     on<NoteGetData>(

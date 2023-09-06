@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
-
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -32,6 +32,8 @@ class _FormNoteState extends State<FormNote> {
 
     NoteBloc bloc = BlocProvider.of<NoteBloc>(context);
     NoteBloc newBloc = NoteBloc();
+    KeyboardVisibilityController keyboardVisibilityController =
+        KeyboardVisibilityController();
 
     @override
     void dispose() {
@@ -419,89 +421,111 @@ class _FormNoteState extends State<FormNote> {
                                 );
                               }
 
-                              return Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Tags :",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: status == "0",
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            _showListTags(context);
-                                          },
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(
-                                              const Color.fromARGB(
-                                                  255, 61, 153, 64),
-                                            ),
+                              keyboardVisibilityController.onChange.listen(
+                                (bool visible) {
+                                  if (visible) {
+                                    newBloc.keyActive = true;
+                                  } else {
+                                    newBloc.keyActive = false;
+                                  }
+
+                                  if (stateVisitTags is NoteInitial) {
+                                    newBloc.emit(NoteInitial());
+                                  }
+
+                                  if (stateVisitTags is NoteShowIsLoaded) {
+                                    newBloc.emit(stateVisitTags.copyWith());
+                                  }
+                                },
+                              );
+
+                              return Visibility(
+                                visible: !newBloc.keyActive,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          "Tags :",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          child: const Text("Add"),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Visibility(
-                                    visible: newBloc.tags.isNotEmpty,
-                                    child: Container(
-                                      width: Get.width,
-                                      padding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 8,
-                                        bottom: 5,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                      ),
-                                      child: Wrap(
-                                        spacing: 5,
-                                        children: newBloc.tags.map(
-                                          (e) {
-                                            return ElevatedButton.icon(
-                                              onPressed: () {
-                                                if (status == "0") {
-                                                  newBloc.add(
-                                                    NoteRemoveTag(
-                                                      tag: KeyValue(
-                                                          name: e.name,
-                                                          value: e.value),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.grey[800],
-                                                minimumSize: const Size(30, 32),
+                                        Visibility(
+                                          visible: status == "0",
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              _showListTags(context);
+                                            },
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                const Color.fromARGB(
+                                                    255, 61, 153, 64),
                                               ),
-                                              icon: const Icon(
-                                                Icons.clear,
-                                                size: 16,
-                                              ),
-                                              label: Text(e.name),
-                                            );
-                                          },
-                                        ).toList(),
+                                            ),
+                                            child: const Text("Add"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Visibility(
+                                      visible: newBloc.tags.isNotEmpty,
+                                      child: Container(
+                                        width: Get.width,
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 8,
+                                          bottom: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                        ),
+                                        child: Wrap(
+                                          spacing: 5,
+                                          children: newBloc.tags.map(
+                                            (e) {
+                                              return ElevatedButton.icon(
+                                                onPressed: () {
+                                                  if (status == "0") {
+                                                    newBloc.add(
+                                                      NoteRemoveTag(
+                                                        tag: KeyValue(
+                                                            name: e.name,
+                                                            value: e.value),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.grey[800],
+                                                  minimumSize:
+                                                      const Size(30, 32),
+                                                ),
+                                                icon: const Icon(
+                                                  Icons.clear,
+                                                  size: 16,
+                                                ),
+                                                label: Text(e.name),
+                                              );
+                                            },
+                                          ).toList(),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                ),
                               );
                             }),
                       ],
