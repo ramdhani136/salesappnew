@@ -140,7 +140,7 @@ class _FormNoteState extends State<FormNote> {
                             bool isChange = false;
 
                             if (stateNew is NoteShowIsLoaded) {
-                              dynamic currentTags =
+                              List currentTags =
                                   stateNew.data['tags'].map((dynamic e) {
                                 return e['_id'].toString();
                               }).toList();
@@ -150,23 +150,24 @@ class _FormNoteState extends State<FormNote> {
                                 return e.value.toString();
                               }).toList();
 
-                              dynamic changeTags = currentTags
-                                  .where((item) => !newTags.contains(item))
-                                  .toList();
+                              Set<String> currentSet = Set.from(currentTags);
+                              Set<String> newDataSet = Set.from(newTags);
 
-                              print(currentTags);
-                              print(newTags);
-                              print(changeTags);
+                              bool hasChanges = currentSet
+                                      .difference(newDataSet)
+                                      .isNotEmpty ||
+                                  newDataSet.difference(currentSet).isNotEmpty;
 
                               if (stateNew.data['topic']["_id"] !=
-                                  newBloc.topic?.value) {
+                                      newBloc.topic?.value ||
+                                  hasChanges) {
                                 isChange = true;
                               } else {
                                 isChange = false;
                               }
                             }
 
-                            // print(isChange);
+                            print(isChange);
 
                             return Row(children: [
                               Visibility(
