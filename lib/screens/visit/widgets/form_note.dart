@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:salesappnew/bloc/field_infinite/field_infinite_bloc.dart';
 import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
@@ -27,10 +26,7 @@ class FormNote extends StatelessWidget {
     final TextEditingController activityC = TextEditingController();
 
     NoteBloc bloc = BlocProvider.of<NoteBloc>(context);
-    NoteBloc vBloc = NoteBloc();
-    NoteBloc vContentBloc = NoteBloc();
-    NoteBloc vTagsBloc = NoteBloc();
-    FieldInfiniteBloc topicInfiniteBloc = FieldInfiniteBloc();
+    NoteBloc newBloc = NoteBloc();
 
     void _showListTags(BuildContext context) {
       showDialog(
@@ -44,7 +40,7 @@ class FormNote extends StatelessWidget {
               height: Get.height - 50,
               padding:
                   const EdgeInsets.all(20), // Mengambil lebar layar perangkat
-              child: ListVisitTags(vnotBloc: vTagsBloc),
+              child: ListVisitTags(vnotBloc: newBloc),
             ),
           );
         },
@@ -53,24 +49,25 @@ class FormNote extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        if (noteId != null) {
-          bloc.add(
-            NoteGetData(
-              docId: docId,
-            ),
-          );
-        }
+        bloc.add(
+          NoteGetData(
+            docId: docId,
+          ),
+        );
 
         return true;
       },
       child: BlocBuilder<NoteBloc, NoteState>(
-        bloc: vBloc,
+        bloc: bloc
+          ..add(
+            NoteShowData(id: "$noteId"),
+          ),
         builder: (context, state) {
-          if (noteId != null && state is NoteInitial) {
-            vBloc.add(
-              NoteShowData(id: "$noteId"),
-            );
-          }
+          // if (noteId != null && state is NoteInitial) {
+          //   newBloc.add(
+          //     NoteShowData(id: "$noteId"),
+          //   );
+          // }
 
           if (state is NoteIsLoading) {
             return const Scaffold(
@@ -81,6 +78,10 @@ class FormNote extends StatelessWidget {
           }
 
           if (state is NoteShowIsLoaded) {
+            newBloc.topic = KeyValue(
+              name: state.data['topic']['name'],
+              value: state.data['topic']['_id'],
+            );
             noteId ??= state.data['_id'];
             topicC.text = state.data['topic']['name'];
             resultC.text = state.data['result'];
@@ -146,13 +147,15 @@ class FormNote extends StatelessWidget {
                                         TextButton(
                                           onPressed: () async {
                                             if (noteId != null) {
-                                              vBloc.add(
+                                              newBloc.add(
                                                 NoteUpdateData(
                                                   id: "$noteId",
                                                   data: {
-                                                    "topic": topicC.text,
-                                                    "notes": resultC.text,
-                                                    "tags": vTagsBloc.tags
+                                                    "topic":
+                                                        newBloc.topic?.value,
+                                                    "task": activityC.text,
+                                                    "result": resultC.text,
+                                                    "tags": newBloc.tags
                                                         .map((item) =>
                                                             item.value)
                                                         .toList(),
@@ -160,16 +163,18 @@ class FormNote extends StatelessWidget {
                                                 ),
                                               );
                                             } else {
-                                              vBloc.add(
+                                              newBloc.add(
                                                 NoteAddData(
                                                   data: {
-                                                    "topic": topicC.text,
-                                                    "notes": resultC.text,
+                                                    "topic":
+                                                        newBloc.topic?.value,
+                                                    "result": resultC.text,
+                                                    "task": activityC.text,
                                                     "doc": {
                                                       "type": "visit",
                                                       "_id": docId,
                                                     },
-                                                    "tags": vTagsBloc.tags
+                                                    "tags": newBloc.tags
                                                         .map((item) =>
                                                             item.value)
                                                         .toList(),
@@ -202,7 +207,7 @@ class FormNote extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BlocBuilder<NoteBloc, NoteState>(
-                          bloc: vContentBloc,
+                          bloc: newBloc,
                           builder: (context, stateVisContent) {
                             return Expanded(
                               child: Column(
@@ -211,24 +216,24 @@ class FormNote extends StatelessWidget {
                                     textArea: true,
                                     mandatory: true,
                                     endpoint: Endpoint(data: Data.topic),
-                                    valid: vContentBloc.topic?.value == null ||
-                                            vContentBloc.topic?.value == ""
+                                    valid: newBloc.topic?.value == null ||
+                                            newBloc.topic?.value == ""
                                         ? false
                                         : true,
-                                    value: vContentBloc.topic?.name ?? "",
+                                    value: newBloc.topic?.name ?? "",
                                     title: "Topic",
                                     titleModal: "Topic List",
                                     onSelected: (e) {
-                                      vContentBloc.topic = KeyValue(
+                                      newBloc.topic = KeyValue(
                                         name: e['name'],
                                         value: e["_id"],
                                       );
-                                      vContentBloc.emit(NoteInitial());
+                                      newBloc.emit(NoteInitial());
                                       Get.back();
                                     },
                                     onReset: () {
-                                      vContentBloc.topic = null;
-                                      vContentBloc.emit(NoteInitial());
+                                      newBloc.topic = null;
+                                      newBloc.emit(NoteInitial());
                                     },
                                     disabled: status != "0",
                                   ),
@@ -328,11 +333,11 @@ class FormNote extends StatelessWidget {
                           },
                         ),
                         BlocBuilder<NoteBloc, NoteState>(
-                            bloc: vTagsBloc,
+                            bloc: newBloc,
                             builder: (context, stateVisitTags) {
                               if (noteId != null &&
                                   stateVisitTags is NoteInitial) {
-                                vTagsBloc.add(
+                                newBloc.add(
                                   NoteShowData(id: "$noteId"),
                                 );
                               }
@@ -372,7 +377,7 @@ class FormNote extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Visibility(
-                                    visible: vTagsBloc.tags.isNotEmpty,
+                                    visible: newBloc.tags.isNotEmpty,
                                     child: Container(
                                       width: Get.width,
                                       padding: const EdgeInsets.only(
@@ -386,12 +391,12 @@ class FormNote extends StatelessWidget {
                                       ),
                                       child: Wrap(
                                         spacing: 5,
-                                        children: vTagsBloc.tags.map(
+                                        children: newBloc.tags.map(
                                           (e) {
                                             return ElevatedButton.icon(
                                               onPressed: () {
                                                 if (status == "0") {
-                                                  vTagsBloc.add(
+                                                  newBloc.add(
                                                     NoteRemoveTag(
                                                       tag: KeyValue(
                                                           name: e.name,
