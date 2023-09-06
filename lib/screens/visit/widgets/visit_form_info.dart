@@ -174,7 +174,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                                               const AssetImage(
                                                                   'assets/images/loading.gif'),
                                                           image: NetworkImage(
-                                                            "${Config().baseUri}public/${state.data.img!}",
+                                                            "${Config().baseUri}public/${state.data.img}",
                                                           ),
                                                           imageErrorBuilder:
                                                               (_, __, ___) {
