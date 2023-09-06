@@ -139,6 +139,8 @@ class VisitScreen extends StatelessWidget {
                   // IconSearch(),
                   IconButton(
                     onPressed: () {
+                      bloc.group = null;
+                      bloc.customer = null;
                       showDialog(
                         context: context,
                         builder: (context) => VisitModalInsert(
