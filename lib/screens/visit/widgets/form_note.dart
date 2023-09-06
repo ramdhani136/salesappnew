@@ -256,18 +256,22 @@ class FormNote extends StatelessWidget {
                                           ],
                                         ),
                                         Expanded(
-                                          child: TextField(
-                                            enabled: status == "0",
-                                            controller: activityC,
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: null,
-                                            decoration: const InputDecoration(
-                                              border: InputBorder.none,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: TextField(
+                                              enabled: status == "0",
+                                              controller: activityC,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: null,
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 23, 22, 22)),
                                             ),
-                                            style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 23, 22, 22)),
                                           ),
                                         ),
                                       ],
@@ -297,18 +301,22 @@ class FormNote extends StatelessWidget {
                                           ],
                                         ),
                                         Expanded(
-                                          child: TextField(
-                                            enabled: status == "0",
-                                            controller: resultC,
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: null,
-                                            decoration: const InputDecoration(
-                                              border: InputBorder.none,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: TextField(
+                                              enabled: status == "0",
+                                              controller: resultC,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: null,
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 23, 22, 22)),
                                             ),
-                                            style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 23, 22, 22)),
                                           ),
                                         ),
                                       ],
