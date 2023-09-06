@@ -91,6 +91,8 @@ class _FormNoteState extends State<FormNote> {
               name: state.data['topic']['name'],
               value: state.data['topic']['_id'],
             );
+            newBloc.activity = state.data["task"];
+            newBloc.feedback = state.data["result"];
             widget.noteId ??= state.data['_id'];
             topicC.text = state.data['topic']['name'];
             resultC.text = state.data['result'];
@@ -160,18 +162,27 @@ class _FormNoteState extends State<FormNote> {
 
                               if (stateNew.data['topic']["_id"] !=
                                       newBloc.topic?.value ||
-                                  hasChanges) {
+                                  hasChanges ||
+                                  stateNew.data['task'] != newBloc.activity ||
+                                  stateNew.data['result'] != newBloc.feedback) {
+                                isChange = true;
+                              } else {
+                                isChange = false;
+                              }
+                              widget.noteId = stateNew.data["_id"];
+                            } else {
+                              if (newBloc.feedback != "" &&
+                                  newBloc.activity != "" &&
+                                  newBloc.topic != null) {
                                 isChange = true;
                               } else {
                                 isChange = false;
                               }
                             }
 
-                            print(isChange);
-
                             return Row(children: [
                               Visibility(
-                                visible: status == "0",
+                                visible: status == "0" && isChange,
                                 child: IconButton(
                                   onPressed: () async {
                                     await showDialog(
@@ -190,7 +201,9 @@ class _FormNoteState extends State<FormNote> {
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                if (widget.noteId != null) {
+                                                if (widget.noteId != null ||
+                                                    stateNew
+                                                        is NoteShowIsLoaded) {
                                                   newBloc.add(
                                                     NoteUpdateData(
                                                       id: "${widget.noteId}",
@@ -311,6 +324,15 @@ class _FormNoteState extends State<FormNote> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 10),
                                             child: TextField(
+                                              onChanged: (value) {
+                                                newBloc.activity = value;
+                                                if (state is NoteShowIsLoaded) {
+                                                  newBloc
+                                                      .emit(state.copyWith());
+                                                } else {
+                                                  newBloc.emit(NoteInitial());
+                                                }
+                                              },
                                               enabled: status == "0",
                                               controller: activityC,
                                               keyboardType:
@@ -361,6 +383,15 @@ class _FormNoteState extends State<FormNote> {
                                               keyboardType:
                                                   TextInputType.multiline,
                                               maxLines: null,
+                                              onChanged: (value) {
+                                                newBloc.feedback = value;
+                                                if (state is NoteShowIsLoaded) {
+                                                  newBloc
+                                                      .emit(state.copyWith());
+                                                } else {
+                                                  newBloc.emit(NoteInitial());
+                                                }
+                                              },
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
                                               ),

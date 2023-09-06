@@ -28,6 +28,14 @@ class NoteIsLoaded extends NoteState {
 class NoteShowIsLoaded extends NoteState {
   Map data;
   NoteShowIsLoaded({required this.data});
+
+  NoteShowIsLoaded copyWith({
+    Map? data,
+  }) {
+    return NoteShowIsLoaded(
+      data: data ?? this.data,
+    );
+  }
 }
 
 class NoteDeleteSuccess extends NoteState {}
