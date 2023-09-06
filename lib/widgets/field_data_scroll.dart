@@ -28,6 +28,7 @@ class FieldDataScroll extends StatefulWidget {
   String? titleModal;
   bool disabled;
   Function onSelected;
+  bool textArea;
   final void Function(String e)? onChange;
   Function? onReset;
   Function? onTap;
@@ -40,6 +41,7 @@ class FieldDataScroll extends StatefulWidget {
   FieldDataScroll({
     this.onChange,
     required this.value,
+    this.textArea = false,
     this.disabled = false,
     required this.onSelected,
     this.InsertAction,
@@ -117,10 +119,16 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
           },
           child: Container(
               width: Get.width * 0.95,
-              height: widget.disabled ? 50 : 46,
+              height: widget.textArea
+                  ? null
+                  : widget.disabled
+                      ? 50
+                      : 46,
               decoration: BoxDecoration(
-                color: widget.disabled ? Colors.transparent : Colors.white,
-                border: widget.disabled
+                color: widget.textArea || widget.disabled
+                    ? Colors.transparent
+                    : Colors.white,
+                border: widget.textArea || widget.disabled
                     ? const Border(
                         bottom: BorderSide(
                           width: 1,

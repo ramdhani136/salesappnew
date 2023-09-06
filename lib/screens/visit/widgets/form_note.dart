@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names, invalid_use_of_visible_for_testing_member
 
 import 'dart:async';
 
@@ -10,9 +10,10 @@ import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:salesappnew/bloc/tags/tags_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
-import 'package:salesappnew/widgets/field_infinite_scroll.dart';
+import 'package:salesappnew/widgets/field_data_scroll.dart';
 
 class FormNote extends StatelessWidget {
   String? noteId;
@@ -23,7 +24,7 @@ class FormNote extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController topicC = TextEditingController();
     final TextEditingController resultC = TextEditingController();
-    final TextEditingController taskC = TextEditingController();
+    final TextEditingController activityC = TextEditingController();
 
     NoteBloc bloc = BlocProvider.of<NoteBloc>(context);
     NoteBloc vBloc = NoteBloc();
@@ -84,7 +85,7 @@ class FormNote extends StatelessWidget {
             topicC.text = state.data['topic']['name'];
             resultC.text = state.data['result'];
             if (state.data['task'] != null) {
-              taskC.text = state.data['task'];
+              activityC.text = state.data['task'];
             }
           }
 
@@ -124,33 +125,6 @@ class FormNote extends StatelessWidget {
                           ],
                         ),
                         Row(children: [
-                          // PopupMenuButton(
-                          //   padding: const EdgeInsets.all(0),
-                          //   icon: const Icon(
-                          //     Icons.attach_file_rounded,
-                          //     color: Color.fromARGB(255, 121, 8, 14),
-                          //   ),
-                          //   itemBuilder: (context) {
-                          //     List<Map<String, dynamic>> choose = [
-                          //       {'action': 'Attach File'},
-                          //       {'action': 'Take Photo'},
-                          //     ];
-                          //     return choose.map((item) {
-                          //       return PopupMenuItem(
-                          //         child: InkWell(
-                          //           onTap: () async {
-                          //             Get.back();
-                          //           },
-                          //           child: Padding(
-                          //             padding: const EdgeInsets.symmetric(
-                          //                 horizontal: 10, vertical: 10),
-                          //             child: Text(item['action']),
-                          //           ),
-                          //         ),
-                          //       );
-                          //     }).toList();
-                          //   },
-                          // ),
                           Visibility(
                             visible: status == "0",
                             child: IconButton(
@@ -233,65 +207,111 @@ class FormNote extends StatelessWidget {
                             return Expanded(
                               child: Column(
                                 children: [
-                                  // TextField(
-                                  //   textCapitalization:
-                                  //       TextCapitalization.words,
-                                  //   autofocus: true,
-                                  //   enabled: status == "0",
-                                  //   controller: topicC,
-                                  //   keyboardType: TextInputType.multiline,
-                                  //   maxLines: null,
-                                  //   decoration: const InputDecoration(
-                                  //     // border: InputBorder.none,
-                                  //     hintText: 'Topic',
-                                  //   ),
-                                  //   textInputAction: TextInputAction.next,
-                                  //   style: const TextStyle(
-                                  //     fontWeight: FontWeight.bold, //
-                                  //     color: Colors.black,
-                                  //   ),
-                                  // ),
-                                  FieldInfiniteScroll(
-                                    value: topicC.text,
-                                    bloc: topicInfiniteBloc,
-                                    placeholder: "Select Topic",
+                                  FieldDataScroll(
+                                    textArea: true,
                                     mandatory: true,
-                                    valid: topicC.text != "",
+                                    endpoint: Endpoint(data: Data.topic),
+                                    valid: vContentBloc.topic?.value == null ||
+                                            vContentBloc.topic?.value == ""
+                                        ? false
+                                        : true,
+                                    value: vContentBloc.topic?.name ?? "",
+                                    title: "Topic",
+                                    titleModal: "Topic List",
+                                    onSelected: (e) {
+                                      vContentBloc.topic = KeyValue(
+                                        name: e['name'],
+                                        value: e["_id"],
+                                      );
+                                      vContentBloc.emit(NoteInitial());
+                                      Get.back();
+                                    },
+                                    onReset: () {
+                                      vContentBloc.topic = null;
+                                      vContentBloc.emit(NoteInitial());
+                                    },
+                                    disabled: status != "0",
                                   ),
-                                  Visibility(
-                                    visible: taskC.text != "",
-                                    child: TextField(
-                                      textCapitalization:
-                                          TextCapitalization.words,
-                                      autofocus: true,
-                                      enabled: status == "0",
-                                      controller: taskC,
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: null,
-                                      decoration: const InputDecoration(
-                                        // border: InputBorder.none,
-                                        hintText: 'Task',
-                                      ),
-                                      textInputAction: TextInputAction.next,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold, //
-                                        color: Colors.black,
-                                      ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Activity",
+                                              style: TextStyle(
+                                                  color: Colors.grey[700]),
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            const Text(
+                                              "*",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: TextField(
+                                            enabled: status == "0",
+                                            controller: activityC,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: null,
+                                            decoration: const InputDecoration(
+                                              border: InputBorder.none,
+                                            ),
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 23, 22, 22)),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Expanded(
-                                    child: TextField(
-                                      enabled: status == "0",
-                                      controller: resultC,
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: null,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Result',
-                                      ),
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 23, 22, 22)),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Feedback",
+                                              style: TextStyle(
+                                                  color: Colors.grey[700]),
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            const Text(
+                                              "*",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: TextField(
+                                            enabled: status == "0",
+                                            controller: resultC,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: null,
+                                            decoration: const InputDecoration(
+                                              border: InputBorder.none,
+                                            ),
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 23, 22, 22)),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

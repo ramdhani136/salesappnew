@@ -15,6 +15,8 @@ part 'note_state.dart';
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
   String name = "";
   String notes = "";
+  KeyValue? topic;
+
   List<KeyValue> tags = [];
   NoteBloc() : super(NoteInitial()) {
     on<NoteGetData>(
