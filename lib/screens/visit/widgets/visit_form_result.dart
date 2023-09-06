@@ -190,13 +190,39 @@ class VisitFormResult extends StatelessWidget {
                                                           const SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Text(
-                                                            state.data[index]
-                                                                .task
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 15.5,
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${state.data[index].task}",
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        15.5,
+                                                                  ),
+                                                                ),
+                                                                const TextSpan(
+                                                                  text:
+                                                                      " #Activity",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    // Warna teks
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .italic,
+                                                                    color: const Color
+                                                                        .fromARGB(
+                                                                        255,
+                                                                        173,
+                                                                        130,
+                                                                        2),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ],
@@ -205,10 +231,34 @@ class VisitFormResult extends StatelessWidget {
                                                     const SizedBox(
                                                       height: 5,
                                                     ),
-                                                    Text(
-                                                      state.data[index].result!,
-                                                      style: const TextStyle(
-                                                        fontSize: 15.5,
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        style:
+                                                            DefaultTextStyle.of(
+                                                                    context)
+                                                                .style,
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                "${state.data[index].result}",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 15.5,
+                                                            ),
+                                                          ),
+                                                          const TextSpan(
+                                                            text: " #Feedback",
+                                                            style: TextStyle(
+                                                              // Warna teks
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                              color: const Color
+                                                                  .fromARGB(255,
+                                                                  173, 130, 2),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                     const SizedBox(
@@ -265,7 +315,7 @@ class VisitFormResult extends StatelessWidget {
                                                               ),
                                                               child: Container(
                                                                 padding: const EdgeInsets
-                                                                        .symmetric(
+                                                                    .symmetric(
                                                                     horizontal:
                                                                         6.0,
                                                                     vertical:
