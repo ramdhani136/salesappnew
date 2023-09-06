@@ -264,20 +264,38 @@ class VisitFormResult extends StatelessWidget {
                                                     const SizedBox(
                                                       height: 5,
                                                     ),
-                                                    Text(
-                                                      DateFormat.yMd()
-                                                          .add_jm()
-                                                          .format(
-                                                            DateTime.parse(
-                                                                    "${state.data[index].updatedAt}")
-                                                                .toLocal(),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          DateFormat.yMd()
+                                                              .add_jm()
+                                                              .format(
+                                                                DateTime.parse(
+                                                                        "${state.data[index].updatedAt}")
+                                                                    .toLocal(),
+                                                              ),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13.5,
+                                                            color: Colors.grey,
                                                           ),
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 13.5,
-                                                        color: Colors.grey,
-                                                      ),
+                                                        ),
+                                                        Text(
+                                                          "${state.data[index].createdBy?.name}",
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors
+                                                                .grey[800],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                     const SizedBox(
                                                       height: 10,
