@@ -14,11 +14,16 @@ import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/custom_field.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 
-class FormNote extends StatelessWidget {
+class FormNote extends StatefulWidget {
   String? noteId;
   String docId;
   FormNote({super.key, this.noteId, required this.docId});
 
+  @override
+  State<FormNote> createState() => _FormNoteState();
+}
+
+class _FormNoteState extends State<FormNote> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController topicC = TextEditingController();
@@ -27,6 +32,16 @@ class FormNote extends StatelessWidget {
 
     NoteBloc bloc = BlocProvider.of<NoteBloc>(context);
     NoteBloc newBloc = NoteBloc();
+
+    @override
+    void dispose() {
+      topicC.clear();
+      resultC.clear();
+      activityC.clear();
+      bloc.close();
+      newBloc.close();
+      super.dispose();
+    }
 
     void _showListTags(BuildContext context) {
       showDialog(
@@ -51,7 +66,7 @@ class FormNote extends StatelessWidget {
       onWillPop: () async {
         bloc.add(
           NoteGetData(
-            docId: docId,
+            docId: widget.docId,
           ),
         );
 
@@ -60,15 +75,9 @@ class FormNote extends StatelessWidget {
       child: BlocBuilder<NoteBloc, NoteState>(
         bloc: bloc
           ..add(
-            NoteShowData(id: "$noteId"),
+            NoteShowData(id: "${widget.noteId}"),
           ),
         builder: (context, state) {
-          // if (noteId != null && state is NoteInitial) {
-          //   newBloc.add(
-          //     NoteShowData(id: "$noteId"),
-          //   );
-          // }
-
           if (state is NoteIsLoading) {
             return const Scaffold(
               body: Center(
@@ -82,7 +91,7 @@ class FormNote extends StatelessWidget {
               name: state.data['topic']['name'],
               value: state.data['topic']['_id'],
             );
-            noteId ??= state.data['_id'];
+            widget.noteId ??= state.data['_id'];
             topicC.text = state.data['topic']['name'];
             resultC.text = state.data['result'];
             if (state.data['task'] != null) {
@@ -109,7 +118,7 @@ class FormNote extends StatelessWidget {
                         BackButtonCustom(onBack: () {
                           bloc.add(
                             NoteGetData(
-                              docId: docId,
+                              docId: widget.docId,
                             ),
                           );
                         }),
@@ -125,79 +134,100 @@ class FormNote extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(children: [
-                          Visibility(
-                            visible: status == "0",
-                            child: IconButton(
-                              onPressed: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("Really?"),
-                                      content: const Text(
-                                          "You want to save this data??"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("No"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            if (noteId != null) {
-                                              newBloc.add(
-                                                NoteUpdateData(
-                                                  id: "$noteId",
-                                                  data: {
-                                                    "topic":
-                                                        newBloc.topic?.value,
-                                                    "task": activityC.text,
-                                                    "result": resultC.text,
-                                                    "tags": newBloc.tags
-                                                        .map((item) =>
-                                                            item.value)
-                                                        .toList(),
-                                                  },
-                                                ),
-                                              );
-                                            } else {
-                                              newBloc.add(
-                                                NoteAddData(
-                                                  data: {
-                                                    "topic":
-                                                        newBloc.topic?.value,
-                                                    "result": resultC.text,
-                                                    "task": activityC.text,
-                                                    "doc": {
-                                                      "type": "visit",
-                                                      "_id": docId,
-                                                    },
-                                                    "tags": newBloc.tags
-                                                        .map((item) =>
-                                                            item.value)
-                                                        .toList(),
-                                                  },
-                                                ),
-                                              );
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Yes"),
-                                        ),
-                                      ],
+                        BlocBuilder<NoteBloc, NoteState>(
+                          bloc: newBloc,
+                          builder: (context, stateNew) {
+                            bool isChange = false;
+
+                            if (stateNew is NoteShowIsLoaded) {
+                              print(stateNew.data["task"]);
+                              print(activityC.text);
+
+                              if (stateNew.data['topic']["_id"] !=
+                                  newBloc.topic?.value) {
+                                isChange = true;
+                              } else {
+                                isChange = false;
+                              }
+                            }
+
+                            print(isChange);
+
+                            return Row(children: [
+                              Visibility(
+                                visible: status == "0",
+                                child: IconButton(
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Really?"),
+                                          content: const Text(
+                                              "You want to save this data??"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text("No"),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                if (widget.noteId != null) {
+                                                  newBloc.add(
+                                                    NoteUpdateData(
+                                                      id: "${widget.noteId}",
+                                                      data: {
+                                                        "topic": newBloc
+                                                            .topic?.value,
+                                                        "task": activityC.text,
+                                                        "result": resultC.text,
+                                                        "tags": newBloc.tags
+                                                            .map((item) =>
+                                                                item.value)
+                                                            .toList(),
+                                                      },
+                                                    ),
+                                                  );
+                                                } else {
+                                                  newBloc.add(
+                                                    NoteAddData(
+                                                      data: {
+                                                        "topic": newBloc
+                                                            .topic?.value,
+                                                        "result": resultC.text,
+                                                        "task": activityC.text,
+                                                        "doc": {
+                                                          "type": "visit",
+                                                          "_id": widget.docId,
+                                                        },
+                                                        "tags": newBloc.tags
+                                                            .map((item) =>
+                                                                item.value)
+                                                            .toList(),
+                                                      },
+                                                    ),
+                                                  );
+                                                }
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text("Yes"),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     );
                                   },
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.check,
-                                color: Color.fromARGB(255, 121, 8, 14),
+                                  icon: const Icon(
+                                    Icons.check,
+                                    color: Color.fromARGB(255, 121, 8, 14),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ])
+                            ]);
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -335,10 +365,10 @@ class FormNote extends StatelessWidget {
                         BlocBuilder<NoteBloc, NoteState>(
                             bloc: newBloc,
                             builder: (context, stateVisitTags) {
-                              if (noteId != null &&
+                              if (widget.noteId != null &&
                                   stateVisitTags is NoteInitial) {
                                 newBloc.add(
-                                  NoteShowData(id: "$noteId"),
+                                  NoteShowData(id: "${widget.noteId}"),
                                 );
                               }
 
@@ -430,50 +460,6 @@ class FormNote extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // floatingActionButton: Visibility(
-                  //   visible: status == "0",
-                  //   child: Padding(
-                  //     padding: EdgeInsets.only(
-                  //         bottom: vBloc.tags.isEmpty ? 80 : 150),
-                  //     child: SizedBox(
-                  //       height: 65.0,
-                  //       width: 65.0,
-                  //       child: FloatingActionButton(
-                  //         onPressed: () {
-                  //           if (noteId != null) {
-                  //             vBloc.add(
-                  //               UpdateVisitNote(
-                  //                 id: "$noteId",
-                  //                 data: {
-                  //                   "title": titleC.text,
-                  //                   "notes": noteC.text,
-                  //                   "tags": vBloc.tags
-                  //                       .map((item) => item.value)
-                  //                       .toList(),
-                  //                 },
-                  //               ),
-                  //             );
-                  //           } else {
-                  //             vBloc.add(
-                  //               InsertVisitNote(
-                  //                 data: {
-                  //                   "title": titleC.text,
-                  //                   "notes": noteC.text,
-                  //                   "visitId": visitId,
-                  //                   "tags": vBloc.tags
-                  //                       .map((item) => item.value)
-                  //                       .toList(),
-                  //                 },
-                  //               ),
-                  //             );
-                  //           }
-                  //         },
-                  //         backgroundColor: Colors.grey[850],
-                  //         child: const Icon(Icons.save),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 );
               });
         },
