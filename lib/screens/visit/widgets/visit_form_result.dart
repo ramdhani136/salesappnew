@@ -72,40 +72,40 @@ class VisitFormResult extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onLongPress: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("Really?"),
-                                            content: const Text(
-                                                "You want to delete this data??"),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                child: const Text("No"),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  try {
-                                                    noteBloc.add(
-                                                      NoteDeleteData(
-                                                        id: state.data[index].id
-                                                            .toString(),
-                                                      ),
-                                                    );
-                                                    Get.back();
-                                                  } catch (e) {
-                                                    rethrow;
-                                                  }
-                                                },
-                                                child: const Text("Yes"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                      // await showDialog(
+                                      //   context: context,
+                                      //   builder: (BuildContext context) {
+                                      //     return AlertDialog(
+                                      //       title: const Text("Really?"),
+                                      //       content: const Text(
+                                      //           "You want to delete this data??"),
+                                      //       actions: [
+                                      //         TextButton(
+                                      //           onPressed: () {
+                                      //             Get.back();
+                                      //           },
+                                      //           child: const Text("No"),
+                                      //         ),
+                                      //         TextButton(
+                                      //           onPressed: () async {
+                                      //             try {
+                                      //               noteBloc.add(
+                                      //                 NoteDeleteData(
+                                      //                   id: state.data[index].id
+                                      //                       .toString(),
+                                      //                 ),
+                                      //               );
+                                      //               Get.back();
+                                      //             } catch (e) {
+                                      //               rethrow;
+                                      //             }
+                                      //           },
+                                      //           child: const Text("Yes"),
+                                      //         ),
+                                      //       ],
+                                      //     );
+                                      //   },
+                                      // );
                                     },
                                     onTap: () {
                                       Navigator.of(context).push(
@@ -214,12 +214,12 @@ class VisitFormResult extends StatelessWidget {
                                                                     fontStyle:
                                                                         FontStyle
                                                                             .italic,
-                                                                    color: const Color
+                                                                    color: Color
                                                                         .fromARGB(
-                                                                        255,
-                                                                        173,
-                                                                        130,
-                                                                        2),
+                                                                            255,
+                                                                            173,
+                                                                            130,
+                                                                            2),
                                                                   ),
                                                                 ),
                                                               ],
@@ -253,9 +253,12 @@ class VisitFormResult extends StatelessWidget {
                                                               fontStyle:
                                                                   FontStyle
                                                                       .italic,
-                                                              color: const Color
-                                                                  .fromARGB(255,
-                                                                  173, 130, 2),
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      173,
+                                                                      130,
+                                                                      2),
                                                             ),
                                                           ),
                                                         ],
