@@ -35,6 +35,7 @@ class _FormNoteState extends State<FormNote> {
     NoteBloc newBloc = NoteBloc();
     KeyboardVisibilityController keyboardVisibilityController =
         KeyboardVisibilityController();
+    VisitBloc visitBloc = BlocProvider.of<VisitBloc>(context);
 
     @override
     void dispose() {
@@ -81,6 +82,7 @@ class _FormNoteState extends State<FormNote> {
             NoteShowData(id: "${widget.noteId}"),
           ),
         builder: (context, state) {
+          print(widget.noteId);
           if (widget.activity != null && widget.noteId == null) {
             activityC.text = widget.activity!;
             newBloc.activity = widget.activity!;
@@ -109,7 +111,7 @@ class _FormNoteState extends State<FormNote> {
           }
 
           return BlocBuilder(
-              bloc: BlocProvider.of<VisitBloc>(context),
+              bloc: visitBloc,
               builder: (context, stateVisit) {
                 String status = "1";
                 if (stateVisit is IsShowLoaded) {
@@ -257,6 +259,35 @@ class _FormNoteState extends State<FormNote> {
                                   },
                                   icon: const Icon(
                                     Icons.check,
+                                    color: Color.fromARGB(255, 121, 8, 14),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: status == "0" &&
+                                    !isChange &&
+                                    widget.noteId != null,
+                                child: IconButton(
+                                  onPressed: () {
+                                    bloc.emit(NoteInitial());
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute<FormNote>(
+                                        builder: (_) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider.value(
+                                              value: bloc,
+                                            ),
+                                            BlocProvider.value(
+                                              value: visitBloc,
+                                            ),
+                                          ],
+                                          child: FormNote(docId: widget.docId),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
                                     color: Color.fromARGB(255, 121, 8, 14),
                                   ),
                                 ),
