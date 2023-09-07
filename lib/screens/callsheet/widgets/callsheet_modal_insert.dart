@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, unused_element, invalid_use_of_visible_for_testing_member
+// ignore_for_file: unused_local_variable, must_be_immutable, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, unused_element, invalid_use_of_visible_for_testing_member, empty_catches
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,9 +48,7 @@ class _CallsheetModalInsertState extends State<CallsheetModalInsert> {
           }
         }
       }
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   @override
