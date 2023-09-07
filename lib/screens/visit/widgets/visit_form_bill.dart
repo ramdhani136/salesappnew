@@ -2,7 +2,6 @@
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/invoice/invoice_bloc.dart';
 import 'package:salesappnew/bloc/note/note_bloc.dart';
@@ -10,8 +9,6 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:salesappnew/screens/invoice/invoice_form.dart';
 import 'package:salesappnew/screens/visit/widgets/form_note.dart';
-// import 'package:salesappnew/screens/visit/widgets/form_visit_note.dart';
-import 'package:salesappnew/utils/fetch_data.dart';
 
 class VisitFormBill extends StatelessWidget {
   String visitId;
