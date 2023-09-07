@@ -114,7 +114,7 @@ class _CallsheetModalInsertState extends State<CallsheetModalInsert> {
                                   data: Data.namingSeries,
                                   filters: [
                                     ["status", "=", "1"],
-                                    ["doc", "=", "visit"]
+                                    ["doc", "=", "callsheet"]
                                   ],
                                 ),
                                 valid: localBloc.naming?.value == null ||
