@@ -17,7 +17,8 @@ import 'package:salesappnew/widgets/field_data_scroll.dart';
 class FormNote extends StatefulWidget {
   String? noteId;
   String docId;
-  FormNote({super.key, this.noteId, required this.docId});
+  String? activity;
+  FormNote({super.key, this.noteId, required this.docId, this.activity});
 
   @override
   State<FormNote> createState() => _FormNoteState();
@@ -80,6 +81,10 @@ class _FormNoteState extends State<FormNote> {
             NoteShowData(id: "${widget.noteId}"),
           ),
         builder: (context, state) {
+          if (widget.activity != null && widget.noteId == null) {
+            activityC.text = widget.activity!;
+            newBloc.activity = widget.activity!;
+          }
           if (state is NoteIsLoading) {
             return const Scaffold(
               body: Center(
