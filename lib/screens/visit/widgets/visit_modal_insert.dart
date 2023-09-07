@@ -111,6 +111,7 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FieldDataScroll(
+                              minWidth: Get.width - 116,
                               endpoint: Endpoint(
                                 data: Data.namingSeries,
                                 filters: [
@@ -148,6 +149,7 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                               height: 15,
                             ),
                             FieldDataScroll(
+                              minWidth: Get.width - 116,
                               endpoint: Endpoint(data: Data.branch),
                               valid: localBloc.branch?.value == null ||
                                       localBloc.branch?.value == ""
@@ -183,6 +185,7 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                               height: 15,
                             ),
                             FieldDataScroll(
+                              minWidth: Get.width - 116,
                               endpoint: Endpoint(
                                 data: Data.customergroup,
                                 filters: [
@@ -206,6 +209,8 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                               onSelected: (e) {
                                 localBloc.group =
                                     KeyValue(name: e["name"], value: e["_id"]);
+                                localBloc.customer =
+                                    KeyValue(name: "", value: "");
                                 Get.back();
                                 localBloc.emit(
                                   VisitInitial(),
@@ -213,6 +218,8 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                               },
                               onReset: () {
                                 localBloc.group = KeyValue(name: "", value: "");
+                                localBloc.customer =
+                                    KeyValue(name: "", value: "");
                                 localBloc.emit(
                                   VisitInitial(),
                                 );
@@ -223,6 +230,7 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                               height: 15,
                             ),
                             FieldDataScroll(
+                              minWidth: Get.width - 116,
                               endpoint: Endpoint(
                                 data: Data.customer,
                                 filters: [

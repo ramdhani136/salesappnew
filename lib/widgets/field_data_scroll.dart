@@ -27,6 +27,7 @@ class FieldDataScroll extends StatefulWidget {
   String? title;
   String? titleModal;
   bool disabled;
+  double? minWidth;
   Function onSelected;
   bool textArea;
   final void Function(String e)? onChange;
@@ -45,6 +46,7 @@ class FieldDataScroll extends StatefulWidget {
     this.disabled = false,
     required this.onSelected,
     this.InsertAction,
+    this.minWidth,
     this.onReset,
     this.onTap,
     this.placeholder,
@@ -153,7 +155,10 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      constraints: BoxConstraints(minWidth: Get.width - 81),
+                      constraints: BoxConstraints(
+                          minWidth: widget.minWidth != null
+                              ? widget.minWidth!
+                              : Get.width - 81),
                       child: Row(
                         children: [
                           const SizedBox(
