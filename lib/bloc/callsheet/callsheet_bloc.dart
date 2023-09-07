@@ -22,6 +22,8 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
   KeyValue? naming;
   KeyValue? customer;
   KeyValue? group;
+  KeyValue? branch;
+  KeyValue? contact;
   String type = "in";
   List? namingList;
   CallsheetBloc() : super(CallsheetInitial()) {
