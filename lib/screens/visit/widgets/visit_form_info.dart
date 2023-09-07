@@ -35,6 +35,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   TextEditingController branchC = TextEditingController();
   TextEditingController typeC = TextEditingController();
   TextEditingController nameC = TextEditingController();
+  TextEditingController checkInC = TextEditingController();
+  TextEditingController checkOutC = TextEditingController();
   TextEditingController workflowC = TextEditingController();
   TextEditingController picC = TextEditingController();
   TextEditingController phoneC = TextEditingController();
@@ -45,6 +47,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   void dispose() {
     super.dispose();
     customerC.dispose();
+    checkInC.dispose();
+    checkOutC.dispose();
     groupC.dispose();
     branchC.dispose();
     typeC.dispose();
@@ -73,6 +77,23 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
         if (state is IsShowLoaded) {
           typeC.text = state.data.type == "insite" ? "In site" : "Out Site";
           nameC.text = state.data.name!;
+          if (state.data.checkIn != null) {
+            checkInC.text = state.data.checkIn != null
+                ? "${state.data.checkIn?.address} - ${DateFormat.yMd().add_jm().format(
+                      DateTime.parse("${state.data.checkIn!.createdAt}")
+                          .toLocal(),
+                    )}"
+                : "";
+          }
+          if (state.data.checkOut != null) {
+            checkOutC.text = state.data.checkOut != null
+                ? "${state.data.checkOut?.address} - ${DateFormat.yMd().add_jm().format(
+                      DateTime.parse("${state.data.checkOut!.createdAt}")
+                          .toLocal(),
+                    )}"
+                : "";
+          }
+
           workflowC.text = state.data.workflowState!;
           bloc.branch = visitBloc.branch;
           bloc.group = visitBloc.group;
@@ -592,6 +613,70 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                         ),
                         const SizedBox(
                           height: 15,
+                        ),
+                        Visibility(
+                          visible: checkInC.text != "",
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Check In",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                  const SizedBox(
+                                    width: 2,
+                                  ),
+                                ],
+                              ),
+                              TextField(
+                                readOnly: true,
+                                maxLines: null,
+                                controller: checkInC,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 10,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: checkOutC.text != "",
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Check Out",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                  const SizedBox(
+                                    width: 2,
+                                  ),
+                                ],
+                              ),
+                              TextField(
+                                readOnly: true,
+                                maxLines: null,
+                                controller: checkOutC,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 10,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
                         ),
                         Visibility(
                           visible: state.data.signature != null,
