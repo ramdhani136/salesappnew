@@ -11,7 +11,11 @@ import 'package:salesappnew/widgets/field_data_scroll.dart';
 
 class VisitModalInsert extends StatefulWidget {
   VisitBloc bloc;
-  VisitModalInsert({super.key, required this.bloc});
+  KeyValue? branch;
+  KeyValue? group;
+  KeyValue? customer;
+  VisitModalInsert(
+      {super.key, required this.bloc, this.branch, this.customer, this.group});
 
   @override
   State<VisitModalInsert> createState() => _VisitModalInsertState();
