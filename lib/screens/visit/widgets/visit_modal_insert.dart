@@ -311,14 +311,24 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                                 backgroundColor: (localBloc.naming?.name !=
                                             null &&
                                         localBloc.group?.name != null &&
-                                        localBloc.customer?.name != null)
+                                        localBloc.branch?.name != null &&
+                                        localBloc.customer?.name != null &&
+                                        localBloc.naming?.name != "" &&
+                                        localBloc.group?.name != "" &&
+                                        localBloc.branch?.name != "" &&
+                                        localBloc.customer?.name != "")
                                     ? const Color.fromARGB(255, 65, 170, 69)
                                     : const Color.fromARGB(255, 92, 214, 96),
                               ),
                               onPressed: () async {
                                 if (localBloc.naming?.name != null &&
                                     localBloc.group?.name != null &&
-                                    localBloc.customer?.name != null) {
+                                    localBloc.branch?.name != null &&
+                                    localBloc.customer?.name != null &&
+                                    localBloc.naming?.name != "" &&
+                                    localBloc.group?.name != "" &&
+                                    localBloc.branch?.name != "" &&
+                                    localBloc.customer?.name != "") {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) {
