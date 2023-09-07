@@ -61,6 +61,16 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
 
   @override
   void initState() {
+    if (widget.customer != null) {
+      localBloc.customer = widget.customer!;
+    }
+    if (widget.group != null) {
+      localBloc.group = widget.group!;
+    }
+    if (widget.branch != null) {
+      localBloc.branch = widget.branch!;
+    }
+
     GerDefaultData(
       endpoint: Data.branch,
     );

@@ -695,21 +695,21 @@ class _LocationAroundYouState extends State<LocationAroundYou> {
                                 showDialog(
                                   context: context,
                                   builder: (context) => VisitModalInsert(
-                                    bloc: VisitBloc()
-                                      ..add(
-                                        VisitSetForm(
-                                          customer: KeyValue(
-                                            name: state.data[index]['name'],
-                                            value: state.data[index]['_id'],
-                                          ),
-                                          group: KeyValue(
-                                            name: state.data[index]
-                                                ['customerGroup']['name'],
-                                            value: state.data[index]
-                                                ['customerGroup']['_id'],
-                                          ),
-                                        ),
-                                      ),
+                                    bloc: VisitBloc(),
+                                    customer: KeyValue(
+                                      name: state.data[index]['name'],
+                                      value: state.data[index]['_id'],
+                                    ),
+                                    group: KeyValue(
+                                      name: state.data[index]['customerGroup']
+                                          ['name'],
+                                      value: state.data[index]['customerGroup']
+                                          ['_id'],
+                                    ),
+                                    branch: KeyValue(
+                                      name: state.data[index]['branch']['name'],
+                                      value: state.data[index]['branch']['_id'],
+                                    ),
                                   ),
                                 );
                               },
