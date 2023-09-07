@@ -9,9 +9,68 @@ import 'package:salesappnew/screens/visit/checkin_screen.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 
-class VisitModalInsert extends StatelessWidget {
+class VisitModalInsert extends StatefulWidget {
   VisitBloc bloc;
   VisitModalInsert({super.key, required this.bloc});
+
+  @override
+  State<VisitModalInsert> createState() => _VisitModalInsertState();
+}
+
+class _VisitModalInsertState extends State<VisitModalInsert> {
+  VisitBloc localBloc = VisitBloc();
+
+  Future<void> GerDefaultData({
+    required Data endpoint,
+  }) async {
+    try {
+      Map<String, dynamic> response = await FetchData(data: endpoint).FINDALL(
+        filters: [
+          ["status", "=", "1"],
+        ],
+        fields: ["name"],
+      );
+
+      if (response['status'] == 200) {
+        List data;
+        data = response['data'];
+
+        if (data.length == 1) {
+          if (endpoint == Data.branch) {
+            localBloc.branch = KeyValue(
+              name: data[0]['name'],
+              value: data[0]['_id'],
+            );
+          }
+          if (endpoint == Data.customergroup) {
+            localBloc.group = KeyValue(
+              name: data[0]['name'],
+              value: data[0]['_id'],
+            );
+          }
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    GerDefaultData(
+      endpoint: Data.branch,
+    );
+    GerDefaultData(
+      endpoint: Data.customergroup,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    localBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +85,7 @@ class VisitModalInsert extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: BlocBuilder<VisitBloc, VisitState>(
-            bloc: bloc
+            bloc: localBloc
               ..add(
                 VisitGetNaming(),
               ),
@@ -59,25 +118,26 @@ class VisitModalInsert extends StatelessWidget {
                                   ["doc", "=", "visit"]
                                 ],
                               ),
-                              valid: bloc.naming?.value == null ||
-                                      bloc.naming?.value == ""
+                              valid: localBloc.naming?.value == null ||
+                                      localBloc.naming?.value == ""
                                   ? false
                                   : true,
-                              value: bloc.naming?.name ?? "",
+                              value: localBloc.naming?.name ?? "",
                               title: "Naming Series",
                               titleModal: "Naming Series List",
                               onSelected: (e) {
                                 Get.back();
-                                bloc.naming =
+                                localBloc.naming =
                                     KeyValue(name: e["name"], value: e["_id"]);
 
-                                bloc.emit(
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
                               onReset: () {
-                                bloc.naming = KeyValue(name: "", value: "");
-                                bloc.emit(
+                                localBloc.naming =
+                                    KeyValue(name: "", value: "");
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
@@ -89,28 +149,31 @@ class VisitModalInsert extends StatelessWidget {
                             ),
                             FieldDataScroll(
                               endpoint: Endpoint(data: Data.branch),
-                              valid: bloc.branch?.value == null ||
-                                      bloc.branch?.value == ""
+                              valid: localBloc.branch?.value == null ||
+                                      localBloc.branch?.value == ""
                                   ? false
                                   : true,
-                              value: bloc.branch?.name ?? "",
+                              value: localBloc.branch?.name ?? "",
                               title: "Branch",
                               titleModal: "Branch List",
                               onSelected: (e) {
                                 Get.back();
-                                bloc.branch =
+                                localBloc.branch =
                                     KeyValue(name: e["name"], value: e["_id"]);
-                                bloc.group = KeyValue(name: "", value: "");
-                                bloc.customer = KeyValue(name: "", value: "");
-                                bloc.emit(
+                                localBloc.group = KeyValue(name: "", value: "");
+                                localBloc.customer =
+                                    KeyValue(name: "", value: "");
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
                               onReset: () {
-                                bloc.branch = KeyValue(name: "", value: "");
-                                bloc.group = KeyValue(name: "", value: "");
-                                bloc.customer = KeyValue(name: "", value: "");
-                                bloc.emit(
+                                localBloc.branch =
+                                    KeyValue(name: "", value: "");
+                                localBloc.group = KeyValue(name: "", value: "");
+                                localBloc.customer =
+                                    KeyValue(name: "", value: "");
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
@@ -126,31 +189,31 @@ class VisitModalInsert extends StatelessWidget {
                                   [
                                     "branch._id",
                                     "=",
-                                    bloc.branch?.value != null &&
-                                            bloc.branch?.value != ""
-                                        ? bloc.branch!.value
+                                    localBloc.branch?.value != null &&
+                                            localBloc.branch?.value != ""
+                                        ? localBloc.branch!.value
                                         : "",
                                   ]
                                 ],
                               ),
-                              valid: bloc.group?.value == null ||
-                                      bloc.group?.value == ""
+                              valid: localBloc.group?.value == null ||
+                                      localBloc.group?.value == ""
                                   ? false
                                   : true,
-                              value: bloc.group?.name ?? "",
+                              value: localBloc.group?.name ?? "",
                               title: "Group",
                               titleModal: "Group List",
                               onSelected: (e) {
-                                bloc.group =
+                                localBloc.group =
                                     KeyValue(name: e["name"], value: e["_id"]);
                                 Get.back();
-                                bloc.emit(
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
                               onReset: () {
-                                bloc.group = KeyValue(name: "", value: "");
-                                bloc.emit(
+                                localBloc.group = KeyValue(name: "", value: "");
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
@@ -166,31 +229,32 @@ class VisitModalInsert extends StatelessWidget {
                                   [
                                     "customerGroup",
                                     "=",
-                                    bloc.group?.value != null &&
-                                            bloc.group?.value != ""
-                                        ? bloc.group!.value
+                                    localBloc.group?.value != null &&
+                                            localBloc.group?.value != ""
+                                        ? localBloc.group!.value
                                         : "",
                                   ]
                                 ],
                               ),
-                              valid: bloc.customer?.value == null ||
-                                      bloc.customer?.value == ""
+                              valid: localBloc.customer?.value == null ||
+                                      localBloc.customer?.value == ""
                                   ? false
                                   : true,
-                              value: bloc.customer?.name ?? "",
+                              value: localBloc.customer?.name ?? "",
                               title: "Customer",
                               titleModal: "Customer List",
                               onSelected: (e) {
-                                bloc.customer =
+                                localBloc.customer =
                                     KeyValue(name: e["name"], value: e["_id"]);
                                 Get.back();
-                                bloc.emit(
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
                               onReset: () {
-                                bloc.customer = KeyValue(name: "", value: "");
-                                bloc.emit(
+                                localBloc.customer =
+                                    KeyValue(name: "", value: "");
+                                localBloc.emit(
                                   VisitInitial(),
                                 );
                               },
@@ -204,23 +268,24 @@ class VisitModalInsert extends StatelessWidget {
                           height: 46,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: (bloc.naming?.name != null &&
-                                      bloc.group?.name != null &&
-                                      bloc.customer?.name != null)
-                                  ? const Color.fromARGB(255, 65, 170, 69)
-                                  : const Color.fromARGB(255, 92, 214, 96),
+                              backgroundColor:
+                                  (localBloc.naming?.name != null &&
+                                          localBloc.group?.name != null &&
+                                          localBloc.customer?.name != null)
+                                      ? const Color.fromARGB(255, 65, 170, 69)
+                                      : const Color.fromARGB(255, 92, 214, 96),
                             ),
                             onPressed: () async {
-                              if (bloc.naming?.name != null &&
-                                  bloc.group?.name != null &&
-                                  bloc.customer?.name != null) {
+                              if (localBloc.naming?.name != null &&
+                                  localBloc.group?.name != null &&
+                                  localBloc.customer?.name != null) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return CheckInScreen(
-                                        customerId: bloc.customer?.value,
-                                        bloc: bloc,
-                                        naming: bloc.naming,
+                                        customerId: localBloc.customer?.value,
+                                        bloc: widget.bloc,
+                                        naming: localBloc.naming,
                                       );
                                     },
                                   ),
