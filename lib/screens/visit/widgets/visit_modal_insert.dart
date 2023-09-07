@@ -77,243 +77,262 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
     return Dialog(
       child: FractionallySizedBox(
         widthFactor: 1.15,
-        child: Container(
-          width: Get.width * 0.95,
-          height: 490,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: BlocBuilder<VisitBloc, VisitState>(
-            bloc: localBloc
-              ..add(
-                VisitGetNaming(),
-              ),
-            builder: (context, state) {
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "New Visit",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 66, 66, 66),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+        child: IntrinsicHeight(
+          child: Container(
+            width: Get.width * 0.95,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: BlocBuilder<VisitBloc, VisitState>(
+              bloc: localBloc
+                ..add(
+                  VisitGetNaming(),
+                ),
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "New Visit",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 66, 66, 66),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FieldDataScroll(
-                              minWidth: Get.width - 116,
-                              endpoint: Endpoint(
-                                data: Data.namingSeries,
-                                filters: [
-                                  ["status", "=", "1"],
-                                  ["doc", "=", "visit"]
-                                ],
-                              ),
-                              valid: localBloc.naming?.value == null ||
-                                      localBloc.naming?.value == ""
-                                  ? false
-                                  : true,
-                              value: localBloc.naming?.name ?? "",
-                              title: "Naming Series",
-                              titleModal: "Naming Series List",
-                              onSelected: (e) {
-                                Get.back();
-                                localBloc.naming =
-                                    KeyValue(name: e["name"], value: e["_id"]);
+                          const SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FieldDataScroll(
+                                minWidth: Get.width - 116,
+                                endpoint: Endpoint(
+                                  data: Data.namingSeries,
+                                  filters: [
+                                    ["status", "=", "1"],
+                                    ["doc", "=", "visit"]
+                                  ],
+                                ),
+                                valid: localBloc.naming?.value == null ||
+                                        localBloc.naming?.value == ""
+                                    ? false
+                                    : true,
+                                value: localBloc.naming?.name ?? "",
+                                title: "Naming Series",
+                                titleModal: "Naming Series List",
+                                onSelected: (e) {
+                                  Get.back();
+                                  localBloc.naming = KeyValue(
+                                      name: e["name"], value: e["_id"]);
 
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              onReset: () {
-                                localBloc.naming =
-                                    KeyValue(name: "", value: "");
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              disabled: false,
-                              mandatory: true,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            FieldDataScroll(
-                              minWidth: Get.width - 116,
-                              endpoint: Endpoint(data: Data.branch),
-                              valid: localBloc.branch?.value == null ||
-                                      localBloc.branch?.value == ""
-                                  ? false
-                                  : true,
-                              value: localBloc.branch?.name ?? "",
-                              title: "Branch",
-                              titleModal: "Branch List",
-                              onSelected: (e) {
-                                Get.back();
-                                localBloc.branch =
-                                    KeyValue(name: e["name"], value: e["_id"]);
-                                localBloc.group = KeyValue(name: "", value: "");
-                                localBloc.customer =
-                                    KeyValue(name: "", value: "");
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              onReset: () {
-                                localBloc.branch =
-                                    KeyValue(name: "", value: "");
-                                localBloc.group = KeyValue(name: "", value: "");
-                                localBloc.customer =
-                                    KeyValue(name: "", value: "");
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              mandatory: true,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            FieldDataScroll(
-                              minWidth: Get.width - 116,
-                              endpoint: Endpoint(
-                                data: Data.customergroup,
-                                filters: [
-                                  [
-                                    "branch._id",
-                                    "=",
-                                    localBloc.branch?.value != null &&
-                                            localBloc.branch?.value != ""
-                                        ? localBloc.branch!.value
-                                        : "",
-                                  ]
-                                ],
+                                  localBloc.emit(
+                                    VisitInitial(),
+                                  );
+                                },
+                                onReset: () {
+                                  localBloc.naming =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.emit(
+                                    VisitInitial(),
+                                  );
+                                },
+                                disabled: false,
+                                mandatory: true,
                               ),
-                              valid: localBloc.group?.value == null ||
-                                      localBloc.group?.value == ""
-                                  ? false
-                                  : true,
-                              value: localBloc.group?.name ?? "",
-                              title: "Group",
-                              titleModal: "Group List",
-                              onSelected: (e) {
-                                localBloc.group =
-                                    KeyValue(name: e["name"], value: e["_id"]);
-                                localBloc.customer =
-                                    KeyValue(name: "", value: "");
-                                Get.back();
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              onReset: () {
-                                localBloc.group = KeyValue(name: "", value: "");
-                                localBloc.customer =
-                                    KeyValue(name: "", value: "");
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              mandatory: true,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            FieldDataScroll(
-                              minWidth: Get.width - 116,
-                              endpoint: Endpoint(
-                                data: Data.customer,
-                                filters: [
-                                  [
-                                    "customerGroup",
-                                    "=",
-                                    localBloc.group?.value != null &&
-                                            localBloc.group?.value != ""
-                                        ? localBloc.group!.value
-                                        : "",
-                                  ]
-                                ],
+                              const SizedBox(
+                                height: 15,
                               ),
-                              valid: localBloc.customer?.value == null ||
-                                      localBloc.customer?.value == ""
-                                  ? false
-                                  : true,
-                              value: localBloc.customer?.name ?? "",
-                              title: "Customer",
-                              titleModal: "Customer List",
-                              onSelected: (e) {
-                                localBloc.customer =
-                                    KeyValue(name: e["name"], value: e["_id"]);
-                                Get.back();
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              onReset: () {
-                                localBloc.customer =
-                                    KeyValue(name: "", value: "");
-                                localBloc.emit(
-                                  VisitInitial(),
-                                );
-                              },
-                              mandatory: true,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: Get.width,
-                          height: 46,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  (localBloc.naming?.name != null &&
-                                          localBloc.group?.name != null &&
-                                          localBloc.customer?.name != null)
-                                      ? const Color.fromARGB(255, 65, 170, 69)
-                                      : const Color.fromARGB(255, 92, 214, 96),
-                            ),
-                            onPressed: () async {
-                              if (localBloc.naming?.name != null &&
-                                  localBloc.group?.name != null &&
-                                  localBloc.customer?.name != null) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return CheckInScreen(
-                                        customerId: localBloc.customer?.value,
-                                        bloc: widget.bloc,
-                                        naming: localBloc.naming,
-                                      );
-                                    },
+                              FieldDataScroll(
+                                minWidth: Get.width - 116,
+                                endpoint: Endpoint(data: Data.branch),
+                                valid: localBloc.branch?.value == null ||
+                                        localBloc.branch?.value == ""
+                                    ? false
+                                    : true,
+                                value: localBloc.branch?.name ?? "",
+                                title: "Branch",
+                                titleModal: "Branch List",
+                                onSelected: (e) {
+                                  Get.back();
+                                  localBloc.branch = KeyValue(
+                                      name: e["name"], value: e["_id"]);
+                                  localBloc.group =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.customer =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.emit(
+                                    VisitInitial(),
+                                  );
+                                },
+                                onReset: () {
+                                  localBloc.branch =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.group =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.customer =
+                                      KeyValue(name: "", value: "");
+                                  localBloc.emit(
+                                    VisitInitial(),
+                                  );
+                                },
+                                mandatory: true,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Visibility(
+                                visible: localBloc.branch != null &&
+                                    localBloc.branch?.value != "" &&
+                                    localBloc.branch?.value != null,
+                                child: Column(
+                                  children: [
+                                    FieldDataScroll(
+                                      minWidth: Get.width - 116,
+                                      endpoint: Endpoint(
+                                        data: Data.customergroup,
+                                        filters: [
+                                          [
+                                            "branch._id",
+                                            "=",
+                                            localBloc.branch?.value != null &&
+                                                    localBloc.branch?.value !=
+                                                        ""
+                                                ? localBloc.branch!.value
+                                                : "",
+                                          ]
+                                        ],
+                                      ),
+                                      valid: localBloc.group?.value == null ||
+                                              localBloc.group?.value == ""
+                                          ? false
+                                          : true,
+                                      value: localBloc.group?.name ?? "",
+                                      title: "Group",
+                                      titleModal: "Group List",
+                                      onSelected: (e) {
+                                        localBloc.group = KeyValue(
+                                            name: e["name"], value: e["_id"]);
+                                        localBloc.customer =
+                                            KeyValue(name: "", value: "");
+                                        Get.back();
+                                        localBloc.emit(
+                                          VisitInitial(),
+                                        );
+                                      },
+                                      onReset: () {
+                                        localBloc.group =
+                                            KeyValue(name: "", value: "");
+                                        localBloc.customer =
+                                            KeyValue(name: "", value: "");
+                                        localBloc.emit(
+                                          VisitInitial(),
+                                        );
+                                      },
+                                      mandatory: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Visibility(
+                                visible: localBloc.group != null &&
+                                    localBloc.group?.value != "" &&
+                                    localBloc.group?.value != null,
+                                child: FieldDataScroll(
+                                  minWidth: Get.width - 116,
+                                  endpoint: Endpoint(
+                                    data: Data.customer,
+                                    filters: [
+                                      [
+                                        "customerGroup",
+                                        "=",
+                                        localBloc.group?.value != null &&
+                                                localBloc.group?.value != ""
+                                            ? localBloc.group!.value
+                                            : "",
+                                      ]
+                                    ],
                                   ),
-                                );
-                              }
-                            },
-                            child: const Text(
-                              "Check In",
-                              style: TextStyle(
-                                fontSize: 16,
+                                  valid: localBloc.customer?.value == null ||
+                                          localBloc.customer?.value == ""
+                                      ? false
+                                      : true,
+                                  value: localBloc.customer?.name ?? "",
+                                  title: "Customer",
+                                  titleModal: "Customer List",
+                                  onSelected: (e) {
+                                    localBloc.customer = KeyValue(
+                                        name: e["name"], value: e["_id"]);
+                                    Get.back();
+                                    localBloc.emit(
+                                      VisitInitial(),
+                                    );
+                                  },
+                                  onReset: () {
+                                    localBloc.customer =
+                                        KeyValue(name: "", value: "");
+                                    localBloc.emit(
+                                      VisitInitial(),
+                                    );
+                                  },
+                                  mandatory: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: Get.width,
+                            height: 46,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: (localBloc.naming?.name !=
+                                            null &&
+                                        localBloc.group?.name != null &&
+                                        localBloc.customer?.name != null)
+                                    ? const Color.fromARGB(255, 65, 170, 69)
+                                    : const Color.fromARGB(255, 92, 214, 96),
+                              ),
+                              onPressed: () async {
+                                if (localBloc.naming?.name != null &&
+                                    localBloc.group?.name != null &&
+                                    localBloc.customer?.name != null) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return CheckInScreen(
+                                          customerId: localBloc.customer?.value,
+                                          bloc: widget.bloc,
+                                          naming: localBloc.naming,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text(
+                                "Check In",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
