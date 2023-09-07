@@ -82,7 +82,6 @@ class _FormNoteState extends State<FormNote> {
             NoteShowData(id: "${widget.noteId}"),
           ),
         builder: (context, state) {
-          print(widget.noteId);
           if (widget.activity != null && widget.noteId == null) {
             activityC.text = widget.activity!;
             newBloc.activity = widget.activity!;
