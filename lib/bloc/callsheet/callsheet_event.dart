@@ -57,12 +57,16 @@ class CallsheetSetForm extends CallsheetEvent {
   KeyValue? naming;
   KeyValue? group;
   KeyValue? customer;
+  KeyValue? branch;
+  KeyValue? contact;
   String? type;
   CallsheetSetForm({
     this.data,
     this.naming,
     this.group,
     this.customer,
+    this.branch,
+    this.contact,
     this.type,
   });
 }
@@ -82,10 +86,14 @@ class CallsheetResetForm extends CallsheetEvent {
   bool naming;
   bool group;
   bool customer;
+  bool branch;
+  bool contact;
   CallsheetResetForm({
     this.data = false,
     this.naming = false,
     this.group = false,
     this.customer = false,
+    this.branch = false,
+    this.contact = false,
   });
 }

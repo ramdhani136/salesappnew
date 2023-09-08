@@ -40,6 +40,12 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       if (event.type != null) {
         type = event.type!;
       }
+      if (event.branch != null) {
+        branch = event.branch!;
+      }
+      if (event.contact != null) {
+        contact = event.contact!;
+      }
       emit(CallsheetIsLoading());
       emit(CallsheetInitial());
     });
@@ -50,6 +56,12 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
       }
       if (event.customer) {
         customer = null;
+      }
+      if (event.branch) {
+        branch = null;
+      }
+      if (event.contact) {
+        contact = null;
       }
 
       if (event.group) {
