@@ -25,6 +25,7 @@ enum Data {
   tag,
   note,
   topic,
+  workflowState,
 }
 
 class FetchData {
@@ -82,6 +83,9 @@ class FetchData {
         break;
       case Data.topic:
         doc = "topic";
+        break;
+      case Data.workflowState:
+        doc = "workflowstate";
         break;
       default:
     }

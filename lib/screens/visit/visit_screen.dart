@@ -5,9 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
-import 'package:salesappnew/repositories/branch_repository.dart';
-import 'package:salesappnew/repositories/customer_group_repository.dart';
-import 'package:salesappnew/repositories/user_repository.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
@@ -61,9 +58,6 @@ class VisitScreen extends StatelessWidget {
     final PanelController _panelController = PanelController();
     VisitBloc bloc = VisitBloc();
     TextEditingController typeC = TextEditingController();
-    TextEditingController branchC = TextEditingController();
-    TextEditingController groupC = TextEditingController();
-    TextEditingController createdByC = TextEditingController();
     TextEditingController rangeDateC = TextEditingController();
 
     ChooseDateRangePicker() async {
@@ -232,6 +226,7 @@ class VisitScreen extends StatelessWidget {
                             children: [
                               const SizedBox(height: 20),
                               FieldCustom(
+                                placeholder: "",
                                 onReset: () {
                                   bloc.add(
                                     GetData(
@@ -276,19 +271,34 @@ class VisitScreen extends StatelessWidget {
                                 onReset: () {},
                               ),
                               const SizedBox(height: 20),
-                              FieldCustom(
-                                type: Type.select,
-                                controller: createdByC,
-                                suggestionTitle: "name",
-                                title: "CreatedBy",
-                                getData: (String search) async {
-                                  return await UserRepositoryGetAll(
-                                    search: search,
-                                  );
-                                },
-                                onSelect: (e) {
-                                  createdByC.text = e['name'];
-                                },
+                              FieldDataScroll(
+                                minWidth: Get.width - 100,
+                                endpoint: Endpoint(data: Data.customergroup),
+                                value: bloc.branch?.name ?? "",
+                                title: "Group",
+                                titleModal: "Group List",
+                                onSelected: (e) {},
+                                onReset: () {},
+                              ),
+                              const SizedBox(height: 20),
+                              FieldDataScroll(
+                                minWidth: Get.width - 100,
+                                endpoint: Endpoint(data: Data.customer),
+                                value: bloc.branch?.name ?? "",
+                                title: "Customer",
+                                titleModal: "Customer List",
+                                onSelected: (e) {},
+                                onReset: () {},
+                              ),
+                              const SizedBox(height: 20),
+                              FieldDataScroll(
+                                minWidth: Get.width - 100,
+                                endpoint: Endpoint(data: Data.users),
+                                value: bloc.branch?.name ?? "",
+                                title: "Created By",
+                                titleModal: "User List",
+                                onSelected: (e) {},
+                                onReset: () {},
                               ),
                               const SizedBox(height: 20),
                               Text(
@@ -323,22 +333,14 @@ class VisitScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                "WorkflowState :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                enabled: true,
-                                autocorrect: false,
-                                enableSuggestions: false,
-                                decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.grey[300]),
-                                  hintText: "Select State",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  border: const OutlineInputBorder(),
-                                ),
+                              FieldDataScroll(
+                                minWidth: Get.width - 100,
+                                endpoint: Endpoint(data: Data.workflowState),
+                                value: bloc.branch?.name ?? "",
+                                title: "Workflow State",
+                                titleModal: "Workflow State List",
+                                onSelected: (e) {},
+                                onReset: () {},
                               ),
                             ],
                           ),
