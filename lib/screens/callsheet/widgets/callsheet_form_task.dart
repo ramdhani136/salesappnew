@@ -6,6 +6,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/bloc/callsheetnote/callsheetnote_bloc.dart';
+import 'package:salesappnew/bloc/note/note_bloc.dart';
+import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_note.dart';
 import 'package:salesappnew/screens/callsheet/widgets/form_callsheet_note.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 
@@ -85,105 +87,26 @@ class CallsheetFormTask extends StatelessWidget {
                                             Colors.white),
                                   ),
                                   onPressed: () async {
-                                    EasyLoading.show(status: 'loading...');
                                     Get.back();
-
-                                    try {
-                                      late String typeTag;
-                                      late String nameTag;
-                                      dynamic cekTags = await FetchData(
-                                        data: Data.tag,
-                                      ).FINDALL(
-                                        fields: ["_id", "name"],
-                                        filters: [
-                                          ["name", "=", state.task[index].from],
-                                        ],
-                                      );
-
-                                      if (cekTags['status'] != 200) {
-                                        dynamic cekOSTags = await FetchData(
-                                          data: Data.tag,
-                                        ).ADD(
-                                          {"name": state.task[index].from},
-                                        );
-
-                                        typeTag = cekOSTags['data']['_id'];
-                                      } else {
-                                        typeTag = cekTags['data'][0]["_id"];
-                                      }
-
-                                      dynamic cekNameTag = await FetchData(
-                                        data: Data.tag,
-                                      ).FINDALL(
-                                        fields: ["_id", "name"],
-                                        filters: [
-                                          ["name", "=", state.task[index].name],
-                                        ],
-                                      );
-
-                                      if (cekNameTag['status'] != 200) {
-                                        dynamic createNameTag = await FetchData(
-                                          data: Data.tag,
-                                        ).ADD(
-                                          {"name": state.task[index].name},
-                                        );
-
-                                        nameTag = createNameTag['data']['_id'];
-                                      } else {
-                                        nameTag = cekNameTag['data'][0]["_id"];
-                                      }
-
-                                      dynamic insertTask = await FetchData(
-                                        data: Data.callsheetNote,
-                                      ).ADD(
-                                        {
-                                          "title":
-                                              "${state.task[index].from} ${state.task[index].name}",
-                                          "callsheetId": id,
-                                          "tags": [
-                                            typeTag,
-                                            nameTag,
-                                          ],
-                                          "notes": state.task[index].notes,
-                                        },
-                                      );
-
-                                      if (insertTask['status'] != 200) {
-                                        throw insertTask['msg'];
-                                      }
-                                      Get.to(
-                                        () => MultiBlocProvider(
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute<CallsheetFormNote>(
+                                        builder: (_) => MultiBlocProvider(
                                           providers: [
                                             BlocProvider.value(
-                                              value: CallsheetnoteBloc(),
+                                              value: NoteBloc(),
                                             ),
                                             BlocProvider.value(
                                               value: BlocProvider.of<
                                                   CallsheetBloc>(context),
                                             ),
                                           ],
-                                          child: FormCallsheetNote(
-                                            callsheetId: state.data.id!,
-                                            noteId: insertTask['data']['_id'],
+                                          child: CallsheetFormNote(
+                                            docId: state.data.id!,
+                                            activity: state.task[index].notes,
                                           ),
                                         ),
-                                      );
-
-                                      EasyLoading.dismiss();
-                                    } catch (e) {
-                                      EasyLoading.dismiss();
-                                      Get.defaultDialog(
-                                        content: Text(
-                                          e.toString(),
-                                        ),
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                          horizontal: 20,
-                                        ),
-                                      );
-                                      rethrow;
-                                    }
+                                      ),
+                                    );
                                   },
                                   child: const Text('Yes'),
                                 ),
