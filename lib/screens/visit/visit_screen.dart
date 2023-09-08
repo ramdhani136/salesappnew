@@ -8,15 +8,21 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
+import 'package:salesappnew/utils/local_data.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/field_custom.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 // import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class VisitScreen extends StatelessWidget {
+class VisitScreen extends StatefulWidget {
   VisitScreen({super.key});
 
+  @override
+  State<VisitScreen> createState() => _VisitScreenState();
+}
+
+class _VisitScreenState extends State<VisitScreen> {
   List<Tab> myTabs = <Tab>[
     const Tab(
       child: Text(
@@ -47,6 +53,26 @@ class VisitScreen extends StatelessWidget {
     ),
   ];
 
+  final PanelController _panelController = PanelController();
+  VisitBloc bloc = VisitBloc();
+  TextEditingController typeC = TextEditingController();
+  TextEditingController rangeDateC = TextEditingController();
+
+  @override
+  void initState() {
+    LocalData().getData("filterVisit").then((value) => print(value));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _panelController.close();
+    // bloc.close();
+    typeC.clear();
+    rangeDateC.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     TabBar MyTabBar = TabBar(
@@ -54,11 +80,6 @@ class VisitScreen extends StatelessWidget {
       // controller: VisitC.controllerTab,
       tabs: myTabs,
     );
-
-    final PanelController _panelController = PanelController();
-    VisitBloc bloc = VisitBloc();
-    TextEditingController typeC = TextEditingController();
-    TextEditingController rangeDateC = TextEditingController();
 
     ChooseDateRangePicker() async {
       DateTimeRange? picked = await showDateRangePicker(

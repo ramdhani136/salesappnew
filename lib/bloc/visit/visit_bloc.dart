@@ -461,6 +461,11 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
     filters = finalFIlter;
 
+    await LocalData().setData(
+      "filterVisit",
+      finalFIlter.toString(),
+    );
+
     add(
       GetData(
         filters: finalFIlter,

@@ -20,49 +20,19 @@ class LocalData {
     }
   }
 
-  Future setData<T>(typeOf type, String name, T data) async {
+  Future setData<T>(String name, String data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      switch (type) {
-        case typeOf.Bool:
-          await prefs.setBool(name, data as bool);
-          break;
-        case typeOf.Int:
-          await prefs.setInt(name, data as int);
-          break;
-        case typeOf.Double:
-          await prefs.setDouble(name, data as double);
-          break;
-        case typeOf.StringList:
-          await prefs.setStringList(name, data as List<String>);
-          break;
-        default:
-          await prefs.setString(name, data as String);
-          break;
-      }
+      await prefs.setString(name, data);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future getData<T>(typeOf type, String name) async {
+  Future getData<T>(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      if (type == typeOf.Bool) {
-        return prefs.getBool(name);
-      }
-      if (type == typeOf.Int) {
-        return prefs.getInt(name);
-      }
-      if (type == typeOf.Double) {
-        return prefs.getDouble(name);
-      }
-      if (type == typeOf.String) {
-        return prefs.getString(name);
-      }
-      if (type == typeOf.StringList) {
-        return prefs.getString(name);
-      }
+      return prefs.getString(name);
     } catch (e) {
       rethrow;
     }
