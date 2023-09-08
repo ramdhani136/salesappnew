@@ -181,7 +181,8 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                       ),
                     ),
                     Visibility(
-                      visible: !widget.disabled && widget.valid,
+                      visible:
+                          !widget.disabled && widget.valid && widget.mandatory,
                       child: IconButton(
                         onPressed: () async {
                           if (!widget.disabled) {

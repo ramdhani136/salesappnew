@@ -10,8 +10,10 @@ import 'package:salesappnew/repositories/customer_group_repository.dart';
 import 'package:salesappnew/repositories/user_repository.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
+import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/field_custom.dart';
+import 'package:salesappnew/widgets/field_data_scroll.dart';
 // import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -264,41 +266,14 @@ class VisitScreen extends StatelessWidget {
                                 },
                               ),
                               const SizedBox(height: 20),
-                              FieldCustom(
-                                type: Type.select,
-                                controller: branchC,
-                                suggestionTitle: "name",
+                              FieldDataScroll(
+                                minWidth: Get.width - 100,
+                                endpoint: Endpoint(data: Data.branch),
+                                value: bloc.branch?.name ?? "",
                                 title: "Branch",
-                                getData: (String search) async {
-                                  return await BranchRepositoryGetAll(
-                                    search: search,
-                                  );
-                                },
-                                onSelect: (e) {
-                                  branchC.text = e['name'];
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              FieldCustom(
-                                type: Type.select,
-                                controller: groupC,
-                                suggestionTitle: "name",
-                                title: "Group",
-                                getData: (String search) async {
-                                  return await CustomerGroupRepositoryGetAll(
-                                    filters: [
-                                      [
-                                        "branch._id",
-                                        "=",
-                                        "64800fa2cc19aff39f62d64a"
-                                      ]
-                                    ],
-                                    search: search,
-                                  );
-                                },
-                                onSelect: (e) {
-                                  groupC.text = e['name'];
-                                },
+                                titleModal: "Branch List",
+                                onSelected: (e) {},
+                                onReset: () {},
                               ),
                               const SizedBox(height: 20),
                               FieldCustom(
