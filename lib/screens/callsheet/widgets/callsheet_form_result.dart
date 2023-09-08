@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
+import 'package:salesappnew/bloc/note/note_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:salesappnew/bloc/callsheetnote/callsheetnote_bloc.dart';
-import 'package:salesappnew/screens/callsheet/widgets/form_callsheet_note.dart';
+import 'package:salesappnew/screens/callsheet/widgets/callsheet_form_note.dart';
 
 class CallsheetFormResult extends StatelessWidget {
   String callsheetId;
@@ -15,29 +15,33 @@ class CallsheetFormResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => CallsheetnoteBloc()
+        create: (context) => NoteBloc()
           ..add(
-            GetCallsheetNote(
-              callsheetId: callsheetId,
+            NoteGetData(
+              docId: callsheetId,
+              doc: Doc.callsheet,
             ),
           ),
         child: Scaffold(
-          body: BlocBuilder<CallsheetnoteBloc, CallsheetnoteState>(
+          body: BlocBuilder<NoteBloc, NoteState>(
             builder: (context, state) {
-              CallsheetnoteBloc callsheetNoteBloc =
-                  BlocProvider.of<CallsheetnoteBloc>(context);
+              NoteBloc noteBloc = BlocProvider.of<NoteBloc>(context);
 
-              if (state is CallsheetNoteDeleteSuccess) {
-                callsheetNoteBloc
-                    .add(GetCallsheetNote(callsheetId: callsheetId));
+              if (state is NoteDeleteSuccess) {
+                noteBloc.add(
+                  NoteGetData(
+                    docId: callsheetId,
+                    doc: Doc.callsheet,
+                  ),
+                );
               }
 
-              if (state is CallsheetNoteIsLoading) {
+              if (state is NoteIsLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              if (state is CallsheetNoteIsLoaded) {
+              if (state is NoteIsLoaded) {
                 return Stack(
                   children: [
                     RefreshIndicator(
@@ -47,10 +51,11 @@ class CallsheetFormResult extends StatelessWidget {
                                   scrollInfo.metrics.maxScrollExtent &&
                               state.hasMore) {
                             state.hasMore = false;
-                            callsheetNoteBloc.add(
-                              GetCallsheetNote(
-                                callsheetId: callsheetId,
+                            noteBloc.add(
+                              NoteGetData(
+                                docId: callsheetId,
                                 refresh: false,
+                                doc: Doc.callsheet,
                               ),
                             );
                           }
@@ -64,243 +69,375 @@ class CallsheetFormResult extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.data.length,
                             itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Visibility(
-                                    visible: index == 0,
-                                    child: const SizedBox(
-                                      height: 20,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onLongPress: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("Really?"),
-                                            content: const Text(
-                                                "You want to delete this data??"),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                child: const Text("No"),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  try {
-                                                    callsheetNoteBloc.add(
-                                                      DeleteCallsheetNote(
-                                                        id: state
-                                                            .data[index].id,
-                                                      ),
-                                                    );
-                                                    Get.back();
-                                                  } catch (e) {
-                                                    rethrow;
-                                                  }
-                                                },
-                                                child: const Text("Yes"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute<FormCallsheetNote>(
-                                          builder: (_) => MultiBlocProvider(
-                                            providers: [
-                                              BlocProvider.value(
-                                                value: BlocProvider.of<
-                                                    CallsheetnoteBloc>(context),
-                                              ),
-                                              BlocProvider.value(
-                                                value: BlocProvider.of<
-                                                    CallsheetBloc>(context),
-                                              ),
-                                            ],
-                                            child: FormCallsheetNote(
-                                              callsheetId: callsheetId,
-                                              noteId: state.data[index].id,
-                                            ),
+                              return BlocBuilder<CallsheetBloc, CallsheetState>(
+                                bloc: BlocProvider.of<CallsheetBloc>(context),
+                                builder: (context, stateVisit) {
+                                  if (stateVisit is CallsheetIsShowLoaded) {
+                                    return Column(
+                                      children: [
+                                        Visibility(
+                                          visible: index == 0,
+                                          child: const SizedBox(
+                                            height: 20,
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          width: 1,
-                                        ),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          IntrinsicHeight(
-                                            child: Container(
-                                              width: Get.width,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(10),
-                                                  bottomRight:
-                                                      Radius.circular(10),
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 12,
-                                                  right: 12,
-                                                  bottom: 12,
-                                                  top: 8,
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      state.data[index].title,
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                        InkWell(
+                                          onLongPress: () async {
+                                            if (stateVisit.data.status == "0") {
+                                              await showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title:
+                                                        const Text("Really?"),
+                                                    content: const Text(
+                                                        "You want to delete this data??"),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: const Text("No"),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      state.data[index].notes,
-                                                      style: const TextStyle(
-                                                        fontSize: 15.5,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                      DateFormat.yMd()
-                                                          .add_jm()
-                                                          .format(
-                                                            DateTime.parse(
-                                                                    "${state.data[index].updatedAt}")
-                                                                .toLocal(),
-                                                          ),
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 13.5,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Container(
-                                                      width: Get.width,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        border: Border(
-                                                          top: BorderSide(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    227,
-                                                                    225,
-                                                                    225),
-                                                            width: 1.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 10),
-                                                        child: Wrap(
-                                                          children: state
-                                                              .data[index].tags
-                                                              .map((item) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                right: 5,
-                                                                bottom: 5,
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          try {
+                                                            noteBloc.add(
+                                                              NoteDeleteData(
+                                                                id: state
+                                                                    .data[index]
+                                                                    .id
+                                                                    .toString(),
                                                               ),
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        6.0,
-                                                                    vertical:
-                                                                        4.0),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                          .green[
-                                                                      800],
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              4.0),
+                                                            );
+                                                            Get.back();
+                                                          } catch (e) {
+                                                            rethrow;
+                                                          }
+                                                        },
+                                                        child:
+                                                            const Text("Yes"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute<
+                                                  CallsheetFormNote>(
+                                                builder: (_) =>
+                                                    MultiBlocProvider(
+                                                  providers: [
+                                                    BlocProvider.value(
+                                                      value: BlocProvider.of<
+                                                          NoteBloc>(context),
+                                                    ),
+                                                    BlocProvider.value(
+                                                      value: BlocProvider.of<
+                                                              CallsheetBloc>(
+                                                          context),
+                                                    ),
+                                                  ],
+                                                  child: CallsheetFormNote(
+                                                    docId: callsheetId,
+                                                    noteId:
+                                                        state.data[index].id,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                IntrinsicHeight(
+                                                  child: Container(
+                                                    width: Get.width,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        bottomLeft:
+                                                            Radius.circular(10),
+                                                        bottomRight:
+                                                            Radius.circular(10),
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 12,
+                                                        right: 12,
+                                                        bottom: 12,
+                                                        top: 8,
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            state.data[index]
+                                                                .topic!.name
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Visibility(
+                                                            visible: state
+                                                                    .data[index]
+                                                                    .task !=
+                                                                null,
+                                                            child: Column(
+                                                              children: [
+                                                                const SizedBox(
+                                                                  height: 5,
                                                                 ),
-                                                                child: Text(
-                                                                  '${item['name']}',
+                                                                RichText(
+                                                                  text:
+                                                                      TextSpan(
+                                                                    style: DefaultTextStyle.of(
+                                                                            context)
+                                                                        .style,
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text:
+                                                                            "${state.data[index].task}",
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              15.5,
+                                                                        ),
+                                                                      ),
+                                                                      const TextSpan(
+                                                                        text:
+                                                                            " #Activity",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          // Warna teks
+                                                                          fontStyle:
+                                                                              FontStyle.italic,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              173,
+                                                                              130,
+                                                                              2),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${state.data[index].result}",
                                                                   style:
                                                                       const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
                                                                     fontSize:
-                                                                        13.0,
-                                                                    // fontWeight:
-                                                                    //     FontWeight
-                                                                    //         .bold,
+                                                                        15.5,
+                                                                  ),
+                                                                ),
+                                                                const TextSpan(
+                                                                  text:
+                                                                      " #Feedback",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    // Warna teks
                                                                     fontStyle:
                                                                         FontStyle
                                                                             .italic,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            173,
+                                                                            130,
+                                                                            2),
                                                                   ),
                                                                 ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                DateFormat.yMd()
+                                                                    .add_jm()
+                                                                    .format(
+                                                                      DateTime.parse(
+                                                                              "${state.data[index].updatedAt}")
+                                                                          .toLocal(),
+                                                                    ),
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize:
+                                                                      13.5,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                ),
                                                               ),
-                                                            );
-                                                          }).toList(),
-                                                        ),
+                                                              Text(
+                                                                "${state.data[index].createdBy?.name}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      800],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Container(
+                                                            width: Get.width,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              border: Border(
+                                                                top: BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          227,
+                                                                          225,
+                                                                          225),
+                                                                  width: 1.0,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      top: 10),
+                                                              child: Wrap(
+                                                                children: state
+                                                                    .data[index]
+                                                                    .tags!
+                                                                    .map(
+                                                                        (item) {
+                                                                  return Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .only(
+                                                                      right: 5,
+                                                                      bottom: 5,
+                                                                    ),
+                                                                    child:
+                                                                        Container(
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal:
+                                                                              6.0,
+                                                                          vertical:
+                                                                              4.0),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Colors
+                                                                            .green[800],
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(4.0),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        item.name!,
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              13.0,
+                                                                          // fontWeight:
+                                                                          //     FontWeight
+                                                                          //         .bold,
+                                                                          fontStyle:
+                                                                              FontStyle.italic,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                }).toList(),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    );
+                                  }
+
+                                  return Container();
+                                },
                               );
                             },
                           ),
                         ),
                       ),
                       onRefresh: () async {
-                        callsheetNoteBloc.add(
-                          GetCallsheetNote(
-                            callsheetId: callsheetId,
+                        noteBloc.add(
+                          NoteGetData(
+                            docId: callsheetId,
+                            doc: Doc.callsheet,
                           ),
                         );
                       },
@@ -349,20 +486,18 @@ class CallsheetFormResult extends StatelessWidget {
                     child: FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute<FormCallsheetNote>(
+                          MaterialPageRoute<CallsheetFormNote>(
                             builder: (_) => MultiBlocProvider(
                               providers: [
                                 BlocProvider.value(
-                                  value: BlocProvider.of<CallsheetnoteBloc>(
-                                      context),
+                                  value: BlocProvider.of<NoteBloc>(context),
                                 ),
                                 BlocProvider.value(
                                   value:
                                       BlocProvider.of<CallsheetBloc>(context),
                                 ),
                               ],
-                              child: FormCallsheetNote(
-                                  callsheetId: state.data.id!),
+                              child: CallsheetFormNote(docId: state.data.id!),
                             ),
                           ),
                         );

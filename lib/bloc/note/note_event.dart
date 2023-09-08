@@ -5,12 +5,16 @@ part of 'note_bloc.dart';
 @immutable
 abstract class NoteEvent {}
 
+enum Doc { visit, callsheet }
+
 class NoteGetData extends NoteEvent {
   String docId;
+  Doc doc;
   bool refresh;
   NoteGetData({
     required this.docId,
     this.refresh = true,
+    this.doc = Doc.visit,
   });
 }
 

@@ -90,7 +90,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
       Map<String, dynamic> result = await FetchData(data: Data.note).FINDALL(
         filters: [
-          ["doc.type", "=", "visit"],
+          ["doc.type", "=", event.doc == Doc.visit ? "visit" : "callsheet"],
           ["doc._id", "=", event.docId]
         ],
         page: _page,
