@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
@@ -24,7 +25,6 @@ class CallsheetFormInfo extends StatefulWidget {
 }
 
 class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
-  TextEditingController typeC = TextEditingController();
   TextEditingController nameC = TextEditingController();
   TextEditingController workflowC = TextEditingController();
   TextEditingController picC = TextEditingController();
@@ -36,7 +36,6 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
   @override
   void dispose() {
     super.dispose();
-    typeC.dispose();
     nameC.dispose();
     workflowC.dispose();
     picC.dispose();
@@ -64,7 +63,7 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
           localBloc.branch = bloc.branch;
           localBloc.group = bloc.group;
           localBloc.customer = bloc.customer;
-          typeC.text = state.data.type!;
+          localBloc.type = state.data.type ?? "in";
           nameC.text = state.data.name!;
           workflowC.text = state.data.workflowState!;
           if (state.data.contact != null) {
@@ -84,514 +83,627 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
               );
 
           return Scaffold(
-            body: Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async {
-                    bloc.add(CallsheetShowData(id: "${state.data.id}"));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 10,
-                      bottom: 30,
-                    ),
-                    child: ListView(
-                      children: [
-                        CustomField(
-                          title: "Name",
-                          controller: nameC,
-                          type: Type.standard,
-                          disabled: true,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        CustomField(
-                          title: "Update At",
-                          controller: dateC,
-                          type: Type.standard,
-                          disabled: true,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        BlocBuilder<CallsheetBloc, CallsheetState>(
-                          bloc: localBloc,
-                          builder: (context, stateLocal) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Type :",
-                                  style: TextStyle(color: Colors.grey[700]),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Radio(
-                                            value: "in",
-                                            groupValue: localBloc.type,
-                                            onChanged: (val) {
-                                              if (state.data.status == "0") {
-                                                localBloc.type = val ?? "";
-                                                localBloc.emit(
-                                                  CallsheetInitial(),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                          const Text("Incomming Call")
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Radio(
-                                            value: "out",
-                                            groupValue: localBloc.type,
-                                            onChanged: (val) {
-                                              if (state.data.status == "0") {
-                                                localBloc.type = val ?? "";
-                                                localBloc.emit(
-                                                  CallsheetInitial(),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                          const Text("Outgoing Call")
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                FieldDataScroll(
-                                    mandatory: true,
-                                    endpoint: Endpoint(data: Data.branch),
-                                    valid: localBloc.branch?.value == null ||
-                                            localBloc.branch?.value == ""
-                                        ? false
-                                        : true,
-                                    value: localBloc.branch?.name ?? "",
-                                    title: "Branch",
-                                    titleModal: "Branch List",
-                                    onSelected: (e) {
-                                      localBloc.add(
-                                        CallsheetSetForm(
-                                          branch: KeyValue(
-                                              name: e['name'], value: e['_id']),
-                                        ),
-                                      );
-                                      localBloc.add(
-                                        CallsheetResetForm(
-                                          customer: true,
-                                          group: true,
-                                          contact: true,
-                                        ),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                      Get.back();
-                                    },
-                                    onReset: () {
-                                      localBloc.add(
-                                        CallsheetResetForm(
-                                          branch: true,
-                                          customer: true,
-                                          group: true,
-                                          contact: true,
-                                        ),
-                                      );
-                                      picC.text = "";
-                                      phoneC.text = "";
-                                    },
-                                    disabled: state.data.status != "0"),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Visibility(
-                                  visible: localBloc.branch?.value != null &&
-                                      localBloc.branch?.value != "",
-                                  child: Column(
+              body: Stack(
+                children: [
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      bloc.add(CallsheetShowData(id: "${state.data.id}"));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 10,
+                        bottom: 30,
+                      ),
+                      child: ListView(
+                        children: [
+                          CustomField(
+                            title: "Name",
+                            controller: nameC,
+                            type: Type.standard,
+                            disabled: true,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          CustomField(
+                            title: "Update At",
+                            controller: dateC,
+                            type: Type.standard,
+                            disabled: true,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          BlocBuilder<CallsheetBloc, CallsheetState>(
+                            bloc: localBloc,
+                            builder: (context, stateLocal) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Type :",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      FieldDataScroll(
-                                        endpoint: Endpoint(
-                                          data: Data.customergroup,
-                                          filters: [
-                                            [
-                                              "branch._id",
-                                              "=",
-                                              localBloc.branch?.value != null &&
-                                                      localBloc.branch?.value !=
-                                                          ""
-                                                  ? localBloc.branch!.value
-                                                  : "",
-                                            ]
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Radio(
+                                              value: "in",
+                                              groupValue: localBloc.type,
+                                              onChanged: (val) {
+                                                if (state.data.status == "0") {
+                                                  localBloc.type = val ?? "";
+                                                  localBloc.emit(
+                                                    CallsheetInitial(),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                            const Text("Incomming Call")
                                           ],
                                         ),
-                                        valid: localBloc.group?.value == null ||
-                                                localBloc.group?.value == ""
-                                            ? false
-                                            : true,
-                                        value: localBloc.group?.name ?? "",
-                                        title: "Group",
-                                        titleModal: "Group List",
-                                        onSelected: (e) {
-                                          localBloc.add(
-                                            CallsheetSetForm(
-                                              group: KeyValue(
-                                                  name: e['name'],
-                                                  value: e['_id']),
-                                            ),
-                                          );
-
-                                          localBloc.add(
-                                            CallsheetResetForm(
-                                              customer: true,
-                                              contact: true,
-                                            ),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
-                                          Get.back();
-                                        },
-                                        onReset: () {
-                                          localBloc.add(
-                                            CallsheetResetForm(
-                                                customer: true,
-                                                group: true,
-                                                contact: true),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
-                                        },
-                                        mandatory: true,
-                                        disabled: state.data.status != "0",
                                       ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Radio(
+                                              value: "out",
+                                              groupValue: localBloc.type,
+                                              onChanged: (val) {
+                                                if (state.data.status == "0") {
+                                                  localBloc.type = val ?? "";
+                                                  localBloc.emit(
+                                                    CallsheetInitial(),
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                            const Text("Outgoing Call")
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                ),
-                                Visibility(
-                                  visible: localBloc.group?.value != null &&
-                                      localBloc.group?.value != "",
-                                  child: Column(
-                                    children: [
-                                      FieldDataScroll(
-                                        ComponentInsert: CustomerFormWidget(
-                                          branch: localBloc.branch,
-                                          group: localBloc.group,
-                                          onSuccess: (e) {
+                                  FieldDataScroll(
+                                      mandatory: true,
+                                      endpoint: Endpoint(data: Data.branch),
+                                      valid: localBloc.branch?.value == null ||
+                                              localBloc.branch?.value == ""
+                                          ? false
+                                          : true,
+                                      value: localBloc.branch?.name ?? "",
+                                      title: "Branch",
+                                      titleModal: "Branch List",
+                                      onSelected: (e) {
+                                        localBloc.add(
+                                          CallsheetSetForm(
+                                            branch: KeyValue(
+                                                name: e['name'],
+                                                value: e['_id']),
+                                          ),
+                                        );
+                                        localBloc.add(
+                                          CallsheetResetForm(
+                                            customer: true,
+                                            group: true,
+                                            contact: true,
+                                          ),
+                                        );
+                                        picC.text = "";
+                                        phoneC.text = "";
+                                        Get.back();
+                                      },
+                                      onReset: () {
+                                        localBloc.add(
+                                          CallsheetResetForm(
+                                            branch: true,
+                                            customer: true,
+                                            group: true,
+                                            contact: true,
+                                          ),
+                                        );
+                                        picC.text = "";
+                                        phoneC.text = "";
+                                      },
+                                      disabled: state.data.status != "0"),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Visibility(
+                                    visible: localBloc.branch?.value != null &&
+                                        localBloc.branch?.value != "",
+                                    child: Column(
+                                      children: [
+                                        FieldDataScroll(
+                                          endpoint: Endpoint(
+                                            data: Data.customergroup,
+                                            filters: [
+                                              [
+                                                "branch._id",
+                                                "=",
+                                                localBloc.branch?.value !=
+                                                            null &&
+                                                        localBloc.branch
+                                                                ?.value !=
+                                                            ""
+                                                    ? localBloc.branch!.value
+                                                    : "",
+                                              ]
+                                            ],
+                                          ),
+                                          valid: localBloc.group?.value ==
+                                                      null ||
+                                                  localBloc.group?.value == ""
+                                              ? false
+                                              : true,
+                                          value: localBloc.group?.name ?? "",
+                                          title: "Group",
+                                          titleModal: "Group List",
+                                          onSelected: (e) {
+                                            localBloc.add(
+                                              CallsheetSetForm(
+                                                group: KeyValue(
+                                                    name: e['name'],
+                                                    value: e['_id']),
+                                              ),
+                                            );
+
+                                            localBloc.add(
+                                              CallsheetResetForm(
+                                                customer: true,
+                                                contact: true,
+                                              ),
+                                            );
+                                            picC.text = "";
+                                            phoneC.text = "";
+                                            Get.back();
+                                          },
+                                          onReset: () {
+                                            localBloc.add(
+                                              CallsheetResetForm(
+                                                  customer: true,
+                                                  group: true,
+                                                  contact: true),
+                                            );
+                                            picC.text = "";
+                                            phoneC.text = "";
+                                          },
+                                          mandatory: true,
+                                          disabled: state.data.status != "0",
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: localBloc.group?.value != null &&
+                                        localBloc.group?.value != "",
+                                    child: Column(
+                                      children: [
+                                        FieldDataScroll(
+                                          ComponentInsert: CustomerFormWidget(
+                                            branch: localBloc.branch,
+                                            group: localBloc.group,
+                                            onSuccess: (e) {
+                                              localBloc.add(
+                                                CallsheetSetForm(
+                                                  customer: KeyValue(
+                                                    name: e['name'],
+                                                    value: e['_id'],
+                                                  ),
+                                                  group: KeyValue(
+                                                    name: e['customerGroup']
+                                                        ['name'],
+                                                    value: e['customerGroup']
+                                                        ['_id'],
+                                                  ),
+                                                  branch: KeyValue(
+                                                    name: e['branch']['name'],
+                                                    value: e['branch']['_id'],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          endpoint: Endpoint(
+                                            data: Data.customer,
+                                            filters: [
+                                              [
+                                                "customerGroup",
+                                                "=",
+                                                localBloc.group?.value !=
+                                                            null &&
+                                                        localBloc
+                                                                .group?.value !=
+                                                            ""
+                                                    ? localBloc.group!.value
+                                                    : "",
+                                              ]
+                                            ],
+                                          ),
+                                          valid: localBloc.customer?.value ==
+                                                      null ||
+                                                  localBloc.customer?.value ==
+                                                      ""
+                                              ? false
+                                              : true,
+                                          value: localBloc.customer?.name ?? "",
+                                          title: "Customer",
+                                          titleModal: "Customer List",
+                                          onSelected: (cust) {
                                             localBloc.add(
                                               CallsheetSetForm(
                                                 customer: KeyValue(
-                                                  name: e['name'],
-                                                  value: e['_id'],
-                                                ),
-                                                group: KeyValue(
-                                                  name: e['customerGroup']
-                                                      ['name'],
-                                                  value: e['customerGroup']
-                                                      ['_id'],
-                                                ),
-                                                branch: KeyValue(
-                                                  name: e['branch']['name'],
-                                                  value: e['branch']['_id'],
-                                                ),
+                                                    name: cust['name'],
+                                                    value: cust['_id']),
                                               ),
                                             );
+                                            localBloc.add(
+                                              CallsheetResetForm(
+                                                contact: true,
+                                              ),
+                                            );
+                                            picC.text = "";
+                                            phoneC.text = "";
+                                            Get.back();
                                           },
+                                          onReset: () {
+                                            localBloc.add(
+                                              CallsheetResetForm(
+                                                  customer: true,
+                                                  contact: true),
+                                            );
+                                            picC.text = "";
+                                            phoneC.text = "";
+                                          },
+                                          mandatory: true,
+                                          disabled: state.data.status != "0",
                                         ),
-                                        endpoint: Endpoint(
-                                          data: Data.customer,
-                                          filters: [
-                                            [
-                                              "customerGroup",
-                                              "=",
-                                              localBloc.group?.value != null &&
-                                                      localBloc.group?.value !=
-                                                          ""
-                                                  ? localBloc.group!.value
-                                                  : "",
-                                            ]
-                                          ],
+                                        const SizedBox(
+                                          height: 15,
                                         ),
-                                        valid: localBloc.customer?.value ==
-                                                    null ||
-                                                localBloc.customer?.value == ""
-                                            ? false
-                                            : true,
-                                        value: localBloc.customer?.name ?? "",
-                                        title: "Customer",
-                                        titleModal: "Customer List",
-                                        onSelected: (cust) {
-                                          localBloc.add(
-                                            CallsheetSetForm(
-                                              customer: KeyValue(
-                                                  name: cust['name'],
-                                                  value: cust['_id']),
-                                            ),
-                                          );
-                                          localBloc.add(
-                                            CallsheetResetForm(
-                                              contact: true,
-                                            ),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
-                                          Get.back();
-                                        },
-                                        onReset: () {
-                                          localBloc.add(
-                                            CallsheetResetForm(
-                                                customer: true, contact: true),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
-                                        },
-                                        mandatory: true,
-                                        disabled: state.data.status != "0",
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Visibility(
-                                  visible: localBloc.customer?.value != null &&
-                                      localBloc.customer?.value != "",
-                                  child: Column(
-                                    children: [
-                                      FieldDataScroll(
-                                        ComponentInsert: ContactFormScreen(
-                                          onSave: (dynamic e) {
+                                  Visibility(
+                                    visible:
+                                        localBloc.customer?.value != null &&
+                                            localBloc.customer?.value != "",
+                                    child: Column(
+                                      children: [
+                                        FieldDataScroll(
+                                          ComponentInsert: ContactFormScreen(
+                                            onSave: (dynamic e) {
+                                              localBloc.add(
+                                                CallsheetSetForm(
+                                                  contact: KeyValue(
+                                                    name: e['name'],
+                                                    value: e['_id'],
+                                                  ),
+                                                ),
+                                              );
+
+                                              positionC.text = e['position'];
+                                              phoneC.text =
+                                                  e['phone'].toString();
+                                            },
+                                            contactBloc: ContactBloc(),
+                                            customer: localBloc.customer,
+                                          ),
+                                          endpoint: Endpoint(
+                                            data: Data.contact,
+                                            filters: [
+                                              [
+                                                "customer",
+                                                "=",
+                                                localBloc.customer?.value !=
+                                                            null &&
+                                                        localBloc.customer
+                                                                ?.value !=
+                                                            ""
+                                                    ? localBloc.customer!.value
+                                                    : "",
+                                              ]
+                                            ],
+                                          ),
+                                          valid: localBloc.contact?.value ==
+                                                      null ||
+                                                  localBloc.contact?.value == ""
+                                              ? false
+                                              : true,
+                                          value: localBloc.contact?.name ?? "",
+                                          title: "Contact",
+                                          titleModal: "Contact List",
+                                          onSelected: (e) {
                                             localBloc.add(
                                               CallsheetSetForm(
                                                 contact: KeyValue(
-                                                  name: e['name'],
-                                                  value: e['_id'],
-                                                ),
+                                                    name: e['name'],
+                                                    value: e['_id']),
                                               ),
                                             );
-
                                             positionC.text = e['position'];
                                             phoneC.text = e['phone'].toString();
+                                            Get.back();
                                           },
-                                          contactBloc: ContactBloc(),
-                                          customer: localBloc.customer,
+                                          onReset: () {
+                                            localBloc.add(
+                                              CallsheetResetForm(
+                                                contact: true,
+                                              ),
+                                            );
+                                            picC.text = "";
+                                            phoneC.text = "";
+                                          },
+                                          mandatory: true,
+                                          disabled: state.data.status != "0",
                                         ),
-                                        endpoint: Endpoint(
-                                          data: Data.contact,
-                                          filters: [
-                                            [
-                                              "customer",
-                                              "=",
-                                              localBloc.customer?.value !=
-                                                          null &&
-                                                      localBloc.customer
-                                                              ?.value !=
-                                                          ""
-                                                  ? localBloc.customer!.value
-                                                  : "",
-                                            ]
-                                          ],
+                                        const SizedBox(
+                                          height: 15,
                                         ),
-                                        valid: localBloc.contact?.value ==
-                                                    null ||
-                                                localBloc.contact?.value == ""
-                                            ? false
-                                            : true,
-                                        value: localBloc.contact?.name ?? "",
-                                        title: "Contact",
-                                        titleModal: "Contact List",
-                                        onSelected: (e) {
-                                          localBloc.add(
-                                            CallsheetSetForm(
-                                              contact: KeyValue(
-                                                  name: e['name'],
-                                                  value: e['_id']),
-                                            ),
-                                          );
-                                          positionC.text = e['position'];
-                                          phoneC.text = e['phone'].toString();
-                                          Get.back();
-                                        },
-                                        onReset: () {
-                                          localBloc.add(
-                                            CallsheetResetForm(
-                                              contact: true,
-                                            ),
-                                          );
-                                          picC.text = "";
-                                          phoneC.text = "";
-                                        },
-                                        mandatory: true,
-                                        disabled: state.data.status != "0",
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Visibility(
-                                  visible: localBloc.contact?.value != null &&
-                                      localBloc.contact?.value != "",
-                                  child: Column(
-                                    children: [
-                                      CustomField(
-                                        mandatory: true,
-                                        title: "Position",
-                                        controller: positionC,
-                                        type: Type.standard,
-                                        disabled: true,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomField(
-                                        mandatory: true,
-                                        title: "Phone",
-                                        controller: phoneC,
-                                        type: Type.standard,
-                                        disabled: true,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
+                                  Visibility(
+                                    visible: localBloc.contact?.value != null &&
+                                        localBloc.contact?.value != "",
+                                    child: Column(
+                                      children: [
+                                        CustomField(
+                                          mandatory: true,
+                                          title: "Position",
+                                          controller: positionC,
+                                          type: Type.standard,
+                                          disabled: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomField(
+                                          mandatory: true,
+                                          title: "Phone",
+                                          controller: phoneC,
+                                          type: Type.standard,
+                                          disabled: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        CustomField(
-                          title: "Status",
-                          controller: workflowC,
-                          type: Type.standard,
-                          disabled: true,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
+                                ],
+                              );
+                            },
+                          ),
+                          CustomField(
+                            title: "Status",
+                            controller: workflowC,
+                            type: Type.standard,
+                            disabled: true,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SlidingUpPanel(
-                  controller: panelController,
-                  defaultPanelState: PanelState.CLOSED,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(18),
-                  ),
-                  parallaxEnabled: true,
-                  maxHeight: Get.height / 1.25,
-                  minHeight: 30,
-                  panel: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              panelController.isPanelOpen
-                                  ? panelController.close()
-                                  : panelController.open();
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(12),
+                  SlidingUpPanel(
+                    controller: panelController,
+                    defaultPanelState: PanelState.CLOSED,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(18),
+                    ),
+                    parallaxEnabled: true,
+                    maxHeight: Get.height / 1.25,
+                    minHeight: 30,
+                    panel: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                panelController.isPanelOpen
+                                    ? panelController.close()
+                                    : panelController.open();
+                              },
+                              child: Container(
+                                width: 30,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: ListView.builder(
-                              itemCount: state.history.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 8),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color:
-                                          const Color.fromARGB(255, 52, 52, 52),
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: ListView.builder(
+                                itemCount: state.history.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 8),
+                                    child: Container(
+                                      decoration: BoxDecoration(
                                         color: const Color.fromARGB(
-                                            255, 32, 32, 32), // Warna border
-                                        width: 1.0, // Ketebalan border
+                                            255, 52, 52, 52),
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 32, 32, 32), // Warna border
+                                          width: 1.0, // Ketebalan border
+                                        ),
                                       ),
-                                    ),
-                                    child: ListTile(
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              state.history[index].user.name,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontStyle: FontStyle.italic,
+                                      child: ListTile(
+                                        title: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                state.history[index].user.name,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
                                               ),
+                                              Text(
+                                                DateFormat.yMd()
+                                                    .add_jm()
+                                                    .format(
+                                                      DateTime.parse(
+                                                              "${state.history[index].createdAt}")
+                                                          .toLocal(),
+                                                    ),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                          ),
+                                          child: Text(
+                                            state.history[index].message,
+                                            style: const TextStyle(
+                                              color: Colors.white,
                                             ),
-                                            Text(
-                                              DateFormat.yMd().add_jm().format(
-                                                    DateTime.parse(
-                                                            "${state.history[index].createdAt}")
-                                                        .toLocal(),
-                                                  ),
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14,
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                        ),
-                                        child: Text(
-                                          state.history[index].message,
-                                          style: const TextStyle(
-                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
+                ],
+              ),
+              floatingActionButton: BlocBuilder<CallsheetBloc, CallsheetState>(
+                bloc: localBloc,
+                builder: (context, stateNew) {
+                  bool isChange = false;
+                  if ((localBloc.branch?.value != bloc.branch?.value) ||
+                      (localBloc.group?.value != bloc.group?.value) ||
+                      (localBloc.type != state.data.type) ||
+                      (localBloc.customer?.value != bloc.customer?.value) ||
+                      (localBloc.contact?.value != bloc.contact?.value)) {
+                    isChange = true;
+                  } else {
+                    isChange = false;
+                  }
+
+                  if (isChange) {
+                    return SizedBox(
+                      height: 140.0,
+                      width: 60.0,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          Get.defaultDialog(
+                            title: "Are you sure to save?",
+                            content: Container(),
+                            textConfirm: "Confirm",
+                            textCancel: "Cancel",
+                            confirmTextColor: Colors.white,
+                            onConfirm: () {
+                              Get.back();
+                              if (localBloc.branch?.value == null ||
+                                  localBloc.branch?.value == "") {
+                                Fluttertoast.showToast(
+                                  msg: "Branch wajib diisi!",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                );
+                                return;
+                              }
+                              if (localBloc.group?.value == null ||
+                                  localBloc.group?.value == "") {
+                                Fluttertoast.showToast(
+                                  msg: "Group wajib diisi!",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                );
+                                return;
+                              }
+                              if (localBloc.customer?.value == null ||
+                                  localBloc.customer?.value == "") {
+                                Fluttertoast.showToast(
+                                  msg: "Customer wajib diisi!",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                );
+                                return;
+                              }
+                              if (localBloc.contact?.value == null ||
+                                  localBloc.contact?.value == "") {
+                                Fluttertoast.showToast(
+                                  msg: "Contact wajib diisi!",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.grey[800],
+                                  textColor: Colors.white,
+                                );
+                                return;
+                              }
+
+                              Map<String, dynamic> upData = {
+                                "customer": localBloc.customer?.value,
+                                "customerGroup": localBloc.group?.value,
+                                "branch": localBloc.branch?.value,
+                                "contact": localBloc.contact?.value,
+                                "type": localBloc.type,
+                              };
+
+                              bloc.add(
+                                CallsheetUpdateData(
+                                  id: state.data.id!,
+                                  data: upData,
+                                ),
+                              );
+                            },
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.red,
+                          );
+                        },
+                        backgroundColor: Colors.grey[850],
+                        child: const Icon(Icons.save_outlined),
+                      ),
+                    );
+                  }
+
+                  return Container();
+                },
+              ));
         }
         return const Center(child: CircularProgressIndicator());
       },
