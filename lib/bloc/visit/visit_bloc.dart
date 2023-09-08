@@ -461,7 +461,14 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
     filters = finalFIlter;
 
-    print(finalFIlter);
+    add(
+      GetData(
+        filters: finalFIlter,
+        getRefresh: true,
+        search: search,
+        status: 1,
+      ),
+    );
     // print(event.filter);
   }
 
