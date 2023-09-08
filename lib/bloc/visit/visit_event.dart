@@ -6,6 +6,14 @@ part of 'visit_bloc.dart';
 @immutable
 abstract class VisitEvent {}
 
+class SetFilterData extends VisitEvent {
+  List<String> filter;
+
+  SetFilterData({
+    required this.filter,
+  });
+}
+
 class GetData extends VisitEvent {
   int status = 0;
   bool getRefresh = false;

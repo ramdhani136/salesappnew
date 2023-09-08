@@ -249,13 +249,8 @@ class VisitScreen extends StatelessWidget {
                                   typeC.text = e['name'];
 
                                   bloc.add(
-                                    GetData(
-                                      filters: [
-                                        ["type", "=", e['value']]
-                                      ],
-                                      getRefresh: true,
-                                      search: bloc.search,
-                                      status: bloc.tabActive!,
+                                    SetFilterData(
+                                      filter: ["type", "=", e['value']],
                                     ),
                                   );
                                 },
@@ -267,7 +262,18 @@ class VisitScreen extends StatelessWidget {
                                 value: bloc.branch?.name ?? "",
                                 title: "Branch",
                                 titleModal: "Branch List",
-                                onSelected: (e) {},
+                                onSelected: (e) {
+                                  Get.back();
+                                  bloc.add(
+                                    SetFilterData(
+                                      filter: [
+                                        "customer.branch",
+                                        "=",
+                                        e['_id']
+                                      ],
+                                    ),
+                                  );
+                                },
                                 onReset: () {},
                               ),
                               const SizedBox(height: 20),
@@ -277,7 +283,18 @@ class VisitScreen extends StatelessWidget {
                                 value: bloc.branch?.name ?? "",
                                 title: "Group",
                                 titleModal: "Group List",
-                                onSelected: (e) {},
+                                onSelected: (e) {
+                                  Get.back();
+                                  bloc.add(
+                                    SetFilterData(
+                                      filter: [
+                                        "customer.customerGroup",
+                                        "=",
+                                        e['_id']
+                                      ],
+                                    ),
+                                  );
+                                },
                                 onReset: () {},
                               ),
                               const SizedBox(height: 20),
@@ -287,7 +304,14 @@ class VisitScreen extends StatelessWidget {
                                 value: bloc.branch?.name ?? "",
                                 title: "Customer",
                                 titleModal: "Customer List",
-                                onSelected: (e) {},
+                                onSelected: (e) {
+                                  Get.back();
+                                  bloc.add(
+                                    SetFilterData(
+                                      filter: ["customer", "=", e['_id']],
+                                    ),
+                                  );
+                                },
                                 onReset: () {},
                               ),
                               const SizedBox(height: 20),
@@ -297,7 +321,14 @@ class VisitScreen extends StatelessWidget {
                                 value: bloc.branch?.name ?? "",
                                 title: "Created By",
                                 titleModal: "User List",
-                                onSelected: (e) {},
+                                onSelected: (e) {
+                                  Get.back();
+                                  bloc.add(
+                                    SetFilterData(
+                                      filter: ["createdBy", "=", e['_id']],
+                                    ),
+                                  );
+                                },
                                 onReset: () {},
                               ),
                               const SizedBox(height: 20),

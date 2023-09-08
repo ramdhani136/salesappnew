@@ -47,6 +47,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
+    on<SetFilterData>(_SetFilter);
     on<VisitSetForm>((event, emit) {
       if (event.naming != null) {
         naming = event.naming;
@@ -441,6 +442,27 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     } catch (e) {
       emit(IsFailure(e.toString()));
     }
+  }
+
+  Future<void> _SetFilter(SetFilterData event, Emitter<VisitState> emit) async {
+    List<List<String>> finalFIlter = [];
+
+    if (filters == null) {
+      finalFIlter = [event.filter];
+    } else {
+      finalFIlter = filters!.where(
+        (element) {
+          return element[0] != event.filter[0];
+        },
+      ).toList();
+
+      finalFIlter.add(event.filter);
+    }
+
+    filters = finalFIlter;
+
+    print(finalFIlter);
+    // print(event.filter);
   }
 
   Future<void> _GetAllData(GetData event, Emitter<VisitState> emit) async {
