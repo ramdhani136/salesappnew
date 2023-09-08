@@ -466,7 +466,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         filters: finalFIlter,
         getRefresh: true,
         search: search,
-        status: 1,
+        status: tabActive ?? 1,
       ),
     );
     // print(event.filter);
