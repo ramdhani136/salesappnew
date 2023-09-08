@@ -36,7 +36,6 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
   @override
   void dispose() {
     super.dispose();
-
     typeC.dispose();
     nameC.dispose();
     workflowC.dispose();
@@ -62,9 +61,18 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
         }
 
         if (state is CallsheetIsShowLoaded) {
+          localBloc.branch = bloc.branch;
+          localBloc.group = bloc.group;
+          localBloc.customer = bloc.customer;
           typeC.text = state.data.type!;
           nameC.text = state.data.name!;
           workflowC.text = state.data.workflowState!;
+          if (state.data.contact != null) {
+            localBloc.contact = KeyValue(
+                name: state.data.contact!.name!, value: state.data.contact!.id);
+          } else {
+            localBloc.contact = null;
+          }
           picC.text =
               state.data.contact != null ? state.data.contact!.name! : "";
           positionC.text =
@@ -466,32 +474,6 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
                               ],
                             );
                           },
-                        ),
-                        Visibility(
-                          visible: picC.text != "",
-                          child: CustomField(
-                            mandatory: true,
-                            title: "Position",
-                            controller: positionC,
-                            type: Type.standard,
-                            disabled: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Visibility(
-                          visible: picC.text != "",
-                          child: CustomField(
-                            mandatory: true,
-                            title: "Phone",
-                            controller: phoneC,
-                            type: Type.standard,
-                            disabled: true,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
                         ),
                         CustomField(
                           title: "Status",

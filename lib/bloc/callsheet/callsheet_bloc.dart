@@ -233,6 +233,15 @@ class CallsheetBloc extends Bloc<CallsheetEvent, CallsheetState> {
         throw data['msg'];
       }
 
+      branch = KeyValue(name: result.branch!.name!, value: result.branch!.id);
+      group = KeyValue(
+          name: result.customerGroup!.name!, value: result.customerGroup!.id);
+      customer =
+          KeyValue(name: result.customer!.name!, value: result.customer!.id);
+      if (result.contact != null) {
+        contact =
+            KeyValue(name: result.contact!.name!, value: result.contact!.id);
+      }
       emit(CallsheetIsShowLoaded(
         data: result,
         workflow: action,

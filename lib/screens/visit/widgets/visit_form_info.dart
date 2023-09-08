@@ -101,6 +101,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
               name: state.data.contact!.name,
               value: state.data.contact?.id,
             );
+          } else {
+            bloc.contact = null;
           }
           bloc.type = state.data.type;
           picC.text =
