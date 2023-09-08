@@ -30,9 +30,6 @@ class VisitFormInfo extends StatefulWidget {
 }
 
 class _VisitFormInfoState extends State<VisitFormInfo> {
-  TextEditingController customerC = TextEditingController();
-  TextEditingController groupC = TextEditingController();
-  TextEditingController branchC = TextEditingController();
   TextEditingController typeC = TextEditingController();
   TextEditingController nameC = TextEditingController();
   TextEditingController checkInC = TextEditingController();
@@ -46,11 +43,8 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
   @override
   void dispose() {
     super.dispose();
-    customerC.dispose();
     checkInC.dispose();
     checkOutC.dispose();
-    groupC.dispose();
-    branchC.dispose();
     typeC.dispose();
     nameC.dispose();
     workflowC.dispose();

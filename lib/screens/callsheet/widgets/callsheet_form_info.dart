@@ -24,9 +24,6 @@ class CallsheetFormInfo extends StatefulWidget {
 }
 
 class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
-  TextEditingController customerC = TextEditingController();
-  TextEditingController groupC = TextEditingController();
-  TextEditingController branchC = TextEditingController();
   TextEditingController typeC = TextEditingController();
   TextEditingController nameC = TextEditingController();
   TextEditingController workflowC = TextEditingController();
@@ -39,9 +36,7 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
   @override
   void dispose() {
     super.dispose();
-    customerC.dispose();
-    groupC.dispose();
-    branchC.dispose();
+
     typeC.dispose();
     nameC.dispose();
     workflowC.dispose();
@@ -67,9 +62,6 @@ class _CallsheetFormInfoState extends State<CallsheetFormInfo> {
         }
 
         if (state is CallsheetIsShowLoaded) {
-          customerC.text = state.data.customer!.name!;
-          groupC.text = state.data.customerGroup!.name!;
-          branchC.text = state.data.branch!.name!;
           typeC.text = state.data.type!;
           nameC.text = state.data.name!;
           workflowC.text = state.data.workflowState!;
