@@ -14,6 +14,14 @@ class SetFilterData extends VisitEvent {
   });
 }
 
+class RemoveFilterData extends VisitEvent {
+  String value;
+
+  RemoveFilterData({
+    required this.value,
+  });
+}
+
 class GetData extends VisitEvent {
   int status = 0;
   bool getRefresh = false;

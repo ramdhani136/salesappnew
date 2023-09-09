@@ -48,6 +48,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
     on<SetFilterData>(_SetFilter);
+    on<RemoveFilterData>(_RemoveFilter);
     on<VisitSetForm>((event, emit) {
       if (event.naming != null) {
         naming = event.naming;
@@ -474,7 +475,43 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
         status: tabActive ?? 1,
       ),
     );
-    // print(event.filter);
+  }
+
+  Future<void> _RemoveFilter(
+      RemoveFilterData event, Emitter<VisitState> emit) async {
+    List<List<String>> finalFilter = [];
+
+    if (filters != null) {
+      finalFilter = filters!.where(
+        (element) {
+          return element[0] != event.value;
+        },
+      ).toList();
+
+      if (finalFilter.isNotEmpty) {
+        await LocalData().setData(
+          "filterVisit",
+          finalFilter.toString(),
+        );
+        add(
+          GetData(
+            filters: finalFilter,
+            getRefresh: true,
+            search: search,
+            status: tabActive ?? 1,
+          ),
+        );
+      } else {
+        await LocalData().removeData("filterVisit");
+        add(
+          GetData(
+            getRefresh: true,
+            search: search,
+            status: tabActive ?? 1,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _GetAllData(GetData event, Emitter<VisitState> emit) async {

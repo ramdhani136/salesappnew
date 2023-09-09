@@ -297,11 +297,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                     placeholder: "",
                                     onReset: () {
                                       bloc.add(
-                                        GetData(
-                                          getRefresh: true,
-                                          search: bloc.search,
-                                          status: bloc.tabActive!,
-                                        ),
+                                        RemoveFilterData(value: "type"),
                                       );
                                     },
                                     controller: typeC,
@@ -342,7 +338,12 @@ class _VisitScreenState extends State<VisitScreen> {
                                         ),
                                       );
                                     },
-                                    onReset: () {},
+                                    onReset: () {
+                                      bloc.add(
+                                        RemoveFilterData(
+                                            value: "customer.branch"),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
@@ -364,13 +365,18 @@ class _VisitScreenState extends State<VisitScreen> {
                                         ),
                                       );
                                     },
-                                    onReset: () {},
+                                    onReset: () {
+                                      bloc.add(
+                                        RemoveFilterData(
+                                            value: "customer.customerGroup"),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
                                     minWidth: Get.width - 100,
                                     endpoint: Endpoint(data: Data.customer),
-                                    value: bloc.branch?.name ?? "",
+                                    value: GetValue("customer"),
                                     title: "Customer",
                                     titleModal: "Customer List",
                                     onSelected: (e) {
@@ -381,13 +387,17 @@ class _VisitScreenState extends State<VisitScreen> {
                                         ),
                                       );
                                     },
-                                    onReset: () {},
+                                    onReset: () {
+                                      bloc.add(
+                                        RemoveFilterData(value: "customer"),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
                                     minWidth: Get.width - 100,
                                     endpoint: Endpoint(data: Data.users),
-                                    value: bloc.branch?.name ?? "",
+                                    value: GetValue("createdBy"),
                                     title: "Created By",
                                     titleModal: "User List",
                                     onSelected: (e) {
@@ -398,7 +408,11 @@ class _VisitScreenState extends State<VisitScreen> {
                                         ),
                                       );
                                     },
-                                    onReset: () {},
+                                    onReset: () {
+                                      bloc.add(
+                                        RemoveFilterData(value: "createdBy"),
+                                      );
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
