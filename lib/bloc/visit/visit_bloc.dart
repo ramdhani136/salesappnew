@@ -1,22 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, use_build_context_synchronously, await_only_futures
 
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:salesappnew/config/Config.dart';
-import 'package:salesappnew/models/key_value_model.dart';
-import 'package:salesappnew/models/task_visit_model.dart';
+
 import 'package:bloc/bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+
+import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/history_model.dart';
+import 'package:salesappnew/models/key_value_model.dart';
+import 'package:salesappnew/models/task_visit_model.dart';
 import 'package:salesappnew/models/visit_model.dart';
 import 'package:salesappnew/screens/visit/visit_form.dart';
-// import 'package:salesappnew/repositories/auth_repository.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/models/action_model.dart';
 import 'package:salesappnew/utils/local_data.dart';
@@ -25,6 +27,17 @@ import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 part 'visit_event.dart';
 part 'visit_state.dart';
+
+class FilterModel {
+  String field;
+  String name;
+  String value;
+  FilterModel({
+    required this.field,
+    required this.name,
+    required this.value,
+  });
+}
 
 class VisitBloc extends Bloc<VisitEvent, VisitState> {
   int _page = 1;
@@ -43,11 +56,14 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   double? checkInLng;
   String? type;
   List<List<String>>? filters;
+  List<FilterModel>? filterLocal;
+
   XFile? pickedFile;
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
-    on<SetFilterData>(_SetFilter);
+    on<SetFilterData>(_SetFilterData);
+    on<SetFilter>(_SetFilter);
     on<RemoveFilterData>(_RemoveFilter);
     on<VisitSetForm>((event, emit) {
       if (event.naming != null) {
@@ -445,7 +461,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     }
   }
 
-  Future<void> _SetFilter(SetFilterData event, Emitter<VisitState> emit) async {
+  Future<void> _SetFilterData(
+      SetFilterData event, Emitter<VisitState> emit) async {
     List<List<String>> finalFIlter = [];
 
     if (filters == null) {
@@ -470,6 +487,51 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     add(
       GetData(
         filters: finalFIlter,
+        getRefresh: true,
+        search: search,
+        status: tabActive ?? 1,
+      ),
+    );
+  }
+
+  Future<void> _SetFilter(SetFilter event, Emitter<VisitState> emit) async {
+    List<FilterModel> finalFilter = [];
+    List local = [];
+
+    if (filterLocal == null) {
+      finalFilter = [event.filter];
+    } else {
+      finalFilter = filterLocal!.where(
+        (FilterModel element) {
+          return event.filter.field != element.field;
+        },
+      ).toList();
+
+      finalFilter.add(event.filter);
+    }
+
+    local = finalFilter.map((FilterModel e) {
+      return {
+        "field": e.field,
+        "name": e.name,
+        "value": e.value,
+      };
+    }).toList();
+
+    List<List<String>> setFilter = finalFilter.map((FilterModel element) {
+      return [element.field, "=", element.value];
+    }).toList();
+
+    filterLocal = finalFilter;
+
+    await LocalData().setData(
+      "filterVisit",
+      local.toString(),
+    );
+
+    add(
+      GetData(
+        filters: setFilter,
         getRefresh: true,
         search: search,
         status: tabActive ?? 1,

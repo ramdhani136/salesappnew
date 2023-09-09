@@ -79,15 +79,17 @@ class _VisitScreenState extends State<VisitScreen> {
 
   @override
   void initState() {
+    // LocalData().removeData("filterVisit");
     LocalData().getData("filterVisit").then((value) {
       if (value != null) {
-        bloc.add(
-          GetData(
-            filters: parseStringToListList(value),
-            getRefresh: true,
-            status: 1,
-          ),
-        );
+        print(parseStringToListList(value));
+        // bloc.add(
+        //   GetData(
+        //     filters: parseStringToListList(value),
+        //     getRefresh: true,
+        //     status: 1,
+        //   ),
+        // );
       }
     });
     super.initState();
@@ -329,12 +331,12 @@ class _VisitScreenState extends State<VisitScreen> {
                                     onSelected: (e) {
                                       Get.back();
                                       bloc.add(
-                                        SetFilterData(
-                                          filter: [
-                                            "customer.branch",
-                                            "=",
-                                            e['_id']
-                                          ],
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "customer.branch",
+                                            name: e["name"],
+                                            value: e["_id"],
+                                          ),
                                         ),
                                       );
                                     },
@@ -356,12 +358,12 @@ class _VisitScreenState extends State<VisitScreen> {
                                     onSelected: (e) {
                                       Get.back();
                                       bloc.add(
-                                        SetFilterData(
-                                          filter: [
-                                            "customer.customerGroup",
-                                            "=",
-                                            e['_id']
-                                          ],
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "customer.customerGroup",
+                                            name: e["name"],
+                                            value: e["_id"],
+                                          ),
                                         ),
                                       );
                                     },

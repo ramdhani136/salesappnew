@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, camel_case_types
 // ignore_for_file: must_be_immutable
 
 part of 'visit_bloc.dart';
@@ -10,6 +10,14 @@ class SetFilterData extends VisitEvent {
   List<String> filter;
 
   SetFilterData({
+    required this.filter,
+  });
+}
+
+class SetFilter extends VisitEvent {
+  FilterModel filter;
+
+  SetFilter({
     required this.filter,
   });
 }
