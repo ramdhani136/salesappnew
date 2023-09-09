@@ -57,10 +57,39 @@ class _VisitScreenState extends State<VisitScreen> {
   VisitBloc bloc = VisitBloc();
   TextEditingController typeC = TextEditingController();
   TextEditingController rangeDateC = TextEditingController();
+  List<List<String>> parseStringToListList(String input) {
+    // Menghilangkan tanda kurung siku eksternal
+    input = input.substring(2, input.length - 2);
+
+    // Memisahkan sublist berdasarkan tanda kurung siku dan koma
+    List<String> sublists = input.split("], [");
+
+    // Inisialisasi list hasil
+    List<List<String>> resultList = [];
+
+    // Memproses setiap sublist
+    for (String sublist in sublists) {
+      // Memisahkan elemen-elemen dalam sublist berdasarkan koma dan spasi
+      List<String> elements = sublist.split(", ");
+      resultList.add(elements);
+    }
+
+    return resultList;
+  }
 
   @override
   void initState() {
-    LocalData().getData("filterVisit").then((value) => print(value));
+    LocalData().getData("filterVisit").then((value) {
+      if (value != null) {
+        bloc.add(
+          GetData(
+            filters: parseStringToListList(value),
+            getRefresh: true,
+            status: 1,
+          ),
+        );
+      }
+    });
     super.initState();
   }
 
@@ -243,158 +272,182 @@ class _VisitScreenState extends State<VisitScreen> {
                             left: 25,
                             right: 25,
                           ),
-                          child: ListView(
-                            children: [
-                              const SizedBox(height: 20),
-                              FieldCustom(
-                                placeholder: "",
-                                onReset: () {
-                                  bloc.add(
-                                    GetData(
-                                      getRefresh: true,
-                                      search: bloc.search,
-                                      status: bloc.tabActive!,
-                                    ),
-                                  );
-                                },
-                                controller: typeC,
-                                type: Type.select,
-                                getData: (String search) {
-                                  return const [
-                                    {"name": "Insite", "value": "insite"},
-                                    {"name": "Outsite", "value": "outsite"}
-                                  ];
-                                },
-                                title: "Type",
-                                onSelect: (e) {
-                                  typeC.text = e['name'];
+                          child: BlocBuilder<VisitBloc, VisitState>(
+                            bloc: bloc,
+                            builder: (context, state) {
+                              String GetValue(String field) {
+                                if (bloc.filters != null) {
+                                  List result = bloc.filters!.where((element) {
+                                    return element[0] == field;
+                                  }).toList();
 
-                                  bloc.add(
-                                    SetFilterData(
-                                      filter: ["type", "=", e['value']],
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              FieldDataScroll(
-                                minWidth: Get.width - 100,
-                                endpoint: Endpoint(data: Data.branch),
-                                value: bloc.branch?.name ?? "",
-                                title: "Branch",
-                                titleModal: "Branch List",
-                                onSelected: (e) {
-                                  Get.back();
-                                  bloc.add(
-                                    SetFilterData(
-                                      filter: [
-                                        "customer.branch",
-                                        "=",
-                                        e['_id']
-                                      ],
-                                    ),
-                                  );
-                                },
-                                onReset: () {},
-                              ),
-                              const SizedBox(height: 20),
-                              FieldDataScroll(
-                                minWidth: Get.width - 100,
-                                endpoint: Endpoint(data: Data.customergroup),
-                                value: bloc.branch?.name ?? "",
-                                title: "Group",
-                                titleModal: "Group List",
-                                onSelected: (e) {
-                                  Get.back();
-                                  bloc.add(
-                                    SetFilterData(
-                                      filter: [
-                                        "customer.customerGroup",
-                                        "=",
-                                        e['_id']
-                                      ],
-                                    ),
-                                  );
-                                },
-                                onReset: () {},
-                              ),
-                              const SizedBox(height: 20),
-                              FieldDataScroll(
-                                minWidth: Get.width - 100,
-                                endpoint: Endpoint(data: Data.customer),
-                                value: bloc.branch?.name ?? "",
-                                title: "Customer",
-                                titleModal: "Customer List",
-                                onSelected: (e) {
-                                  Get.back();
-                                  bloc.add(
-                                    SetFilterData(
-                                      filter: ["customer", "=", e['_id']],
-                                    ),
-                                  );
-                                },
-                                onReset: () {},
-                              ),
-                              const SizedBox(height: 20),
-                              FieldDataScroll(
-                                minWidth: Get.width - 100,
-                                endpoint: Endpoint(data: Data.users),
-                                value: bloc.branch?.name ?? "",
-                                title: "Created By",
-                                titleModal: "User List",
-                                onSelected: (e) {
-                                  Get.back();
-                                  bloc.add(
-                                    SetFilterData(
-                                      filter: ["createdBy", "=", e['_id']],
-                                    ),
-                                  );
-                                },
-                                onReset: () {},
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Date :",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                              const SizedBox(height: 10),
-                              GestureDetector(
-                                onTap: () {
-                                  ChooseDateRangePicker();
-                                },
-                                child: TextField(
-                                  style: TextStyle(color: Colors.grey[900]),
-                                  controller: rangeDateC,
-                                  enabled: false,
-                                  autocorrect: false,
-                                  enableSuggestions: false,
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[300]),
-                                    hintText: "Select date",
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    border: const OutlineInputBorder(),
-                                    disabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 1.0,
+                                  if (result.isNotEmpty) {
+                                    return result[0][2];
+                                  }
+                                  return "";
+                                } else {
+                                  return "";
+                                }
+                              }
+
+                              return ListView(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  FieldCustom(
+                                    placeholder: "",
+                                    onReset: () {
+                                      bloc.add(
+                                        GetData(
+                                          getRefresh: true,
+                                          search: bloc.search,
+                                          status: bloc.tabActive!,
+                                        ),
+                                      );
+                                    },
+                                    controller: typeC,
+                                    type: Type.select,
+                                    getData: (String search) {
+                                      return const [
+                                        {"name": "Insite", "value": "insite"},
+                                        {"name": "Outsite", "value": "outsite"}
+                                      ];
+                                    },
+                                    title: "Type",
+                                    onSelect: (e) {
+                                      typeC.text = e['name'];
+
+                                      bloc.add(
+                                        SetFilterData(
+                                          filter: ["type", "=", e['value']],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  FieldDataScroll(
+                                    minWidth: Get.width - 100,
+                                    endpoint: Endpoint(data: Data.branch),
+                                    value: GetValue("customer.branch"),
+                                    title: "Branch",
+                                    titleModal: "Branch List",
+                                    onSelected: (e) {
+                                      Get.back();
+                                      bloc.add(
+                                        SetFilterData(
+                                          filter: [
+                                            "customer.branch",
+                                            "=",
+                                            e['_id']
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    onReset: () {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  FieldDataScroll(
+                                    minWidth: Get.width - 100,
+                                    endpoint:
+                                        Endpoint(data: Data.customergroup),
+                                    value: GetValue("customer.customerGroup"),
+                                    title: "Group",
+                                    titleModal: "Group List",
+                                    onSelected: (e) {
+                                      Get.back();
+                                      bloc.add(
+                                        SetFilterData(
+                                          filter: [
+                                            "customer.customerGroup",
+                                            "=",
+                                            e['_id']
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    onReset: () {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  FieldDataScroll(
+                                    minWidth: Get.width - 100,
+                                    endpoint: Endpoint(data: Data.customer),
+                                    value: bloc.branch?.name ?? "",
+                                    title: "Customer",
+                                    titleModal: "Customer List",
+                                    onSelected: (e) {
+                                      Get.back();
+                                      bloc.add(
+                                        SetFilterData(
+                                          filter: ["customer", "=", e['_id']],
+                                        ),
+                                      );
+                                    },
+                                    onReset: () {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  FieldDataScroll(
+                                    minWidth: Get.width - 100,
+                                    endpoint: Endpoint(data: Data.users),
+                                    value: bloc.branch?.name ?? "",
+                                    title: "Created By",
+                                    titleModal: "User List",
+                                    onSelected: (e) {
+                                      Get.back();
+                                      bloc.add(
+                                        SetFilterData(
+                                          filter: ["createdBy", "=", e['_id']],
+                                        ),
+                                      );
+                                    },
+                                    onReset: () {},
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    "Date :",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: () {
+                                      ChooseDateRangePicker();
+                                    },
+                                    child: TextField(
+                                      style: TextStyle(color: Colors.grey[900]),
+                                      controller: rangeDateC,
+                                      enabled: false,
+                                      autocorrect: false,
+                                      enableSuggestions: false,
+                                      decoration: InputDecoration(
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey[300]),
+                                        hintText: "Select date",
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                        border: const OutlineInputBorder(),
+                                        disabledBorder:
+                                            const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.grey,
+                                            width: 1.0,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              FieldDataScroll(
-                                minWidth: Get.width - 100,
-                                endpoint: Endpoint(data: Data.workflowState),
-                                value: bloc.branch?.name ?? "",
-                                title: "Workflow State",
-                                titleModal: "Workflow State List",
-                                onSelected: (e) {},
-                                onReset: () {},
-                              ),
-                            ],
+                                  const SizedBox(height: 20),
+                                  FieldDataScroll(
+                                    minWidth: Get.width - 100,
+                                    endpoint:
+                                        Endpoint(data: Data.workflowState),
+                                    value: bloc.branch?.name ?? "",
+                                    title: "Workflow State",
+                                    titleModal: "Workflow State List",
+                                    onSelected: (e) {},
+                                    onReset: () {},
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       )
