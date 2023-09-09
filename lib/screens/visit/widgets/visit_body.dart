@@ -69,6 +69,7 @@ class _VisitBodyState extends State<VisitBody> {
     _textEditingController.text = "";
     visitBloc.add(GetData(
       status: widget.status,
+      filters: visitBloc.filters ?? [],
       getRefresh: true,
     ));
   }
