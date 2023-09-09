@@ -14,6 +14,7 @@ import 'package:salesappnew/widgets/field_custom.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 // import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'dart:convert';
 
 class VisitScreen extends StatefulWidget {
   VisitScreen({super.key});
@@ -58,23 +59,9 @@ class _VisitScreenState extends State<VisitScreen> {
   TextEditingController typeC = TextEditingController();
   TextEditingController rangeDateC = TextEditingController();
   List<List<String>> parseStringToListList(String input) {
-    // Menghilangkan tanda kurung siku eksternal
-    input = input.substring(2, input.length - 2);
+    print(json.decode(input));
 
-    // Memisahkan sublist berdasarkan tanda kurung siku dan koma
-    List<String> sublists = input.split("], [");
-
-    // Inisialisasi list hasil
-    List<List<String>> resultList = [];
-
-    // Memproses setiap sublist
-    for (String sublist in sublists) {
-      // Memisahkan elemen-elemen dalam sublist berdasarkan koma dan spasi
-      List<String> elements = sublist.split(", ");
-      resultList.add(elements);
-    }
-
-    return resultList;
+    return [];
   }
 
   @override
