@@ -22,11 +22,11 @@ class SetFilter extends VisitEvent {
   });
 }
 
-class RemoveFilterData extends VisitEvent {
-  String value;
+class RemoveFilter extends VisitEvent {
+  List<String> data;
 
-  RemoveFilterData({
-    required this.value,
+  RemoveFilter({
+    required this.data,
   });
 }
 

@@ -300,7 +300,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                     placeholder: "",
                                     onReset: () {
                                       bloc.add(
-                                        RemoveFilterData(value: "type"),
+                                        RemoveFilter(data: const ["type"]),
                                       );
                                     },
                                     controller: typeC,
@@ -346,8 +346,9 @@ class _VisitScreenState extends State<VisitScreen> {
                                     },
                                     onReset: () {
                                       bloc.add(
-                                        RemoveFilterData(
-                                            value: "customer.branch"),
+                                        RemoveFilter(
+                                          data: const ["customer.branch"],
+                                        ),
                                       );
                                     },
                                   ),
@@ -373,8 +374,11 @@ class _VisitScreenState extends State<VisitScreen> {
                                     },
                                     onReset: () {
                                       bloc.add(
-                                        RemoveFilterData(
-                                            value: "customer.customerGroup"),
+                                        RemoveFilter(
+                                          data: const [
+                                            "customer.customerGroup"
+                                          ],
+                                        ),
                                       );
                                     },
                                   ),
@@ -399,7 +403,9 @@ class _VisitScreenState extends State<VisitScreen> {
                                     },
                                     onReset: () {
                                       bloc.add(
-                                        RemoveFilterData(value: "customer"),
+                                        RemoveFilter(
+                                          data: const ["customer"],
+                                        ),
                                       );
                                     },
                                   ),
@@ -424,7 +430,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                     },
                                     onReset: () {
                                       bloc.add(
-                                        RemoveFilterData(value: "createdBy"),
+                                        RemoveFilter(data: const ["createdBy"]),
                                       );
                                     },
                                   ),
@@ -482,7 +488,13 @@ class _VisitScreenState extends State<VisitScreen> {
                                         ),
                                       );
                                     },
-                                    onReset: () {},
+                                    onReset: () {
+                                      bloc.add(
+                                        RemoveFilter(
+                                          data: const ["workflowState"],
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               );

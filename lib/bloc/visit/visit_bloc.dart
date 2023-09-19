@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_local_variable
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unnecessary_import, use_build_context_synchronously, await_only_futures
 
 import 'dart:convert';
@@ -12,7 +12,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
-
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/history_model.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -62,9 +61,8 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
   VisitBloc() : super(VisitInitial()) {
     on<GetData>(_GetAllData);
-    on<SetFilterData>(_SetFilterData);
     on<SetFilter>(_SetFilter);
-    on<RemoveFilterData>(_RemoveFilter);
+    on<RemoveFilter>(_RemoveFilter);
     on<VisitSetForm>((event, emit) {
       if (event.naming != null) {
         naming = event.naming;
@@ -461,39 +459,6 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
     }
   }
 
-  Future<void> _SetFilterData(
-      SetFilterData event, Emitter<VisitState> emit) async {
-    List<List<String>> finalFIlter = [];
-
-    // if (filters == null) {
-    //   finalFIlter = [event.filter];
-    // } else {
-    //   finalFIlter = filters!.where(
-    //     (element) {
-    //       return element[0] != event.filter[0];
-    //     },
-    //   ).toList();
-
-    //   finalFIlter.add(event.filter);
-    // }
-
-    // filters = finalFIlter;
-
-    await LocalData().setData(
-      "filterVisit",
-      finalFIlter.toString(),
-    );
-
-    add(
-      GetData(
-        filters: finalFIlter,
-        getRefresh: true,
-        search: search,
-        status: tabActive ?? 1,
-      ),
-    );
-  }
-
   Future<void> _SetFilter(SetFilter event, Emitter<VisitState> emit) async {
     List<FilterModel> finalFilter = [];
     List local = [];
@@ -540,33 +505,37 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
   }
 
   Future<void> _RemoveFilter(
-      RemoveFilterData event, Emitter<VisitState> emit) async {
-    List<List<String>> finalFilter = [];
+    RemoveFilter event,
+    Emitter<VisitState> emit,
+  ) async {
+    if (filterLocal != null) {
+      if (filterLocal!.isNotEmpty) {
+        List<FilterModel> removeFilter = filterLocal!.where((element) {
+          return !event.data.contains(element.field);
+        }).toList();
 
-    if (filters != null) {
-      finalFilter = filters!.where(
-        (element) {
-          return element[0] != event.value;
-        },
-      ).toList();
+        List local = removeFilter.map((FilterModel e) {
+          return {
+            "field": e.field,
+            "name": e.name,
+            "value": e.value,
+          };
+        }).toList();
 
-      if (finalFilter.isNotEmpty) {
         await LocalData().setData(
           "filterVisit",
-          finalFilter.toString(),
+          json.encode(local),
         );
+
+        List<List<String>> setFilter = removeFilter.map((FilterModel element) {
+          return [element.field, "=", element.value];
+        }).toList();
+
+        filterLocal = removeFilter;
+
         add(
           GetData(
-            filters: finalFilter,
-            getRefresh: true,
-            search: search,
-            status: tabActive ?? 1,
-          ),
-        );
-      } else {
-        await LocalData().removeData("filterVisit");
-        add(
-          GetData(
+            filters: setFilter,
             getRefresh: true,
             search: search,
             status: tabActive ?? 1,
