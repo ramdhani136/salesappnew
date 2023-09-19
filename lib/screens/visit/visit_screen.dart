@@ -278,6 +278,17 @@ class _VisitScreenState extends State<VisitScreen> {
                           child: BlocBuilder<VisitBloc, VisitState>(
                             bloc: bloc,
                             builder: (context, state) {
+                              if (bloc.filterLocal != null &&
+                                  bloc.filterLocal!.isNotEmpty) {
+                                for (var i = 0;
+                                    i < bloc.filterLocal!.length;
+                                    i++) {
+                                  if (bloc.filterLocal![i].field == "type") {
+                                    typeC.text = bloc.filterLocal![i].name;
+                                  }
+                                }
+                              }
+
                               String GetValue(String field) {
                                 if (bloc.filterLocal != null) {
                                   List<FilterModel> result = bloc.filterLocal!
