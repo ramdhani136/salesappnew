@@ -177,6 +177,7 @@ class VisitForm extends StatelessWidget {
                             visitBloc.add(GetData(
                               status: visitBloc.tabActive ?? 1,
                               getRefresh: true,
+                              filters: visitBloc.filters,
                               search: visitBloc.search,
                             ));
                           }),
