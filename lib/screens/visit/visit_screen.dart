@@ -300,10 +300,13 @@ class _VisitScreenState extends State<VisitScreen> {
                                     title: "Type",
                                     onSelect: (e) {
                                       typeC.text = e['name'];
-
                                       bloc.add(
-                                        SetFilterData(
-                                          filter: ["type", "=", e['value']],
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "type",
+                                            name: e["name"],
+                                            value: e["value"],
+                                          ),
                                         ),
                                       );
                                     },
@@ -317,7 +320,6 @@ class _VisitScreenState extends State<VisitScreen> {
                                     titleModal: "Branch List",
                                     onSelected: (e) {
                                       Get.back();
-
                                       bloc.add(
                                         SetFilter(
                                           filter: FilterModel(
@@ -372,8 +374,12 @@ class _VisitScreenState extends State<VisitScreen> {
                                     onSelected: (e) {
                                       Get.back();
                                       bloc.add(
-                                        SetFilterData(
-                                          filter: ["customer", "=", e['_id']],
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "customer",
+                                            name: e["name"],
+                                            value: e["_id"],
+                                          ),
                                         ),
                                       );
                                     },
@@ -393,8 +399,12 @@ class _VisitScreenState extends State<VisitScreen> {
                                     onSelected: (e) {
                                       Get.back();
                                       bloc.add(
-                                        SetFilterData(
-                                          filter: ["createdBy", "=", e['_id']],
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "createdBy",
+                                            name: e["name"],
+                                            value: e["_id"],
+                                          ),
                                         ),
                                       );
                                     },
@@ -443,10 +453,21 @@ class _VisitScreenState extends State<VisitScreen> {
                                     minWidth: Get.width - 100,
                                     endpoint:
                                         Endpoint(data: Data.workflowState),
-                                    value: bloc.branch?.name ?? "",
+                                    value: GetValue("workflowState"),
                                     title: "Workflow State",
                                     titleModal: "Workflow State List",
-                                    onSelected: (e) {},
+                                    onSelected: (e) {
+                                      Get.back();
+                                      bloc.add(
+                                        SetFilter(
+                                          filter: FilterModel(
+                                            field: "workflowState",
+                                            name: e["name"],
+                                            value: e["_id"],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     onReset: () {},
                                   ),
                                 ],
