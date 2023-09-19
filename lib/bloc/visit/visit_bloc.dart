@@ -518,16 +518,16 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       };
     }).toList();
 
+    await LocalData().setData(
+      "filterVisit",
+      json.encode(local),
+    );
+
     List<List<String>> setFilter = finalFilter.map((FilterModel element) {
       return [element.field, "=", element.value];
     }).toList();
 
     filterLocal = finalFilter;
-
-    await LocalData().setData(
-      "filterVisit",
-      json.encode(local),
-    );
 
     add(
       GetData(

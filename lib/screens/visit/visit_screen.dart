@@ -70,7 +70,6 @@ class _VisitScreenState extends State<VisitScreen> {
   Future<void> GetLocalFIlter() async {
     dynamic value = await LocalData().getData("filterVisit");
     List data = json.decode(value);
-    print(data);
 
     List<FilterModel> isFil = data.map((dynamic item) {
       return FilterModel(
@@ -80,6 +79,21 @@ class _VisitScreenState extends State<VisitScreen> {
       );
     }).toList();
     bloc.filterLocal = isFil;
+
+    List<List<String>> setFilter = isFil.map((FilterModel element) {
+      return [element.field, "=", element.value];
+    }).toList();
+
+    bloc.filters = setFilter;
+    print(setFilter);
+    bloc.add(
+      GetData(
+        filters: setFilter,
+        getRefresh: true,
+        search: bloc.search,
+        status: bloc.tabActive ?? 1,
+      ),
+    );
   }
 
   @override
@@ -463,7 +477,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                           filter: FilterModel(
                                             field: "workflowState",
                                             name: e["name"],
-                                            value: e["_id"],
+                                            value: e["name"],
                                           ),
                                         ),
                                       );
