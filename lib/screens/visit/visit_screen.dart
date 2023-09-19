@@ -114,6 +114,36 @@ class _VisitScreenState extends State<VisitScreen> {
       );
 
       if (picked != null) {
+        // print(DateFormat("yyy-MM-dd").format(picked.start));
+        // print(DateFormat("yyy-MM-dd").format(picked.end));
+
+        List<List<String>>? setDateFilter = [
+          ["createdAt", ">=", DateFormat("yyy-MM-dd").format(picked.start)],
+          ["createdAt", "<=", DateFormat("yyy-MM-dd").format(picked.end)],
+        ];
+
+        if (bloc.filters != null && bloc.filters!.isNotEmpty) {
+          List<List<String>>? current = bloc.filters!.where((element) {
+            return element[0] != "createdAt";
+          }).toList();
+          print(current);
+
+          if (current.isNotEmpty) {
+            setDateFilter.addAll(current);
+          }
+        }
+
+        bloc.filters = setDateFilter;
+
+        bloc.add(
+          GetData(
+            filters: setDateFilter,
+            getRefresh: true,
+            search: bloc.search,
+            status: bloc.tabActive ?? 1,
+          ),
+        );
+
         rangeDateC.text =
             "${DateFormat("dd MMM yyyy").format(picked.start)} - ${DateFormat("dd MMM yyyy").format(picked.end).toString()} ";
       }
