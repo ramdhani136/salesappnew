@@ -465,19 +465,19 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
       SetFilterData event, Emitter<VisitState> emit) async {
     List<List<String>> finalFIlter = [];
 
-    if (filters == null) {
-      finalFIlter = [event.filter];
-    } else {
-      finalFIlter = filters!.where(
-        (element) {
-          return element[0] != event.filter[0];
-        },
-      ).toList();
+    // if (filters == null) {
+    //   finalFIlter = [event.filter];
+    // } else {
+    //   finalFIlter = filters!.where(
+    //     (element) {
+    //       return element[0] != event.filter[0];
+    //     },
+    //   ).toList();
 
-      finalFIlter.add(event.filter);
-    }
+    //   finalFIlter.add(event.filter);
+    // }
 
-    filters = finalFIlter;
+    // filters = finalFIlter;
 
     await LocalData().setData(
       "filterVisit",
@@ -526,7 +526,7 @@ class VisitBloc extends Bloc<VisitEvent, VisitState> {
 
     await LocalData().setData(
       "filterVisit",
-      local.toString(),
+      json.encode(local),
     );
 
     add(

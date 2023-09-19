@@ -1,8 +1,9 @@
-// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, must_be_immutable, deprecated_member_use, unused_element
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, must_be_immutable, deprecated_member_use, unused_element, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/_http/_stub/_file_decoder_stub.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
@@ -17,7 +18,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:convert';
 
 class VisitScreen extends StatefulWidget {
-  VisitScreen({super.key});
+  const VisitScreen({super.key});
 
   @override
   State<VisitScreen> createState() => _VisitScreenState();
@@ -55,31 +56,31 @@ class _VisitScreenState extends State<VisitScreen> {
   ];
 
   final PanelController _panelController = PanelController();
+
   VisitBloc bloc = VisitBloc();
   TextEditingController typeC = TextEditingController();
   TextEditingController rangeDateC = TextEditingController();
-  List<List<String>> parseStringToListList(String input) {
-    print(json.decode(input));
-
-    return [];
-  }
 
   @override
   void initState() {
-    // LocalData().removeData("filterVisit");
-    LocalData().getData("filterVisit").then((value) {
-      if (value != null) {
-        print(parseStringToListList(value));
-        // bloc.add(
-        //   GetData(
-        //     filters: parseStringToListList(value),
-        //     getRefresh: true,
-        //     status: 1,
-        //   ),
-        // );
-      }
-    });
+    GetLocalFIlter();
+
     super.initState();
+  }
+
+  Future<void> GetLocalFIlter() async {
+    dynamic value = await LocalData().getData("filterVisit");
+    List data = json.decode(value);
+    print(data);
+
+    List<FilterModel> isFil = data.map((dynamic item) {
+      return FilterModel(
+        field: item["field"],
+        name: item["name"],
+        value: item["value"],
+      );
+    }).toList();
+    bloc.filterLocal = isFil;
   }
 
   @override
@@ -265,18 +266,18 @@ class _VisitScreenState extends State<VisitScreen> {
                             bloc: bloc,
                             builder: (context, state) {
                               String GetValue(String field) {
-                                if (bloc.filters != null) {
-                                  List result = bloc.filters!.where((element) {
-                                    return element[0] == field;
-                                  }).toList();
-
+                                if (bloc.filterLocal != null) {
+                                  List<FilterModel> result = bloc.filterLocal!
+                                      .where((FilterModel element) =>
+                                          element.field == field)
+                                      .toList();
                                   if (result.isNotEmpty) {
-                                    return result[0][2];
+                                    return result[0].name;
                                   }
                                   return "";
-                                } else {
-                                  return "";
                                 }
+
+                                return "";
                               }
 
                               return ListView(
@@ -317,6 +318,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                     titleModal: "Branch List",
                                     onSelected: (e) {
                                       Get.back();
+
                                       bloc.add(
                                         SetFilter(
                                           filter: FilterModel(
