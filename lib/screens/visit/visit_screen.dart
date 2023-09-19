@@ -62,39 +62,39 @@ class _VisitScreenState extends State<VisitScreen> {
 
   @override
   void initState() {
-    GetLocalFIlter();
+    // GetLocalFIlter();
 
     super.initState();
   }
 
-  Future<void> GetLocalFIlter() async {
-    dynamic value = await LocalData().getData("filterVisit");
-    List data = json.decode(value);
+  // Future<void> GetLocalFIlter() async {
+  //   dynamic value = await LocalData().getData("filterVisit");
+  //   List data = json.decode(value);
 
-    List<FilterModel> isFil = data.map((dynamic item) {
-      return FilterModel(
-        field: item["field"],
-        name: item["name"],
-        value: item["value"],
-      );
-    }).toList();
-    bloc.filterLocal = isFil;
+  //   List<FilterModel> isFil = data.map((dynamic item) {
+  //     return FilterModel(
+  //       field: item["field"],
+  //       name: item["name"],
+  //       value: item["value"],
+  //     );
+  //   }).toList();
+  //   bloc.filterLocal = isFil;
 
-    List<List<String>> setFilter = isFil.map((FilterModel element) {
-      return [element.field, "=", element.value];
-    }).toList();
+  //   List<List<String>> setFilter = isFil.map((FilterModel element) {
+  //     return [element.field, "=", element.value];
+  //   }).toList();
 
-    bloc.filters = setFilter;
-    print(setFilter);
-    bloc.add(
-      GetData(
-        filters: setFilter,
-        getRefresh: true,
-        search: bloc.search,
-        status: bloc.tabActive ?? 1,
-      ),
-    );
-  }
+  //   bloc.filters = setFilter;
+  //   print(setFilter);
+  //   bloc.add(
+  //     GetData(
+  //       filters: setFilter,
+  //       getRefresh: true,
+  //       search: bloc.search,
+  //       status: bloc.tabActive ?? 1,
+  //     ),
+  //   );
+  // }
 
   @override
   void dispose() {

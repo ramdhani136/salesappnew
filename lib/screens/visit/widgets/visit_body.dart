@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body_list.dart';
+import 'package:salesappnew/utils/local_data.dart';
 
 class VisitBody extends StatefulWidget {
   final int status;
@@ -35,13 +37,42 @@ class _VisitBodyState extends State<VisitBody> {
 
     _textEditingController = TextEditingController(text: visitBloc.search);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      visitBloc.add(GetData(
-        status: widget.status,
-        getRefresh: true,
-        search: _textEditingController.text,
-        filters: visitBloc.filters,
-      ));
+      GetLocalFIlter();
+      // visitBloc.add(GetData(
+      //   status: widget.status,
+      //   getRefresh: true,
+      //   search: _textEditingController.text,
+      //   filters: visitBloc.filters,
+      // ));
     });
+  }
+
+  Future<void> GetLocalFIlter() async {
+    dynamic value = await LocalData().getData("filterVisit");
+    List data = json.decode(value);
+
+    List<FilterModel> isFil = data.map((dynamic item) {
+      return FilterModel(
+        field: item["field"],
+        name: item["name"],
+        value: item["value"],
+      );
+    }).toList();
+    visitBloc.filterLocal = isFil;
+
+    List<List<String>> setFilter = isFil.map((FilterModel element) {
+      return [element.field, "=", element.value];
+    }).toList();
+
+    visitBloc.filters = setFilter;
+    visitBloc.add(
+      GetData(
+        filters: setFilter,
+        getRefresh: true,
+        search: visitBloc.search,
+        status: widget.status,
+      ),
+    );
   }
 
   @override
