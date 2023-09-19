@@ -8,13 +8,10 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_body.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
-import 'package:salesappnew/utils/local_data.dart';
 import 'package:salesappnew/widgets/back_button_custom.dart';
 import 'package:salesappnew/widgets/field_custom.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
-// import 'package:salesappnew/widgets/drawer_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'dart:convert';
 
 class VisitScreen extends StatefulWidget {
   const VisitScreen({super.key});
@@ -62,39 +59,8 @@ class _VisitScreenState extends State<VisitScreen> {
 
   @override
   void initState() {
-    // GetLocalFIlter();
-
     super.initState();
   }
-
-  // Future<void> GetLocalFIlter() async {
-  //   dynamic value = await LocalData().getData("filterVisit");
-  //   List data = json.decode(value);
-
-  //   List<FilterModel> isFil = data.map((dynamic item) {
-  //     return FilterModel(
-  //       field: item["field"],
-  //       name: item["name"],
-  //       value: item["value"],
-  //     );
-  //   }).toList();
-  //   bloc.filterLocal = isFil;
-
-  //   List<List<String>> setFilter = isFil.map((FilterModel element) {
-  //     return [element.field, "=", element.value];
-  //   }).toList();
-
-  //   bloc.filters = setFilter;
-  //   print(setFilter);
-  //   bloc.add(
-  //     GetData(
-  //       filters: setFilter,
-  //       getRefresh: true,
-  //       search: bloc.search,
-  //       status: bloc.tabActive ?? 1,
-  //     ),
-  //   );
-  // }
 
   @override
   void dispose() {

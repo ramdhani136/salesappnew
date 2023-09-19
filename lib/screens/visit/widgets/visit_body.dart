@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -38,12 +40,6 @@ class _VisitBodyState extends State<VisitBody> {
     _textEditingController = TextEditingController(text: visitBloc.search);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       GetLocalFIlter();
-      // visitBloc.add(GetData(
-      //   status: widget.status,
-      //   getRefresh: true,
-      //   search: _textEditingController.text,
-      //   filters: visitBloc.filters,
-      // ));
     });
   }
 
