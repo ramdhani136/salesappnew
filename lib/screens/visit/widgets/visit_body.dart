@@ -45,30 +45,41 @@ class _VisitBodyState extends State<VisitBody> {
 
   Future<void> GetLocalFIlter() async {
     dynamic value = await LocalData().getData("filterVisit");
-    List data = json.decode(value);
+    if (value != null) {
+      List data = json.decode(value);
 
-    List<FilterModel> isFil = data.map((dynamic item) {
-      return FilterModel(
-        field: item["field"],
-        name: item["name"],
-        value: item["value"],
+      List<FilterModel> isFil = data.map((dynamic item) {
+        return FilterModel(
+          field: item["field"],
+          name: item["name"],
+          value: item["value"],
+        );
+      }).toList();
+      visitBloc.filterLocal = isFil;
+
+      List<List<String>> setFilter = isFil.map((FilterModel element) {
+        return [element.field, "=", element.value];
+      }).toList();
+
+      visitBloc.filters = setFilter;
+      visitBloc.add(
+        GetData(
+          filters: setFilter,
+          getRefresh: true,
+          search: visitBloc.search,
+          status: widget.status,
+        ),
       );
-    }).toList();
-    visitBloc.filterLocal = isFil;
-
-    List<List<String>> setFilter = isFil.map((FilterModel element) {
-      return [element.field, "=", element.value];
-    }).toList();
-
-    visitBloc.filters = setFilter;
-    visitBloc.add(
-      GetData(
-        filters: setFilter,
-        getRefresh: true,
-        search: visitBloc.search,
-        status: widget.status,
-      ),
-    );
+    } else {
+      visitBloc.add(
+        GetData(
+          filters: [],
+          getRefresh: true,
+          search: visitBloc.search,
+          status: widget.status,
+        ),
+      );
+    }
   }
 
   @override
