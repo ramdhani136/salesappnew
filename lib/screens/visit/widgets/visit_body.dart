@@ -73,7 +73,7 @@ class _VisitBodyState extends State<VisitBody> {
     } else {
       visitBloc.add(
         GetData(
-          filters: [],
+          filters: const [],
           getRefresh: true,
           search: visitBloc.search,
           status: widget.status,
