@@ -90,7 +90,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               var stream = http.ByteStream(img!.openRead())..cast();
               var length = await img!.length();
               var multipartFile = http.MultipartFile(
-                'img',
+                'imgfile',
                 stream,
                 length,
                 filename: basename(img!.path),
