@@ -334,6 +334,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
+                                    resetOpenModal: false,
                                     minWidth: Get.width - 100,
                                     endpoint: Endpoint(data: Data.branch),
                                     value: GetValue("customer.branch"),
@@ -361,6 +362,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
+                                    resetOpenModal: false,
                                     minWidth: Get.width - 100,
                                     endpoint:
                                         Endpoint(data: Data.customergroup),
@@ -391,6 +393,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
+                                    resetOpenModal: false,
                                     minWidth: Get.width - 100,
                                     endpoint: Endpoint(data: Data.customer),
                                     value: GetValue("customer"),
@@ -418,6 +421,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
+                                    resetOpenModal: false,
                                     minWidth: Get.width - 100,
                                     endpoint: Endpoint(data: Data.users),
                                     value: GetValue("createdBy"),
@@ -477,6 +481,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   FieldDataScroll(
+                                    resetOpenModal: false,
                                     minWidth: Get.width - 100,
                                     endpoint:
                                         Endpoint(data: Data.workflowState),

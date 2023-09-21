@@ -23,6 +23,7 @@ class Endpoint {
 
 class FieldDataScroll extends StatefulWidget {
   String? placeholder;
+  bool resetOpenModal;
   bool valid;
   String? title;
   String? titleModal;
@@ -41,6 +42,7 @@ class FieldDataScroll extends StatefulWidget {
 
   FieldDataScroll({
     this.onChange,
+    this.resetOpenModal = true,
     required this.value,
     this.textArea = false,
     this.disabled = false,
@@ -114,6 +116,7 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                   onChange: widget.onChange,
                 ),
               );
+
               if (widget.onTap != null) {
                 widget.onTap!();
               }
@@ -185,16 +188,19 @@ class _FieldDataScrollState extends State<FieldDataScroll> {
                       child: IconButton(
                         onPressed: () async {
                           if (!widget.disabled) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => ModalField(
-                                titleModal: widget.titleModal ?? "",
-                                onSelected: widget.onSelected,
-                                enpoint: widget.endpoint,
-                                onChange: widget.onChange,
-                                ComponentInsert: widget.ComponentInsert,
-                              ),
-                            );
+                            if (widget.resetOpenModal) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => ModalField(
+                                  titleModal: widget.titleModal ?? "",
+                                  onSelected: widget.onSelected,
+                                  enpoint: widget.endpoint,
+                                  onChange: widget.onChange,
+                                  ComponentInsert: widget.ComponentInsert,
+                                ),
+                              );
+                            }
+
                             if (widget.onReset != null) {
                               widget.onReset!();
                             }
