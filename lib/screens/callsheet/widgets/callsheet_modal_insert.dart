@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/callsheet/callsheet_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
+import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/widgets/field_data_scroll.dart';
 
@@ -307,6 +308,28 @@ class _CallsheetModalInsertState extends State<CallsheetModalInsert> {
                                     localBloc.group?.value != "" &&
                                     localBloc.group?.value != null,
                                 child: FieldDataScroll(
+                                  ComponentInsert: CustomerFormWidget(
+                                    branch: localBloc.branch,
+                                    group: localBloc.group,
+                                    onSuccess: (e) {
+                                      localBloc.add(
+                                        CallsheetSetForm(
+                                          customer: KeyValue(
+                                            name: e['name'],
+                                            value: e['_id'],
+                                          ),
+                                          group: KeyValue(
+                                            name: e['customerGroup']['name'],
+                                            value: e['customerGroup']['_id'],
+                                          ),
+                                          branch: KeyValue(
+                                            name: e['branch']['name'],
+                                            value: e['branch']['_id'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   minWidth: Get.width - 116,
                                   endpoint: Endpoint(
                                     data: Data.customer,
