@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +12,7 @@ class DnBodyList extends StatelessWidget {
   Map<String, dynamic> data;
   Color colorHeader;
   Color colorFontHeader;
+
   DnBodyList({
     super.key,
     required this.data,
@@ -24,7 +27,12 @@ class DnBodyList extends StatelessWidget {
     );
 
     double persen = double.parse(data['per_billed'].toStringAsFixed(2));
-
+    String ownerName = data['owner'].toString();
+    int maxCharacters =
+        18; // Ubah sesuai dengan jumlah karakter maksimal yang diinginkan
+    String owner = ownerName.length <= maxCharacters
+        ? ownerName
+        : ownerName.substring(0, min(ownerName.length, maxCharacters));
     return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -188,7 +196,7 @@ class DnBodyList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        data['owner'].toString(),
+                        owner,
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 15,

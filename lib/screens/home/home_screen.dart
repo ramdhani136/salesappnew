@@ -13,7 +13,6 @@ import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salesappnew/screens/invoice/invoice_screen.dart';
 import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
@@ -112,23 +111,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.red[300],
-                  radius: 20,
-                  child: SvgPicture.asset(
-                    'assets/icons/notif.svg',
-                    width: 18,
-                    height: 18,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            )
+            // Row(
+            //   children: [
+            //     CircleAvatar(
+            //       backgroundColor: Colors.red[300],
+            //       radius: 20,
+            //       child: SvgPicture.asset(
+            //         'assets/icons/notif.svg',
+            //         width: 18,
+            //         height: 18,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     const SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // )
           ],
         ),
         centerTitle: true,

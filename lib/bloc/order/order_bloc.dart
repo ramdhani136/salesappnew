@@ -46,7 +46,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   Future<void> _GetAllData(OrderGetAll event, Emitter<OrderState> emit) async {
     try {
-      int page = 1;
       if (state is! OrderIsLoaded || event.getRefresh) {
         emit(OrderIsLoading());
       } else {

@@ -31,7 +31,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   Future<void> _GetAllData(
       InvoiceGetAll event, Emitter<InvoiceState> emit) async {
     try {
-      int page = 1;
       if (state is! InvoiceIsLoaded || event.getRefresh) {
         emit(InvoiceLoading());
       } else {

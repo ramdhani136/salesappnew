@@ -26,7 +26,6 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
 
   Future<void> _GetAllData(ItemGetAll event, Emitter<ItemState> emit) async {
     try {
-      int page = 1;
       if (state is! ItemIsLoaded || event.getRefresh) {
         emit(ItemIsLoading());
       } else {

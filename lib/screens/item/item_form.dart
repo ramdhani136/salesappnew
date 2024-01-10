@@ -265,20 +265,20 @@ class ItemFormScreen extends StatelessWidget {
                                           stateBin.data[0].actualQty,
                                         )
                                       ]),
-                                      buildRow([
-                                        'Ordered Qty',
-                                        ':',
-                                        numberFormat.format(
-                                          stateBin.data[0].orderedQty,
-                                        )
-                                      ]),
-                                      buildRow([
-                                        'Reserved Qty',
-                                        ':',
-                                        numberFormat.format(
-                                          stateBin.data[0].reservedQty,
-                                        )
-                                      ]),
+                                      // buildRow([
+                                      //   'Ordered Qty',
+                                      //   ':',
+                                      //   numberFormat.format(
+                                      //     stateBin.data[0].orderedQty,
+                                      //   )
+                                      // ]),
+                                      // buildRow([
+                                      //   'Reserved Qty',
+                                      //   ':',
+                                      //   numberFormat.format(
+                                      //     stateBin.data[0].reservedQty,
+                                      //   )
+                                      // ]),
                                     ],
                                   ),
                                 ),

@@ -23,7 +23,7 @@ class DnBloc extends Bloc<DnEvent, DnState> {
 
   Future<void> _GetAllData(DnGetAll event, Emitter<DnState> emit) async {
     try {
-      int page = 1;
+      // int page = 1;
       if (state is! DnIsLoaded || event.getRefresh) {
         emit(DnIsLoading());
       } else {
@@ -65,7 +65,6 @@ class DnBloc extends Bloc<DnEvent, DnState> {
         ],
         filters: filters,
       );
-
       if (getData['status'] == 200) {
         page = getData['nextPage'];
         List response = getData['data'];
