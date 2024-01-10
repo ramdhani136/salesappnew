@@ -170,11 +170,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         if (state is LocationLoaded) {
-                          locationbloc.add(
-                            GetRealtimeGps(
-                              duration: const Duration(seconds: 60),
-                            ),
-                          );
+                          // locationbloc.add(
+                          //   GetRealtimeGps(
+                          //     duration: const Duration(seconds: 60),
+                          //   ),
+                          // );
                           return Text(
                             locationbloc.address ?? "Gps Error!",
                             style: const TextStyle(

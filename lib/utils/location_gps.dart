@@ -18,6 +18,11 @@ class LocationGps {
         openAppSettings();
       } else if (status.isGranted) {
         // Mendapatkan posisi saat ini
+
+        // Geolocator.getPositionStream().listen((position) {
+        //   print(position);
+        // });
+
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
