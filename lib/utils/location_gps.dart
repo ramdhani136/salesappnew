@@ -19,7 +19,12 @@ class LocationGps {
       } else if (status.isGranted) {
         // Mendapatkan posisi saat ini
 
-        // Geolocator.getPositionStream().listen((position) {
+        // const LocationSettings locationSettings = LocationSettings(
+        //   accuracy: LocationAccuracy.high,
+        //   // distanceFilter: 10,
+        // );
+        // Geolocator.getPositionStream(locationSettings: locationSettings)
+        //     .listen((position) {
         //   print(position);
         // });
 
