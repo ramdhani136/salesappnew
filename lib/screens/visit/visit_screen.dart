@@ -480,34 +480,34 @@ class _VisitScreenState extends State<VisitScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-                                  FieldDataScroll(
-                                    resetOpenModal: false,
-                                    minWidth: Get.width - 100,
-                                    endpoint:
-                                        Endpoint(data: Data.workflowState),
-                                    value: GetValue("workflowState"),
-                                    title: "Workflow State",
-                                    titleModal: "Workflow State List",
-                                    onSelected: (e) {
-                                      Get.back();
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "workflowState",
-                                            name: e["name"],
-                                            value: e["name"],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(
-                                          data: const ["workflowState"],
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                  // FieldDataScroll(
+                                  //   resetOpenModal: false,
+                                  //   minWidth: Get.width - 100,
+                                  //   endpoint:
+                                  //       Endpoint(data: Data.workflowState),
+                                  //   value: GetValue("workflowState"),
+                                  //   title: "Workflow State",
+                                  //   titleModal: "Workflow State List",
+                                  //   onSelected: (e) {
+                                  //     Get.back();
+                                  //     bloc.add(
+                                  //       SetFilter(
+                                  //         filter: FilterModel(
+                                  //           field: "workflowState",
+                                  //           name: e["name"],
+                                  //           value: e["name"],
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   onReset: () {
+                                  //     bloc.add(
+                                  //       RemoveFilter(
+                                  //         data: const ["workflowState"],
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // ),
                                 ],
                               );
                             },
