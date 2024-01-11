@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     BlocBuilder<GpsBloc, GpsState>(
-                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 10)),
+                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 1)),
                       builder: (context, state) {
                         if (state is GpsIsLoaded) {
                           print(state.position);
