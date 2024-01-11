@@ -2,7 +2,7 @@
 part of 'gps_bloc.dart';
 
 @immutable
-sealed class GpsEvent {}
+abstract class GpsEvent {}
 
 class GpsGetLocation extends GpsEvent {
   int? distanceFilter;
@@ -11,3 +11,13 @@ class GpsGetLocation extends GpsEvent {
     this.distanceFilter,
   });
 }
+
+class GpsSetLocation extends GpsEvent {
+  Position position;
+
+  GpsSetLocation(
+    this.position,
+  );
+}
+
+class GpsStopLocation extends GpsEvent {}

@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:salesappnew/bloc/auth/auth_bloc.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/gps/gps_bloc.dart';
+import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/memo/memo_bloc.dart';
 import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
@@ -19,7 +19,6 @@ import 'package:salesappnew/screens/item/item_screen.dart';
 import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
-import 'package:salesappnew/utils/location_gps.dart';
 import 'package:salesappnew/widgets/drawer_widget.dart';
 
 // ignore: must_be_immutable
@@ -31,16 +30,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GpsBloc gpsBloc = GpsBloc();
+  // final LocationBloc locationbloc = LocationBloc();
+  late final GpsBloc gpsBloc;
 
   @override
   void initState() {
+    print("ddd");
     super.initState();
+    gpsBloc = GpsBloc()..add(GpsGetLocation());
   }
 
   @override
   void dispose() {
     // locationbloc.close();
+
     super.dispose();
     gpsBloc.close();
   }
@@ -165,49 +168,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     BlocBuilder<GpsBloc, GpsState>(
-                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 10)),
+                      bloc: gpsBloc,
                       builder: (context, state) {
+                        print(state);
                         if (state is GpsIsLoaded) {
-                          print(state.position);
-                          Future<String> addressFuture =
-                              LocationGps().chekcAdress(state.position);
-
-                          return FutureBuilder<String>(
-                            future: addressFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                // Placeholder Text while waiting for the address
-                                return const Text(
-                                  "Loading Address...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 75, 57, 3),
-                                  ),
-                                );
-                              } else if (snapshot.hasError) {
-                                // Handle errors if necessary
-                                return const Text(
-                                  "Error fetching address",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 75, 57, 3),
-                                  ),
-                                );
-                              } else {
-                                // Display the obtained address
-                                return Text(
-                                  snapshot.data ?? "Unknown Address",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 75, 57, 3),
-                                  ),
-                                );
-                              }
-                            },
-                          );
+                          // print("cobaDDDDDDDDDDDDDD");
+                          // print(state.data);
                         }
 
+                        // if (state is LocationInitial) {
+                        //   locationbloc.add(GetLocationGps());
+                        // }
+
+                        // if (state is LocationLoaded) {
+                        //   locationbloc.add(
+                        //     GetRealtimeGps(
+                        //       duration: const Duration(seconds: 60),
+                        //     ),
+                        //   );
+                        //   return Text(
+                        //     locationbloc.address ?? "Gps Error!",
+                        //     style: const TextStyle(
+                        //         fontSize: 14,
+                        //         color: Color.fromARGB(255, 75, 57, 3)),
+                        //   );
+                        // }
                         if (state is GpsIsLoading) {
                           return const SizedBox(
                             width: 9,
@@ -504,18 +489,34 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            BlocBuilder<GpsBloc, GpsState>(
-              bloc: gpsBloc,
-              builder: (context, state) {
-                if (state is GpsIsLoaded) {
-                  return LocationAroundYou(
-                    position: state.position,
-                  );
-                }
+            // BlocBuilder<LocationBloc, LocationState>(
+            //   bloc: locationbloc,
+            //   builder: (context, state) {
+            //     if (state is LocationLoading) {
+            //       return const Column(
+            //         children: [
+            //           SizedBox(
+            //             height: 50,
+            //           ),
+            //           Center(
+            //             child: SizedBox(
+            //               width: 20,
+            //               height: 20,
+            //               child: CircularProgressIndicator(
+            //                 color: Color.fromARGB(255, 223, 223, 223),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       );
+            //     }
+            //     if (state is LocationLoaded) {
+            //       return LocationAroundYou(locationbloc: locationbloc);
+            //     }
 
-                return const SizedBox();
-              },
-            ),
+            //     return Container();
+            //   },
+            // ),
           ],
         ),
       ),
@@ -542,208 +543,220 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class LocationAroundYou extends StatelessWidget {
-  final Position position;
+// class LocationAroundYou extends StatefulWidget {
+//   const LocationAroundYou({
+//     super.key,
+//     required this.locationbloc,
+//   });
 
-  const LocationAroundYou({
-    Key? key,
-    required this.position,
-  }) : super(key: key);
+//   final LocationBloc locationbloc;
 
-  @override
-  Widget build(BuildContext context) {
-    final CustomerBloc customerBloc = CustomerBloc();
+//   @override
+//   State<LocationAroundYou> createState() => _LocationAroundYouState();
+// }
 
-    return BlocBuilder<CustomerBloc, CustomerState>(
-      bloc: customerBloc
-        ..add(
-          GetAllCustomer(
-            nearby: Nearby(lat: position.latitude, lng: position.longitude),
-          ),
-        ),
-      builder: (context, state) {
-        return Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Location Around you (${state is CustomerIsLoaded ? "${state.data.length} Of ${state.total}" : "0"})",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.refresh,
-                    size: 20,
-                    color: Color.fromARGB(255, 114, 114, 114),
-                  ),
-                  onPressed: () {
-                    customerBloc.add(GetAllCustomer(
-                      nearby: Nearby(
-                          lat: position.latitude, lng: position.longitude),
-                    ));
-                  },
-                ),
-              ],
-            ),
-            Visibility(
-              visible: state is CustomerIsFailure,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Text(
-                  state is CustomerIsFailure ? state.error : "",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              visible: state is CustomerIsLoading,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.grey[300],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Visibility(
-              visible: state is CustomerIsLoaded,
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollInfo) {
-                  if (scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent &&
-                          (state is CustomerIsLoaded)
-                      ? (state).hasMore
-                      : false) {
-                    state.hasMore = false;
-                    customerBloc.add(
-                      GetAllCustomer(
-                        nearby: Nearby(
-                            lat: position.latitude, lng: position.longitude),
-                        refresh: false,
-                      ),
-                    );
-                  }
+// class _LocationAroundYouState extends State<LocationAroundYou> {
+//   final CustomerBloc customerBloc = CustomerBloc();
 
-                  return false;
-                },
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        itemCount:
-                            state is CustomerIsLoaded ? state.data.length : 0,
-                        itemBuilder: (context, index) {
-                          if (state is CustomerIsLoaded) {
-                            Config config = Config();
-                            return ListTile(
-                              leading: CircleAvatar(
-                                radius: 18,
-                                backgroundColor: Colors.grey[300],
-                                child: state.data[index]['img'] != null
-                                    ? ClipOval(
-                                        child: FadeInImage(
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                          fadeInCurve: Curves.easeInExpo,
-                                          fadeOutCurve: Curves.easeOutExpo,
-                                          placeholder: const AssetImage(
-                                              'assets/images/loading.gif'),
-                                          image: NetworkImage(
-                                              "${config.baseUri}public/customer/${state.data[index]['img']}"),
-                                          imageErrorBuilder: (_, __, ___) {
-                                            return Image.asset(
-                                              'assets/icons/profile.png',
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : Icon(
-                                        Icons.person,
-                                        color: Colors.grey[100],
-                                      ),
-                              ),
-                              title: Text(state.data[index]['name']),
-                              subtitle: Text(
-                                  state.data[index]['customerGroup']['name']),
-                              trailing: Text(state.data[index]['distance'] !=
-                                      null
-                                  ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
-                                  : ""),
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => VisitModalInsert(
-                                    bloc: VisitBloc(),
-                                    customer: KeyValue(
-                                      name: state.data[index]['name'],
-                                      value: state.data[index]['_id'],
-                                    ),
-                                    group: KeyValue(
-                                      name: state.data[index]['customerGroup']
-                                          ['name'],
-                                      value: state.data[index]['customerGroup']
-                                          ['_id'],
-                                    ),
-                                    branch: KeyValue(
-                                      name: state.data[index]['branch']['name'],
-                                      value: state.data[index]['branch']['_id'],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Visibility(
-                      visible: state is CustomerIsLoaded && state.IsloadingPage,
-                      child: const Padding(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Center(
-                              child: SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
+//   @override
+//   void dispose() {
+//     customerBloc.close();
+//     widget.locationbloc.close();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<CustomerBloc, CustomerState>(
+//       bloc: customerBloc
+//         ..add(
+//           GetAllCustomer(
+//             nearby: Nearby(
+//                 lat: widget.locationbloc.cordinate!.latitude,
+//                 lng: widget.locationbloc.cordinate!.longitude),
+//           ),
+//         ),
+//       builder: (context, state) {
+//         return Column(
+//           children: [
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   "Location Around you (${state is CustomerIsLoaded ? "${state.data.length} Of ${state.total}" : "0"})",
+//                   style: const TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 16,
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: const Icon(
+//                     Icons.refresh,
+//                     size: 20,
+//                     color: Color.fromARGB(255, 114, 114, 114),
+//                   ),
+//                   onPressed: () {
+//                     widget.locationbloc.add(GetLocationGps());
+//                   },
+//                 ),
+//               ],
+//             ),
+//             Visibility(
+//               visible: state is CustomerIsFailure,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(top: 80),
+//                 child: Text(
+//                   state is CustomerIsFailure ? state.error : "",
+//                   textAlign: TextAlign.center,
+//                   style: TextStyle(
+//                     color: Colors.grey[400],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Visibility(
+//               visible: state is CustomerIsLoading,
+//               child: Column(
+//                 children: [
+//                   const SizedBox(
+//                     height: 30,
+//                   ),
+//                   SizedBox(
+//                     width: 20,
+//                     height: 20,
+//                     child: Center(
+//                       child: CircularProgressIndicator(
+//                         color: Colors.grey[300],
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             Visibility(
+//               visible: state is CustomerIsLoaded,
+//               child: NotificationListener<ScrollNotification>(
+//                 onNotification: (ScrollNotification scrollInfo) {
+//                   if (scrollInfo.metrics.pixels ==
+//                               scrollInfo.metrics.maxScrollExtent &&
+//                           (state is CustomerIsLoaded)
+//                       ? (state).hasMore
+//                       : false) {
+//                     state.hasMore = false;
+//                     customerBloc.add(
+//                       GetAllCustomer(
+//                         nearby: Nearby(
+//                             lat: widget.locationbloc.cordinate!.latitude,
+//                             lng: widget.locationbloc.cordinate!.longitude),
+//                         refresh: false,
+//                       ),
+//                     );
+//                   }
+
+//                   return false;
+//                 },
+//                 child: Column(
+//                   children: [
+//                     SizedBox(
+//                       height: 300,
+//                       child: ListView.builder(
+//                         itemCount:
+//                             state is CustomerIsLoaded ? state.data.length : 0,
+//                         itemBuilder: (context, index) {
+//                           if (state is CustomerIsLoaded) {
+//                             Config config = Config();
+//                             return ListTile(
+//                               leading: CircleAvatar(
+//                                 radius: 18,
+//                                 backgroundColor: Colors.grey[300],
+//                                 child: state.data[index]['img'] != null
+//                                     ? ClipOval(
+//                                         child: FadeInImage(
+//                                           width: 100,
+//                                           height: 100,
+//                                           fit: BoxFit.cover,
+//                                           fadeInCurve: Curves.easeInExpo,
+//                                           fadeOutCurve: Curves.easeOutExpo,
+//                                           placeholder: const AssetImage(
+//                                               'assets/images/loading.gif'),
+//                                           image: NetworkImage(
+//                                               "${config.baseUri}public/customer/${state.data[index]['img']}"),
+//                                           imageErrorBuilder: (_, __, ___) {
+//                                             return Image.asset(
+//                                               'assets/icons/profile.png',
+//                                             );
+//                                           },
+//                                         ),
+//                                       )
+//                                     : Icon(
+//                                         Icons.person,
+//                                         color: Colors.grey[100],
+//                                       ),
+//                               ),
+//                               title: Text(state.data[index]['name']),
+//                               subtitle: Text(
+//                                   state.data[index]['customerGroup']['name']),
+//                               trailing: Text(state.data[index]['distance'] !=
+//                                       null
+//                                   ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
+//                                   : ""),
+//                               onTap: () {
+//                                 showDialog(
+//                                   context: context,
+//                                   builder: (context) => VisitModalInsert(
+//                                     bloc: VisitBloc(),
+//                                     customer: KeyValue(
+//                                       name: state.data[index]['name'],
+//                                       value: state.data[index]['_id'],
+//                                     ),
+//                                     group: KeyValue(
+//                                       name: state.data[index]['customerGroup']
+//                                           ['name'],
+//                                       value: state.data[index]['customerGroup']
+//                                           ['_id'],
+//                                     ),
+//                                     branch: KeyValue(
+//                                       name: state.data[index]['branch']['name'],
+//                                       value: state.data[index]['branch']['_id'],
+//                                     ),
+//                                   ),
+//                                 );
+//                               },
+//                             );
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                     Visibility(
+//                       visible: state is CustomerIsLoaded && state.IsloadingPage,
+//                       child: const Padding(
+//                         padding: EdgeInsets.only(bottom: 20),
+//                         child: Column(
+//                           mainAxisAlignment: MainAxisAlignment.end,
+//                           children: [
+//                             Center(
+//                               child: SizedBox(
+//                                 width: 16,
+//                                 height: 16,
+//                                 child: CircularProgressIndicator(
+//                                   strokeWidth: 3,
+//                                   color: Colors.amber,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }

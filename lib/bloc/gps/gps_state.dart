@@ -2,7 +2,7 @@
 part of 'gps_bloc.dart';
 
 @immutable
-sealed class GpsState {}
+abstract class GpsState {}
 
 final class GpsInitial extends GpsState {}
 
@@ -14,8 +14,8 @@ class GpsIsFailure extends GpsState {
 }
 
 class GpsIsLoaded extends GpsState {
-  Position data;
-  GpsIsLoaded({
-    required this.data,
-  });
+  final Position position;
+  GpsIsLoaded(
+    this.position,
+  );
 }
