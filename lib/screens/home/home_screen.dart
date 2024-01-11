@@ -12,11 +12,7 @@ import 'package:salesappnew/bloc/user/user_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
-import 'package:salesappnew/screens/dn/dn_screen.dart';
 import 'package:salesappnew/screens/home/widgets/menu_list.dart';
-import 'package:salesappnew/screens/invoice/invoice_screen.dart';
-import 'package:salesappnew/screens/item/item_screen.dart';
-import 'package:salesappnew/screens/order/order_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_modal_insert.dart';
 import 'package:salesappnew/utils/location_gps.dart';
@@ -164,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     BlocBuilder<GpsBloc, GpsState>(
-                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 0)),
+                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 20)),
                       builder: (context, state) {
                         if (state is GpsIsLoaded) {
                           print(state.position);
