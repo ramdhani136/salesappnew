@@ -64,7 +64,7 @@ class _VisitScreenState extends State<VisitScreen> {
 
   @override
   void dispose() {
-    _panelController.close();
+    // _panelController.close();
     // bloc.close();
     typeC.clear();
     rangeDateC.clear();
@@ -167,7 +167,7 @@ class _VisitScreenState extends State<VisitScreen> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BackButtonCustom(),
+                BackButtonCustom(toHome: true),
                 const Row(
                   children: [
                     Icon(Icons.directions_run, size: 17),
@@ -213,312 +213,323 @@ class _VisitScreenState extends State<VisitScreen> {
               ),
             ),
           ),
-          body: Stack(
-            children: [
-              const TabBarView(
-                children: [
-                  VisitBody(
-                    status: 0,
-                    colorFontHeader: Color.fromARGB(255, 250, 236, 214),
-                    colorHeader: Color(0xFFE8A53A),
-                  ),
-                  VisitBody(
-                    colorFontHeader: Color.fromARGB(255, 190, 255, 240),
-                    colorHeader: Color(0xFF20826B),
-                    status: 1,
-                  ),
-                  VisitBody(
-                    colorFontHeader: Color.fromARGB(255, 230, 230, 230),
-                    colorHeader: Color(0xFF657187),
-                    status: 2,
-                  ),
-                ],
-              ),
-              SlidingUpPanel(
-                controller: _panelController,
-                defaultPanelState: PanelState.CLOSED,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(18),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushReplacementNamed(context, '/home');
+              return false;
+            },
+            child: Stack(
+              children: [
+                const TabBarView(
+                  children: [
+                    VisitBody(
+                      status: 0,
+                      colorFontHeader: Color.fromARGB(255, 250, 236, 214),
+                      colorHeader: Color(0xFFE8A53A),
+                    ),
+                    VisitBody(
+                      colorFontHeader: Color.fromARGB(255, 190, 255, 240),
+                      colorHeader: Color(0xFF20826B),
+                      status: 1,
+                    ),
+                    VisitBody(
+                      colorFontHeader: Color.fromARGB(255, 230, 230, 230),
+                      colorHeader: Color(0xFF657187),
+                      status: 2,
+                    ),
+                  ],
                 ),
-                parallaxEnabled: true,
-                maxHeight: Get.height / 1.3,
-                minHeight: 30,
-                panel: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    children: [
-                      Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            _panelController.isPanelOpen
-                                ? _panelController.close()
-                                : _panelController.open();
-                          },
-                          child: Container(
-                            width: 30,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(12),
+                SlidingUpPanel(
+                  controller: _panelController,
+                  defaultPanelState: PanelState.CLOSED,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(18),
+                  ),
+                  parallaxEnabled: true,
+                  maxHeight: Get.height / 1.3,
+                  minHeight: 30,
+                  panel: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              _panelController.isPanelOpen
+                                  ? _panelController.close()
+                                  : _panelController.open();
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 25,
-                            right: 25,
-                          ),
-                          child: BlocBuilder<VisitBloc, VisitState>(
-                            bloc: bloc,
-                            builder: (context, state) {
-                              if (bloc.filterLocal != null &&
-                                  bloc.filterLocal!.isNotEmpty) {
-                                for (var i = 0;
-                                    i < bloc.filterLocal!.length;
-                                    i++) {
-                                  if (bloc.filterLocal![i].field == "type") {
-                                    typeC.text = bloc.filterLocal![i].name;
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 20,
+                              left: 25,
+                              right: 25,
+                            ),
+                            child: BlocBuilder<VisitBloc, VisitState>(
+                              bloc: bloc,
+                              builder: (context, state) {
+                                if (bloc.filterLocal != null &&
+                                    bloc.filterLocal!.isNotEmpty) {
+                                  for (var i = 0;
+                                      i < bloc.filterLocal!.length;
+                                      i++) {
+                                    if (bloc.filterLocal![i].field == "type") {
+                                      typeC.text = bloc.filterLocal![i].name;
+                                    }
                                   }
                                 }
-                              }
 
-                              String GetValue(String field) {
-                                if (bloc.filterLocal != null) {
-                                  List<FilterModel> result = bloc.filterLocal!
-                                      .where((FilterModel element) =>
-                                          element.field == field)
-                                      .toList();
-                                  if (result.isNotEmpty) {
-                                    return result[0].name;
+                                String GetValue(String field) {
+                                  if (bloc.filterLocal != null) {
+                                    List<FilterModel> result = bloc.filterLocal!
+                                        .where((FilterModel element) =>
+                                            element.field == field)
+                                        .toList();
+                                    if (result.isNotEmpty) {
+                                      return result[0].name;
+                                    }
+                                    return "";
                                   }
+
                                   return "";
                                 }
 
-                                return "";
-                              }
-
-                              return ListView(
-                                children: [
-                                  const SizedBox(height: 20),
-                                  FieldCustom(
-                                    placeholder: "",
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(data: const ["type"]),
-                                      );
-                                    },
-                                    controller: typeC,
-                                    type: Type.select,
-                                    getData: (String search) {
-                                      return const [
-                                        {"name": "Insite", "value": "insite"},
-                                        {"name": "Outsite", "value": "outsite"}
-                                      ];
-                                    },
-                                    title: "Type",
-                                    onSelect: (e) {
-                                      typeC.text = e['name'];
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "type",
-                                            name: e["name"],
-                                            value: e["value"],
+                                return ListView(
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    FieldCustom(
+                                      placeholder: "",
+                                      onReset: () {
+                                        bloc.add(
+                                          RemoveFilter(data: const ["type"]),
+                                        );
+                                      },
+                                      controller: typeC,
+                                      type: Type.select,
+                                      getData: (String search) {
+                                        return const [
+                                          {"name": "Insite", "value": "insite"},
+                                          {
+                                            "name": "Outsite",
+                                            "value": "outsite"
+                                          }
+                                        ];
+                                      },
+                                      title: "Type",
+                                      onSelect: (e) {
+                                        typeC.text = e['name'];
+                                        bloc.add(
+                                          SetFilter(
+                                            filter: FilterModel(
+                                              field: "type",
+                                              name: e["name"],
+                                              value: e["value"],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FieldDataScroll(
-                                    resetOpenModal: false,
-                                    minWidth: Get.width - 100,
-                                    endpoint: Endpoint(data: Data.branch),
-                                    value: GetValue("customer.branch"),
-                                    title: "Branch",
-                                    titleModal: "Branch List",
-                                    onSelected: (e) {
-                                      Get.back();
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "customer.branch",
-                                            name: e["name"],
-                                            value: e["_id"],
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FieldDataScroll(
+                                      resetOpenModal: false,
+                                      minWidth: Get.width - 100,
+                                      endpoint: Endpoint(data: Data.branch),
+                                      value: GetValue("customer.branch"),
+                                      title: "Branch",
+                                      titleModal: "Branch List",
+                                      onSelected: (e) {
+                                        Get.back();
+                                        bloc.add(
+                                          SetFilter(
+                                            filter: FilterModel(
+                                              field: "customer.branch",
+                                              name: e["name"],
+                                              value: e["_id"],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(
-                                          data: const ["customer.branch"],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FieldDataScroll(
-                                    resetOpenModal: false,
-                                    minWidth: Get.width - 100,
-                                    endpoint:
-                                        Endpoint(data: Data.customergroup),
-                                    value: GetValue("customer.customerGroup"),
-                                    title: "Group",
-                                    titleModal: "Group List",
-                                    onSelected: (e) {
-                                      Get.back();
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "customer.customerGroup",
-                                            name: e["name"],
-                                            value: e["_id"],
+                                        );
+                                      },
+                                      onReset: () {
+                                        bloc.add(
+                                          RemoveFilter(
+                                            data: const ["customer.branch"],
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(
-                                          data: const [
-                                            "customer.customerGroup"
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FieldDataScroll(
-                                    resetOpenModal: false,
-                                    minWidth: Get.width - 100,
-                                    endpoint: Endpoint(data: Data.customer),
-                                    value: GetValue("customer"),
-                                    title: "Customer",
-                                    titleModal: "Customer List",
-                                    onSelected: (e) {
-                                      Get.back();
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "customer",
-                                            name: e["name"],
-                                            value: e["_id"],
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FieldDataScroll(
+                                      resetOpenModal: false,
+                                      minWidth: Get.width - 100,
+                                      endpoint:
+                                          Endpoint(data: Data.customergroup),
+                                      value: GetValue("customer.customerGroup"),
+                                      title: "Group",
+                                      titleModal: "Group List",
+                                      onSelected: (e) {
+                                        Get.back();
+                                        bloc.add(
+                                          SetFilter(
+                                            filter: FilterModel(
+                                              field: "customer.customerGroup",
+                                              name: e["name"],
+                                              value: e["_id"],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(
-                                          data: const ["customer"],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FieldDataScroll(
-                                    resetOpenModal: false,
-                                    minWidth: Get.width - 100,
-                                    endpoint: Endpoint(data: Data.users),
-                                    value: GetValue("createdBy"),
-                                    title: "Created By",
-                                    titleModal: "User List",
-                                    onSelected: (e) {
-                                      Get.back();
-                                      bloc.add(
-                                        SetFilter(
-                                          filter: FilterModel(
-                                            field: "createdBy",
-                                            name: e["name"],
-                                            value: e["_id"],
+                                        );
+                                      },
+                                      onReset: () {
+                                        bloc.add(
+                                          RemoveFilter(
+                                            data: const [
+                                              "customer.customerGroup"
+                                            ],
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onReset: () {
-                                      bloc.add(
-                                        RemoveFilter(data: const ["createdBy"]),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    "Date :",
-                                    style: TextStyle(color: Colors.grey[700]),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  GestureDetector(
-                                    onTap: () {
-                                      ChooseDateRangePicker();
-                                    },
-                                    child: TextField(
-                                      style: TextStyle(color: Colors.grey[900]),
-                                      controller: rangeDateC,
-                                      enabled: false,
-                                      autocorrect: false,
-                                      enableSuggestions: false,
-                                      decoration: InputDecoration(
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey[300]),
-                                        hintText: "Select date",
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                        border: const OutlineInputBorder(),
-                                        disabledBorder:
-                                            const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.grey,
-                                            width: 1.0,
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FieldDataScroll(
+                                      resetOpenModal: false,
+                                      minWidth: Get.width - 100,
+                                      endpoint: Endpoint(data: Data.customer),
+                                      value: GetValue("customer"),
+                                      title: "Customer",
+                                      titleModal: "Customer List",
+                                      onSelected: (e) {
+                                        Get.back();
+                                        bloc.add(
+                                          SetFilter(
+                                            filter: FilterModel(
+                                              field: "customer",
+                                              name: e["name"],
+                                              value: e["_id"],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onReset: () {
+                                        bloc.add(
+                                          RemoveFilter(
+                                            data: const ["customer"],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FieldDataScroll(
+                                      resetOpenModal: false,
+                                      minWidth: Get.width - 100,
+                                      endpoint: Endpoint(data: Data.users),
+                                      value: GetValue("createdBy"),
+                                      title: "Created By",
+                                      titleModal: "User List",
+                                      onSelected: (e) {
+                                        Get.back();
+                                        bloc.add(
+                                          SetFilter(
+                                            filter: FilterModel(
+                                              field: "createdBy",
+                                              name: e["name"],
+                                              value: e["_id"],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onReset: () {
+                                        bloc.add(
+                                          RemoveFilter(
+                                              data: const ["createdBy"]),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      "Date :",
+                                      style: TextStyle(color: Colors.grey[700]),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    GestureDetector(
+                                      onTap: () {
+                                        ChooseDateRangePicker();
+                                      },
+                                      child: TextField(
+                                        style:
+                                            TextStyle(color: Colors.grey[900]),
+                                        controller: rangeDateC,
+                                        enabled: false,
+                                        autocorrect: false,
+                                        enableSuggestions: false,
+                                        decoration: InputDecoration(
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[300]),
+                                          hintText: "Select date",
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                          border: const OutlineInputBorder(),
+                                          disabledBorder:
+                                              const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.grey,
+                                              width: 1.0,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  // FieldDataScroll(
-                                  //   resetOpenModal: false,
-                                  //   minWidth: Get.width - 100,
-                                  //   endpoint:
-                                  //       Endpoint(data: Data.workflowState),
-                                  //   value: GetValue("workflowState"),
-                                  //   title: "Workflow State",
-                                  //   titleModal: "Workflow State List",
-                                  //   onSelected: (e) {
-                                  //     Get.back();
-                                  //     bloc.add(
-                                  //       SetFilter(
-                                  //         filter: FilterModel(
-                                  //           field: "workflowState",
-                                  //           name: e["name"],
-                                  //           value: e["name"],
-                                  //         ),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  //   onReset: () {
-                                  //     bloc.add(
-                                  //       RemoveFilter(
-                                  //         data: const ["workflowState"],
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
-                                ],
-                              );
-                            },
+                                    const SizedBox(height: 20),
+                                    // FieldDataScroll(
+                                    //   resetOpenModal: false,
+                                    //   minWidth: Get.width - 100,
+                                    //   endpoint:
+                                    //       Endpoint(data: Data.workflowState),
+                                    //   value: GetValue("workflowState"),
+                                    //   title: "Workflow State",
+                                    //   titleModal: "Workflow State List",
+                                    //   onSelected: (e) {
+                                    //     Get.back();
+                                    //     bloc.add(
+                                    //       SetFilter(
+                                    //         filter: FilterModel(
+                                    //           field: "workflowState",
+                                    //           name: e["name"],
+                                    //           value: e["name"],
+                                    //         ),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    //   onReset: () {
+                                    //     bloc.add(
+                                    //       RemoveFilter(
+                                    //         data: const ["workflowState"],
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    // ),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

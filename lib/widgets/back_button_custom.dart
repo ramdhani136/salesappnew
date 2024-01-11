@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class BackButtonCustom extends StatelessWidget {
   Function? onBack;
+  bool toHome;
   BackButtonCustom({
     Key? key,
     this.onBack,
+    this.toHome = false,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,11 @@ class BackButtonCustom extends StatelessWidget {
           if (onBack != null) {
             onBack!();
           }
-          Navigator.pop(context);
+          if (!toHome) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pushNamed(context, '/home');
+          }
         },
         icon: const Icon(
           Icons.arrow_back_ios,

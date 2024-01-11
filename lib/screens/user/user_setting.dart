@@ -51,7 +51,7 @@ class _UserSettingState extends State<UserSetting> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            BackButtonCustom(onBack: () {}),
+            BackButtonCustom(toHome: true),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,186 +80,195 @@ class _UserSettingState extends State<UserSetting> {
           ],
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          widget.userBloc.add(
-            GetUserLogin(),
-          );
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.pushReplacementNamed(context, '/home');
+          return false;
         },
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: BlocBuilder(
-              bloc: widget.userBloc..add(GetUserLogin()),
-              builder: (context, state) {
-                if (state is UserLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.grey[400],
-                    ),
-                  );
-                }
+        child: RefreshIndicator(
+          onRefresh: () async {
+            widget.userBloc.add(
+              GetUserLogin(),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: BlocBuilder(
+                bloc: widget.userBloc..add(GetUserLogin()),
+                builder: (context, state) {
+                  if (state is UserLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.grey[400],
+                      ),
+                    );
+                  }
 
-                if (state is UserLoginLoaded) {
-                  nameC.text = state.data.name!;
-                  userNameC.text = state.data.username!;
-                  emailC.text = state.data.email ?? "";
-                  phoneC.text = state.data.phone != null
-                      ? state.data.phone.toString()
-                      : "";
-                  erpSiteC.text = state.data.erpSite ?? "";
-                  erpTokenC.text = state.data.erpToken ?? "";
+                  if (state is UserLoginLoaded) {
+                    nameC.text = state.data.name!;
+                    userNameC.text = state.data.username!;
+                    emailC.text = state.data.email ?? "";
+                    phoneC.text = state.data.phone != null
+                        ? state.data.phone.toString()
+                        : "";
+                    erpSiteC.text = state.data.erpSite ?? "";
+                    erpTokenC.text = state.data.erpToken ?? "";
 
-                  return ListView(
-                    children: [
-                      CustomField(
-                        controller: nameC,
-                        type: Type.standard,
-                        title: "Name",
-                        disabled: true,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: userNameC,
-                        type: Type.standard,
-                        title: "Username",
-                        disabled: true,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: emailC,
-                        type: Type.standard,
-                        title: "Email",
-                        placeholder: "Cth: it@ekatunggal.com",
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: phoneC,
-                        type: Type.standard,
-                        title: "Phone",
-                        placeholder: "Cth: 081283738823",
-                        keyboardType: TextInputType.phone,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: erpSiteC,
-                        type: Type.standard,
-                        title: "Erp Uri",
-                        placeholder: "",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: erpTokenC,
-                        type: Type.standard,
-                        title: "Erp Token",
-                        placeholder: "",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomField(
-                        controller: passwordC,
-                        type: Type.standard,
-                        title: "Password",
-                        placeholder: "",
-                        obscureText: true,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Container(
-                            width: Get.width,
-                            height: Get.width / 1.5,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey[100],
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 232, 231, 231),
-                              ),
-                              image: state.data.img == "" ||
-                                      state.data.img == null &&
-                                          widget.userBloc.img?.path == null ||
-                                      widget.userBloc.img?.path == ""
-                                  ? const DecorationImage(
-                                      image: AssetImage(
-                                        "assets/icons/profile.png",
-                                      ),
-                                      fit: BoxFit.contain,
-                                    )
-                                  : widget.userBloc.img?.path != null
-                                      ? DecorationImage(
-                                          image: FileImage(
-                                            File(
-                                                "${widget.userBloc.img?.path}"),
-                                          ),
-                                        )
-                                      : DecorationImage(
-                                          image: NetworkImage(
-                                            "${Config().baseUri}images/users/${state.data.img}",
-                                          ),
-                                          fit: BoxFit.contain,
+                    return ListView(
+                      children: [
+                        CustomField(
+                          controller: nameC,
+                          type: Type.standard,
+                          title: "Name",
+                          disabled: true,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: userNameC,
+                          type: Type.standard,
+                          title: "Username",
+                          disabled: true,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: emailC,
+                          type: Type.standard,
+                          title: "Email",
+                          placeholder: "Cth: it@ekatunggal.com",
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: phoneC,
+                          type: Type.standard,
+                          title: "Phone",
+                          placeholder: "Cth: 081283738823",
+                          keyboardType: TextInputType.phone,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: erpSiteC,
+                          type: Type.standard,
+                          title: "Erp Uri",
+                          placeholder: "",
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: erpTokenC,
+                          type: Type.standard,
+                          title: "Erp Token",
+                          placeholder: "",
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomField(
+                          controller: passwordC,
+                          type: Type.standard,
+                          title: "Password",
+                          placeholder: "",
+                          obscureText: true,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Container(
+                              width: Get.width,
+                              height: Get.width / 1.5,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[100],
+                                border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 232, 231, 231),
+                                ),
+                                image: state.data.img == "" ||
+                                        state.data.img == null &&
+                                            widget.userBloc.img?.path == null ||
+                                        widget.userBloc.img?.path == ""
+                                    ? const DecorationImage(
+                                        image: AssetImage(
+                                          "assets/icons/profile.png",
                                         ),
-                            ),
-                          ),
-                          Container(
-                            width: Get.width * 0.9,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(5),
-                                bottomRight: Radius.circular(5),
+                                        fit: BoxFit.contain,
+                                      )
+                                    : widget.userBloc.img?.path != null
+                                        ? DecorationImage(
+                                            image: FileImage(
+                                              File(
+                                                  "${widget.userBloc.img?.path}"),
+                                            ),
+                                          )
+                                        : DecorationImage(
+                                            image: NetworkImage(
+                                              "${Config().baseUri}images/users/${state.data.img}",
+                                            ),
+                                            fit: BoxFit.contain,
+                                          ),
                               ),
-                              color: Colors.black.withOpacity(0.4),
                             ),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    widget.userBloc.add(
-                                      UserSetImage(source: ImageSource.camera),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.white,
-                                    size: 22,
-                                  ),
+                            Container(
+                              width: Get.width * 0.9,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
                                 ),
-                                IconButton(
-                                  onPressed: () async {
-                                    widget.userBloc.add(
-                                      UserSetImage(source: ImageSource.gallery),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.open_in_browser,
-                                    color: Colors.white,
-                                    size: 22,
+                                color: Colors.black.withOpacity(0.4),
+                              ),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      widget.userBloc.add(
+                                        UserSetImage(
+                                            source: ImageSource.camera),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  );
-                }
-                return Container();
-              }),
+                                  IconButton(
+                                    onPressed: () async {
+                                      widget.userBloc.add(
+                                        UserSetImage(
+                                            source: ImageSource.gallery),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.open_in_browser,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                }),
+          ),
         ),
       ),
       floatingActionButton: SizedBox(

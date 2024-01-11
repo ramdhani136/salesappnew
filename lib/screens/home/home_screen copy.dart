@@ -31,7 +31,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final MemoBloc memoBloc = MemoBloc();
   final GpsBloc gpsBloc = GpsBloc();
 
   @override
@@ -41,13 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    gpsBloc.close();
-    memoBloc.close();
     super.dispose();
+    gpsBloc.close();
   }
 
   @override
   Widget build(BuildContext context) {
+    MemoBloc memoBloc = MemoBloc();
+
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     BlocBuilder<GpsBloc, GpsState>(
-                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 0)),
+                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 5)),
                       builder: (context, state) {
                         if (state is GpsIsLoaded) {
                           print(state.position);
@@ -258,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       //     builder: (_) => const VisitScreen(),
                       //   ),
                       // );
-                      Navigator.pushReplacementNamed(context, '/visit');
+                      Navigator.pushNamed(context, '/visit');
                     },
                     title: "Visit",
                     primary: true,
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   HomeMenuList(
                     RunFUnction: () {
-                      Navigator.pushReplacementNamed(context, '/callsheet');
+                      Navigator.pushNamed(context, '/callsheet');
                       // Navigator.of(context).push(
                       //   MaterialPageRoute<CallsheetScreen>(
                       //     builder: (_) => BlocProvider.value(
@@ -286,60 +286,56 @@ class _HomeScreenState extends State<HomeScreen> {
                   // ),
                   HomeMenuList(
                     RunFUnction: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute<OrderScreen>(
-                      //     builder: (_) => BlocProvider.value(
-                      //       value: BlocProvider.of<AuthBloc>(context),
-                      //       child: const OrderScreen(),
-                      //     ),
-                      //   ),
-                      // );
-                      Navigator.pushReplacementNamed(context, '/so');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<OrderScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const OrderScreen(),
+                          ),
+                        ),
+                      );
                     },
                     title: "Order",
                     icon: Icons.bus_alert_sharp,
                   ),
                   HomeMenuList(
                     RunFUnction: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute<DnScreen>(
-                      //     builder: (_) => BlocProvider.value(
-                      //       value: BlocProvider.of<AuthBloc>(context),
-                      //       child: const DnScreen(),
-                      //     ),
-                      //   ),
-                      // );
-                      Navigator.pushReplacementNamed(context, '/dn');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<DnScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const DnScreen(),
+                          ),
+                        ),
+                      );
                     },
                     title: "Delivery",
                     icon: Icons.fire_truck_rounded,
                   ),
                   HomeMenuList(
                     RunFUnction: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute<InvoiceScreen>(
-                      //     builder: (_) => BlocProvider.value(
-                      //       value: BlocProvider.of<AuthBloc>(context),
-                      //       child: const InvoiceScreen(),
-                      //     ),
-                      //   ),
-                      // );
-                      Navigator.pushReplacementNamed(context, '/invoice');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<InvoiceScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const InvoiceScreen(),
+                          ),
+                        ),
+                      );
                     },
                     title: "Invoice",
                     icon: Icons.price_change_sharp,
                   ),
                   HomeMenuList(
                     RunFUnction: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute<ItemScreen>(
-                      //     builder: (_) => BlocProvider.value(
-                      //       value: BlocProvider.of<AuthBloc>(context),
-                      //       child: const ItemScreen(),
-                      //     ),
-                      //   ),
-                      // );
-                      Navigator.pushReplacementNamed(context, '/item');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<ItemScreen>(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<AuthBloc>(context),
+                            child: const ItemScreen(),
+                          ),
+                        ),
+                      );
                     },
                     title: "Item",
                     icon: Icons.gif_box_sharp,
