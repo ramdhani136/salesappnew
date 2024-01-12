@@ -61,7 +61,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 bloc: gpsBloc
                   ..add(
                     GpsGetLocation(
-                      customer: widget.customerId,
+                      checkInOut: CheckInOut(
+                        customer: widget.customerId,
+                      ),
                     ),
                   ),
                 builder: (context, state) {

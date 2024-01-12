@@ -53,7 +53,7 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
 
         Map<String, dynamic> config = {};
 
-        if (event.customer != null) {
+        if (event.checkInOut != null) {
           config = await FetchData(data: Data.config).FINDALL();
         }
 
@@ -69,13 +69,18 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
         _positionStreamSubscription = Geolocator.getPositionStream(
           locationSettings: locationSettings,
         ).listen((Position position) {
-          if (event.customer != null) {
-            add(GpsSetCheckInOut(
+          if (event.checkInOut != null) {
+            add(
+              GpsSetCheckInOut(
                 config: config,
-                customer: event.customer!,
+                customer: event.checkInOut?.customer != null
+                    ? event.checkInOut?.customer!
+                    : "",
                 customerIcon: customerIcon,
                 markerIcon: markerIcon,
-                position: position));
+                position: position,
+              ),
+            );
           } else {
             add(GpsSetLocation(position));
           }
@@ -92,22 +97,25 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
   ) async {
     try {
       bool IsInsite = false;
-      Map<String, dynamic> IsInsiteCustomer =
-          await FetchData(data: Data.customer).FINDALL(
-              nearby:
-                  "&nearby=[${event.position.latitude},${event.position.longitude},${event.config['data']['visit']['checkInDistance']}]",
-              filters: [
-            [
-              "_id",
-              "=",
-              event.customer,
-            ]
-          ]);
 
-      if (IsInsiteCustomer['data'] != null) {
-        IsInsite = true;
-      } else {
-        IsInsite = false;
+      if (event.customer != "") {
+        Map<String, dynamic> IsInsiteCustomer =
+            await FetchData(data: Data.customer).FINDALL(
+                nearby:
+                    "&nearby=[${event.position.latitude},${event.position.longitude},${event.config['data']['visit']['checkInDistance']}]",
+                filters: [
+              [
+                "_id",
+                "=",
+                event.customer!,
+              ]
+            ]);
+
+        if (IsInsiteCustomer['data'] != null) {
+          IsInsite = true;
+        } else {
+          IsInsite = false;
+        }
       }
 
       String address = await LocationGps().chekcAdress(event.position);
@@ -124,7 +132,7 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
         ),
       );
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 

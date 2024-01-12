@@ -4,13 +4,19 @@ part of 'gps_bloc.dart';
 @immutable
 abstract class GpsEvent {}
 
+class CheckInOut {
+  String? customer;
+
+  CheckInOut({this.customer});
+}
+
 class GpsGetLocation extends GpsEvent {
   int? distanceFilter;
-  String? customer;
+  CheckInOut? checkInOut;
 
   GpsGetLocation({
     this.distanceFilter,
-    this.customer,
+    this.checkInOut,
   });
 }
 
@@ -24,7 +30,7 @@ class GpsSetLocation extends GpsEvent {
 
 class GpsSetCheckInOut extends GpsEvent {
   Position position;
-  String customer;
+  String? customer;
   Uint8List markerIcon;
   Uint8List customerIcon;
   Map<String, dynamic> config;

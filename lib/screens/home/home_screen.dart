@@ -185,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 );
                               } else if (snapshot.hasError) {
-                                print(snapshot.error);
                                 // Handle errors if necessary
                                 return const Text(
                                   "Error fetching address",

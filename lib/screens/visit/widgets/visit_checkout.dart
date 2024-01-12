@@ -4,17 +4,34 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salesappnew/bloc/location/location_bloc.dart';
+import 'package:salesappnew/bloc/gps/gps_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 
-class VisitCheckOut extends StatelessWidget {
+class VisitCheckOut extends StatefulWidget {
   VisitBloc visitBloc;
   LatLng checkInCordinate;
+
+  VisitCheckOut({
+    super.key,
+    required this.checkInCordinate,
+    required this.visitBloc,
+  });
+
+  @override
+  State<VisitCheckOut> createState() => _VisitCheckOutState();
+}
+
+class _VisitCheckOutState extends State<VisitCheckOut> {
   late String address;
   late LatLng cordinate;
-  VisitCheckOut(
-      {super.key, required this.checkInCordinate, required this.visitBloc});
+  final GpsBloc gpsBloc = GpsBloc();
+
+  @override
+  void dispose() {
+    gpsBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,30 +39,32 @@ class VisitCheckOut extends StatelessWidget {
         Completer<GoogleMapController>();
 
     return BlocProvider(
-      create: (context) => LocationBloc()..add(GetLocationGps()),
+      create: (context) => gpsBloc
+        ..add(
+          GpsGetLocation(
+            checkInOut: CheckInOut(),
+          ),
+        ),
       child: Scaffold(
-        body: BlocBuilder<LocationBloc, LocationState>(
+        body: BlocBuilder<GpsBloc, GpsState>(
           builder: (context, state) {
-            LocationBloc loc = BlocProvider.of<LocationBloc>(context);
-            if (state is LocationLoading) {
+            if (state is GpsIsLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            if (state is LocationFailure) {
-              loc.add(GetLocationGps(notLoading: true));
-            }
-
-            if (loc.cordinate != null) {
-              visitBloc.checkOutAddress = loc.address;
-              visitBloc.checkOutCordinates = loc.cordinate;
-
-              loc.add(
-                GetRealtimeGps(
-                  duration: const Duration(seconds: 2),
+            if (state is GpsIsFailure) {
+              gpsBloc.add(
+                GpsGetLocation(
+                  checkInOut: CheckInOut(),
                 ),
               );
+            }
+
+            if (state is GpsCheckInOutIsLoaded) {
+              widget.visitBloc.checkOutAddress = state.address;
+              widget.visitBloc.checkOutCordinates = state.position;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,12 +85,11 @@ class VisitCheckOut extends StatelessWidget {
                               infoWindow: const InfoWindow(
                                 title: 'Your Location!',
                               ),
-                              icon: state is LocationLoaded
-                                  ? state.IconEtmMaps!
-                                  : BitmapDescriptor.defaultMarker,
+                              icon: state.IconEtmMaps ??
+                                  BitmapDescriptor.defaultMarker,
                               position: LatLng(
-                                loc.cordinate!.latitude,
-                                loc.cordinate!.longitude,
+                                state.position.latitude,
+                                state.position.longitude,
                               ),
                             ),
                             Marker(
@@ -81,16 +99,15 @@ class VisitCheckOut extends StatelessWidget {
                                 title: 'CheckIn Location',
                               ),
                               visible: true,
-                              icon: state is LocationLoaded
-                                  ? state.IconCustomerMaps!
-                                  : BitmapDescriptor.defaultMarker,
-                              position: checkInCordinate,
+                              icon: state.IconCustomerMaps ??
+                                  BitmapDescriptor.defaultMarker,
+                              position: widget.checkInCordinate,
                             )
                           },
                           initialCameraPosition: CameraPosition(
                               target: LatLng(
-                                loc.cordinate!.latitude,
-                                loc.cordinate!.longitude,
+                                state.position.latitude,
+                                state.position.longitude,
                               ),
                               bearing: 192.8334901395799,
                               tilt: 59.440717697143555,
@@ -101,10 +118,8 @@ class VisitCheckOut extends StatelessWidget {
                           circles: <Circle>{
                             Circle(
                               circleId: const CircleId('myLocation'),
-                              center: checkInCordinate,
-                              radius: state is LocationLoaded
-                                  ? state.distanceCheckOut!.toDouble()
-                                  : 0,
+                              center: widget.checkInCordinate,
+                              radius: state.distanceCheckOut!.toDouble(),
                               strokeWidth: 2,
                               strokeColor: Colors.amber,
                               fillColor: Colors.amber.withOpacity(0.2),
@@ -151,8 +166,8 @@ class VisitCheckOut extends StatelessWidget {
                                     CameraUpdate.newCameraPosition(
                                       CameraPosition(
                                           target: LatLng(
-                                            loc.cordinate!.latitude,
-                                            loc.cordinate!.longitude,
+                                            state.position.latitude,
+                                            state.position.longitude,
                                           ),
                                           bearing: 192.8334901395799,
                                           tilt: 59.440717697143555,
@@ -189,7 +204,7 @@ class VisitCheckOut extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      loc.address ?? "Failed to get location info!",
+                      state.address,
                       style: TextStyle(
                         color: Colors.grey[600],
                       ),
