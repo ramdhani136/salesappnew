@@ -164,7 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ..add(
                           GpsGetLocation(
                             distanceFilter: 10,
-                            // customer: "64bdd451d970cc397a03b669",
                           ),
                         ),
                       builder: (context, state) {
@@ -516,6 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (state is GpsIsLoaded) {
                   return LocationAroundYou(
                     position: state.position,
+                    gpsBloc: gpsBloc,
                   );
                 }
 
@@ -550,10 +550,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class LocationAroundYou extends StatelessWidget {
   final Position position;
+  final GpsBloc gpsBloc;
 
   const LocationAroundYou({
     Key? key,
     required this.position,
+    required this.gpsBloc,
   }) : super(key: key);
 
   @override
@@ -590,7 +592,9 @@ class LocationAroundYou extends StatelessWidget {
                   onPressed: () {
                     customerBloc.add(GetAllCustomer(
                       nearby: Nearby(
-                          lat: position.latitude, lng: position.longitude),
+                        lat: position.latitude,
+                        lng: position.longitude,
+                      ),
                     ));
                   },
                 ),
@@ -695,9 +699,11 @@ class LocationAroundYou extends StatelessWidget {
                                   ? "${NumberFormat("#,##0.00").format(state.data[index]['distance'] / 1000)} Km"
                                   : ""),
                               onTap: () {
+                                gpsBloc.stopGps();
                                 showDialog(
                                   context: context,
                                   builder: (context) => VisitModalInsert(
+                                    gpsBloc: gpsBloc,
                                     bloc: VisitBloc(),
                                     customer: KeyValue(
                                       name: state.data[index]['name'],

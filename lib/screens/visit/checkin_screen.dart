@@ -870,34 +870,35 @@ GoogleMap Maps(
   };
 
   Set<Circle> circle = {};
+  if (customer.data.location?.coordinates != null) {
+    double lat = customer.data.location!.coordinates![1];
+    double lng = customer.data.location!.coordinates![0];
+    markers.addAll({
+      Marker(
+        onTap: () {},
+        markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
+        infoWindow: InfoWindow(
+          title: '${customer != null ? customer.data.name : ""}',
+        ),
+        visible: true,
+        icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lng),
+      )
+    });
 
-  double lat = customer.data.location!.coordinates![1];
-  double lng = customer.data.location!.coordinates![0];
-  markers.addAll({
-    Marker(
-      onTap: () {},
-      markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
-      infoWindow: InfoWindow(
-        title: '${customer != null ? customer.data.name : ""}',
+    circle.addAll({
+      Circle(
+        circleId: CircleId("${customer.data.name}"),
+        center: LatLng(lat, lng), // Koordinat lokasi saat ini
+        radius: data.distanceCheckIn != null
+            ? data.distanceCheckIn!.toDouble()
+            : 50, // Jari-jari dalam meter
+        strokeWidth: 2,
+        strokeColor: Colors.amber,
+        fillColor: Colors.amber.withOpacity(0.2),
       ),
-      visible: true,
-      icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
-      position: LatLng(lat, lng),
-    )
-  });
-
-  circle.addAll({
-    Circle(
-      circleId: CircleId("${customer.data.name}"),
-      center: LatLng(lat, lng), // Koordinat lokasi saat ini
-      radius: data.distanceCheckIn != null
-          ? data.distanceCheckIn!.toDouble()
-          : 50, // Jari-jari dalam meter
-      strokeWidth: 2,
-      strokeColor: Colors.amber,
-      fillColor: Colors.amber.withOpacity(0.2),
-    ),
-  });
+    });
+  }
 
   return GoogleMap(
     mapType: MapType.normal,

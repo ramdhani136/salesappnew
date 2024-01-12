@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:salesappnew/bloc/gps/gps_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/models/key_value_model.dart';
 import 'package:salesappnew/screens/visit/checkin_screen.dart';
@@ -12,11 +13,18 @@ import 'package:salesappnew/screens/callsheet/widgets/customer_form_widget.dart'
 
 class VisitModalInsert extends StatefulWidget {
   VisitBloc bloc;
+  GpsBloc? gpsBloc;
   KeyValue? branch;
   KeyValue? group;
   KeyValue? customer;
-  VisitModalInsert(
-      {super.key, required this.bloc, this.branch, this.customer, this.group});
+  VisitModalInsert({
+    super.key,
+    required this.bloc,
+    this.branch,
+    this.customer,
+    this.group,
+    this.gpsBloc,
+  });
 
   @override
   State<VisitModalInsert> createState() => _VisitModalInsertState();
@@ -81,6 +89,15 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
 
   @override
   void dispose() {
+    if (widget.gpsBloc != null) {
+      print("HHHHHHHHHHHHHHHHH");
+      widget.gpsBloc!.add(
+        GpsGetLocation(
+          distanceFilter: 10,
+        ),
+      );
+    }
+
     localBloc.close();
     super.dispose();
   }

@@ -133,4 +133,8 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
     _positionStreamSubscription?.cancel();
     return super.close();
   }
+
+  void stopGps() {
+    _positionStreamSubscription?.cancel();
+  }
 }
