@@ -913,7 +913,7 @@ GoogleMap Maps(
         ),
         bearing: 192.8334901395799,
         tilt: 59.440717697143555,
-        zoom: 20.151926040649414),
+        zoom: 19.151926040649414),
     onMapCreated: (GoogleMapController controller) {
       _controller.complete(controller);
     },
