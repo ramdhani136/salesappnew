@@ -90,7 +90,6 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
   @override
   void dispose() {
     if (widget.gpsBloc != null) {
-      print("HHHHHHHHHHHHHHHHH");
       widget.gpsBloc!.add(
         GpsGetLocation(
           distanceFilter: 10,
