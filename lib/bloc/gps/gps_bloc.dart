@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:salesappnew/utils/fetch_data.dart';
+import 'package:salesappnew/utils/location_gps.dart';
 import 'package:salesappnew/utils/tools.dart';
 part 'gps_event.dart';
 part 'gps_state.dart';
@@ -109,6 +110,8 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
         IsInsite = false;
       }
 
+      String address = await LocationGps().chekcAdress(event.position);
+
       emit(
         GpsCheckInOutIsLoaded(
           IconEtmMaps: BitmapDescriptor.fromBytes(event.markerIcon),
@@ -117,6 +120,7 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
           distanceCheckOut: event.config['data']['visit']['checkOutDistance'],
           insite: IsInsite,
           position: event.position,
+          address: address,
         ),
       );
     } catch (e) {

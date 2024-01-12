@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
 import 'package:salesappnew/bloc/gps/gps_bloc.dart';
-import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
 import 'package:salesappnew/models/key_value_model.dart';
@@ -32,14 +31,15 @@ class CheckInScreen extends StatefulWidget {
 }
 
 class _CheckInScreenState extends State<CheckInScreen> {
-  final LocationBloc locationbloc = LocationBloc();
   final GpsBloc gpsBloc = GpsBloc();
+  CustomerBloc customerBloc = CustomerBloc();
+
   TextEditingController nameC = TextEditingController();
 
   @override
   void dispose() {
-    locationbloc.close(); // Menutup Bloc saat halaman ditutup
-    gpsBloc.close(); // Menutup Bloc saat halaman ditutup
+    gpsBloc.close();
+    customerBloc.close(); // Menutup Bloc saat halaman ditutup
     super.dispose();
   }
 
@@ -47,12 +47,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
   Widget build(BuildContext context) {
     final _panelC = PanelController();
     VisitBloc visitBloc = VisitBloc();
-    CustomerBloc customerBloc = CustomerBloc()
-      ..add(
-        ShowCustomer(
-          widget.customerId,
-        ),
-      );
 
     Completer<GoogleMapController> _controller =
         Completer<GoogleMapController>();
@@ -71,7 +65,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     ),
                   ),
                 builder: (context, state) {
-                  print(state);
                   if (state is GpsIsLoading) {
                     return const Center(
                       child: SizedBox(
@@ -84,15 +77,24 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     );
                   }
 
-                  if (state is GpsIsFailure) {
-                    // _controller = Completer<GoogleMapController>();
-                    gpsBloc.add(GpsGetLocation(
-                      customer: widget.customerId,
-                    ));
-                  }
+                  // if (state is GpsIsFailure) {
+                  //   // _controller = Completer<GoogleMapController>();
+                  //   gpsBloc.add(GpsGetLocation(
+                  //     customer: widget.customerId,
+                  //   ));
+                  // }
 
                   if (state is GpsCheckInOutIsLoaded) {
-                    return Maps(state, _controller);
+                    return BlocBuilder<CustomerBloc, CustomerState>(
+                      bloc: customerBloc,
+                      builder: (context, statecust) {
+                        if (statecust is CustomerShowLoaded) {
+                          return Maps(state, _controller, statecust);
+                        }
+
+                        return const SizedBox();
+                      },
+                    );
                   }
 
                   return const Center(
@@ -137,41 +139,48 @@ class _CheckInScreenState extends State<CheckInScreen> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        final GoogleMapController controller =
-                            await _controller.future;
-                        controller.animateCamera(
-                          CameraUpdate.newCameraPosition(
-                            CameraPosition(
-                                target: LatLng(
-                                  locationbloc.cordinate!.latitude,
-                                  locationbloc.cordinate!.longitude,
+                    BlocBuilder<GpsBloc, GpsState>(
+                      bloc: gpsBloc,
+                      builder: (context, state) {
+                        return GestureDetector(
+                          onTap: () async {
+                            if (state is GpsCheckInOutIsLoaded) {
+                              final GoogleMapController controller =
+                                  await _controller.future;
+                              controller.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                      target: LatLng(
+                                        state.position.latitude,
+                                        state.position.longitude,
+                                      ),
+                                      bearing: 192.8334901395799,
+                                      tilt: 59.440717697143555,
+                                      zoom: 20.151926040649414),
                                 ),
-                                bearing: 192.8334901395799,
-                                tilt: 59.440717697143555,
-                                zoom: 20.151926040649414),
+                              );
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE6212A),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 195, 16, 25),
+                                width: 1,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.gps_fixed,
+                              color: Colors.white,
+                            ),
                           ),
                         );
                       },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE6212A),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 195, 16, 25),
-                            width: 1,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.gps_fixed,
-                          color: Colors.white,
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -232,11 +241,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                           width: 1,
                                         ),
                                       ),
-                                      child: BlocBuilder<LocationBloc,
-                                          LocationState>(
-                                        bloc: locationbloc,
+                                      child: BlocBuilder<GpsBloc, GpsState>(
+                                        bloc: gpsBloc,
                                         builder: (context, stateLoc) {
-                                          if (stateLoc is LocationLoading) {
+                                          if (stateLoc is GpsIsLoading) {
                                             return const Center(
                                               child: SizedBox(
                                                 width: 10,
@@ -250,32 +258,37 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                             );
                                           }
 
-                                          return Row(
-                                            children: [
-                                              Icon(
-                                                Icons.gps_fixed_sharp,
-                                                size: 16,
-                                                color: Colors.grey[800],
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Text(
-                                                    "${locationbloc.address}",
-                                                    style: TextStyle(
-                                                      color: Colors.grey[800],
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                          if (stateLoc
+                                              is GpsCheckInOutIsLoaded) {
+                                            return Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.gps_fixed_sharp,
+                                                  size: 16,
+                                                  color: Colors.grey[800],
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Text(
+                                                      stateLoc.address,
+                                                      style: TextStyle(
+                                                        color: Colors.grey[800],
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
+                                              ],
+                                            );
+                                          }
+
+                                          return Container();
                                         },
                                       ),
                                     ),
@@ -304,7 +317,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                           ),
                                           BlocBuilder<CustomerBloc,
                                               CustomerState>(
-                                            bloc: customerBloc,
+                                            bloc: customerBloc
+                                              ..add(
+                                                ShowCustomer(
+                                                  widget.customerId,
+                                                ),
+                                              ),
                                             builder: (
                                               context,
                                               stateCustomer,
@@ -360,13 +378,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                         ],
                                                       ),
                                                     ),
-                                                    BlocBuilder<LocationBloc,
-                                                        LocationState>(
-                                                      bloc: locationbloc,
+                                                    BlocBuilder<GpsBloc,
+                                                        GpsState>(
+                                                      bloc: gpsBloc,
                                                       builder:
                                                           (context, stateLoc) {
                                                         if (stateLoc
-                                                            is LocationLoaded) {
+                                                            is GpsCheckInOutIsLoaded) {
                                                           return Row(
                                                             children: [
                                                               Container(
@@ -467,15 +485,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                                                   UpdateCustomer(
                                                                                     id: widget.customerId,
                                                                                     data: {
-                                                                                      'lat': locationbloc.cordinate?.latitude,
-                                                                                      'lng': locationbloc.cordinate?.longitude,
-                                                                                      'address': locationbloc.address,
+                                                                                      'lat': stateLoc.position.latitude,
+                                                                                      'lng': stateLoc.position.longitude,
+                                                                                      'address': stateLoc.address,
                                                                                     },
                                                                                   ),
                                                                                 );
-                                                                                locationbloc.add(GetLocationGps(
-                                                                                  customerId: widget.customerId,
-                                                                                ));
                                                                                 Get.back();
                                                                               },
                                                                               child: const Text("Yes"),
@@ -710,10 +725,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                   ],
                                 ),
                               ),
-                              BlocBuilder<LocationBloc, LocationState>(
-                                bloc: locationbloc,
-                                builder: (context, stateCust) {
-                                  if (stateCust is LocationLoaded) {
+                              BlocBuilder<GpsBloc, GpsState>(
+                                bloc: gpsBloc,
+                                builder: (context, state) {
+                                  if (state is GpsCheckInOutIsLoaded) {
                                     return SizedBox(
                                       width: double.infinity,
                                       child: ElevatedButton(
@@ -743,18 +758,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                             data = {
                                                           "customer":
                                                               widget.customerId,
-                                                          "type":
-                                                              stateCust.insite!
-                                                                  ? "insite"
-                                                                  : "outsite",
-                                                          "checkInLat":
-                                                              locationbloc
-                                                                  .cordinate!
-                                                                  .latitude,
-                                                          "checkInLng":
-                                                              locationbloc
-                                                                  .cordinate!
-                                                                  .longitude,
+                                                          "type": state.insite!
+                                                              ? "insite"
+                                                              : "outsite",
+                                                          "checkInLat": state
+                                                              .position
+                                                              .latitude,
+                                                          "checkInLng": state
+                                                              .position
+                                                              .longitude,
                                                           "namingSeries":
                                                               "${widget.naming?.value}",
                                                         };
@@ -772,18 +784,16 @@ class _CheckInScreenState extends State<CheckInScreen> {
                                                             null) {
                                                           Map<String, dynamic>
                                                               data = {
-                                                            "checkInLat":
-                                                                locationbloc
-                                                                    .cordinate!
-                                                                    .latitude,
-                                                            "checkInLng":
-                                                                locationbloc
-                                                                    .cordinate!
-                                                                    .longitude,
-                                                            "type": stateCust
-                                                                    .insite!
-                                                                ? "insite"
-                                                                : "outsite",
+                                                            "checkInLat": state
+                                                                .position
+                                                                .latitude,
+                                                            "checkInLng": state
+                                                                .position
+                                                                .longitude,
+                                                            "type":
+                                                                state.insite!
+                                                                    ? "insite"
+                                                                    : "outsite",
                                                           };
                                                           widget
                                                               .onCheckIn!(data);
@@ -842,6 +852,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
 GoogleMap Maps(
   GpsCheckInOutIsLoaded data,
   Completer<GoogleMapController> _controller,
+  CustomerShowLoaded customer,
 ) {
   Set<Marker> markers = {
     Marker(
@@ -860,33 +871,33 @@ GoogleMap Maps(
 
   Set<Circle> circle = {};
 
-  // double lat = customer!.data.location!.coordinates![1];
-  // double lng = customer.data.location!.coordinates![0];
-  // markers.addAll({
-  //   Marker(
-  //     onTap: () {},
-  //     markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
-  //     infoWindow: InfoWindow(
-  //       title: '${customer != null ? customer.data.name : ""}',
-  //     ),
-  //     visible: true,
-  //     icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
-  //     position: LatLng(lat, lng),
-  //   )
-  // });
+  double lat = customer.data.location!.coordinates![1];
+  double lng = customer.data.location!.coordinates![0];
+  markers.addAll({
+    Marker(
+      onTap: () {},
+      markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
+      infoWindow: InfoWindow(
+        title: '${customer != null ? customer.data.name : ""}',
+      ),
+      visible: true,
+      icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
+      position: LatLng(lat, lng),
+    )
+  });
 
-  // circle.addAll({
-  //   Circle(
-  //     circleId: CircleId("${customer.data.name}"),
-  //     center: LatLng(lat, lng), // Koordinat lokasi saat ini
-  //     radius: data.distanceCheckIn != null
-  //         ? data.distanceCheckIn!.toDouble()
-  //         : 50, // Jari-jari dalam meter
-  //     strokeWidth: 2,
-  //     strokeColor: Colors.amber,
-  //     fillColor: Colors.amber.withOpacity(0.2),
-  //   ),
-  // });
+  circle.addAll({
+    Circle(
+      circleId: CircleId("${customer.data.name}"),
+      center: LatLng(lat, lng), // Koordinat lokasi saat ini
+      radius: data.distanceCheckIn != null
+          ? data.distanceCheckIn!.toDouble()
+          : 50, // Jari-jari dalam meter
+      strokeWidth: 2,
+      strokeColor: Colors.amber,
+      fillColor: Colors.amber.withOpacity(0.2),
+    ),
+  });
 
   return GoogleMap(
     mapType: MapType.normal,

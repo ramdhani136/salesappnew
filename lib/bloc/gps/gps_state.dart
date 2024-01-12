@@ -27,6 +27,7 @@ class GpsCheckInOutIsLoaded extends GpsState {
   num? distanceCheckOut;
   bool? insite;
   Position position;
+  String address;
 
   GpsCheckInOutIsLoaded({
     this.IconEtmMaps = BitmapDescriptor.defaultMarker,
@@ -35,5 +36,6 @@ class GpsCheckInOutIsLoaded extends GpsState {
     this.distanceCheckOut,
     this.insite,
     required this.position,
+    required this.address,
   });
 }
