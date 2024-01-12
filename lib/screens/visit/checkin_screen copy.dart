@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salesappnew/bloc/customer/customer_bloc.dart';
-import 'package:salesappnew/bloc/gps/gps_bloc.dart';
 import 'package:salesappnew/bloc/location/location_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/config/Config.dart';
@@ -33,13 +32,11 @@ class CheckInScreen extends StatefulWidget {
 
 class _CheckInScreenState extends State<CheckInScreen> {
   final LocationBloc locationbloc = LocationBloc();
-  final GpsBloc gpsBloc = GpsBloc();
   TextEditingController nameC = TextEditingController();
 
   @override
   void dispose() {
     locationbloc.close(); // Menutup Bloc saat halaman ditutup
-    gpsBloc.close(); // Menutup Bloc saat halaman ditutup
     super.dispose();
   }
 
@@ -63,16 +60,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
         Expanded(
           child: Stack(
             children: [
-              BlocBuilder<GpsBloc, GpsState>(
-                bloc: gpsBloc
-                  ..add(
-                    GpsGetLocation(
-                      customer: widget.customerId,
-                    ),
-                  ),
+              BlocBuilder<LocationBloc, LocationState>(
+                bloc: locationbloc,
                 builder: (context, state) {
-                  print(state);
-                  if (state is GpsIsLoading) {
+                  if (state is LocationInitial) {
+                    locationbloc.add(GetLocationGps(
+                      customerId: widget.customerId,
+                    ));
+                  }
+                  if (state is LocationLoading) {
                     return const Center(
                       child: SizedBox(
                         width: 20,
@@ -84,15 +80,35 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     );
                   }
 
-                  if (state is GpsIsFailure) {
+                  if (state is LocationFailure) {
                     // _controller = Completer<GoogleMapController>();
-                    gpsBloc.add(GpsGetLocation(
-                      customer: widget.customerId,
+                    locationbloc.add(GetLocationGps(
+                      customerId: widget.customerId,
+                      notLoading: true,
                     ));
                   }
 
-                  if (state is GpsCheckInOutIsLoaded) {
-                    return Maps(state, _controller);
+                  if (locationbloc.cordinate != null) {
+                    return BlocBuilder<CustomerBloc, CustomerState>(
+                      bloc: customerBloc,
+                      builder: (context, stateCust) {
+                        if (stateCust is CustomerShowLoaded) {
+                          locationbloc.add(
+                            GetRealtimeGps(
+                              customerId: widget.customerId,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+
+                        // if (state is LocationLoaded) {
+                        //   return Maps(
+                        //       locationbloc, _controller, state, stateCust);
+                        // }
+
+                        return Container();
+                      },
+                    );
                   }
 
                   return const Center(
@@ -839,10 +855,18 @@ class _CheckInScreenState extends State<CheckInScreen> {
 }
 
 // ignore: non_constant_identifier_names
-GoogleMap Maps(
-  GpsCheckInOutIsLoaded data,
-  Completer<GoogleMapController> _controller,
-) {
+GoogleMap Maps(LocationBloc loc, Completer<GoogleMapController> _controller,
+    state, stateCust) {
+  LocationLoaded? data;
+  CustomerShowLoaded? customer;
+  if (state is LocationLoaded) {
+    data = state;
+  }
+
+  if (stateCust is CustomerShowLoaded) {
+    customer = stateCust;
+  }
+
   Set<Marker> markers = {
     Marker(
       onTap: () {},
@@ -850,43 +874,45 @@ GoogleMap Maps(
       infoWindow: const InfoWindow(
         title: 'Your Location!',
       ),
-      icon: data.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
+      icon: data!.IconEtmMaps ?? BitmapDescriptor.defaultMarker,
       position: LatLng(
-        data.position.latitude,
-        data.position.longitude,
+        loc.cordinate!.latitude,
+        loc.cordinate!.longitude,
       ),
     ),
   };
 
   Set<Circle> circle = {};
 
-  // double lat = customer!.data.location!.coordinates![1];
-  // double lng = customer.data.location!.coordinates![0];
-  // markers.addAll({
-  //   Marker(
-  //     onTap: () {},
-  //     markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
-  //     infoWindow: InfoWindow(
-  //       title: '${customer != null ? customer.data.name : ""}',
-  //     ),
-  //     visible: true,
-  //     icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
-  //     position: LatLng(lat, lng),
-  //   )
-  // });
+  if (customer?.data.location?.coordinates != null) {
+    double lat = customer!.data.location!.coordinates![1];
+    double lng = customer.data.location!.coordinates![0];
+    markers.addAll({
+      Marker(
+        onTap: () {},
+        markerId: MarkerId('${customer != null ? customer.data.name : ""}'),
+        infoWindow: InfoWindow(
+          title: '${customer != null ? customer.data.name : ""}',
+        ),
+        visible: true,
+        icon: data.IconCustomerMaps ?? BitmapDescriptor.defaultMarker,
+        position: LatLng(lat, lng),
+      )
+    });
 
-  // circle.addAll({
-  //   Circle(
-  //     circleId: CircleId("${customer.data.name}"),
-  //     center: LatLng(lat, lng), // Koordinat lokasi saat ini
-  //     radius: data.distanceCheckIn != null
-  //         ? data.distanceCheckIn!.toDouble()
-  //         : 50, // Jari-jari dalam meter
-  //     strokeWidth: 2,
-  //     strokeColor: Colors.amber,
-  //     fillColor: Colors.amber.withOpacity(0.2),
-  //   ),
-  // });
+    circle.addAll({
+      Circle(
+        circleId: CircleId("${customer.data.name}"),
+        center: LatLng(lat, lng), // Koordinat lokasi saat ini
+        radius: data.distanceCheckIn != null
+            ? data.distanceCheckIn!.toDouble()
+            : 50, // Jari-jari dalam meter
+        strokeWidth: 2,
+        strokeColor: Colors.amber,
+        fillColor: Colors.amber.withOpacity(0.2),
+      ),
+    });
+  }
 
   return GoogleMap(
     mapType: MapType.normal,
@@ -897,8 +923,8 @@ GoogleMap Maps(
     markers: markers,
     initialCameraPosition: CameraPosition(
         target: LatLng(
-          data.position.latitude,
-          data.position.longitude,
+          loc.cordinate!.latitude,
+          loc.cordinate!.longitude,
         ),
         bearing: 192.8334901395799,
         tilt: 59.440717697143555,

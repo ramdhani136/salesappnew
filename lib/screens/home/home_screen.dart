@@ -160,7 +160,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 5,
                     ),
                     BlocBuilder<GpsBloc, GpsState>(
-                      bloc: gpsBloc..add(GpsGetLocation(distanceFilter: 20)),
+                      bloc: gpsBloc
+                        ..add(
+                          GpsGetLocation(
+                            distanceFilter: 10,
+                            // customer: "64bdd451d970cc397a03b669",
+                          ),
+                        ),
                       builder: (context, state) {
                         if (state is GpsIsLoaded) {
                           print(state.position);
@@ -181,6 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 );
                               } else if (snapshot.hasError) {
+                                print(snapshot.error);
                                 // Handle errors if necessary
                                 return const Text(
                                   "Error fetching address",
