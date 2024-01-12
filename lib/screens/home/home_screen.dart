@@ -168,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       builder: (context, state) {
                         if (state is GpsIsLoaded) {
-                          print(state.position);
                           Future<String> addressFuture =
                               LocationGps().chekcAdress(state.position);
 
