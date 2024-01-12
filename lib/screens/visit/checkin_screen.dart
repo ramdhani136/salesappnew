@@ -79,12 +79,15 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     );
                   }
 
-                  // if (state is GpsIsFailure) {
-                  //   // _controller = Completer<GoogleMapController>();
-                  //   gpsBloc.add(GpsGetLocation(
-                  //     customer: widget.customerId,
-                  //   ));
-                  // }
+                  if (state is GpsIsFailure) {
+                    gpsBloc.add(
+                      GpsGetLocation(
+                        checkInOut: CheckInOut(
+                          customer: widget.customerId,
+                        ),
+                      ),
+                    );
+                  }
 
                   if (state is GpsCheckInOutIsLoaded) {
                     return BlocBuilder<CustomerBloc, CustomerState>(
