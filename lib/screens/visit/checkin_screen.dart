@@ -82,7 +82,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   if (state is GpsIsFailure) {
                     return AlertDialog(
                       title: const Text('Error'),
-                      content: const Text('Fake location detected.'),
+                      content: Text(state.error),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {

@@ -58,7 +58,7 @@ class _VisitCheckOutState extends State<VisitCheckOut> {
             if (state is GpsIsFailure) {
               return AlertDialog(
                 title: const Text('Error'),
-                content: const Text('Fake location detected.'),
+                content: Text(state.error),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
