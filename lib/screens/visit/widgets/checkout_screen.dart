@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:salesappnew/bloc/gps/gps_bloc.dart';
 import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 import 'package:salesappnew/screens/visit/widgets/visit_checkout.dart';
 import 'package:salesappnew/widgets/dialog_signature.dart';
@@ -11,6 +12,7 @@ class CheckOutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GpsBloc gpsBloc = GpsBloc();
     return Scaffold(
       body: BlocBuilder<VisitBloc, VisitState>(
         builder: (context, state) {
@@ -38,6 +40,7 @@ class CheckOutScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: VisitCheckOut(
+                              gpsBloc: gpsBloc,
                               checkInCordinate: LatLng(
                                 state.data.checkIn!.lat!,
                                 state.data.checkIn!.lng!,
@@ -92,32 +95,40 @@ class CheckOutScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
-                  child: Visibility(
-                    visible: visitBloc.signature != null &&
-                        visitBloc.checkOutCordinates != null,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        visitBloc.add(
-                          SetCheckOut(id: state.data.id.toString()),
-                        );
-                        // Aksi saat tombol ditekan
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 33, 143, 36),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 13),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                  child: BlocBuilder<GpsBloc, GpsState>(
+                    bloc: gpsBloc,
+                    builder: (context, stateGps) {
+                      print(stateGps);
+                      return Visibility(
+                        visible: visitBloc.signature != null &&
+                            visitBloc.checkOutCordinates != null &&
+                            stateGps is! GpsIsFailure,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            visitBloc.add(
+                              SetCheckOut(id: state.data.id.toString()),
+                            );
+                            // Aksi saat tombol ditekan
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 33, 143, 36),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 13),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Check Out',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'Check Out',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 )
 

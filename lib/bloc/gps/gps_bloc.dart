@@ -1,7 +1,6 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unused_import
 
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,6 +19,9 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
   GpsBloc() : super(GpsInitial()) {
     on<GpsSetLocation>((event, emit) {
       emit(GpsIsLoaded(event.position));
+    });
+    on<GpsSetError>((event, emit) {
+      emit(GpsIsFailure(event.msg));
     });
     on<GpsSetCheckInOut>(
       (event, emit) => _GpsSetCheckInOut(event, emit),
@@ -43,8 +45,6 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
         await openAppSettings();
       } else if (status.isGranted) {
         emit(GpsIsLoading());
-
-        // Set icon maps
         final Uint8List markerIcon =
             await Tools().getBytesFromAsset('assets/icons/etm.png', 130);
         final Uint8List customerIcon = await Tools()
@@ -69,20 +69,24 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
         _positionStreamSubscription = Geolocator.getPositionStream(
           locationSettings: locationSettings,
         ).listen((Position position) {
-          if (event.checkInOut != null) {
-            add(
-              GpsSetCheckInOut(
-                config: config,
-                customer: event.checkInOut?.customer != null
-                    ? event.checkInOut?.customer!
-                    : "",
-                customerIcon: customerIcon,
-                markerIcon: markerIcon,
-                position: position,
-              ),
-            );
+          if (position.isMocked) {
+            add(GpsSetError("Fake location detected!"));
           } else {
-            add(GpsSetLocation(position));
+            if (event.checkInOut != null) {
+              add(
+                GpsSetCheckInOut(
+                  config: config,
+                  customer: event.checkInOut?.customer != null
+                      ? event.checkInOut?.customer!
+                      : "",
+                  customerIcon: customerIcon,
+                  markerIcon: markerIcon,
+                  position: position,
+                ),
+              );
+            } else {
+              add(GpsSetLocation(position));
+            }
           }
         });
       }

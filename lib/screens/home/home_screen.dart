@@ -220,11 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         if (state is GpsIsFailure) {
-                          gpsBloc.add(
-                            GpsGetLocation(
-                              distanceFilter: 10,
-                            ),
-                          );
+                          // gpsBloc.add(
+                          //   GpsGetLocation(
+                          //     distanceFilter: 10,
+                          //   ),
+                          // );
                           return Text(
                             state.error,
                             style: const TextStyle(fontSize: 13),

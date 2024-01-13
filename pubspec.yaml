@@ -52,11 +52,12 @@ dependencies:
   intl: ^0.18.1
   jwt_decode: ^0.3.1
   percent_indicator: ^4.2.3
-  permission_handler: ^10.3.0
+  permission_handler: 11.0.1
   photo_view: ^0.14.0
   shared_preferences: ^2.1.2
   signature: ^5.4.0
   sliding_up_panel: ^2.0.0+1
+
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

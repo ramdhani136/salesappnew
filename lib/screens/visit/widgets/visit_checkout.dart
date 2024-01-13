@@ -11,11 +11,13 @@ import 'package:salesappnew/bloc/visit/visit_bloc.dart';
 class VisitCheckOut extends StatefulWidget {
   VisitBloc visitBloc;
   LatLng checkInCordinate;
+  GpsBloc gpsBloc;
 
   VisitCheckOut({
     super.key,
     required this.checkInCordinate,
     required this.visitBloc,
+    required this.gpsBloc,
   });
 
   @override
@@ -25,11 +27,10 @@ class VisitCheckOut extends StatefulWidget {
 class _VisitCheckOutState extends State<VisitCheckOut> {
   late String address;
   late LatLng cordinate;
-  final GpsBloc gpsBloc = GpsBloc();
 
   @override
   void dispose() {
-    gpsBloc.close();
+    widget.gpsBloc.close();
     super.dispose();
   }
 
@@ -39,7 +40,7 @@ class _VisitCheckOutState extends State<VisitCheckOut> {
         Completer<GoogleMapController>();
 
     return BlocProvider(
-      create: (context) => gpsBloc
+      create: (context) => widget.gpsBloc
         ..add(
           GpsGetLocation(
             checkInOut: CheckInOut(),
@@ -55,10 +56,18 @@ class _VisitCheckOutState extends State<VisitCheckOut> {
             }
 
             if (state is GpsIsFailure) {
-              gpsBloc.add(
-                GpsGetLocation(
-                  checkInOut: CheckInOut(),
-                ),
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Fake location detected.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      // Close the alert dialog
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
               );
             }
 

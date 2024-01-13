@@ -28,6 +28,14 @@ class GpsSetLocation extends GpsEvent {
   );
 }
 
+class GpsSetError extends GpsEvent {
+  String msg;
+
+  GpsSetError(
+    this.msg,
+  );
+}
+
 class GpsSetCheckInOut extends GpsEvent {
   Position position;
   String? customer;

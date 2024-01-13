@@ -80,12 +80,18 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   }
 
                   if (state is GpsIsFailure) {
-                    gpsBloc.add(
-                      GpsGetLocation(
-                        checkInOut: CheckInOut(
-                          customer: widget.customerId,
+                    return AlertDialog(
+                      title: const Text('Error'),
+                      content: const Text('Fake location detected.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            // Close the alert dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
                         ),
-                      ),
+                      ],
                     );
                   }
 
