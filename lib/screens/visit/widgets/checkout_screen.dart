@@ -102,7 +102,9 @@ class CheckOutScreen extends StatelessWidget {
                       return Visibility(
                         visible: visitBloc.signature != null &&
                             visitBloc.checkOutCordinates != null &&
-                            stateGps is! GpsIsFailure,
+                            stateGps is! GpsIsFailure &&
+                            stateGps is! GpsInitial &&
+                            stateGps is! GpsIsLoading,
                         child: ElevatedButton(
                           onPressed: () {
                             visitBloc.add(
