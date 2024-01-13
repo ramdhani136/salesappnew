@@ -142,7 +142,7 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
 
   @override
   Future<void> close() {
-    _positionStreamSubscription?.cancel();
+    stopGps();
     return super.close();
   }
 
