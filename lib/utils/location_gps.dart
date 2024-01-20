@@ -53,6 +53,7 @@ class LocationGps {
       return address;
     } catch (e) {
       // print('Error: $e');
+      print(e);
       rethrow;
     }
   }
