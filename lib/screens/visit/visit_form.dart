@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, must_be_immutable
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -165,6 +165,8 @@ class VisitForm extends StatelessWidget {
                         "Loading...",
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       );
                     }
@@ -184,13 +186,21 @@ class VisitForm extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(Icons.article_outlined, size: 16),
+                              const Icon(
+                                Icons.article_outlined,
+                                size: 16,
+                                color: Colors.white,
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 3),
                                 child: Text(
                                   " Visit (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
-                                  style: const TextStyle(fontSize: 16),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],

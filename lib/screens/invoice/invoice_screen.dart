@@ -77,12 +77,20 @@ class _InvoiceScreen extends State<InvoiceScreen> {
                 ),
                 const Row(
                   children: [
-                    Icon(Icons.currency_exchange, size: 17),
+                    Icon(
+                      Icons.currency_exchange,
+                      size: 17,
+                      color: Colors.white,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
                         "Invoice",
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -104,10 +112,13 @@ class _InvoiceScreen extends State<InvoiceScreen> {
               ),
             ),
           ),
-          body: WillPopScope(
-            onWillPop: () async {
+          body: PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) async {
+              if (didPop) {
+                return;
+              }
               Navigator.pushReplacementNamed(context, '/home');
-              return false;
             },
             child: Stack(
               children: [

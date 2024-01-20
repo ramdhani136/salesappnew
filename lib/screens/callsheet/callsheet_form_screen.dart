@@ -115,16 +115,19 @@ class CallsheetForm extends StatelessWidget {
       tabs: myTabs,
     );
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (bloc.tabActive != null) {
-          bloc.add(CallsheetGetAllData(
-            status: bloc.tabActive!,
-            getRefresh: true,
-            search: bloc.search,
-          ));
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          if (bloc.tabActive != null) {
+            bloc.add(CallsheetGetAllData(
+              status: bloc.tabActive!,
+              getRefresh: true,
+              search: bloc.search,
+            ));
+          }
+          return;
         }
-        return true;
       },
       child: BlocProvider.value(
         value: bloc,
@@ -166,6 +169,8 @@ class CallsheetForm extends StatelessWidget {
                         "Loading...",
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       );
                     }
@@ -184,13 +189,21 @@ class CallsheetForm extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(Icons.article_outlined, size: 16),
+                              const Icon(
+                                Icons.article_outlined,
+                                size: 16,
+                                color: Colors.white,
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 3),
                                 child: Text(
                                   " Callsheet (${state.data.status == "1" ? "Compeleted" : state.data.status == "0" ? "Draft" : "Canceled"})",
-                                  style: const TextStyle(fontSize: 16),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],

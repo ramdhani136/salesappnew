@@ -33,6 +33,8 @@ class InvoiceFormScreen extends StatelessWidget {
                   "Loading...",
                   style: TextStyle(
                     fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 );
               }
@@ -43,12 +45,20 @@ class InvoiceFormScreen extends StatelessWidget {
                     BackButtonCustom(),
                     const Row(
                       children: [
-                        Icon(Icons.currency_exchange, size: 17),
+                        Icon(
+                          Icons.currency_exchange,
+                          size: 17,
+                          color: Colors.white,
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
                             "Sales Invoice",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
@@ -382,7 +392,7 @@ class InvoiceFormScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,
-                        vertical: 15,
+                        vertical: 10,
                       ),
                       child: Column(
                         children: [

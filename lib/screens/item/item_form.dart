@@ -33,6 +33,8 @@ class ItemFormScreen extends StatelessWidget {
                   "Loading...",
                   style: TextStyle(
                     fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 );
               }
@@ -43,12 +45,20 @@ class ItemFormScreen extends StatelessWidget {
                     BackButtonCustom(),
                     const Row(
                       children: [
-                        Icon(Icons.assignment, size: 17),
+                        Icon(
+                          Icons.assignment,
+                          size: 17,
+                          color: Colors.white,
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
                             "Item List",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],

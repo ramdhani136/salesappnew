@@ -98,7 +98,6 @@ class CheckOutScreen extends StatelessWidget {
                   child: BlocBuilder<GpsBloc, GpsState>(
                     bloc: gpsBloc,
                     builder: (context, stateGps) {
-                      print(stateGps);
                       return Visibility(
                         visible: visitBloc.signature != null &&
                             visitBloc.checkOutCordinates != null &&

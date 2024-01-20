@@ -383,6 +383,8 @@ class _VisitModalInsertState extends State<VisitModalInsert> {
                                 "Check In",
                                 style: TextStyle(
                                   fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),

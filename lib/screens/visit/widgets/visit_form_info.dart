@@ -838,7 +838,7 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                       if (state.data.status == "0") {
                         if (state.data.checkOut == null && !isChange) {
                           return SizedBox(
-                            height: 140.0,
+                            height: 60.0,
                             width: 60.0,
                             child: FloatingActionButton(
                               onPressed: () {
@@ -853,12 +853,15 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 );
                               },
                               backgroundColor: Colors.grey[850],
-                              child: const Icon(Icons.done_outlined),
+                              child: const Icon(
+                                Icons.done_outlined,
+                                color: Colors.white,
+                              ),
                             ),
                           );
                         } else if (isChange) {
                           return SizedBox(
-                            height: 140.0,
+                            height: 60.0,
                             width: 60.0,
                             child: FloatingActionButton(
                               onPressed: () {
@@ -960,7 +963,10 @@ class _VisitFormInfoState extends State<VisitFormInfo> {
                                 );
                               },
                               backgroundColor: Colors.grey[850],
-                              child: const Icon(Icons.save_outlined),
+                              child: const Icon(
+                                Icons.save_outlined,
+                                color: Colors.white,
+                              ),
                             ),
                           );
                         }

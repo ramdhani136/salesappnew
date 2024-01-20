@@ -33,6 +33,8 @@ class DNFormScreen extends StatelessWidget {
                   "Loading...",
                   style: TextStyle(
                     fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 );
               }
@@ -43,12 +45,20 @@ class DNFormScreen extends StatelessWidget {
                     BackButtonCustom(),
                     const Row(
                       children: [
-                        Icon(Icons.car_repair, size: 17),
+                        Icon(
+                          Icons.car_repair,
+                          size: 17,
+                          color: Colors.white,
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3),
                           child: Text(
                             "Delivery Note",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
@@ -370,7 +380,7 @@ class DNFormScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,
-                        vertical: 15,
+                        vertical: 10,
                       ),
                       child: Column(
                         children: [

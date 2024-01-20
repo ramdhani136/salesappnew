@@ -170,12 +170,20 @@ class _VisitScreenState extends State<VisitScreen> {
                 BackButtonCustom(toHome: true),
                 const Row(
                   children: [
-                    Icon(Icons.directions_run, size: 17),
+                    Icon(
+                      Icons.directions_run,
+                      size: 17,
+                      color: Colors.white,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
                         "Visit List",
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

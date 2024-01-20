@@ -77,12 +77,20 @@ class _DnScreen extends State<DnScreen> {
                 ),
                 const Row(
                   children: [
-                    Icon(Icons.car_repair, size: 17),
+                    Icon(
+                      Icons.car_repair,
+                      size: 17,
+                      color: Colors.white,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
                         "Delivery Note",
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -104,10 +112,13 @@ class _DnScreen extends State<DnScreen> {
               ),
             ),
           ),
-          body: WillPopScope(
-            onWillPop: () async {
+          body: PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) async {
+              if (didPop) {
+                return;
+              }
               Navigator.pushReplacementNamed(context, '/home');
-              return false;
             },
             child: Stack(
               children: [

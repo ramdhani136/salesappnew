@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers
+// ignore_for_file: non_constant_identifier_names, no_leading_underscores_for_local_identifiers, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,12 +76,20 @@ class _ItemScreen extends State<ItemScreen> {
                 ),
                 const Row(
                   children: [
-                    Icon(Icons.insert_drive_file, size: 17),
+                    Icon(
+                      Icons.insert_drive_file,
+                      size: 17,
+                      color: Colors.white,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3),
                       child: Text(
                         "Item List",
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

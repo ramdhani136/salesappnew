@@ -69,8 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     opacity: 0.5,
                     child: Text(
                       "Semangat Pagi",
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   ),
                   BlocBuilder<UserBloc, UserState>(
@@ -98,7 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (state is UserLoginLoaded) {
                         return Text(
                           state.data.name!,
-                          style: const TextStyle(fontSize: 15),
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
                         );
                       }
 

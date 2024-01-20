@@ -405,6 +405,8 @@ class _CallsheetModalInsertState extends State<CallsheetModalInsert> {
                                 "Add",
                                 style: TextStyle(
                                   fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),

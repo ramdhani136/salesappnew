@@ -88,7 +88,7 @@ class Visitmodel {
         "img": img,
         "type": type,
         "customer": customer!.toJson(),
-        "contact": contact != null ? contact!.toJson() : null,
+        "contact": contact?.toJson(),
         "checkIn": checkIn!.toJson(),
         "rate": rate,
         "createdBy": createdBy!.toJson(),
@@ -96,7 +96,7 @@ class Visitmodel {
         "signature": signature,
         "workflowState": workflowState,
         "updatedAt": updatedAt!.toIso8601String(),
-        "checkOut": checkOut != null ? checkOut!.toJson() : null,
+        "checkOut": checkOut?.toJson(),
         "customerGroup": customerGroup!.toJson(),
         "branch": branch!.toJson(),
         "schedulelist": schedulelist != null

@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names, invalid_use_of_visible_for_testing_member
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, unused_element, non_constant_identifier_names, invalid_use_of_visible_for_testing_member, deprecated_member_use
 
 import 'dart:async';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -134,12 +134,20 @@ class _FormNoteState extends State<FormNote> {
                         }),
                         const Row(
                           children: [
-                            Icon(Icons.note, size: 17),
+                            Icon(
+                              Icons.note,
+                              size: 17,
+                              color: Colors.white,
+                            ),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 3),
                               child: Text(
                                 "Notes",
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -501,6 +509,11 @@ class _FormNoteState extends State<FormNote> {
                                                 const Color.fromARGB(
                                                     255, 61, 153, 64),
                                               ),
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                Colors.white,
+                                              ),
                                             ),
                                             child: const Text("Add"),
                                           ),
@@ -544,6 +557,7 @@ class _FormNoteState extends State<FormNote> {
                                                       Colors.grey[800],
                                                   minimumSize:
                                                       const Size(30, 32),
+                                                  foregroundColor: Colors.white,
                                                 ),
                                                 icon: const Icon(
                                                   Icons.clear,

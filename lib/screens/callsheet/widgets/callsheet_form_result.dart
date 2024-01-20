@@ -481,7 +481,7 @@ class CallsheetFormResult extends StatelessWidget {
                 return Visibility(
                   visible: state.data.status == "0",
                   child: SizedBox(
-                    height: 70.0,
+                    height: 60.0,
                     width: 60.0,
                     child: FloatingActionButton(
                       onPressed: () {
@@ -503,7 +503,10 @@ class CallsheetFormResult extends StatelessWidget {
                         );
                       },
                       backgroundColor: Colors.grey[850],
-                      child: const Icon(Icons.add),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 );
