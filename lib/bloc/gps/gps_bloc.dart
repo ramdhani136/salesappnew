@@ -1,15 +1,19 @@
 // ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, unused_import
 
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import 'package:salesappnew/utils/fetch_data.dart';
 import 'package:salesappnew/utils/location_gps.dart';
 import 'package:salesappnew/utils/tools.dart';
+
 part 'gps_event.dart';
 part 'gps_state.dart';
 
@@ -121,7 +125,6 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
           IsInsite = false;
         }
       }
-
       String address = await LocationGps().chekcAdress(event.position);
 
       emit(

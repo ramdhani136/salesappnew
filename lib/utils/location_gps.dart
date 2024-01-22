@@ -19,15 +19,6 @@ class LocationGps {
       } else if (status.isGranted) {
         // Mendapatkan posisi saat ini
 
-        // const LocationSettings locationSettings = LocationSettings(
-        //   accuracy: LocationAccuracy.high,
-        //   // distanceFilter: 10,
-        // );
-        // Geolocator.getPositionStream(locationSettings: locationSettings)
-        //     .listen((position) {
-        //   print(position);
-        // });
-
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
@@ -50,6 +41,7 @@ class LocationGps {
       String address = '${place.name}, ${place.locality}, ${place.country}';
 
       // print('Address: $address');
+      print(address);
       return address;
     } catch (e) {
       // print('Error: $e');
